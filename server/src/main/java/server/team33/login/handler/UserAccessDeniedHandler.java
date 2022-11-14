@@ -15,7 +15,6 @@ import static server.team33.login.handler.UserAuthenticationEntryPoint.errorToJs
 @Slf4j
 @Component
 public class UserAccessDeniedHandler implements AccessDeniedHandler {
-    //TODO : 엑세스 거부 클래스 작성
     @Override
     public void handle( HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException ) throws IOException, ServletException{
         log.error("권한 없는 사용자");

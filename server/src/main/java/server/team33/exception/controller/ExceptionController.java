@@ -55,7 +55,7 @@ public class ExceptionController {
     public ResponseEntity<ErrorResponse> httpMessageNotReadableException(
             HttpMessageNotReadableException e ){
 
-        ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
+        ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }

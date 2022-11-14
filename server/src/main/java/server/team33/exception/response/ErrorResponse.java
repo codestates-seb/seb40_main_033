@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 public class ErrorResponse {
+
     private int status;
     private String message;
     private List<FieldError> fieldErrors;
