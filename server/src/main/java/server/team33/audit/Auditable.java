@@ -27,5 +27,4 @@ public abstract class Auditable {
         this.updatedAt = ZonedDateTime.now();
     }
 
-
 }

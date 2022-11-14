@@ -2,6 +2,7 @@ package server.team33.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.team33.user.entity.AuthUtils;
@@ -17,13 +18,13 @@ import java.util.Optional;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final AuthUtils authUtils;
 
     public User joinUser( User user ){
         existEmail(user.getEmail());
         existDisplayName(user.getDiplayName());
-//        encodePassword(user);
+        encodePassword(user);
         existPhoneNum(user.getPhoneNumber());
         createRole(user);
         userRepository.save(user);
@@ -41,10 +42,10 @@ public class UserService {
 
     }
 
-//    private void encodePassword( User user ){
-//        String encodedPwd = passwordEncoder.encode(user.getPassword());
-//        user.setPassword(encodedPwd);
-//    }
+    private void encodePassword( User user ){
+        String encodedPwd = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPwd);
+    }
 
     private void existDisplayName( String diplayName ){
         Optional<User> user = userRepository.findByDiplayName(diplayName);
