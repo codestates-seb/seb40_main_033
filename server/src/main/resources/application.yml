@@ -13,16 +13,19 @@ spring:
     properties:
       hibernate:
         format_sql: true # SQL pretty print
+
 sql:
   init:
     data-locations:
       classpath*: db/h2/data.sql
+
 logging:
   level:
     org:
       springframework:
         orm:
           jpa: DEBUG  # jpa DEBUG
+
 server:
   servlet:
     encoding:

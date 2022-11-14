@@ -34,6 +34,7 @@ class UserServiceTest {
         //when
         User user1 = userService.joinUser(user);
         //then
+        System.out.println(user1.getCreatedAt());
         assertThat(user1.getUserId()).isEqualTo(1L);
     }
 
