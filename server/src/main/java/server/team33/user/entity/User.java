@@ -1,23 +1,22 @@
 package server.team33.user.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import server.team33.audit.Auditable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Table(name = "users")
-public class User  {
-//TODO : audit 적용
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User extends Auditable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -37,7 +36,7 @@ public class User  {
     @Column
     private String realName;
 
-    @Column
+    @Column(unique = true)
     private String phoneNumber;
 
     @Column
@@ -52,9 +51,10 @@ public class User  {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus = UserStatus.USER_ACTIVE;
-//    private List<Wish> wishList;
+
+    //    private List<Wish> wishList;
 //    private List<Order> orders;
 //    private List<Review> reviews;
 //    private List<Talk> talks;

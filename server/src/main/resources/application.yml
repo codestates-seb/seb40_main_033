@@ -5,6 +5,7 @@ spring:
       path: /h2
   datasource:
     url: jdbc:h2:mem:test
+
   jpa:
     hibernate:
       ddl-auto: create
