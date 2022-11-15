@@ -1,6 +1,8 @@
 package server.team33.login.jwt;
 
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +68,21 @@ public class JwtToken {
         instance.add(Calendar.MINUTE, tokenExpirationMinutes);
         return instance.getTime();
     }
+
+    //jws 검증 메서드
+    public Map<String, Object> verifyJws( HttpServletRequest request ){
+        String jws = extractJws(request);
+        Key key = secretKey.getSecretKey(secretKey.getBaseKey());
+
+        return getClaims(jws, key).getBody();
+    }
+
+    //jws의 클레임 추출
+    public Jws<Claims> getClaims( String jws, Key key ){
+
+        return Jwts.parserBuilder().setSigningKey(key) // 시크릿 키 이용해서 토큰 해석
+                .build().parseClaimsJws(jws); //클레임값 파싱
+    }
+
 
 }

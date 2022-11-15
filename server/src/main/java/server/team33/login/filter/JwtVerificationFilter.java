@@ -1,6 +1,7 @@
 package server.team33.login.filter;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Key;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,7 +44,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response, FilterChain filterChain ) throws ServletException, IOException{
         log.info("doFilterInteral 메서드");
         try{
-            Map<String, Object> claims = verifyJws(request); //클레임 추출
+            Map<String, Object> claims = jwtToken.verifyJws(request); //클레임 추출
             setAuthtoContext(claims);//Authentication에 저장
 
         } catch(InsufficientAuthenticationException e){
@@ -119,22 +119,4 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         log.info("sch= {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
-
-    //jws 검증 메서드
-    public Map<String, Object> verifyJws( HttpServletRequest request ){
-        String jws = jwtToken.extractJws(request);
-        Key key = secretKey.getSecretKey(secretKey.getBaseKey());
-
-        return getClaims(jws, key).getBody();
-    }
-
-    //jws의 클레임 추출
-    public Jws<Claims> getClaims( String jws, Key key ){
-
-        return Jwts.parserBuilder()
-                .setSigningKey(key) // 시크릿 키 이용해서 토큰 해석
-                .build()
-                .parseClaimsJws(jws); //클레임값 파싱
-    }
-
 }

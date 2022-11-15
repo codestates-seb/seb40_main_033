@@ -18,7 +18,6 @@ import java.util.Optional;
 @Slf4j
 public class PrincipalDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
-
     @Override
     public UserDetails loadUserByUsername( String username ) throws UsernameNotFoundException{
         Optional<User> userEntity = userRepository.findByEmail(username);

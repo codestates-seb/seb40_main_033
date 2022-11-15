@@ -5,15 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import server.team33.logout.Logout;
 import server.team33.user.dto.UserSignUpDto;
 import server.team33.user.entity.User;
 import server.team33.user.mapper.UserMapper;
 import server.team33.user.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -22,6 +21,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @Validated
 public class UserController {
+    private final Logout logout;
    private final UserMapper mapper;
    private final UserService userService;
 
@@ -31,6 +31,12 @@ public class UserController {
         userService.joinUser(user);
 
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity handleLogout( HttpServletRequest request ){
+       logout.doLogout(request);
+       return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
 }

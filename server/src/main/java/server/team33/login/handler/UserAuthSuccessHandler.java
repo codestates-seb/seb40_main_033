@@ -14,7 +14,6 @@ import server.team33.login.details.PrincipalDetails;
 import server.team33.login.jwt.JwtToken;
 import server.team33.user.entity.User;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,9 +32,11 @@ import java.util.List;
 public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtToken jwtToken;
 
-
     @Override
     public void onAuthenticationSuccess( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException, ServletException{
+
+   
+
         log.info("로그인 성공 후 리다이렉트");
         PrincipalDetails principalDetails = getPrincipalDetails(authentication);
         if(principalDetails.getUser().getDiplayName() == null){
