@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.team33.cart.entity.Cart;
 import server.team33.user.entity.AuthUtils;
 import server.team33.user.entity.User;
 import server.team33.user.repository.UserRepository;
@@ -29,6 +30,7 @@ public class UserService {
         encodePassword(user);
         existPhoneNum(user.getPhoneNumber());
         createRole(user);
+        Cart.createCart(user);
         userRepository.save(user);
         return user;
     }
