@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import server.team33.user.logout.Logout;
+import server.team33.logout.Logout;
 import server.team33.user.dto.UserSignUpDto;
 import server.team33.user.entity.User;
 import server.team33.user.mapper.UserMapper;
@@ -41,6 +41,11 @@ public class UserController {
        return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @GetMapping("/test")
+//    public User home(){
+//        return userService.getLoginUser() ;
+//   }
 
 
 }

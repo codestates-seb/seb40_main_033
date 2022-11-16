@@ -1,6 +1,7 @@
 package server.team33.exception.controller;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.DataException;
 import org.springframework.http.HttpStatus;
@@ -76,6 +77,14 @@ public class ExceptionController {
         ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> expiredJwtException(
+            ExpiredJwtException e ){
+
+        ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_IMPLEMENTED, e.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_IMPLEMENTED);
     }
 
 

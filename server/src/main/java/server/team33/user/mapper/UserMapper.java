@@ -16,7 +16,7 @@ public interface UserMapper {
   user.password( userSignUpDto.getPassword() );
   user.address( userSignUpDto.getAddress() );
   user.realName( userSignUpDto.getRealName() );
-  user.phoneNumber( userSignUpDto.getPhoneNumber() );
+  user.phone( userSignUpDto.getPhone() );
   user.oauthId(DEFAULT_OAUTH2_ID);
   user.userStatus(UserStatus.USER_ACTIVE);
   user.provider(DEFAULT_OAUTH2_ID);

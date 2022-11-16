@@ -30,7 +30,7 @@ public class UserService {
         existEmail(user.getEmail());
         existDisplayName(user.getDisplayName());
         encodePassword(user);
-        existPhoneNum(user.getPhoneNumber());
+        existPhoneNum(user.getPhone());
         createRole(user);
         Cart.createCart(user);
         userRepository.save(user);
@@ -44,7 +44,7 @@ public class UserService {
     }
 
     private void existPhoneNum(String PhoneNum){
-        Optional<User> user  = userRepository.findByPhoneNumber(PhoneNum);
+        Optional<User> user  = userRepository.findByPhone(PhoneNum);
         if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_PHONE_NUMBER);
 
     }
@@ -68,10 +68,16 @@ public class UserService {
 
     public User getLoginUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String phoneNum = authentication.getName();
-        Optional<User> user = userRepository.findByPhoneNumber(phoneNum);
+        String name = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(name);
         return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
+    public Long getUserId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(name);
+       return user.get().getUserId();
+    }
 
 }

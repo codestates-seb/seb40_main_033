@@ -19,7 +19,6 @@ import java.util.List;
 public class User extends Auditable implements Principal {
 
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -27,7 +26,7 @@ public class User extends Auditable implements Principal {
     @Column(updatable = false)
     private String email;
 
-    @Column(name = "DISPALY_NAME",length = 20)
+    @Column(name = "DISPALY_NAME", length = 20)
     private String displayName;
 
     @Column()
@@ -39,8 +38,8 @@ public class User extends Auditable implements Principal {
     @Column(name = "real_name")
     private String realName;
 
-    @Column(name = "phone_number", unique = true)
-    private String phoneNumber;
+    @Column(unique = true)
+    private String phone;
 
     @Column(name = "oauth_id")
     private String oauthId;
@@ -58,17 +57,22 @@ public class User extends Auditable implements Principal {
 
     @Override
     public String getName(){
-        return getPhoneNumber();
+        return getEmail();
     }
 
-    //    private List<Wish> wishList;
-//    private List<Order> orders;
-//    private List<Review> reviews;
-//    private List<Talk> talks;
-//    private List<TalkComment> talkComments;
-//    private Cart cart;
-    //추가될게 있을 듯...
+    //        private List<Wish> wishList;
+    //    private List<Order> orders;
+//    @OneToMany(mappedBy = "user")
+//    private List<Review> reviews = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Talk> talks = new ArrayList<>();
+//
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<TalkComment> talkComments = new ArrayList<>();
 
-    }
+
+}
 
 

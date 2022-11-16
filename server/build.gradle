@@ -42,8 +42,10 @@ dependencies {
 	//oauth2 설정
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-
+	implementation 'com.google.code.gson:gson:2.10'
 }
+
+
 
 tasks.named('test') {
 	useJUnitPlatform()
