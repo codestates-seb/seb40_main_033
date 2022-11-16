@@ -51,12 +51,6 @@ const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
-  body {
-    font-family: 'NanumSquare', "Noto Sans KR", sans-serif;
-    font-size: 13px;
-    letter-spacing: -0.02em;
-    color: #414141;
-  }
   a {
     text-decoration: none;
     color: inherit;
@@ -66,6 +60,10 @@ const GlobalStyle = createGlobalStyle`
   }
   * {
     box-sizing: border-box;
+    font-family: 'NanumSquare', "Noto Sans KR", sans-serif;
+    font-size: 13px;
+    letter-spacing: -0.02em;
+    color: #414141;
   }
 `;
 
