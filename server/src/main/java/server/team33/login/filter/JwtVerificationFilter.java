@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import server.team33.login.jwt.JwtToken;
-import server.team33.login.jwt.SecretKey;
 import server.team33.redis.RedisConfig;
 
 import javax.servlet.FilterChain;
@@ -34,10 +33,8 @@ jwt 검증 필터
 @Component
 public class JwtVerificationFilter extends OncePerRequestFilter {
 
-    private final SecretKey secretKey;
     private final RedisConfig redis;
     private final JwtToken jwtToken;
-
 
     //클레임을 추출해서 Auth~에 저장하는 메서드
     @Override

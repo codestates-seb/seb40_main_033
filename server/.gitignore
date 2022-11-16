@@ -48,6 +48,7 @@ Temporary Items
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+*./idea
 
 # AWS User-specific
 .idea/**/aws.xml
@@ -198,7 +199,7 @@ replay_pid*
 .classpath
 .factorypath
 .gradle
-.idea
+idea
 .metadata
 .project
 .recommenders

@@ -3,6 +3,7 @@ package server.team33.login.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,7 +20,7 @@ import server.team33.redis.RedisConfig;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity(debug = true)//배포시 제거
-
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
     @Bean
@@ -44,7 +45,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(new UserAccessDeniedHandler())
                 .authenticationEntryPoint(new UserAuthenticationEntryPoint())
                 .and()
-                .apply(new CustomFilterConfigurer(jwtToken, secretKey, redisConfig))
+                .apply(new CustomFilterConfigurer(jwtToken, redisConfig))
                 .and()
                 .oauth2Login(oauth2 -> oauth2.successHandler(new UserAuthSuccessHandler(jwtToken)));
 //                .authorizeHttpRequests(authorize -> authorize.antMatchers(HttpMethod.POST, "/users").permitAll()

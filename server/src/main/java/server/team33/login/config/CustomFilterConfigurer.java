@@ -11,17 +11,13 @@ import server.team33.login.filter.JwtVerificationFilter;
 import server.team33.login.handler.UserAuthFailureHandler;
 import server.team33.login.handler.UserAuthSuccessHandler;
 import server.team33.login.jwt.JwtToken;
-import server.team33.login.jwt.SecretKey;
 import server.team33.redis.RedisConfig;
 
 @Component
 @RequiredArgsConstructor
 public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
     private final JwtToken jwtToken;
-    private final SecretKey secretKey;
     private final RedisConfig redisConfig;
-
-
 
     @Override
     public void configure( HttpSecurity builder ) throws Exception{
@@ -32,7 +28,7 @@ public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterC
         jwtLoginFilter.setAuthenticationFailureHandler(new UserAuthFailureHandler());//로그인 실패시 핸들러 설정
         jwtLoginFilter.setAuthenticationSuccessHandler(new UserAuthSuccessHandler(jwtToken));//로그인 성공시 핸들러 설정
 
-        JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(secretKey, redisConfig, jwtToken); //jwt인증 필터 설정
+        JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(redisConfig, jwtToken); //jwt인증 필터 설정
 
         builder.addFilter(jwtLoginFilter) //로그인 필터 추가
                 .addFilterAfter(jwtVerificationFilter, JwtLoginFilter.class);//로그인 필터가 실행된 바로 다음 jwt인증 필터 실행
