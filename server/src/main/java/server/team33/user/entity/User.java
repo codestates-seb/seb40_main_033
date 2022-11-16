@@ -4,6 +4,7 @@ import lombok.*;
 import server.team33.audit.Auditable;
 
 import javax.persistence.*;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,39 +14,40 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class User extends Auditable {
+@AllArgsConstructor
+public class User extends Auditable implements Principal {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private String email;
 
-    @Column(length = 20, unique = true)
-    private String diplayName;
+    @Column(name = "DISPALY_NAME",length = 20)
+    private String displayName;
 
-    @Column(nullable = false)
+    @Column()
     private String password;
 
-    @Column
+    @Column()
     private String address;
 
-    @Column
+    @Column(name = "real_name")
     private String realName;
 
-    @Column(unique = true)
+    @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
-    @Column
+    @Column(name = "oauth_id")
     private String oauthId;
 
-    @Column
     private String provider;
 
-    @Column
+    @Column(name = "provider_id")
     private String providerId;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -54,6 +56,11 @@ public class User extends Auditable {
     @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus = UserStatus.USER_ACTIVE;
 
+    @Override
+    public String getName(){
+        return getPhoneNumber();
+    }
+
     //    private List<Wish> wishList;
 //    private List<Order> orders;
 //    private List<Review> reviews;
@@ -61,8 +68,6 @@ public class User extends Auditable {
 //    private List<TalkComment> talkComments;
 //    private Cart cart;
     //추가될게 있을 듯...
-
-
 
     }
 

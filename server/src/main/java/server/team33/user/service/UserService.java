@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.team33.cart.entity.Cart;
+import server.team33.exception.bussiness.BusinessLogicException;
+import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.user.entity.AuthUtils;
 import server.team33.user.entity.User;
 import server.team33.user.repository.UserRepository;
@@ -26,7 +28,7 @@ public class UserService {
 
     public User joinUser( User user ){
         existEmail(user.getEmail());
-        existDisplayName(user.getDiplayName());
+        existDisplayName(user.getDisplayName());
         encodePassword(user);
         existPhoneNum(user.getPhoneNumber());
         createRole(user);
@@ -35,38 +37,40 @@ public class UserService {
         return user;
     }
 
-    private void createRole( User user ){
+    private User createRole( User user ){
         List<String> roles = authUtils.createRoles();
         user.setRoles(roles);
+        return user;
     }
 
     private void existPhoneNum(String PhoneNum){
         Optional<User> user  = userRepository.findByPhoneNumber(PhoneNum);
-        if(user.isPresent()) throw new RuntimeException();
+        if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_PHONE_NUMBER);
 
     }
 
-    private void encodePassword( User user ){
+    private User encodePassword( User user ){
         String encodedPwd = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPwd);
+        return user;
     }
 
-    private void existDisplayName( String diplayName ){
-        Optional<User> user = userRepository.findByDiplayName(diplayName);
-        if(user.isPresent()) throw new RuntimeException();//TODO : 예외처리 해야ㄴ
+    private void existDisplayName( String displayName ){
+        Optional<User> user = userRepository.findByDisplayName(displayName);
+        if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_DISPLAY_NAME);
     }
 
     private void existEmail( String email ){
         Optional<User> user = userRepository.findByEmail(email);
-        if(user.isPresent()) throw new RuntimeException();
+        if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_EMAIL);
 
     }
 
     public User getLoginUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String name = authentication.getName();
-        Optional<User> user = userRepository.findByEmail(name);
-        return user.orElseThrow(() -> new RuntimeException("없어요"));
+        String phoneNum = authentication.getName();
+        Optional<User> user = userRepository.findByPhoneNumber(phoneNum);
+        return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
 

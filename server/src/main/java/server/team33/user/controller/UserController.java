@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import server.team33.logout.Logout;
+import server.team33.user.logout.Logout;
 import server.team33.user.dto.UserSignUpDto;
 import server.team33.user.entity.User;
 import server.team33.user.mapper.UserMapper;
@@ -28,6 +28,8 @@ public class UserController {
    @PostMapping
     public ResponseEntity singUpUser( @Valid @RequestBody UserSignUpDto userSignUpDto ){
         User user = mapper.userSignUpDtoToUser(userSignUpDto);
+        log.error("user = {}", user.getUserStatus());
+        log.error("user = {}", user.getEmail());
         userService.joinUser(user);
 
         return new ResponseEntity(HttpStatus.CREATED);

@@ -2,6 +2,7 @@ package server.team33.item.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import server.team33.audit.Auditable;
 import server.team33.nutritionFact.entity.NutritionFact;
 import server.team33.review.entity.Review;
 import server.team33.talk.entity.Talk;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Item {
+public class Item extends Auditable {
 
     @Id
     @Column(name = "ITEM_ID")
