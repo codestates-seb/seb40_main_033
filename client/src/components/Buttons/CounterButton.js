@@ -34,6 +34,9 @@ function CounterBtn() {
 		border-top: 0.5px solid var(--gray-200);
 		border-bottom: 0.5px solid var(--gray-200);
 		cursor: pointer;
+		${() => css`
+			-webkit-user-select: none;
+		`}
 	`;
 	const PlusBtn = styled.button`
 		background-color: #ffffff;
