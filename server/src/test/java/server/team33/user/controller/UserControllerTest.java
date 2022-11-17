@@ -88,11 +88,11 @@ class UserControllerTest {
     @Test
     void 추가_정보_저장() throws Exception{
         //given
-        UserDto.Post newDto = UserDto.Post.builder().address("서울시 동대문구 압구정동").displayName("김삿갓").realName("김김감").phone("101020302323").build();
+        UserDto.PostMoreInfo newDto = UserDto.PostMoreInfo.builder().userId(1L).address("서울시 동대문구 압구정동").displayName("김삿갓").realName("김김감").phone("101020302323").build();
         //when
         String s = gson.toJson(newDto);
         //then
-        mockMvc.perform(post("/users/more-info").header("Authorization",authorization).contentType(MediaType.APPLICATION_JSON).content(s))
+        mockMvc.perform(post("/users/more-info").contentType(MediaType.APPLICATION_JSON).content(s))
                 .andExpect(status().is2xxSuccessful())
                 .andDo(print());
 

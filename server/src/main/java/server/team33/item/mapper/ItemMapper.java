@@ -24,6 +24,7 @@ public interface ItemMapper {
     }
 
     default Item itemPostDtoToItem(ItemDto.post post) {
+        System.out.println("==================="+post);
         Item item = new Item();
 
         item.setThumbnail(post.getThumbnail());

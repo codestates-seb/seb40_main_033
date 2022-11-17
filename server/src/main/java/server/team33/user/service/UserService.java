@@ -71,7 +71,7 @@ public class UserService {
         if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_DISPLAY_NAME);
     }
 
-    private void existEmail( String email ){
+    public void existEmail( String email ){
         Optional<User> user = userRepository.findByEmail(email);
         if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_EMAIL);
 
@@ -84,6 +84,7 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(name);
         return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
+
 
     public Long getUserId(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -109,14 +110,20 @@ public class UserService {
     }
 
     public User updateOAuthInfo( UserDto.PostMoreInfo userDto ){
-        User loginUser = getLoginUser();
-        loginUser.setUserStatus(UserStatus.USER_ACTIVE);
-        loginUser.setAddress(userDto.getAddress());
-        loginUser.setRealName(userDto.getRealName());
-        loginUser.setPhone(userDto.getPhone());
-        loginUser.setDisplayName(userDto.getDisplayName());
-        loginUser.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
-        return loginUser;
+        Optional<User> loginUser = userRepository.findById(userDto.getUserId());
+        if(loginUser.isPresent()){
+            existPhoneNum(userDto.getPhone());
+            existDisplayName(userDto.getDisplayName());
+
+            loginUser.get().setUserStatus(UserStatus.USER_ACTIVE);
+            loginUser.get().setAddress(userDto.getAddress());
+            loginUser.get().setRealName(userDto.getRealName());
+            loginUser.get().setPhone(userDto.getPhone());
+            loginUser.get().setDisplayName(userDto.getDisplayName());
+            loginUser.get().setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
+            return loginUser.get();
+        }
+        throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
     }
 
     public void giveToken( User user , HttpServletResponse response ) throws IOException{

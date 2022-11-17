@@ -62,7 +62,6 @@ public class Oauth2UserService extends DefaultOAuth2UserService {
 
     private Map<String, String> oauthToJoin( OAuth2UserInfo oAuth2UserInfo ){
         Map<String, String> userInfo = new HashMap<>();
-        log.info("멤버 강제 회원가입");
 
         userInfo.put("provider", oAuth2UserInfo.getProvider());
         log.info("prvoider : {}", userInfo.get("provider"));
@@ -91,12 +90,10 @@ public class Oauth2UserService extends DefaultOAuth2UserService {
 
             return new PrincipalDetails(newEntity, oauth2User.getAttributes());
         }
-
         if(userEntity.get().getUserStatus() == UserStatus.USER_WITHDRAWAL)
             throw new InternalAuthenticationServiceException("탈퇴한 회원입니다.");
 
         return new PrincipalDetails(userEntity.get(), oauth2User.getAttributes());
-
     }
 
 

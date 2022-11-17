@@ -16,14 +16,14 @@ import server.team33.response.SingleResponseDto;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
-
-    private ItemService itemService;
-    private ItemMapper mapper;
-
+    private final ItemService itemService;
+    private final ItemMapper mapper;
 
     @PostMapping
-    public ResponseEntity postItem(ItemDto.post post) { // 아이템 등록을 위한 컨트롤러
-        Item result = itemService.createItem(mapper.itemPostDtoToItem(post));
+    public ResponseEntity postItem(@RequestBody ItemDto.post post) { // 아이템 등록을 위한 컨트롤러
+        Item item = mapper.itemPostDtoToItem(post);
+        log.info("item = {}",item);
+        Item result = itemService.createItem(item);
         return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemResponseDto(result)), HttpStatus.OK);
     }
 
