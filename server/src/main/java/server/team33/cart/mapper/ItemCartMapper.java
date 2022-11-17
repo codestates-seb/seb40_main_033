@@ -8,6 +8,9 @@ import server.team33.item.service.ItemService;
 import server.team33.user.entity.User;
 import server.team33.user.service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ItemCartMapper {
 
@@ -20,9 +23,10 @@ public interface ItemCartMapper {
                 .period(itemCartPostDto.getPeriod())
                 .buyNow(itemCartPostDto.isBuyNow())
                 .subscription(itemCartPostDto.isSubscription())
+//                .cart(user.getCart())
                 .item(itemService.findItem(itemId))
                 .build();
-        // TODO : 카트 정보 추가, 주문 정보 추가
+        // TODO : 유저 정보 추가
     }
 
     default ItemCartDto.Response itemCartToItemCartResponseDto(ItemMapper itemMapper, ItemCart itemCart) {
@@ -33,7 +37,21 @@ public interface ItemCartMapper {
                 .buyNow(itemCart.isBuyNow())
                 .subscription(itemCart.isSubscription())
 //                .item(itemMapper.itemToItemResponseDto(itemCart.getItem()))
+                .createdAt(itemCart.getCreatedAt())
+                .updatedAt(itemCart.getUpdatedAt())
                 .build();
-        // TODO : 생성 시간, 업데이트 시간 추가
+        // TODO : 간소화된 itemResponseDto 적용 필요
+    }
+
+    default List<ItemCartDto.Response> itemCartsToItemCartResponseDtos(ItemMapper itemMapper, List<ItemCart> itemCarts) {
+        if(itemCarts == null) return null;
+
+        List<ItemCartDto.Response> itemCartResponseDtos = new ArrayList<>(itemCarts.size());
+
+        for(ItemCart itemCart : itemCarts) {
+            itemCartResponseDtos.add(itemCartToItemCartResponseDto(itemMapper, itemCart));
+        }
+
+        return itemCartResponseDtos;
     }
 }
