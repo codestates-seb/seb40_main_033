@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import server.team33.login.dto.LoginDto;
-import server.team33.user.dto.UserSignUpDto;
+import server.team33.user.dto.UserDto;
 import server.team33.user.entity.User;
 import server.team33.user.mapper.UserMapper;
 import server.team33.user.repository.UserRepository;
@@ -37,8 +37,8 @@ class UserServiceTest {
     @BeforeEach
     void init(){
         userRepository.deleteAll();
-        UserSignUpDto userSignUpDto = UserSignUpDto.builder().email("test1@gmail.com").password("12344").address("집주소입니다.").displayName("닉네임").realName("최민석").phone("010-3434-3434").build();
-        user = mapper.userSignUpDtoToUser(userSignUpDto);
+        UserDto.Post userDto = UserDto.Post.builder().email("test1@gmail.com").password("12344").address("집주소입니다.").displayName("닉네임").realName("최민석").phone("010-3434-3434").build();
+        user = mapper.dtoToUser(userDto);
     }
 
     @Test
@@ -55,8 +55,8 @@ class UserServiceTest {
         //given
         userService.joinUser(user);
         //when
-        UserSignUpDto userSignUpDto = UserSignUpDto.builder().email("test1@gmail.com").password("12344").address("집주소입니다.").displayName("닉네임").realName("최민석").phone("010-3434-3434").build();
-        User user1 = mapper.userSignUpDtoToUser(userSignUpDto);
+        UserDto.Post userDto = UserDto.Post.builder().email("test1@gmail.com").password("12344").address("집주소입니다.").displayName("닉네임").realName("최민석").phone("010-3434-3434").build();
+        User user1 = mapper.dtoToUser(userDto);
         //then
         assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> userService.joinUser(user1));
 
@@ -67,9 +67,9 @@ class UserServiceTest {
         //given
         userService.joinUser(user);
         //when
-        UserSignUpDto userSignUpDto = UserSignUpDto.builder().email("test2@gmail.com").password("12344").address("집주소입니다.").displayName("닉네임").realName("최민석").phone("010-3434-3434").build();
-        user = mapper.userSignUpDtoToUser(userSignUpDto);
-        User user1 = mapper.userSignUpDtoToUser(userSignUpDto);
+        UserDto.Post userDto = UserDto.Post.builder().email("test2@gmail.com").password("12344").address("집주소입니다.").displayName("닉네임").realName("최민석").phone("010-3434-3434").build();
+        user = mapper.dtoToUser(userDto);
+        User user1 = mapper.dtoToUser(userDto);
         //then
         assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> userService.joinUser(user1));
     }
@@ -79,9 +79,8 @@ class UserServiceTest {
         //given
         userService.joinUser(user);
         //when
-        UserSignUpDto userSignUpDto = UserSignUpDto.builder().email("test2@gmail.com").password("12344").address("집주소입니다.").displayName("닉네임2").realName("최민석").phone("010-3434-3434").build();
-        user = mapper.userSignUpDtoToUser(userSignUpDto);
-        User user1 = mapper.userSignUpDtoToUser(userSignUpDto);
+        UserDto.Post userDto = UserDto.Post.builder().email("test2@gmail.com").password("12344").address("집주소입니다.").displayName("닉네임2").realName("최민석").phone("010-3434-3434").build();
+        user = mapper.dtoToUser(userDto);
         //when
         assertThatExceptionOfType(RuntimeException.class).isThrownBy(() -> userService.joinUser(user));
     }
@@ -98,8 +97,8 @@ class UserServiceTest {
     @Test
     void 로그인_유저_추출() throws Exception{
         //given"
-        UserSignUpDto userDto = UserSignUpDto.builder().address("sdfsdfsdfsdfsdfsd").displayName("test").realName("sdf").email("tkfkd@ddmfi.com").password("sdfsdfsdf").phone("2393949494").build();
-        User user1 = mapper.userSignUpDtoToUser(userDto);
+        UserDto.Post userDto = UserDto.Post.builder().address("sdfsdfsdfsdfsdfsd").displayName("test").realName("sdf").email("tkfkd@ddmfi.com").password("sdfsdfsdf").phone("2393949494").build();
+        User user1 = mapper.dtoToUser(userDto);
          userService.joinUser(user1);
         LoginDto dto = LoginDto.builder().username("tkfkd@ddmfi.com").password("sdfsdfsdf").build();
 

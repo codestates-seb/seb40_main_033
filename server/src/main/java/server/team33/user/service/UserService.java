@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import server.team33.cart.entity.Cart;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
+import server.team33.user.dto.UserDto;
 import server.team33.user.entity.AuthUtils;
 import server.team33.user.entity.User;
 import server.team33.user.repository.UserRepository;
@@ -80,4 +81,13 @@ public class UserService {
        return user.get().getUserId();
     }
 
+    public User updateUser( UserDto.Post userDto ){
+        User loginUser = getLoginUser();
+        encodePassword(loginUser);
+        loginUser.setAddress(userDto.getAddress());
+        loginUser.setPhone(userDto.getPhone());
+        loginUser.setRealName(userDto.getRealName());
+        loginUser.setDisplayName(userDto.getDisplayName());
+        return loginUser;
+    }
 }
