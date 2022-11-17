@@ -16,6 +16,8 @@ import server.team33.user.entity.User;
 import server.team33.user.entity.UserStatus;
 import server.team33.user.repository.UserRepository;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,8 +48,8 @@ public class UserService {
         return user;
     }
 
-    private void existPhoneNum(String PhoneNum){
-        Optional<User> user  = userRepository.findByPhone(PhoneNum);
+    private void existPhoneNum( String PhoneNum ){
+        Optional<User> user = userRepository.findByPhone(PhoneNum);
         if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_PHONE_NUMBER);
 
     }
@@ -72,7 +74,7 @@ public class UserService {
     public User getLoginUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String name = authentication.getName();
-        log.info("회원 이메일 = {}",name);
+        log.info("회원 이메일 = {}", name);
         Optional<User> user = userRepository.findByEmail(name);
         return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
@@ -81,13 +83,14 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String name = authentication.getName();
         Optional<User> user = userRepository.findByEmail(name);
-       return user.get().getUserId();
+        return user.get().getUserId();
     }
-   public User deleteUser(){
-       User loginUser = getLoginUser();
-       loginUser.setUserStatus(UserStatus.USER_WITHDRAWAL);
-       return loginUser;
-   }
+
+    public User deleteUser(){
+        User loginUser = getLoginUser();
+        loginUser.setUserStatus(UserStatus.USER_WITHDRAWAL);
+        return loginUser;
+    }
 
     public User updateUser( UserDto.Post userDto ){
         User loginUser = getLoginUser();
@@ -96,6 +99,17 @@ public class UserService {
         loginUser.setPhone(userDto.getPhone());
         loginUser.setRealName(userDto.getRealName());
         loginUser.setDisplayName(userDto.getDisplayName());
+        return loginUser;
+    }
+
+    public User updateOAuthInfo( UserDto.PostMoreInfo userDto ){
+        User loginUser = getLoginUser();
+        loginUser.setUserStatus(UserStatus.USER_ACTIVE);
+        loginUser.setAddress(userDto.getAddress());
+        loginUser.setRealName(userDto.getRealName());
+        loginUser.setPhone(userDto.getPhone());
+        loginUser.setDisplayName(userDto.getDisplayName());
+        loginUser.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
         return loginUser;
     }
 }

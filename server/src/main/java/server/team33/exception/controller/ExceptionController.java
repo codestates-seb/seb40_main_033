@@ -53,7 +53,6 @@ public class ExceptionController {
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> httpMessageNotReadableException(
             HttpMessageNotReadableException e ){

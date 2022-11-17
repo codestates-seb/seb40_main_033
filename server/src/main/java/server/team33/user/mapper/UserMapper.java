@@ -42,5 +42,4 @@ public interface UserMapper {
                 .password(method == HttpMethod.GET ? null : "비밀번호가 변경되었습니다!")
                 .build();
     }
-
 }

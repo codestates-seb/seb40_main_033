@@ -1,15 +1,14 @@
 spring:
+  redis:
+    lettuce:
+        pool:
+          max-active: 5 #pool에 할당될 수 잇는 커넥션 최대수(음수로 하면 무제한)
+          max-idle: 5 #pool의 idle 커넥션 최대수(음수는 무제한)
+          max-wait: 2 #풀에서 관리하는 idle 커넥션의 최소 수 대상
 
-
-  h2:
-    console:
-      enabled: true
-      path: /h2
-  datasource:
-    url: jdbc:h2:mem:test
-
-
-
+    port: 6379
+    host: 127.0.0.1
+    password: 1234
 
   security:
     oauth2:
@@ -19,25 +18,21 @@ spring:
             client-id: 606086322984-lusr30r8j649fjrc12ta8sagdq6nh57s.apps.googleusercontent.com
             client-secret: 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
             scope:
-              - email
-              - profile
-
+            - email
+            - profile
 
           facebook:
             client-id: 598520238711243
             client-secret: 9f52f2bdc9e485b020ec74ad4be88fcc
             scope:
-              - email
-              - public_profile
-
-
-
+            - email
+            - public_profile
           naver:
             client-id: uJ7xpddhryY4LtsapKyF
             client-secret: MFc461oU9y
             scope:
-              - name
-              - email
+            - name
+            - email
             client-name: Naver
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/naver
@@ -47,8 +42,8 @@ spring:
             client-secret: SMvvzV3I7vhxkPnlTybcS50D1YMyfnav
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             scope: #이거 때문에
-              - profile_nickname
-              - account_email
+            - profile_nickname
+            - account_email
 
             client-name: Kakao
             authorization-grant-type: authorization_code
@@ -65,46 +60,40 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id # 회원정보를 json으로 받는데 response라는 키값으로 네이버가 리턴해줌,.
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:test
 
-
-
-
-
-  redis:
-    lettuce:
-      pool:
-        max-active: 5 #pool에 할당될 수 잇는 커넥션 최대수(음수로 하면 무제한)
-        max-idle: 5 #pool의 idle 커넥션 최대수(음수는 무제한)
-        max-wait: 2 #풀에서 관리하는 idle 커넥션의 최소 수 대상
-    host: 127.0.0.1
-    port: 6379
-    password: 1234
-
-jpa:
-  hibernate:
-    ddl-auto: create
-  show-sql: true # SQL 출력
-  properties:
+  jpa:
     hibernate:
-      format_sql: true # SQL pretty print
-sql:
-    init:
-      data-locations:
-        classpath*: db/h2/data.sql
+      ddl-auto: create
+    show-sql: true # SQL 출력
+    properties:
+      hibernate:
+        format_sql: true # SQL pretty print
+
 logging:
   level:
     org:
       springframework:
         orm:
-          jpa: DEBUG  # jpa DEBUG
+          jpa: DEBUG
 
 server:
   servlet:
     encoding:
-      force-response: true  # UTF-8
+      force-response: true
 
 jwt:
-  secret-key: sdfsdfsdfesdfdf11113456645454534545451
+  secret-key : sdfsdfsdfesdfdf11113456645454534545451
   # 민감한 정보는 시스템 환경 변수에서 로드한다.
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
+
+
+
+
+

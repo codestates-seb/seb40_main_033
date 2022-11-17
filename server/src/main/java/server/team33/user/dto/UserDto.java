@@ -26,6 +26,21 @@ public class UserDto {
         @NotBlank
         private String phone;
     }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class PostMoreInfo {
+
+        @NotBlank
+        private String displayName;
+        @NotBlank
+        private String address;
+        @NotBlank
+        private String realName;
+        @NotBlank
+        private String phone;
+    }
     @Getter
     @Builder
     public static class Get {
@@ -56,6 +71,7 @@ public class UserDto {
         private String phone;
 
         private String password;
+
         private ZonedDateTime updatedAt;
     }
 }

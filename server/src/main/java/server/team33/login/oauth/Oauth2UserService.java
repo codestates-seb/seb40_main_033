@@ -3,6 +3,7 @@ package server.team33.login.oauth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -14,6 +15,7 @@ import server.team33.login.details.PrincipalDetails;
 import server.team33.login.oauth.provider.*;
 import server.team33.user.entity.AuthUtils;
 import server.team33.user.entity.User;
+import server.team33.user.entity.UserStatus;
 import server.team33.user.repository.UserRepository;
 
 import java.util.HashMap;
@@ -33,14 +35,13 @@ public class Oauth2UserService extends DefaultOAuth2UserService {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-
     //구글에서 받은 userrequest 데이터에 대한 후처리되는 함수
     @Override
     public OAuth2User loadUser( OAuth2UserRequest userRequest ) throws OAuth2AuthenticationException{
         OAuth2User oauth2User = super.loadUser(userRequest);
         OAuth2UserInfo oauth2UserInfo = getOAuth2UserInfo(userRequest, oauth2User);
-
-        return getPrincipaDetails(oauthToJoin(oauth2UserInfo), oauth2User);
+        Map<String, String> userInfo = oauthToJoin(oauth2UserInfo);
+        return getPrincipaDetails(userInfo, oauth2User);
     }
 
     private OAuth2UserInfo getOAuth2UserInfo( OAuth2UserRequest userRequest, OAuth2User oauth2User ){
@@ -59,7 +60,7 @@ public class Oauth2UserService extends DefaultOAuth2UserService {
         return oAuth2UserInfo;
     }
 
-    private Map<String, String> oauthToJoin( OAuth2UserInfo oAuth2UserInfo){
+    private Map<String, String> oauthToJoin( OAuth2UserInfo oAuth2UserInfo ){
         Map<String, String> userInfo = new HashMap<>();
         log.info("멤버 강제 회원가입");
 
@@ -82,22 +83,21 @@ public class Oauth2UserService extends DefaultOAuth2UserService {
 
         Optional<User> userEntity = userRepository.findByOauthId(userInfo.get("oauthId"));
 
-        if(userEntity.isPresent()) return new PrincipalDetails(userEntity.get(), oauth2User.getAttributes());
+        if(userEntity.isEmpty()){
+            log.info("소셜 회원가입");
+            User newEntity = User.builder().oauthId(userInfo.get("oauthId")).provider(userInfo.get("provider")).providerId(userInfo.get("providerId")).email(userInfo.get("email")).password(encodePwd().encode("임의의 비밀번호")).roles(authUtils.createRoles()).build();
+            userRepository.save(newEntity);
+            log.info("회원저장완료");
 
-        log.info("소셜 회원가입");
-        User newEntity = User.builder()
-                .oauthId(userInfo.get("oauthId"))
-                .provider(userInfo.get("provider"))
-                .providerId(userInfo.get("providerId"))
-                .email(userInfo.get("email"))
-                .password(encodePwd().encode("임의의 비밀번호"))
-                .roles(authUtils.createRoles())
-                .build();
+            return new PrincipalDetails(newEntity, oauth2User.getAttributes());
+        }
 
-        userRepository.save(newEntity);
+        if(userEntity.get().getUserStatus() == UserStatus.USER_WITHDRAWAL)
+            throw new InternalAuthenticationServiceException("탈퇴한 회원입니다.");
 
-        log.info("회원저장완료");
+        return new PrincipalDetails(userEntity.get(), oauth2User.getAttributes());
 
-        return new PrincipalDetails(newEntity, oauth2User.getAttributes());
     }
+
+
 }

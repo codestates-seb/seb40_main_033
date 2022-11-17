@@ -47,58 +47,51 @@ class UserControllerTest {
         ResultActions perform = mockMvc.perform(post("/users/login").contentType(MediaType.APPLICATION_JSON).content(s));
         authorization = perform.andReturn().getResponse().getHeader("Authorization");
     }
-    @Test
-    void 회원정보_보내기() throws Exception {
 
-        mockMvc.perform(get("/users").header("Authorization", authorization))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.address").value("sdfsdfsdfsdfsdfsd"))
-                .andExpect(jsonPath("$.displayName").value("test"))
-                .andExpect(jsonPath("$.realName").value("sdf"))
-                .andExpect(jsonPath("$.email").value("tkfkd@ddmfi.com"))
-                .andExpect(jsonPath("$.phone").value("2393949494"))
-                .andDo(print());
+    @Test
+    void 회원정보_보내기() throws Exception{
+
+        mockMvc.perform(get("/users").header("Authorization", authorization)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.address").value("sdfsdfsdfsdfsdfsd")).andExpect(jsonPath("$.displayName").value("test")).andExpect(jsonPath("$.realName").value("sdf")).andExpect(jsonPath("$.email").value("tkfkd@ddmfi.com")).andExpect(jsonPath("$.phone").value("2393949494")).andDo(print());
     }
+
     @Test
     void 회원_정보_수정() throws Exception{
 
         UserDto.Post newDto = UserDto.Post.builder().address("서울시 동대문구 압구정동").displayName("김삿갓").realName("김김감").email("tkfkd@ddmfi.com").password("dlszheldektl").phone("101020302323").build();
         String s1 = gson.toJson(newDto);
         //then
-        mockMvc.perform(patch("/users").header("Authorization", authorization).contentType(MediaType.APPLICATION_JSON).content(s1))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.address").value("서울시 동대문구 압구정동"))
-                .andExpect(jsonPath("$.displayName").value("김삿갓"))
-                .andExpect(jsonPath("$.realName").value("김김감"))
-                .andExpect(jsonPath("$.phone").value("101020302323"))
-                .andDo(print());
+        mockMvc.perform(patch("/users").header("Authorization", authorization).contentType(MediaType.APPLICATION_JSON).content(s1)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.address").value("서울시 동대문구 압구정동")).andExpect(jsonPath("$.displayName").value("김삿갓")).andExpect(jsonPath("$.realName").value("김김감")).andExpect(jsonPath("$.phone").value("101020302323")).andDo(print());
     }
+
     @Test
-    void 회원_탈퇴() throws Exception {
+    void 회원_탈퇴() throws Exception{
         //then
-        mockMvc.perform(delete("/users").header("Authorization", authorization))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(content().string(UserStatus.USER_WITHDRAWAL.getStatus()))
-                .andDo(print());
+        mockMvc.perform(delete("/users").header("Authorization", authorization)).andExpect(status().is2xxSuccessful()).andExpect(content().string(UserStatus.USER_WITHDRAWAL.getStatus())).andDo(print());
     }
-    
+
     @Test
-    void 회원_탈퇴_후_로그인_불가() throws Exception {
+    void 회원_탈퇴_후_로그인_불가() throws Exception{
         //given
-        mockMvc.perform(delete("/users").header("Authorization", authorization))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(content().string(UserStatus.USER_WITHDRAWAL.getStatus()))
-                .andDo(print());
+        mockMvc.perform(delete("/users").header("Authorization", authorization)).andExpect(status().is2xxSuccessful()).andExpect(content().string(UserStatus.USER_WITHDRAWAL.getStatus())).andDo(print());
         //when
         LoginDto dto = LoginDto.builder().username("tkfkd@ddmfi.com").password("sdfsdfsdf").build();
         gson = new Gson();
         String s = gson.toJson(dto);
         //then
-         mockMvc.perform(post("/users/login").contentType(MediaType.APPLICATION_JSON).content(s))
+        mockMvc.perform(post("/users/login").contentType(MediaType.APPLICATION_JSON).content(s)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.status").value(HttpStatus.UNAUTHORIZED.value())).andExpect(jsonPath("$.message").value("Unauthorized")).andDo(print());
+    }
+
+    @Test
+    void 추가_정보_저장() throws Exception{
+        //given
+        UserDto.Post newDto = UserDto.Post.builder().address("서울시 동대문구 압구정동").displayName("김삿갓").realName("김김감").phone("101020302323").build();
+        //when
+        String s = gson.toJson(newDto);
+        //then
+        mockMvc.perform(post("/users/more-info").header("Authorization",authorization).contentType(MediaType.APPLICATION_JSON).content(s))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.status").value(HttpStatus.UNAUTHORIZED.value()))
-                .andExpect(jsonPath("$.message").value("Unauthorized"))
                 .andDo(print());
+
     }
 
 }
