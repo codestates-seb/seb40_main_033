@@ -38,6 +38,9 @@ public class Item extends Auditable {
     @Column(name = "ITEM_EXPIRATION")
     private String expiration;
 
+    @Column(name = "ITEM_")
+    private int discountPrice;
+
 
     @Column(name = "ITEM_PRICE")
     private int price;
