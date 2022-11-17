@@ -1,9 +1,6 @@
 package server.team33.cart.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import server.team33.audit.Auditable;
 import server.team33.user.entity.User;
 
@@ -16,17 +13,35 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cart extends Auditable {
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
 
-    @Column(nullable = false)
-    private Integer totalItems = 0;
+    @Column
+    @Setter
+    private Integer totalItems;
 
-    @Column(nullable = false)
-    private Integer totalPrice = 0;
+    @Column
+    @Setter
+    private Integer totalPrice;
+
+    @Column
+    @Setter
+    private Integer totalDiscountPrice;
+
+    @Column
+    @Setter
+    private Integer subTotalItems;
+
+    @Column
+    @Setter
+    private Integer subTotalPrice;
+
+    @Column
+    @Setter
+    private Integer subTotalDiscountPrice;
 
     @OneToOne
     private User user;

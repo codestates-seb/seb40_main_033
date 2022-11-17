@@ -6,13 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import server.team33.cart.entity.Cart;
 import server.team33.cart.entity.ItemCart;
 import server.team33.cart.repository.CartRepository;
-import server.team33.cart.repository.ItemCartRepository;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
-import server.team33.item.entity.Item;
-import server.team33.item.repository.ItemRepository;
-import server.team33.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,31 +18,20 @@ import java.util.Optional;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final ItemCartRepository itemCartRepository;
-    private final UserRepository userRepository;
-    private final ItemRepository itemRepository;
+    private final ItemCartService itemCartService;
 
-//    public Cart addItemCart(ItemCart itemCart) {
-//
-//        User user = getLoginUser();
-//        Cart cart = cartRepository.findByUser(user); // 회원이 카트를 소유하고 있는지 확인
-//
-//        if(cart == null) {
-//            cart = Cart.createCart(user);
-//            cartRepository.save(cart);
-//        }
-//
-//        Item item = itemRepository.findByItemId(itemCart.getItem().getItemId());
-//        ItemCart findItemCart = itemCartRepository.findByCartAndItem(cart, item); // 장바구니에 이미 있는 상품인지 확인
-//
-//        if(findItemCart == null) { // 장바구니에 없는 상품을 담는 경우
-//            findItemCart =
-//        }
-//    }
-
-    public void refreshCart(long cartId) {
+    public void refreshCart(long cartId, boolean subscription) { // 가격과 아이템 종류 갱신
         Cart cart = findVerifiedCart(cartId);
-        // TODO : itemCart 의 변화를 카트에 반영하는 메서드 로직 구현
+
+        if(subscription) {
+            cart.setSubTotalPrice(countTotalPrice(cartId, subscription));
+            cart.setSubTotalItems(countTotalItems(cartId, subscription));
+        } else {
+            cart.setTotalPrice(countTotalPrice(cartId, subscription));
+            cart.setTotalItems(countTotalItems(cartId, subscription));
+        }
+
+        cartRepository.save(cart);
     }
 
     public Cart findCart(long cartId) {
@@ -58,5 +44,46 @@ public class CartService {
         Cart findCart = optionalCart.orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
         return findCart;
+    }
+
+    public int countTotalDiscountPrice(long cartId, boolean subscription) {
+        Cart cart = findVerifiedCart(cartId);
+        List<ItemCart> itemCarts = itemCartService.findItemCarts(cart, subscription);
+
+        if(itemCarts == null) return 0;
+
+        int totalDiscountPrice = 0;
+
+        for(ItemCart itemCart : itemCarts) {
+            int quantity = itemCart.getItem().getPrice();
+            int price = itemCart.getQuantity();
+            int discountRate = itemCart.getItem().getDiscountRate();
+
+            totalDiscountPrice += (quantity * price * discountRate/100);
+        }
+
+        return totalDiscountPrice;
+    }
+
+    private int countTotalPrice(long cartId, boolean subscription) {
+        Cart cart = findVerifiedCart(cartId);
+        List<ItemCart> itemCarts = itemCartService.findItemCarts(cart, subscription);
+
+        if(itemCarts == null) return 0;
+
+        int totalPrice = 0;
+
+        for(ItemCart itemCart : itemCarts) {
+            int quantity = itemCart.getItem().getPrice();
+            int price = itemCart.getQuantity();
+            totalPrice += (quantity * price);
+        }
+
+        return totalPrice;
+    }
+
+    private int countTotalItems(long cartId, boolean subscription) {
+        Cart cart = findVerifiedCart(cartId);
+        return itemCartService.findItemCarts(cart, subscription).size();
     }
 }

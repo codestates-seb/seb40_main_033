@@ -22,4 +22,8 @@ public class MultiResponseDto<T> {
                 page.getTotalElements(),
                 page.getTotalPages());
     }
+
+    public MultiResponseDto(List<T> data) {
+        this.data = data;
+    }
 }
