@@ -13,6 +13,11 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
+
+    public Item createItem(Item item) {
+        return itemRepository.save(item);
+    }
+
     // 아이템 상세페이지 조회 비지니스 로직
     public Item findItem(long itemId) {
         Item item = findVerifiedItem(itemId);
