@@ -1,0 +1,37 @@
+import DefaultButton from './DefaultButton';
+
+export function LetterButton({ children, width, height, onClick }) {
+	return (
+		<DefaultButton
+			onClick={onClick}
+			color="purple"
+			colorCode="300"
+			width={width}
+			height={height}
+			letter
+			hoverColor="green"
+			hoverColorCode="100"
+			fontSize="13px"
+		>
+			{children}
+		</DefaultButton>
+	);
+}
+
+export function GrayLetterButton({ children, width, height, onClick }) {
+	return (
+		<DefaultButton
+			onClick={onClick}
+			color="gray"
+			colorCode="300"
+			width={width}
+			height={height}
+			hoverColor="gray"
+			hoverColorCode="400"
+			fontSize="11px"
+			letter
+		>
+			{children}
+		</DefaultButton>
+	);
+}
