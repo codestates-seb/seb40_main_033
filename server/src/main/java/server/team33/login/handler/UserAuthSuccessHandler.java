@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -34,10 +33,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtToken jwtToken;
-    public User getLoginUser(){
-        PrincipalDetails principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return principalDetails.getUser();
-    }
 
 
     @Override
@@ -49,7 +44,13 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         if(principalDetails.getUser().getDisplayName() == null){
             log.info("닉네임 없음");
             //TODO: 추가 정보 기입이 안되면 토큰 발급하지 않는다 디스플레이 네임이 없으면 바로 추가정보 기입 창으로 넘어간다.
+            String s = jwtToken.delegateAccessToken(principalDetails.getUser());
+            String accessToken = "Bearer "+ s;
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
+            ObjectMapper objectMapper = new ObjectMapper();
+            String value = objectMapper.writeValueAsString(accessToken);
+            response.getWriter().write(value);
             //            moreInfo(request, response, authentication);
             return;
         }
@@ -99,6 +100,8 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
 
     private PrincipalDetails getPrincipalDetails( Authentication authentication ){
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal(); //컨텍스트에 담긴 유저정보 추출
+        log.info("aaaa : {}", authentication);
+        log.info("detatld : {}",principalDetails);
         return principalDetails;
     }
 

@@ -6,19 +6,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import server.team33.login.dto.LoginDto;
 import server.team33.user.dto.UserDto;
 import server.team33.user.entity.User;
+import server.team33.user.entity.UserStatus;
 import server.team33.user.mapper.UserMapper;
 import server.team33.user.service.UserService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,6 +32,7 @@ class UserControllerTest {
     private MockMvc mockMvc;
     private Gson gson;
     private String authorization;
+
 
     @BeforeEach
     void init() throws Exception{
@@ -58,17 +60,44 @@ class UserControllerTest {
                 .andDo(print());
     }
     @Test
-    void 회원_이름_수정() throws Exception{
+    void 회원_정보_수정() throws Exception{
 
         UserDto.Post newDto = UserDto.Post.builder().address("서울시 동대문구 압구정동").displayName("김삿갓").realName("김김감").email("tkfkd@ddmfi.com").password("dlszheldektl").phone("101020302323").build();
         String s1 = gson.toJson(newDto);
         //then
-        mockMvc.perform(patch("/users").header("Authorization",authorization).contentType(MediaType.APPLICATION_JSON).content(s1))
+        mockMvc.perform(patch("/users").header("Authorization", authorization).contentType(MediaType.APPLICATION_JSON).content(s1))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.address").value("서울시 동대문구 압구정동"))
                 .andExpect(jsonPath("$.displayName").value("김삿갓"))
                 .andExpect(jsonPath("$.realName").value("김김감"))
                 .andExpect(jsonPath("$.phone").value("101020302323"))
+                .andDo(print());
+    }
+    @Test
+    void 회원_탈퇴() throws Exception {
+        //then
+        mockMvc.perform(delete("/users").header("Authorization", authorization))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(UserStatus.USER_WITHDRAWAL.getStatus()))
+                .andDo(print());
+    }
+    
+    @Test
+    void 회원_탈퇴_후_로그인_불가() throws Exception {
+        //given
+        mockMvc.perform(delete("/users").header("Authorization", authorization))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(UserStatus.USER_WITHDRAWAL.getStatus()))
+                .andDo(print());
+        //when
+        LoginDto dto = LoginDto.builder().username("tkfkd@ddmfi.com").password("sdfsdfsdf").build();
+        gson = new Gson();
+        String s = gson.toJson(dto);
+        //then
+         mockMvc.perform(post("/users/login").contentType(MediaType.APPLICATION_JSON).content(s))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.status").value(HttpStatus.UNAUTHORIZED.value()))
+                .andExpect(jsonPath("$.message").value("Unauthorized"))
                 .andDo(print());
     }
 

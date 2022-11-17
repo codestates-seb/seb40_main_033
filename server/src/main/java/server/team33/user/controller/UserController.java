@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import server.team33.logout.Logout;
@@ -36,32 +37,41 @@ public class UserController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping("/logout")
-    public ResponseEntity handleLogout( HttpServletRequest request ){
-        logout.doLogout(request);
-        return new ResponseEntity(HttpStatus.ACCEPTED);
-    }
 
     @PatchMapping
-    public ResponseEntity updateInfo( @Valid @RequestBody UserDto.Post userDto ){
+    public ResponseEntity updateInfo( @RequestBody UserDto.Post userDto ){
+        log.error("컨트롤러 진입");
         User user = userService.updateUser(userDto);
         UserDto.Response userInfo = mapper.userToDto(user, HttpMethod.PATCH);
         return new ResponseEntity(userInfo, HttpStatus.ACCEPTED);
     }
 
     @GetMapping
-    public ResponseEntity getUserInfo( HttpServletRequest request){
+    public ResponseEntity getUserInfo(){
         User loginUser = userService.getLoginUser();
-        UserDto.Response userInfo = mapper.userToDto(loginUser,HttpMethod.GET);
+        UserDto.Response userInfo = mapper.userToDto(loginUser, HttpMethod.GET);
         return new ResponseEntity<>(userInfo, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity handleLogout( HttpServletRequest request ){
+        logout.doLogout(request);
+        return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
 
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    //    @GetMapping("/test")
-    //    public User home(){
-    //        return userService.getLoginUser() ;
-    //   }
+    @DeleteMapping
+    public ResponseEntity deleteUser( HttpServletRequest request ){
+        User user = userService.deleteUser();
+        logout.doLogout(request);
+        return new ResponseEntity<>(user.getUserStatus().getStatus(), HttpStatus.ACCEPTED);
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/test")
+    public String home(){
+        return "sdf";
+    }
 
 
 }

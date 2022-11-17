@@ -13,6 +13,7 @@ import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.user.dto.UserDto;
 import server.team33.user.entity.AuthUtils;
 import server.team33.user.entity.User;
+import server.team33.user.entity.UserStatus;
 import server.team33.user.repository.UserRepository;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthUtils authUtils;
@@ -70,6 +72,7 @@ public class UserService {
     public User getLoginUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String name = authentication.getName();
+        log.info("회원 이메일 = {}",name);
         Optional<User> user = userRepository.findByEmail(name);
         return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
@@ -80,6 +83,11 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(name);
        return user.get().getUserId();
     }
+   public User deleteUser(){
+       User loginUser = getLoginUser();
+       loginUser.setUserStatus(UserStatus.USER_WITHDRAWAL);
+       return loginUser;
+   }
 
     public User updateUser( UserDto.Post userDto ){
         User loginUser = getLoginUser();

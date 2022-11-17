@@ -44,6 +44,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try{
             Map<String, Object> claims = jwtToken.verifyJws(request); //클레임 추출
             setAuthtoContext(claims);//Authentication에 저장
+            log.info("");
 
         } catch(InsufficientAuthenticationException e){
             log.error(InsufficientAuthenticationException.class.getSimpleName());
@@ -65,7 +66,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             log.error(Exception.class.getSimpleName());
 
         }
-
+        log.error("다음 메서드 진행");
         filterChain.doFilter(request, response); // 완료되면 다음 필터로 이동
     }
 
@@ -115,6 +116,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);//security~~에 저장
 
-        log.info("sch= {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        log.info("sch= {}", SecurityContextHolder.getContext().getAuthentication());
     }
 }

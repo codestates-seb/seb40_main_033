@@ -40,7 +40,7 @@ public class ExceptionController {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> businessLogicException( BusinessLogicException e ){
         ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
-
+        log.error("비지니스 예외 처리");
         return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getCode()));
     }
 
@@ -52,6 +52,7 @@ public class ExceptionController {
 
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
+
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> httpMessageNotReadableException(
@@ -70,6 +71,7 @@ public class ExceptionController {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> internalAuthenticationException(
             InternalAuthenticationServiceException e ){
@@ -78,6 +80,7 @@ public class ExceptionController {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> expiredJwtException(
             ExpiredJwtException e ){
