@@ -15,6 +15,7 @@ import server.team33.user.dto.UserDto;
 import server.team33.user.entity.User;
 import server.team33.user.entity.UserStatus;
 import server.team33.user.mapper.UserMapper;
+import server.team33.user.repository.UserRepository;
 import server.team33.user.service.UserService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -33,10 +34,13 @@ class UserControllerTest {
     private Gson gson;
     private String authorization;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     @BeforeEach
     void init() throws Exception{
-
+        userRepository.deleteAll();
         UserDto.Post userDto = UserDto.Post.builder().address("sdfsdfsdfsdfsdfsd").displayName("test").realName("sdf").email("tkfkd@ddmfi.com").password("sdfsdfsdf").phone("2393949494").build();
         User user1 = mapper.dtoToUser(userDto);
         userService.joinUser(user1);
