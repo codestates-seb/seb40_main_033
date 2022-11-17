@@ -4,6 +4,10 @@ import variables from './GlobalVariables';
 const GlobalStyle = createGlobalStyle`
   @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
 
+  /* @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css"); */
+
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -20,7 +24,8 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
+    /* font-size: 100%;
+    font: inherit; */
     vertical-align: baseline;
   }
   /* HTML5 display-role reset for older browsers */
@@ -56,10 +61,10 @@ const GlobalStyle = createGlobalStyle`
   }
   :root {
     ${variables}
-  }
+  }  
   * {
     box-sizing: border-box;
-    font-family: 'NanumSquare', "Noto Sans KR", sans-serif;
+    font-family:  'NanumSquare', 'Spoqa Han Sans Neo',"Pretendard Variable", Pretendard, "Noto Sans KR", sans-serif;
     font-size: 13px;
     letter-spacing: -0.02em;
     color: #414141;
