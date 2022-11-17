@@ -1,29 +1,19 @@
 import styled, { css } from 'styled-components';
 import { useState } from 'react';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
 function CounterBtn() {
 	const [num, setNum] = useState(1);
 
-	const DragPrevent = css`
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-		-khtml-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
-	`;
-
 	const BtnContainer = styled.div`
 		display: inline-flex;
 		background: #ffffff;
-		border: 0.5px solid var(--gray-200);
-		border-radius: 6px;
-		user-select: none; //
+		margin-left: 50%;
+		margin-top: 25%; //위 두 속성은 단지 편하게 보기 위한 속성입니다. 실제로는 삭제해야 합니다.
 	`;
 
 	const MinusBtn = styled.button`
 		background-color: #ffffff;
-		text-align: center;
 		border: 0.5px solid var(--gray-200);
 		width: 32px;
 		height: 32px;
@@ -32,24 +22,32 @@ function CounterBtn() {
 			background: var(--gray-100);
 		}
 		cursor: pointer;
-		${DragPrevent};
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	`;
 	const NumDisplay = styled.div`
 		text-align: center;
 		width: 32px;
 		height: 32px;
 		line-height: 32px;
-		border: 0.5px solid var(--gray-200);
-		${DragPrevent};
+		border-top: 0.5px solid var(--gray-200);
+		border-bottom: 0.5px solid var(--gray-200);
+		cursor: pointer;
 	`;
 	const PlusBtn = styled.button`
 		background-color: #ffffff;
-		text-align: center;
-		border: 0.5px solid #d9d9d9;
+		border: 0.5px solid var(--gray-200);
 		border-radius: 0 6px 6px 0;
 		width: 32px;
 		height: 32px;
 		cursor: pointer;
+		&:active {
+			background: var(--gray-100);
+		}
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	`;
 
 	const onPlusClick = () => {
@@ -62,11 +60,11 @@ function CounterBtn() {
 	return (
 		<BtnContainer>
 			<MinusBtn onClick={onMinusClick} disabled={num === 1}>
-				-
+				<AiOutlineMinus />
 			</MinusBtn>
 			<NumDisplay>{num}</NumDisplay>
 			<PlusBtn onClick={onPlusClick} disabled={num === 99}>
-				+
+				<AiOutlinePlus />
 			</PlusBtn>
 		</BtnContainer>
 	);
