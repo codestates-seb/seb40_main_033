@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import server.team33.audit.Auditable;
+
 import server.team33.item.entity.Item;
-import server.team33.order.entity.Order;
+
 
 import javax.persistence.*;
 
@@ -16,7 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "ITEM_CART")
-public class ItemCart extends Auditable {
+public class ItemCart  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +43,9 @@ public class ItemCart extends Auditable {
     @JoinColumn(name = "ITEM_ID")
     private Item item;
 
-    @ManyToOne
-    @JoinColumn(name = "ORDER_ID")
-    private Order order;
+//    @ManyToOne
+//    @JoinColumn(name = "ORDER_ID")
+//    private Order order;
 
     public void addCart(Cart cart) {
         this.cart = cart;

@@ -1,8 +1,10 @@
 package server.team33.login.handler;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -32,19 +34,38 @@ import java.util.List;
 public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtToken jwtToken;
 
+
     @Override
     public void onAuthenticationSuccess( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException, ServletException{
 
-   
-
-        log.info("로그인 성공 후 리다이렉트");
+        log.info("로그인 필터 통과");
         PrincipalDetails principalDetails = getPrincipalDetails(authentication);
-        if(principalDetails.getUser().getDiplayName() == null){
+
+        if(principalDetails.getUser().getDisplayName() == null){
             log.info("닉네임 없음");
-            moreInfo(request, response, authentication);
+            //TODO: 추가 정보 기입이 안되면 토큰 발급하지 않는다 디스플레이 네임이 없으면 바로 추가정보 기입 창으로 넘어간다.
+            String s = jwtToken.delegateAccessToken(principalDetails.getUser());
+            String accessToken = "Bearer "+ s;
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String value = objectMapper.writeValueAsString(accessToken);
+            response.getWriter().write(value);
+            //            moreInfo(request, response, authentication);
             return;
         }
-        redirect(request, response, authentication);
+        //여기서는 토큰 발급 가능
+            String s = jwtToken.delegateAccessToken(principalDetails.getUser());
+            String accessToken = "Bearer "+ s;
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String value = objectMapper.writeValueAsString(accessToken);
+            response.getWriter().write(value);
+
+        response.addHeader("Authorization", accessToken);
+
+        //        redirect(request, response, authentication);
         log.info("토큰 발행 성공");
     }
 
@@ -79,6 +100,8 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
 
     private PrincipalDetails getPrincipalDetails( Authentication authentication ){
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal(); //컨텍스트에 담긴 유저정보 추출
+        log.info("aaaa : {}", authentication);
+        log.info("detatld : {}",principalDetails);
         return principalDetails;
     }
 

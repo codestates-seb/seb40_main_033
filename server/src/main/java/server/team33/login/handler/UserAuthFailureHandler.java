@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static server.team33.login.handler.UserAuthenticationEntryPoint.errorToJson;
-
 @Component
 @Slf4j
 public class UserAuthFailureHandler implements AuthenticationFailureHandler {
@@ -20,6 +18,6 @@ public class UserAuthFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure( HttpServletRequest request, HttpServletResponse response, AuthenticationException exception ) throws IOException, ServletException{
         log.error("로그인 실패");
-        errorToJson(response, HttpStatus.UNAUTHORIZED);
+        UserAuthenticationEntryPoint.errorToJson(response, HttpStatus.UNAUTHORIZED);
     }
 }

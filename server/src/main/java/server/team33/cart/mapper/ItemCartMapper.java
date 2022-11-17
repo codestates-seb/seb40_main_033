@@ -37,8 +37,8 @@ public interface ItemCartMapper {
                 .buyNow(itemCart.isBuyNow())
                 .subscription(itemCart.isSubscription())
 //                .item(itemMapper.itemToItemResponseDto(itemCart.getItem()))
-                .createdAt(itemCart.getCreatedAt())
-                .updatedAt(itemCart.getUpdatedAt())
+//                .createdAt(itemCart.getCreatedAt())
+//                .updatedAt(itemCart.getUpdatedAt())
                 .build();
         // TODO : 간소화된 itemResponseDto 적용 필요
     }

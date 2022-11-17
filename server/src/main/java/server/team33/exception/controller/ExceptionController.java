@@ -1,11 +1,13 @@
 package server.team33.exception.controller;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.DataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -38,7 +40,7 @@ public class ExceptionController {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> businessLogicException( BusinessLogicException e ){
         ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
-
+        log.error("비지니스 예외 처리");
         return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getCode()));
     }
 
@@ -68,6 +70,25 @@ public class ExceptionController {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> internalAuthenticationException(
+            InternalAuthenticationServiceException e ){
+
+        ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> expiredJwtException(
+            ExpiredJwtException e ){
+
+        ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_IMPLEMENTED, e.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_IMPLEMENTED);
+    }
+
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> dataException(

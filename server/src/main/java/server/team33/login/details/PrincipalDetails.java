@@ -2,11 +2,13 @@ package server.team33.login.details;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import server.team33.user.entity.User;
+import server.team33.user.entity.UserStatus;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,8 +17,8 @@ import java.util.stream.Collectors;
 
 
 @Data
-public  class PrincipalDetails implements UserDetails, OAuth2User {
-
+public class PrincipalDetails implements UserDetails, OAuth2User {
+    @Getter
     private User user;
     private Map<String, Object> attributes;
 
@@ -60,7 +62,7 @@ public  class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public boolean isEnabled(){
-        return true;
+        return user.getUserStatus() != UserStatus.USER_WITHDRAWAL;
     }
 
     @Override

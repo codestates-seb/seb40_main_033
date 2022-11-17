@@ -14,8 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import server.team33.login.jwt.JwtToken;
-import server.team33.login.jwt.SecretKey;
-import server.team33.redis.RedisConfig;
+import server.team33.logout.Logout;
+import server.team33.user.redis.RedisConfig;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -34,10 +34,8 @@ jwt 검증 필터
 @Component
 public class JwtVerificationFilter extends OncePerRequestFilter {
 
-    private final SecretKey secretKey;
     private final RedisConfig redis;
     private final JwtToken jwtToken;
-
 
     //클레임을 추출해서 Auth~에 저장하는 메서드
     @Override
@@ -46,6 +44,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try{
             Map<String, Object> claims = jwtToken.verifyJws(request); //클레임 추출
             setAuthtoContext(claims);//Authentication에 저장
+            log.info("");
 
         } catch(InsufficientAuthenticationException e){
             log.error(InsufficientAuthenticationException.class.getSimpleName());
@@ -67,7 +66,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             log.error(Exception.class.getSimpleName());
 
         }
-
+        log.error("다음 메서드 진행");
         filterChain.doFilter(request, response); // 완료되면 다음 필터로 이동
     }
 
@@ -102,7 +101,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         String jws = jwtToken.extractJws(request); //토큰에서 Bearer 제거
         //redis 키값 앞에 붙임
-        String prefix = "logouttoken";
+        String prefix = Logout.REDIS_KEY_PREFIX;
         return redis.redisTemplate().opsForValue().get(prefix + jws) != null;
     }
 
@@ -117,6 +116,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);//security~~에 저장
 
-        log.info("sch= {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        log.info("sch= {}", SecurityContextHolder.getContext().getAuthentication());
     }
 }

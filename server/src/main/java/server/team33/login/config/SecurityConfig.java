@@ -3,6 +3,7 @@ package server.team33.login.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,13 +14,13 @@ import server.team33.login.handler.UserAccessDeniedHandler;
 import server.team33.login.handler.UserAuthSuccessHandler;
 import server.team33.login.handler.UserAuthenticationEntryPoint;
 import server.team33.login.jwt.JwtToken;
-import server.team33.login.jwt.SecretKey;
-import server.team33.redis.RedisConfig;
+import server.team33.user.redis.RedisConfig;
+import server.team33.user.repository.UserRepository;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity(debug = true)//배포시 제거
-
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
     @Bean
@@ -27,8 +28,8 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
     private final JwtToken jwtToken;
-    private final SecretKey secretKey;
     private final RedisConfig redisConfig;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain filterChain( HttpSecurity http ) throws Exception{
@@ -44,7 +45,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(new UserAccessDeniedHandler())
                 .authenticationEntryPoint(new UserAuthenticationEntryPoint())
                 .and()
-                .apply(new CustomFilterConfigurer(jwtToken, secretKey, redisConfig))
+                .apply(new CustomFilterConfigurer(jwtToken, redisConfig,userRepository))
                 .and()
                 .oauth2Login(oauth2 -> oauth2.successHandler(new UserAuthSuccessHandler(jwtToken)));
 //                .authorizeHttpRequests(authorize -> authorize.antMatchers(HttpMethod.POST, "/users").permitAll()

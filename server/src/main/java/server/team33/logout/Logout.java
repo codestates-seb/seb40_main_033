@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import server.team33.login.jwt.JwtToken;
 import server.team33.login.jwt.SecretKey;
-import server.team33.redis.RedisConfig;
+import server.team33.user.redis.RedisConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
@@ -29,14 +29,14 @@ public class Logout {
         Jws<Claims> claims = jwtToken.getClaims(jws, key);
         Date expiration = claims.getBody().getExpiration();
 
-        if(notLogingToken(request).equals(Boolean.TRUE)){
+        if(notLoginToken(request).equals(Boolean.TRUE)){
             redis.redisTemplate().opsForValue()
                     .set(REDIS_KEY_PREFIX + jws, "token", expiration.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
             log.info("로그아웃 완료");
         }
     }
 
-    private Boolean notLogingToken( HttpServletRequest request ){
+    private Boolean notLoginToken( HttpServletRequest request ){
         String jws = jwtToken.extractJws(request);
         Key key = secretKey.getSecretKey(secretKey.getBaseKey());
         Jws<Claims> claims = jwtToken.getClaims(jws, key);

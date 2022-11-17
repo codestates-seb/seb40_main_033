@@ -11,13 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static server.team33.login.handler.UserAuthenticationEntryPoint.errorToJson;
 @Slf4j
 @Component
 public class UserAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle( HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException ) throws IOException, ServletException{
         log.error("권한 없는 사용자");
-        errorToJson(response, HttpStatus.FORBIDDEN);
+        UserAuthenticationEntryPoint.errorToJson(response, HttpStatus.FORBIDDEN);
     }
 }
