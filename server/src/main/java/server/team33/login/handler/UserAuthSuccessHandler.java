@@ -44,13 +44,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         if(principalDetails.getUser().getDisplayName() == null){
             log.info("닉네임 없음");
             //TODO: 추가 정보 기입이 안되면 토큰 발급하지 않는다 디스플레이 네임이 없으면 바로 추가정보 기입 창으로 넘어간다.
-            String s = jwtToken.delegateAccessToken(principalDetails.getUser());
-            String accessToken = "Bearer "+ s;
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            String value = objectMapper.writeValueAsString(accessToken);
-            response.getWriter().write(value);
             //            moreInfo(request, response, authentication);
             return;
         }

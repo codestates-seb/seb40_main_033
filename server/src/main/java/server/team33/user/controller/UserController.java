@@ -14,7 +14,9 @@ import server.team33.user.mapper.UserMapper;
 import server.team33.user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -37,8 +39,9 @@ public class UserController {
     }
 
     @PostMapping("/more-info")
-    public ResponseEntity moreInfo(@Valid @RequestBody UserDto.PostMoreInfo userDto){
-        userService.updateOAuthInfo(userDto);
+    public ResponseEntity moreInfo( @Valid @RequestBody UserDto.PostMoreInfo userDto, HttpServletResponse response ) throws IOException{
+        User user = userService.updateOAuthInfo(userDto);
+        userService.giveToken(user,response);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
