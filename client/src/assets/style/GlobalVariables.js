@@ -4,6 +4,8 @@ const variables = css`
 	--purple-100: #f8f7ff;
 	--purple-200: #6255f6;
 	--purple-300: #6256e5;
+	--purple-h100: #eeebff;
+	--purple-h200: #4336de;
 	--gray-100: #fafafb;
 	--gray-200: #d9d9d9;
 	--gray-300: #acaebb;
@@ -14,6 +16,10 @@ const variables = css`
 	--green-200: #00c125;
 	--orange-100: #fe9701;
 	--red-100: #dd3f3f;
+	--light: 300;
+	--regular: 400;
+	--bold: 500;
+	--extraBold: 800;
 `;
 
 export default variables;

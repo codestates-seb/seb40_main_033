@@ -12,6 +12,7 @@
 	"rules": {
 		"import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+		"react/react-in-jsx-scope": "off",
 		"no-unused-vars": 1,
 		"react/prop-types": 0
 	}
