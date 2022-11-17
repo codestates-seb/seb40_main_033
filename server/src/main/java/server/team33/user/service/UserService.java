@@ -1,7 +1,9 @@
 package server.team33.user.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,12 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import server.team33.cart.entity.Cart;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
+import server.team33.login.jwt.JwtToken;
 import server.team33.user.dto.UserDto;
 import server.team33.user.entity.AuthUtils;
 import server.team33.user.entity.User;
 import server.team33.user.entity.UserStatus;
 import server.team33.user.repository.UserRepository;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -30,6 +35,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthUtils authUtils;
+    private final JwtToken jwtToken;
 
     public User joinUser( User user ){
         existEmail(user.getEmail());
@@ -111,5 +117,15 @@ public class UserService {
         loginUser.setDisplayName(userDto.getDisplayName());
         loginUser.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
         return loginUser;
+    }
+
+    public void giveToken( User user , HttpServletResponse response ) throws IOException{
+        String s = jwtToken.delegateAccessToken(user);
+        String accessToken = "Bearer "+ s;
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String value = objectMapper.writeValueAsString(accessToken);
+        response.getWriter().write(value);
     }
 }
