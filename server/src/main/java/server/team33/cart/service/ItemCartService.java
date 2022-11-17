@@ -36,7 +36,8 @@ public class ItemCartService {
     }
 
     public ItemCart checkItemCart(ItemCart itemCart) { // 장바구니에 특정 아이템이 이미 담겨있는지 확인
-        return itemCartRepository.findByCartAndItem(itemCart.getCart(), itemCart.getItem());
+        return itemCartRepository.findByCartAndItemAndSubscription(
+                itemCart.getCart(), itemCart.getItem(), itemCart.isSubscription());
     }
 
     public ItemCart findItemCart(long itemCartId) {
