@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import GlobalStyle from './assets/style/GlobalStyle';
-import CounterBtn from './components/\bCounterBtn';
+import CounterBtn from './components/Buttons/CounterButton';
 
 const Name = styled.div`
 	font-weight: var(--regular);
