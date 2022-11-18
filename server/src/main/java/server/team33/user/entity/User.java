@@ -60,6 +60,8 @@ public class User extends Auditable implements Principal {
         return getEmail();
     }
 
+
+
     //        private List<Wish> wishList;
     //    private List<Order> orders;
 //    @OneToMany(mappedBy = "user")

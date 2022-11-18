@@ -1,9 +1,9 @@
-package server.team33.payment;
+package server.team33.payment.response;
 
 import lombok.Data;
 
 @Data
-public class ApproveResponse {
+public class PaymentResult {
     private String aid;
     private String tid;
     private String cid;
@@ -18,5 +18,12 @@ public class ApproveResponse {
     private String payload;
     private Amount amount;
     private int quantity;
+    @Data
+    public static class Amount {
+        private int total;
+        private int tax_free;
+        private int vat;
+        private int discount;
+    }
 
 }

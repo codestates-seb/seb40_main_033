@@ -19,7 +19,7 @@ import server.team33.user.repository.UserRepository;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@EnableWebSecurity//배포시 제거
+@EnableWebSecurity(debug = true)//배포시 제거
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
