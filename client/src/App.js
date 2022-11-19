@@ -18,7 +18,8 @@ export default App;
 
 const Box = styled.div`
 	background-color: var(--gray-200);
-	width: 50vw;
+	margin: 30%;
+	width: 100vw;
 	height: 50vh;
 	display: flex;
 	flex-direction: column;
