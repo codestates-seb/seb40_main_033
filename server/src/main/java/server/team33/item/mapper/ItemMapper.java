@@ -2,6 +2,7 @@ package server.team33.item.mapper;
 
 import org.mapstruct.Mapper;
 import server.team33.item.dto.ItemDto;
+import server.team33.item.dto.ItemSimpleResponseDto;
 import server.team33.item.entity.Item;
 
 
@@ -43,6 +44,20 @@ public interface ItemMapper {
         item.setTalks(post.getTalks());
 
         return item;
+    }
+
+    default ItemSimpleResponseDto itemToItemSimpleResponseDto(Item item) {
+        ItemSimpleResponseDto itemSimpleResponseDto = new ItemSimpleResponseDto();
+        itemSimpleResponseDto.setItemId(item.getItemId());
+//        itemSimpleResponseDto.setBrand(item.getBrand());
+        itemSimpleResponseDto.setThumbnail(item.getThumbnail());
+        itemSimpleResponseDto.setTitle(item.getTitle());
+        itemSimpleResponseDto.setServingSize(item.getServingSize());
+        itemSimpleResponseDto.setPrice(item.getPrice());
+        itemSimpleResponseDto.setDiscountRate(item.getDiscountRate());
+        itemSimpleResponseDto.setDisCountPrice(item.getDiscountPrice());
+
+        return itemSimpleResponseDto;
     }
 
 }
