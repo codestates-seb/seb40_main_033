@@ -15,6 +15,7 @@ public class ItemService {
 
 
     public Item createItem(Item item) {
+
         return itemRepository.save(item);
     }
 
@@ -23,7 +24,6 @@ public class ItemService {
         Item item = findVerifiedItem(itemId);
         return itemRepository.save(item);
     }
-
 
     public Item findVerifiedItem(long itemId) {
         Optional<Item> item = itemRepository.findById(itemId);

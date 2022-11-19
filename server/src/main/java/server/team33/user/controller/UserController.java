@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/more-info")
-    public ResponseEntity moreInfo( @Valid @RequestBody UserDto.PostMoreInfo userDto, HttpServletResponse response ) throws IOException{
+    public ResponseEntity moreInfo(@Valid @RequestBody UserDto.PostMoreInfo userDto, HttpServletResponse response ) throws IOException{
         User user = userService.updateOAuthInfo(userDto);
         userService.giveToken(user,response);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -75,11 +75,10 @@ public class UserController {
     }
 
 
-//    @PreAuthorize("isAuthenticated()")
-//    @GetMapping("/test")
-//    public String home(){
-//        return "sdf";
-//    }
 
+    @GetMapping("/test")
+    public String home(){
+        return "sdf";
+    }
 
 }

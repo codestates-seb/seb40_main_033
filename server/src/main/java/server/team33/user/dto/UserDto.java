@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 
@@ -31,14 +32,15 @@ public class UserDto {
     @Setter
     @Builder
     public static class PostMoreInfo {
-
-        @NotBlank
+        @NotNull
+        private long userId;
+        @NotNull
         private String displayName;
-        @NotBlank
+        @NotNull
         private String address;
-        @NotBlank
+        @NotNull
         private String realName;
-        @NotBlank
+        @NotNull
         private String phone;
     }
     @Getter

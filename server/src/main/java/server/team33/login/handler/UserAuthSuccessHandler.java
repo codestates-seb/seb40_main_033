@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import server.team33.login.details.PrincipalDetails;
 import server.team33.login.jwt.JwtToken;
 import server.team33.user.entity.User;
+import server.team33.user.repository.UserRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtToken jwtToken;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -41,26 +43,38 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         log.info("로그인 필터 통과");
         PrincipalDetails principalDetails = getPrincipalDetails(authentication);
 
-        if(principalDetails.getUser().getDisplayName() == null){
-            log.info("닉네임 없음");
-            //TODO: 추가 정보 기입이 안되면 토큰 발급하지 않는다 디스플레이 네임이 없으면 바로 추가정보 기입 창으로 넘어간다.
+        if(principalDetails.getUser().getDisplayName() != null){
 
-            //            moreInfo(request, response, authentication);
-            return;
-        }
-        //여기서는 토큰 발급 가능
             String s = jwtToken.delegateAccessToken(principalDetails.getUser());
-            String accessToken = "Bearer "+ s;
+            String accessToken = "Bearer " + s;
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
             ObjectMapper objectMapper = new ObjectMapper();
             String value = objectMapper.writeValueAsString(accessToken);
             response.getWriter().write(value);
 
-        response.addHeader("Authorization", accessToken);
+            response.addHeader("Authorization", accessToken);
+            log.info("토큰 발행 성공");
+            return;
+            //redirect(request, response, authentication);
+        }
 
-        //        redirect(request, response, authentication);
-        log.info("토큰 발행 성공");
+        log.info("닉네임 없음"); //추가 기입
+        log.error("principal = {}",principalDetails);
+
+        User user = principalDetails.getUser();
+        log.error("user = {}",user);
+
+
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            Long userId = user.getUserId();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String value = objectMapper.writeValueAsString(userId);
+            response.getWriter().write(value);
+            log.info("아이디가 필요");
+        //            moreInfo(request, response, authentication);
+
     }
 
     private void moreInfo( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException{
@@ -93,10 +107,8 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
     }
 
     private PrincipalDetails getPrincipalDetails( Authentication authentication ){
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal(); //컨텍스트에 담긴 유저정보 추출
-        log.info("aaaa : {}", authentication);
-        log.info("detatld : {}",principalDetails);
-        return principalDetails;
+
+        return (PrincipalDetails) authentication.getPrincipal();
     }
 
     private URI createURI( String accessToken, String refreshToken ){

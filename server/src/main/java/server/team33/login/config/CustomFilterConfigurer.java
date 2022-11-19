@@ -24,11 +24,11 @@ public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterC
     @Override
     public void configure( HttpSecurity builder ) throws Exception{
         AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
-        JwtLoginFilter jwtLoginFilter = new JwtLoginFilter(authenticationManager,userRepository);//필터 실행
+        JwtLoginFilter jwtLoginFilter = new JwtLoginFilter(authenticationManager, userRepository);//필터 실행
         jwtLoginFilter.setFilterProcessesUrl("/users/login"); //로그인 디폴트 url
 
         jwtLoginFilter.setAuthenticationFailureHandler(new UserAuthFailureHandler());//로그인 실패시 핸들러 설정
-        jwtLoginFilter.setAuthenticationSuccessHandler(new UserAuthSuccessHandler(jwtToken));//로그인 성공시 핸들러 설정
+        jwtLoginFilter.setAuthenticationSuccessHandler(new UserAuthSuccessHandler(jwtToken, userRepository));//로그인 성공시 핸들러 설정
 
         JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(redisConfig, jwtToken); //jwt인증 필터 설정
 

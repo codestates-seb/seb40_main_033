@@ -36,61 +36,17 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthUtils authUtils;
     private final JwtToken jwtToken;
+    private final UserInfoFilter userInfoFilter;
 
     public User joinUser( User user ){
-        existEmail(user.getEmail());
-        existDisplayName(user.getDisplayName());
+        userInfoFilter.filterUserInfo(user);
         encodePassword(user);
-        existPhoneNum(user.getPhone());
         createRole(user);
         Cart.createCart(user);
         userRepository.save(user);
         return user;
     }
 
-    private User createRole( User user ){
-        List<String> roles = authUtils.createRoles();
-        user.setRoles(roles);
-        return user;
-    }
-
-    private void existPhoneNum( String PhoneNum ){
-        Optional<User> user = userRepository.findByPhone(PhoneNum);
-        if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_PHONE_NUMBER);
-
-    }
-
-    private User encodePassword( User user ){
-        String encodedPwd = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPwd);
-        return user;
-    }
-
-    private void existDisplayName( String displayName ){
-        Optional<User> user = userRepository.findByDisplayName(displayName);
-        if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_DISPLAY_NAME);
-    }
-
-    private void existEmail( String email ){
-        Optional<User> user = userRepository.findByEmail(email);
-        if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_EMAIL);
-
-    }
-
-    public User getLoginUser(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String name = authentication.getName();
-        log.info("회원 이메일 = {}", name);
-        Optional<User> user = userRepository.findByEmail(name);
-        return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-    }
-
-    public Long getUserId(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String name = authentication.getName();
-        Optional<User> user = userRepository.findByEmail(name);
-        return user.get().getUserId();
-    }
 
     public User deleteUser(){
         User loginUser = getLoginUser();
@@ -99,6 +55,7 @@ public class UserService {
     }
 
     public User updateUser( UserDto.Post userDto ){
+        userInfoFilter.filterUpdateUser(userDto);
         User loginUser = getLoginUser();
         encodePassword(loginUser);
         loginUser.setAddress(userDto.getAddress());
@@ -109,23 +66,60 @@ public class UserService {
     }
 
     public User updateOAuthInfo( UserDto.PostMoreInfo userDto ){
-        User loginUser = getLoginUser();
-        loginUser.setUserStatus(UserStatus.USER_ACTIVE);
-        loginUser.setAddress(userDto.getAddress());
-        loginUser.setRealName(userDto.getRealName());
-        loginUser.setPhone(userDto.getPhone());
-        loginUser.setDisplayName(userDto.getDisplayName());
-        loginUser.setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
-        return loginUser;
+
+        Optional<User> loginUser = userRepository.findById(userDto.getUserId());
+
+        if(loginUser.isPresent()){
+            userInfoFilter.filterMoreInfo(loginUser.get());
+            loginUser.get().setUserStatus(UserStatus.USER_ACTIVE);
+            loginUser.get().setAddress(userDto.getAddress());
+            loginUser.get().setRealName(userDto.getRealName());
+            loginUser.get().setPhone(userDto.getPhone());
+            loginUser.get().setDisplayName(userDto.getDisplayName());
+            loginUser.get().setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
+
+            return loginUser.get();
+        }
+
+        throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
     }
 
-    public void giveToken( User user , HttpServletResponse response ) throws IOException{
+    public void giveToken( User user, HttpServletResponse response ) throws IOException{
         String s = jwtToken.delegateAccessToken(user);
-        String accessToken = "Bearer "+ s;
+        String accessToken = "Bearer " + s;
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String value = objectMapper.writeValueAsString(accessToken);
         response.getWriter().write(value);
     }
+    private void createRole( User user ){
+        List<String> roles = authUtils.createRoles();
+        user.setRoles(roles);
+    }
+
+    private void encodePassword( User user ){
+        String encodedPwd = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPwd);
+    }
+
+
+    public User getLoginUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        log.info("회원 이메일 = {}", name);
+        Optional<User> user = userRepository.findByEmail(name);
+        return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+    }
+
+
+    public Long getUserId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        Optional<User> user = userRepository.findByEmail(name);
+        if(user.isPresent()) return user.get().getUserId();
+        throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
+    }
+
+
 }
