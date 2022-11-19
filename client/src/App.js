@@ -1,15 +1,11 @@
 import styled from 'styled-components';
 import GlobalStyle from './assets/style/GlobalStyle';
-import Tab from './components/Tabs/Tab';
 
 function App() {
 	return (
 		<>
 			<GlobalStyle />
-
-			<Box>
-				<Tab />
-			</Box>
+			<Box />
 		</>
 	);
 }
