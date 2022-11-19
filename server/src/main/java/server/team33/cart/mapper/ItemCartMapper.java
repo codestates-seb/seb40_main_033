@@ -23,24 +23,22 @@ public interface ItemCartMapper {
                 .period(itemCartPostDto.getPeriod())
                 .buyNow(itemCartPostDto.isBuyNow())
                 .subscription(itemCartPostDto.isSubscription())
-//                .cart(user.getCart())
+                .cart(user.getCart())
                 .item(itemService.findItem(itemId))
                 .build();
-        // TODO : 유저 정보 추가
     }
 
     default ItemCartDto.Response itemCartToItemCartResponseDto(ItemMapper itemMapper, ItemCart itemCart) {
         return ItemCartDto.Response.builder()
-                .cartId(itemCart.getItemCartId())
+                .itemCartId(itemCart.getItemCartId())
                 .quantity(itemCart.getQuantity())
                 .period(itemCart.getPeriod())
                 .buyNow(itemCart.isBuyNow())
                 .subscription(itemCart.isSubscription())
-//                .item(itemMapper.itemToItemResponseDto(itemCart.getItem()))
-//                .createdAt(itemCart.getCreatedAt())
-//                .updatedAt(itemCart.getUpdatedAt())
+                .item(itemMapper.itemToItemSimpleResponseDto(itemCart.getItem()))
+                .createdAt(itemCart.getCreatedAt())
+                .updatedAt(itemCart.getUpdatedAt())
                 .build();
-        // TODO : 간소화된 itemResponseDto 적용 필요
     }
 
     default List<ItemCartDto.Response> itemCartsToItemCartResponseDtos(ItemMapper itemMapper, List<ItemCart> itemCarts) {
