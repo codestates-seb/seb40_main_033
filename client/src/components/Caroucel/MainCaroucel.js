@@ -1,11 +1,40 @@
+/* eslint-disable no-undef */
+/* eslint-disable react/button-has-type */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable react/jsx-props-no-spreading */
 import Slider from 'react-slick';
 import styled from 'styled-components';
 import './slick.css';
 import './slick-theme.css';
+import { useState } from 'react';
+
+function SampleNextArrow(props) {
+	const { className, style, onClick } = props;
+	return (
+		<div
+			className={className}
+			style={{ ...style, display: 'block', background: 'red' }}
+			onClick={onClick}
+		/>
+	);
+}
+
+function SamplePrevArrow(props) {
+	const { className, style, onClick } = props;
+	return (
+		<div
+			className={className}
+			style={{ ...style, display: 'block', background: 'green' }}
+			onClick={onClick}
+		/>
+	);
+}
 
 function SimpleSlider() {
+	const [sliderRef, setSliderRef] = useState(null);
+
 	const settings = {
 		dots: true,
 		infinite: true,
@@ -13,32 +42,59 @@ function SimpleSlider() {
 		slidesToShow: 2,
 		slidesToScroll: 1,
 		autoplay: true,
-		autoplaySpeed: 3000,
+		autoplaySpeed: 1000,
+		pauseOnHover: true,
 		// centerPadding: '60px',
+		nextArrow: <SampleNextArrow />,
+		prevArrow: <SamplePrevArrow />,
+		className: 'slider variable-width',
 	};
+
+	// const pause = () => {
+	// 	settings.autoplay = false;
+	// };
+	// const play = () => {
+	// 	settings.autoplay = true;
+	// };
+
+	const pauseFn = () => {
+		sliderRef.slickPause();
+	};
+	const playFn = () => {
+		sliderRef.slickPlay();
+	};
+
 	return (
 		<div>
 			<h2> Single Item</h2>
-			<SSlicder {...settings}>
+			<SSlicder {...settings} ref={setSliderRef}>
 				<div>
-					<h3>1</h3>
+					<Sdiv />
 				</div>
 				<div>
-					<h3>2</h3>
+					<Sdiv />
 				</div>
 				<div>
-					<h3>3</h3>
+					<Sdiv />
 				</div>
 				<div>
-					<h3>4</h3>
+					<Sdiv />
 				</div>
 				<div>
-					<h3>5</h3>
+					<Sdiv />
 				</div>
 				<div>
-					<h3>6</h3>
+					<Sdiv />
 				</div>
 			</SSlicder>
+			<SbuttonBox>
+				<button className="slick-arrow" onClick={() => playFn()}>
+					Play
+				</button>
+				<button className="slick-arrow" onClick={() => pauseFn()}>
+					Pause
+				</button>
+			</SbuttonBox>
 		</div>
 	);
 }
@@ -47,6 +103,7 @@ export default SimpleSlider;
 
 const SSlicder = styled(Slider)`
 	width: 50%;
+	margin-left: 50px;
 	.slick-list {
 		/* width: 1600px; */
 		/* margin: 0 auto; */
@@ -66,4 +123,18 @@ const SSlicder = styled(Slider)`
 		border: none;
 		background-color: transparent;
 	}
+`;
+
+const Sdiv = styled.div`
+	width: 50px;
+	height: 50px;
+	background-color: greenyellow;
+`;
+
+const SbuttonBox = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+	margin-top: 50px;
 `;

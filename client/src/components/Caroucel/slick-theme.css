@@ -51,14 +51,14 @@
 	line-height: 1;
 
 	opacity: 0.75;
-	color: red;
+	color: black;
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
 .slick-prev {
-	/* left: -25px; */
+	left: -25px;
 }
 [dir='rtl'] .slick-prev {
 	right: -25px;
