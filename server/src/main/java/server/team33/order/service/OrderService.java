@@ -11,6 +11,7 @@ import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.order.entity.ItemOrder;
 import server.team33.order.entity.Order;
 import server.team33.order.entity.OrderStatus;
+import server.team33.order.reposiroty.ItemOrderRepository;
 import server.team33.order.reposiroty.OrderRepository;
 import server.team33.user.entity.User;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ItemOrderRepository itemOrderRepository;
     private final ItemOrderService itemOrderService;
 
     public Order callOrder(List<ItemOrder> itemOrders, User user) {
@@ -39,12 +41,18 @@ public class OrderService {
         order.setUser(user);
         order.setOrderStatus(OrderStatus.ORDER_REQUEST);
 
+        for(ItemOrder itemOrder : itemOrders) {
+            itemOrder.setOrder(order);
+            itemOrderRepository.save(itemOrder);
+        }
+
+        orderRepository.save(order);
         return order;
     }
 
-    public Order createOrder(Order order) {
-        return orderRepository.save(order);
-    }
+//    public Order createOrder(Order order) {
+//        return orderRepository.save(order);
+//    }
 
     public void cancelOrder(long orderId) {
         Order findOrder = findOrder(orderId);
