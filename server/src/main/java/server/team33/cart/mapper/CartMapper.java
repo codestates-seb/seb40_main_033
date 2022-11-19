@@ -15,10 +15,8 @@ import java.util.List;
 public interface CartMapper {
 
     default CartResponseDto cartToCartResponseDto(Cart cart, CartService cartService,
-                                                  boolean subscription,
-                                                  ItemCartService itemCartService,
-                                                  ItemMapper itemMapper,
-                                                  ItemCartMapper itemCartMapper) {
+                                                  boolean subscription, ItemCartService itemCartService,
+                                                  ItemMapper itemMapper, ItemCartMapper itemCartMapper) {
         CartResponseDto cartResponseDto = new CartResponseDto();
         cartResponseDto.setCartId(cart.getCartId());
         cartResponseDto.setSubscription(subscription);
