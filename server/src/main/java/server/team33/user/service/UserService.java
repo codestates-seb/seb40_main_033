@@ -81,7 +81,7 @@ public class UserService {
             return loginUser.get();
         }
 
-        throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
     }
 
     public void giveToken( User user, HttpServletResponse response ) throws IOException{
@@ -109,7 +109,7 @@ public class UserService {
         String name = authentication.getName();
         log.info("회원 이메일 = {}", name);
         Optional<User> user = userRepository.findByEmail(name);
-        return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
     }
 
 
@@ -118,7 +118,7 @@ public class UserService {
         String name = authentication.getName();
         Optional<User> user = userRepository.findByEmail(name);
         if(user.isPresent()) return user.get().getUserId();
-        throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
     }
 
 

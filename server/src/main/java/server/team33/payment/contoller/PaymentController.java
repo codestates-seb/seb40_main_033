@@ -8,6 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import server.team33.exception.bussiness.BusinessLogicException;
+import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.payment.response.PaymentResult;
 import server.team33.payment.response.requestResponse;
 import server.team33.payment.service.KakaoPayService;
@@ -29,10 +31,10 @@ public class PaymentController {
     @GetMapping("orders/payment")
     public requestResponse payRequest( @RequestParam(name = "total_amount") int totalAmount ){
 
+        id = userService.getUserId();
         requestResponse requestResponse = kakaoPayService.payRequest(totalAmount);
 
-        id = userService.getUserId();
-        redis.redisTemplate().opsForValue().set(String.valueOf(id), requestResponse.getTid(), 80000, TimeUnit.MILLISECONDS);
+        redis.redisTemplate().opsForValue().set(String.valueOf(id), requestResponse.getTid(), 1000*60*15 ,TimeUnit.MILLISECONDS);
         return requestResponse;
     }
 
@@ -40,8 +42,11 @@ public class PaymentController {
     @GetMapping("/payment")
     public ResponseEntity payApprove( @RequestParam("pg_token") String pgToken ){
         String tid = (String) redis.redisTemplate().opsForValue().get(String.valueOf(id));
+        if(tid == null) throw new BusinessLogicException(ExceptionCode.EXPIRED_TID);
+
         PaymentResult paymentResult = kakaoPayService.payApprove(tid, pgToken);
         log.info("결제완료");
+
         return new ResponseEntity<>(paymentResult, HttpStatus.CREATED);
 
         // 5. payment 저장
