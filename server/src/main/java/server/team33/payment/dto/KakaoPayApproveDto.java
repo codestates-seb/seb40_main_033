@@ -1,9 +1,9 @@
-package server.team33.payment.response;
+package server.team33.payment.dto;
 
 import lombok.Data;
 
 @Data
-public class PaymentResult {
+public class KakaoPayApproveDto {
     private String aid;
     private String tid;
     private String cid;
