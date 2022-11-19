@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
+import server.team33.order.service.OrderService;
 import server.team33.payment.dto.KakaoPayApproveDto;
 import server.team33.payment.dto.KakaoPayRequestDto;
 import server.team33.payment.service.PayService;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class PaymentController {
     private final PayService payService;
+    private  final OrderService orderService;
     private Long id;
     private final UserService userService;
     private final RedisConfig redis;
@@ -47,24 +49,20 @@ public class PaymentController {
         if(tid == null) throw new BusinessLogicException(ExceptionCode.EXPIRED_TID);
 
         KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(tid, pgToken);
+        Long orderId = Long.valueOf(kakaoPayApproveDto.getPartner_order_id());
+        log.info("orderId = {}", orderId);
+        orderService.changeOrderStatus(orderId);
 
         return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
     }
 
+
     @GetMapping("/general/success")
     public ResponseEntity home( @RequestParam("paymentKey") String paymentKey, @RequestParam("amount") int amount, @RequestParam("orderId") String orderId ) throws IOException{
         String result = payService.generalPay(paymentKey, orderId, amount);
+        String id = orderId.replace("abcdef", "");
+        orderService.changeOrderStatus(Long.valueOf(id));
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
-        // 5. payment 저장
-        //	orderno, paymathod, 주문명.
-        // - 카카오 페이로 넘겨받은 결재정보값을 저장.
-        //        Payment payment = Payment.builder()
-        //                .paymentClassName(approveResponse.getItem_name())
-        //                .payMathod(approveResponse.getPayment_method_type())
-        //                .payCode(tid)
-        //                .build();
-        //
-        //
     }
 
     @GetMapping("/payment/cancel")//TODO 일반결제 카카오페이결제 실패시 url결정해야

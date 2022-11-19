@@ -50,7 +50,8 @@ public class OrderService {
         return order;
     }
 
-//    public Order createOrder(Order order) {
+
+    //    public Order createOrder(Order order) {
 //        return orderRepository.save(order);
 //    }
 
@@ -77,5 +78,9 @@ public class OrderService {
         Order findOrder = optionalOrder.orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
         return findOrder;
+    }
+    public void changeOrderStatus( Long orderId ){
+        Optional<Order> orderEntity = orderRepository.findById(orderId);
+        orderEntity.ifPresent(order -> order.setOrderStatus(OrderStatus.ORDER_COMPLETE));
     }
 }

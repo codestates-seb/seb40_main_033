@@ -35,16 +35,7 @@ public class PayService {
                 itemQuantity = order.getTotalItems();
                 itemName = order.getItemOrders().get(0).getItem().getTitle();
 
-//        User loginUser = userService.getLoginUser();
-//        List<Order> orders = loginUser.getOrders();
-//        for(Order order : orders){
-//            if(order.getOrderStatus() == OrderStatus.ORDER_COMPLETE) continue;
-//            orderId = order.getOrderId();
-//            log.info("orderId = {}",orderId);
-//            itemQuantity = order.getTotalItems();
-//            List<ItemOrder> itemOrders = order.getItemOrders();
-//            log.info("item = {}", itemOrders);
-//        }
+
         order_id = orderId;
         item_name = itemName + " 그 외 " + ( itemQuantity - 1 );
 
@@ -70,6 +61,7 @@ public class PayService {
         String url = "https://kapi.kakao.com/v1/payment/approve";
 
         KakaoPayApproveDto kakaoPayApproveDto = restTemplate.postForObject(url, kakaoRequestEntity, KakaoPayApproveDto.class);
+
 
         log.info("결제 승인 응답 객체" + kakaoPayApproveDto);
 

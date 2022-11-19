@@ -18,7 +18,7 @@ public class KakaoPayApproveDto {
     private String payload;
     private Amount amount;
     private int quantity;
-    private Long orderId;
+
     @Getter
     public static class Amount {
         private int total;
