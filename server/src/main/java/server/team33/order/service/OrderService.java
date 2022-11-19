@@ -39,6 +39,8 @@ public class OrderService {
         order.setUser(user);
         order.setOrderStatus(OrderStatus.ORDER_REQUEST);
 
+        orderRepository.save(order);
+
         return order;
     }
 

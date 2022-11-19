@@ -3,6 +3,7 @@ package server.team33.user.entity;
 import lombok.*;
 import server.team33.audit.Auditable;
 import server.team33.cart.entity.Cart;
+import server.team33.order.entity.Order;
 
 import javax.persistence.*;
 import java.security.Principal;
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
@@ -36,18 +37,18 @@ public class User extends Auditable implements Principal {
     @Column()
     private String address;
 
-    @Column(name = "real_name")
+    @Column(name = "REAL_NAME")
     private String realName;
 
     @Column(unique = true)
     private String phone;
 
-    @Column(name = "oauth_id")
+    @Column(name = "OAUTH_ID")
     private String oauthId;
 
     private String provider;
 
-    @Column(name = "provider_id")
+    @Column(name = "PROVIDER_ID")
     private String providerId;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -56,17 +57,14 @@ public class User extends Auditable implements Principal {
     @Enumerated(value = EnumType.STRING)
     private UserStatus userStatus = UserStatus.USER_ACTIVE;
 
-    @Override
-    public String getName(){
-        return getEmail();
-    }
-
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Cart cart;
 
     //        private List<Wish> wishList;
-    //    private List<Order> orders;
-//    @OneToMany(mappedBy = "user")
+        @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+        private List<Order> orders = new ArrayList<>();
+
+        //    @OneToMany(mappedBy = "user")
 //    private List<Review> reviews = new ArrayList<>();
 //
 //    @OneToMany(mappedBy = "user")
@@ -75,6 +73,10 @@ public class User extends Auditable implements Principal {
 //
 //    @OneToMany(mappedBy = "user")
 //    private List<TalkComment> talkComments = new ArrayList<>();
+    @Override
+    public String getName(){
+        return getEmail();
+    }
 
 
 }

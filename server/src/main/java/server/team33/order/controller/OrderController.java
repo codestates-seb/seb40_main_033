@@ -14,6 +14,7 @@ import server.team33.order.entity.ItemOrder;
 import server.team33.order.entity.Order;
 import server.team33.order.mapper.ItemOrderMapper;
 import server.team33.order.mapper.OrderMapper;
+import server.team33.order.reposiroty.ItemOrderRepository;
 import server.team33.order.service.ItemOrderService;
 import server.team33.order.service.OrderService;
 import server.team33.response.MultiResponseDto;
@@ -41,7 +42,7 @@ public class OrderController {
     private final OrderMapper orderMapper;
     private final ItemMapper itemMapper;
     private final ItemOrderMapper itemOrderMapper;
-
+    private ItemOrderRepository itemOrderRepository;
     @PostMapping("/single") // 상세페이지에서 바로 구매하기 요청을 하는 경우
     public ResponseEntity postSingleOrder(@RequestBody @Valid ItemOrderDto.Post itemOrderPostDto) {
 
@@ -54,6 +55,7 @@ public class OrderController {
         User user = userService.getLoginUser(); // 기본 배송지 정보를 불러오기 위함.
 
         Order order = orderService.callOrder(itemOrders, user);
+
 
         return new ResponseEntity<>(new SingleResponseDto<>(
                 orderMapper.orderToOrderDetailResponseDto(order, itemMapper, itemOrderMapper)), HttpStatus.OK);
