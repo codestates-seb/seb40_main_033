@@ -36,46 +36,73 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthUtils authUtils;
     private final JwtToken jwtToken;
+    private final UserInfoFilter userInfoFilter;
 
     public User joinUser( User user ){
-        existEmail(user.getEmail());
-        existDisplayName(user.getDisplayName());
+        userInfoFilter.filterUserInfo(user);
         encodePassword(user);
-        existPhoneNum(user.getPhone());
         createRole(user);
         Cart.createCart(user);
         userRepository.save(user);
         return user;
     }
 
-    private User createRole( User user ){
+
+    public User deleteUser(){
+        User loginUser = getLoginUser();
+        loginUser.setUserStatus(UserStatus.USER_WITHDRAWAL);
+        return loginUser;
+    }
+
+    public User updateUser( UserDto.Post userDto ){
+        userInfoFilter.filterUpdateUser(userDto);
+        User loginUser = getLoginUser();
+        encodePassword(loginUser);
+        loginUser.setAddress(userDto.getAddress());
+        loginUser.setPhone(userDto.getPhone());
+        loginUser.setRealName(userDto.getRealName());
+        loginUser.setDisplayName(userDto.getDisplayName());
+        return loginUser;
+    }
+
+    public User updateOAuthInfo( UserDto.PostMoreInfo userDto ){
+
+        Optional<User> loginUser = userRepository.findById(userDto.getUserId());
+
+        if(loginUser.isPresent()){
+            userInfoFilter.filterMoreInfo(loginUser.get());
+            loginUser.get().setUserStatus(UserStatus.USER_ACTIVE);
+            loginUser.get().setAddress(userDto.getAddress());
+            loginUser.get().setRealName(userDto.getRealName());
+            loginUser.get().setPhone(userDto.getPhone());
+            loginUser.get().setDisplayName(userDto.getDisplayName());
+            loginUser.get().setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
+
+            return loginUser.get();
+        }
+
+        throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+    }
+
+    public void giveToken( User user, HttpServletResponse response ) throws IOException{
+        String s = jwtToken.delegateAccessToken(user);
+        String accessToken = "Bearer " + s;
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String value = objectMapper.writeValueAsString(accessToken);
+        response.getWriter().write(value);
+    }
+    private void createRole( User user ){
         List<String> roles = authUtils.createRoles();
         user.setRoles(roles);
-        return user;
     }
 
-    private void existPhoneNum( String PhoneNum ){
-        Optional<User> user = userRepository.findByPhone(PhoneNum);
-        if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_PHONE_NUMBER);
-
-    }
-
-    private User encodePassword( User user ){
+    private void encodePassword( User user ){
         String encodedPwd = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPwd);
-        return user;
     }
 
-    private void existDisplayName( String displayName ){
-        Optional<User> user = userRepository.findByDisplayName(displayName);
-        if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_DISPLAY_NAME);
-    }
-
-    public void existEmail( String email ){
-        Optional<User> user = userRepository.findByEmail(email);
-        if(user.isPresent()) throw new BusinessLogicException(ExceptionCode.EXIST_EMAIL);
-
-    }
 
     public User getLoginUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -90,49 +117,9 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String name = authentication.getName();
         Optional<User> user = userRepository.findByEmail(name);
-        return user.get().getUserId();
-    }
-
-    public User deleteUser(){
-        User loginUser = getLoginUser();
-        loginUser.setUserStatus(UserStatus.USER_WITHDRAWAL);
-        return loginUser;
-    }
-
-    public User updateUser( UserDto.Post userDto ){
-        User loginUser = getLoginUser();
-        encodePassword(loginUser);
-        loginUser.setAddress(userDto.getAddress());
-        loginUser.setPhone(userDto.getPhone());
-        loginUser.setRealName(userDto.getRealName());
-        loginUser.setDisplayName(userDto.getDisplayName());
-        return loginUser;
-    }
-
-    public User updateOAuthInfo( UserDto.PostMoreInfo userDto ){
-        Optional<User> loginUser = userRepository.findById(userDto.getUserId());
-        if(loginUser.isPresent()){
-            existPhoneNum(userDto.getPhone());
-            existDisplayName(userDto.getDisplayName());
-
-            loginUser.get().setUserStatus(UserStatus.USER_ACTIVE);
-            loginUser.get().setAddress(userDto.getAddress());
-            loginUser.get().setRealName(userDto.getRealName());
-            loginUser.get().setPhone(userDto.getPhone());
-            loginUser.get().setDisplayName(userDto.getDisplayName());
-            loginUser.get().setCreatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
-            return loginUser.get();
-        }
+        if(user.isPresent()) return user.get().getUserId();
         throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
     }
 
-    public void giveToken( User user , HttpServletResponse response ) throws IOException{
-        String s = jwtToken.delegateAccessToken(user);
-        String accessToken = "Bearer "+ s;
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String value = objectMapper.writeValueAsString(accessToken);
-        response.getWriter().write(value);
-    }
 }
