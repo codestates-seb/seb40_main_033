@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-import { FaBars } from 'react-icons/fa';
+import styled, { keyframes } from 'styled-components';
 import { HiOutlineEye } from 'react-icons/hi';
 import { useState } from 'react';
 import { BiBone } from 'react-icons/bi';
@@ -31,7 +30,7 @@ function LeftNav() {
 		<Liver key="4-icons" />,
 		<Brain key="5-icons" />,
 		<Skin key="6-icons" />,
-		<GrPowerCycle className="small stroke bold-stroke" key="7-icons" />,
+		<GrPowerCycle className="small bold-stroke" key="7-icons" />,
 		<AiOutlineThunderbolt key="8-icons" className="bolt" />,
 		<RiHeartAddLine className="heart-add" key="9-icons" />,
 		<AiOutlinePlusCircle className="small bold-stroke" key="10-icons" />,
@@ -49,9 +48,13 @@ function LeftNav() {
 	return (
 		<Nav>
 			<TempLogo />
-			<FaBars className="bars" onClick={handleBtnClick} />
+			<Hamburger onClick={handleBtnClick}>
+				<div className={isClicked ? 'bar1' : null} />
+				<div className={isClicked ? 'bar2' : null} />
+				<div className={isClicked ? 'bar3' : null} />
+			</Hamburger>
 			{isClicked ? (
-				<CategoryContainer>
+				<CategoryContainer className="show">
 					{categories.map((el, i) => (
 						<ListContainer
 							key={`${i.toString()}-${el}`}
@@ -73,41 +76,57 @@ const Nav = styled.nav`
 	flex-direction: column;
 	margin-top: 45px;
 	margin-left: 40px;
+	width: 100px;
+`;
 
-	.bars {
-		font-size: 22px;
-		margin: 30px 0;
-		path {
-			color: var(--purple-200);
-		}
+const openList = keyframes`
+	0% {
+		opacity: 0;
+		top: -20px;
+	}
+	100% {
+	top: 0;
+	opacity: 100%
+	}
+`;
+
+const showIcon = keyframes`
+	0% {
+		opacity: 0%;
+		left: -20px;
+	}
+	100% {
+	opacity: 100%;
+	left: 0;
 	}
 `;
 
 const CategoryContainer = styled.ul`
 	display: flex;
 	flex-direction: column;
+	position: relative;
+	animation: ${openList} 0.3s ease-in-out;
 `;
 
 const ListContainer = styled.li`
 	display: flex;
 	align-items: center;
-	-webkit-user-select: none; // 글씨 드래그 방지
+	-webkit-user-select: none;
 	user-select: none;
 	cursor: pointer;
+	position: relative;
+
+	:hover {
+		animation: ${showIcon} 0.2s ease-in-out;
+		* {
+			color: var(--green-100);
+			stroke: var(--green-100);
+		}
+	}
 
 	& > svg {
 		margin: 10px 5px 10px 0;
 		font-size: 27px;
-		path {
-			color: var(--purple-200);
-		}
-	}
-
-	.stroke {
-		path {
-			stroke: var(--purple-200);
-			stroke-width: 2.2;
-		}
 	}
 
 	.small {
@@ -132,6 +151,31 @@ const Category = styled.div`
 	color: var(--purple-200);
 	margin: 20px 0;
 	font-weight: var(--extraBold);
+`;
+
+const Hamburger = styled.div`
+	margin: 60px 0 20px 0;
+	div {
+		width: 18px;
+		height: 3px;
+		margin: 3.5px 0;
+		background-color: var(--purple-200);
+		border-radius: 4px;
+		cursor: pointer;
+		transition: 0.5s;
+	}
+
+	.bar1 {
+		-webkit-transform: translateY(6.5px) rotate(-315deg);
+		transform: translateY(6.5px) rotate(-315deg);
+	}
+	.bar2 {
+		opacity: 0;
+	}
+	.bar3 {
+		-webkit-transform: translateY(-6.5px) rotate(315deg);
+		transform: translateY(-6.5px) rotate(315deg);
+	}
 `;
 
 export default LeftNav;
