@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class TalkComment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long talkCommentId;
 
     @ManyToOne
