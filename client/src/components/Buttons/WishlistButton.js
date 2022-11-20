@@ -20,6 +20,7 @@ function WishlistBtn() {
 
 const WishBox = styled.div`
 	display: inline-flex;
+	z-index: 1;
 	.red-heart {
 		path {
 			color: #ff555f; //var(--red-100);
