@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 function PayList() {
+	// true 정기구독 결제목록, false 일반 결제목록
+
 	const [isSub, setIsSub] = useState(true);
 
 	return (

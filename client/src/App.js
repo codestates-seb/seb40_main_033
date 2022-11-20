@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import GlobalStyle from './assets/style/GlobalStyle';
+import LeftNav from './components/LeftNav';
 
 function App() {
 	return (
 		<>
 			<GlobalStyle />
 			<Box>
-				<Talk />
-				<Comment />
+				<LeftNav />
 			</Box>
 		</>
 	);
