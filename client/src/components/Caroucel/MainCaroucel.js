@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import './slick.css';
 import './slick-theme.css';
 import { useState } from 'react';
+import { MdPlayArrow, MdPause } from 'react-icons/md';
 
 function SampleNextArrow(props) {
 	const { className, style, onClick } = props;
@@ -34,6 +35,7 @@ function SamplePrevArrow(props) {
 
 function SimpleSlider() {
 	const [sliderRef, setSliderRef] = useState(null);
+	const [isPlaying, setIsPlaying] = useState(true);
 
 	const settings = {
 		dots: true,
@@ -42,21 +44,15 @@ function SimpleSlider() {
 		slidesToShow: 2,
 		slidesToScroll: 1,
 		autoplay: true,
-		autoplaySpeed: 1000,
+		autoplaySpeed: 2000,
 		pauseOnHover: true,
-		// centerPadding: '60px',
+		// variableWidth: true,
 		nextArrow: <SampleNextArrow />,
 		prevArrow: <SamplePrevArrow />,
-		className: 'slider variable-width',
+		className: 'center',
+		centerMode: true,
+		centerPadding: '0px',
 	};
-
-	// const pause = () => {
-	// 	settings.autoplay = false;
-	// };
-	// const play = () => {
-	// 	settings.autoplay = true;
-	// };
-
 	const pauseFn = () => {
 		sliderRef.slickPause();
 	};
@@ -65,76 +61,116 @@ function SimpleSlider() {
 	};
 
 	return (
-		<div>
+		<SlideContainer>
 			<h2> Single Item</h2>
-			<SSlicder {...settings} ref={setSliderRef}>
-				<div>
-					<Sdiv />
-				</div>
-				<div>
-					<Sdiv />
-				</div>
-				<div>
-					<Sdiv />
-				</div>
-				<div>
-					<Sdiv />
-				</div>
-				<div>
-					<Sdiv />
-				</div>
-				<div>
-					<Sdiv />
-				</div>
-			</SSlicder>
+			<Slider {...settings} ref={setSliderRef}>
+				<SlidePage>
+					<MultiItem>1</MultiItem>
+				</SlidePage>
+				<SlidePage>
+					<MultiItem>2</MultiItem>
+				</SlidePage>
+				<SlidePage>
+					<MultiItem>3</MultiItem>
+				</SlidePage>
+				<SlidePage>
+					<MultiItem>4</MultiItem>
+				</SlidePage>
+				<SlidePage>
+					<MultiItem>5</MultiItem>
+				</SlidePage>
+				<SlidePage>
+					<MultiItem>6</MultiItem>
+				</SlidePage>
+			</Slider>
 			<SbuttonBox>
-				<button className="slick-arrow" onClick={() => playFn()}>
-					Play
-				</button>
-				<button className="slick-arrow" onClick={() => pauseFn()}>
-					Pause
-				</button>
+				<Sbutton
+					className={isPlaying ? 'hide' : ''}
+					onClick={() => {
+						playFn();
+						setIsPlaying(true);
+					}}
+				>
+					<MdPlayArrow />
+				</Sbutton>
+				<Sbutton
+					className={!isPlaying ? 'hide' : ''}
+					onClick={() => {
+						pauseFn();
+						setIsPlaying(false);
+					}}
+				>
+					<MdPause />
+				</Sbutton>
 			</SbuttonBox>
-		</div>
+		</SlideContainer>
 	);
 }
 
 export default SimpleSlider;
 
-const SSlicder = styled(Slider)`
-	width: 50%;
-	margin-left: 50px;
-	.slick-list {
-		/* width: 1600px; */
-		/* margin: 0 auto; */
+export const MultiItem = styled.div`
+	color: #e67e22;
+	opacity: 1;
+	transform: scale(1.04);
+`;
+
+export const SlideContainer = styled.div`
+	padding: 0 20px;
+
+	/* width 옵션으로 전체 width 값을 지정할 수 있음 */
+	width: 1360px;
+
+	.slick-center ${MultiItem} {
+		/* center 모드일때 center에게 강조할 경우 사용 */
+		color: #e67e22;
+		opacity: 1;
+		transition: all 300ms ease;
+		transform: scale(1.06);
 	}
-	.slick-slide div {
-		/* cursor: pointer; */
-	}
-	.slick-dots {
-		/* bottom: -50px;
-		margin-top: 200px; */
-	}
-	.slick-track {
-		/* overflow-x: hidden; */
-	}
-	.slick-arrow {
-		z-index: 999;
-		border: none;
-		background-color: transparent;
+
+	${MultiItem} {
+		/* center 모드일때 center 외 속성에게 사용 */
+		opacity: 0.8;
+		transition: all 300ms ease;
+		transform: scale(0.5);
 	}
 `;
 
-const Sdiv = styled.div`
-	width: 50px;
-	height: 50px;
-	background-color: greenyellow;
+export const SlidePage = styled.div`
+	background-color: skyblue;
+
+	padding: ${(props) => props.padding};
+
+	${MultiItem} {
+		/* center 옵션의 경우 MultiTem 속성을 추가로 사용해서 내부 옵션을 추가로 줘야함 */
+		background: #00558b;
+		color: #fff;
+		font-size: 36px;
+		line-height: 100px;
+		margin: 10px;
+		padding: 2%;
+		position: relative;
+		text-align: center;
+		left: -90%; /* half of the centered slide and padding */
+	}
 `;
 
 const SbuttonBox = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 50%;
-	margin-top: 50px;
+	/* width: 50%; */
+	/* margin-top: 50px; */
+	margin: 5px 210px 0 0;
+`;
+
+const Sbutton = styled.button`
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+	&.hide {
+		display: none;
+	}
+	z-index: 999;
 `;
