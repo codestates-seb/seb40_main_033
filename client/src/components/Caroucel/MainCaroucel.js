@@ -1,9 +1,6 @@
-/* eslint-disable no-undef */
-/* eslint-disable react/button-has-type */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/jsx-props-no-spreading */
 import Slider from 'react-slick';
 import styled from 'styled-components';
 import './slick.css';
@@ -11,23 +8,19 @@ import './slick-theme.css';
 import { useState } from 'react';
 import { MdPlayArrow, MdPause } from 'react-icons/md';
 
-function SampleNextArrow(props) {
+function SampleArrow(props) {
 	const { className, style, onClick } = props;
 	return (
 		<div
 			className={className}
-			style={{ ...style, display: 'block', background: 'red' }}
-			onClick={onClick}
-		/>
-	);
-}
-
-function SamplePrevArrow(props) {
-	const { className, style, onClick } = props;
-	return (
-		<div
-			className={className}
-			style={{ ...style, display: 'block', background: 'green' }}
+			style={{
+				...style,
+				display: 'block',
+				background: 'black',
+				width: '30px',
+				height: '30px',
+				borderRadius: '50%',
+			}}
 			onClick={onClick}
 		/>
 	);
@@ -44,11 +37,11 @@ function SimpleSlider() {
 		slidesToShow: 2,
 		slidesToScroll: 1,
 		autoplay: true,
-		autoplaySpeed: 2000,
+		autoplaySpeed: 5000,
 		pauseOnHover: true,
 		// variableWidth: true,
-		nextArrow: <SampleNextArrow />,
-		prevArrow: <SamplePrevArrow />,
+		nextArrow: <SampleArrow />,
+		prevArrow: <SampleArrow />,
 		className: 'center',
 		centerMode: true,
 		centerPadding: '0px',
@@ -62,26 +55,19 @@ function SimpleSlider() {
 
 	return (
 		<SlideContainer>
-			<h2> Single Item</h2>
 			<Slider {...settings} ref={setSliderRef}>
-				<SlidePage>
-					<MultiItem>1</MultiItem>
-				</SlidePage>
-				<SlidePage>
-					<MultiItem>2</MultiItem>
-				</SlidePage>
-				<SlidePage>
-					<MultiItem>3</MultiItem>
-				</SlidePage>
-				<SlidePage>
-					<MultiItem>4</MultiItem>
-				</SlidePage>
-				<SlidePage>
-					<MultiItem>5</MultiItem>
-				</SlidePage>
-				<SlidePage>
-					<MultiItem>6</MultiItem>
-				</SlidePage>
+				{[1, 2, 3, 4, 5, 6].map((el, i) => (
+					<SlidePage key={`${i.toString()}-${el}`}>
+						<MultiItem>
+							<SInfo>
+								Hello worldHello worldHello worldHello worldHello world Hello
+								world Hello world Hello world Hello world Hello world Hello
+								world Hello world
+							</SInfo>
+							<SImg />
+						</MultiItem>
+					</SlidePage>
+				))}
 			</Slider>
 			<SbuttonBox>
 				<Sbutton
@@ -109,59 +95,79 @@ function SimpleSlider() {
 
 export default SimpleSlider;
 
+// * 캐러셀 스타일
 export const MultiItem = styled.div`
-	color: #e67e22;
 	opacity: 1;
-	transform: scale(1.04);
+	display: flex;
+`;
+
+export const SImg = styled.img.attrs({
+	src: 'https://withmuu1.cdn-nhncommerce.com/data/hero/c78012304f20bf3f8b655042765a06ba_58602.jpg',
+})`
+	width: 55%;
+	border-radius: 50%;
+`;
+
+const SInfo = styled.div`
+	width: 45%;
+	padding-left: 50px;
 `;
 
 export const SlideContainer = styled.div`
 	padding: 0 20px;
-
 	/* width 옵션으로 전체 width 값을 지정할 수 있음 */
 	width: 1360px;
 
 	.slick-center ${MultiItem} {
 		/* center 모드일때 center에게 강조할 경우 사용 */
-		color: #e67e22;
 		opacity: 1;
 		transition: all 300ms ease;
-		transform: scale(1.06);
+		transform: scale(1);
+		top: 0px;
 	}
 
 	${MultiItem} {
 		/* center 모드일때 center 외 속성에게 사용 */
-		opacity: 0.8;
+		/* opacity: 0.8; */
 		transition: all 300ms ease;
 		transform: scale(0.5);
+		top: 130px;
 	}
 `;
 
 export const SlidePage = styled.div`
-	background-color: skyblue;
-
+	/* background-color: skyblue; */
 	padding: ${(props) => props.padding};
+	width: 1000px;
 
 	${MultiItem} {
 		/* center 옵션의 경우 MultiTem 속성을 추가로 사용해서 내부 옵션을 추가로 줘야함 */
-		background: #00558b;
-		color: #fff;
-		font-size: 36px;
-		line-height: 100px;
 		margin: 10px;
 		padding: 2%;
 		position: relative;
-		text-align: center;
-		left: -90%; /* half of the centered slide and padding */
+		width: 950px;
+		/* 센터아이템 왼쪽에 보여주기 */
+		left: -130%;
+		.slick-center & {
+			left: -108%;
+			${SInfo} {
+				color: var(--gray-500);
+				transition: all 300ms ease;
+				opacity: 1;
+			}
+		}
+		${SInfo} {
+			transition: all 300ms ease;
+			opacity: 0;
+		}
 	}
 `;
 
+// * 버튼 스타일
 const SbuttonBox = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* width: 50%; */
-	/* margin-top: 50px; */
 	margin: 5px 210px 0 0;
 `;
 
