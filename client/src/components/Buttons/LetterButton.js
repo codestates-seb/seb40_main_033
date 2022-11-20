@@ -35,3 +35,31 @@ export function GrayLetterButton({ children, width, height, onClick }) {
 		</DefaultButton>
 	);
 }
+
+export function LetterButtonColor({
+	children,
+	width,
+	height,
+	onClick,
+	color,
+	colorCode,
+	hoverColor,
+	hoverColorCode,
+	fontSize,
+}) {
+	return (
+		<DefaultButton
+			onClick={onClick}
+			color={color}
+			colorCode={colorCode}
+			width={width}
+			height={height}
+			hoverColor={hoverColor}
+			hoverColorCode={hoverColorCode}
+			fontSize={fontSize}
+			letter
+		>
+			{children}
+		</DefaultButton>
+	);
+}
