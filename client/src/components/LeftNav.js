@@ -54,12 +54,13 @@ function LeftNav() {
 				<div className={isClicked ? 'bar3' : null} />
 			</Hamburger>
 			{isClicked ? (
-				<CategoryContainer className="show">
+				<CategoryContainer>
 					{categories.map((el, i) => (
 						<ListContainer
 							key={`${i.toString()}-${el}`}
 							onMouseEnter={handleBtnHover}
 							onMouseLeave={() => setHoverTarget('')}
+							className={`list-${i}`}
 						>
 							{hoverTarget === el ? icons[i] : null}
 							<Category>{el}</Category>
@@ -90,7 +91,7 @@ const openList = keyframes`
 	}
 `;
 
-const showIcon = keyframes`
+export const showIcon = keyframes`
 	0% {
 		opacity: 0%;
 		left: -20px;
@@ -98,6 +99,28 @@ const showIcon = keyframes`
 	100% {
 	opacity: 100%;
 	left: 0;
+	}
+`;
+
+export const listHover = keyframes`
+	0% {
+		opacity: 0;
+		top: -10px;
+	}
+	100% {
+	top: 0;
+	opacity: 100%
+	}
+`;
+
+export const turn = keyframes`
+	0% {
+		opacity: 0;
+		-webkit-transform: translateY(6.5px) rotate(-360deg);
+		transform: translateY(6.5px) rotate(-360deg);
+	}
+	100% {
+		opacity: 50%;
 	}
 `;
 
@@ -115,9 +138,10 @@ const ListContainer = styled.li`
 	user-select: none;
 	cursor: pointer;
 	position: relative;
+	animation: ${listHover} 0.3s ease-in-out;
 
 	:hover {
-		animation: ${showIcon} 0.2s ease-in-out;
+		animation: ${showIcon} 0.2s ease-in-out 1s;
 		* {
 			color: var(--green-100);
 			stroke: var(--green-100);
@@ -127,6 +151,7 @@ const ListContainer = styled.li`
 	& > svg {
 		margin: 10px 5px 10px 0;
 		font-size: 27px;
+		animation: ${turn} 0.3s ease-in-out;
 	}
 
 	.small {
@@ -155,6 +180,7 @@ const Category = styled.div`
 
 const Hamburger = styled.div`
 	margin: 60px 0 20px 0;
+
 	div {
 		width: 18px;
 		height: 3px;
@@ -169,9 +195,11 @@ const Hamburger = styled.div`
 		-webkit-transform: translateY(6.5px) rotate(-315deg);
 		transform: translateY(6.5px) rotate(-315deg);
 	}
+
 	.bar2 {
 		opacity: 0;
 	}
+
 	.bar3 {
 		-webkit-transform: translateY(-6.5px) rotate(315deg);
 		transform: translateY(-6.5px) rotate(315deg);

@@ -18,7 +18,7 @@ const variables = css`
 	--red-100: #dd3f3f;
 	--light: 300;
 	--regular: 400;
-	--bold: 500;
+	--bold: 600;
 	--extraBold: 800;
 `;
 
