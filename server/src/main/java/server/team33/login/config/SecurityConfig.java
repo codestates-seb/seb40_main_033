@@ -19,7 +19,7 @@ import server.team33.user.repository.UserRepository;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@EnableWebSecurity(debug = true)//배포시 제거
+@EnableWebSecurity//배포시 제거
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .and()
                 .apply(new CustomFilterConfigurer(jwtToken, redisConfig,userRepository))
                 .and()
-                .oauth2Login(oauth2 -> oauth2.successHandler(new UserAuthSuccessHandler(jwtToken)));
+                .oauth2Login(oauth2 -> oauth2.successHandler(new UserAuthSuccessHandler(jwtToken,userRepository)));
 //                .authorizeHttpRequests(authorize -> authorize.antMatchers(HttpMethod.POST, "/users").permitAll()
 //                .antMatchers(HttpMethod.POST, "/answers").hasRole("USER")
 //                .antMatchers(HttpMethod.PATCH, "/answers/**").hasRole("USER")

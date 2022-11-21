@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import server.team33.item.dto.ItemSimpleResponseDto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
@@ -45,12 +46,12 @@ public class ItemCartDto {
     @AllArgsConstructor
     public static class Response {
 
-        private Long cartId;
+        private Long itemCartId;
         private Integer quantity;
         private Integer period;
         private boolean buyNow;
         private boolean subscription;
-//        private ItemResponseDto item;
+        private ItemSimpleResponseDto item;
         private ZonedDateTime createdAt;
         private ZonedDateTime updatedAt;
     }

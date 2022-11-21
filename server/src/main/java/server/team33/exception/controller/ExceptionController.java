@@ -4,6 +4,7 @@ package server.team33.exception.controller;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.DataException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.response.ErrorResponse;
 
@@ -87,6 +89,21 @@ public class ExceptionController {
         ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_IMPLEMENTED, e.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> incorrectResultSizeDataAccessException(
+            IncorrectResultSizeDataAccessException e ){
+        ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_ACCEPTABLE, "이미 가입한 아이디가 있습니다.");
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    }
+  @ExceptionHandler
+    public ResponseEntity<ErrorResponse> HttpClientErrorException(
+            HttpClientErrorException e ){
+        ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_ACCEPTABLE, "잘못된 요청입니다.");
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 
 

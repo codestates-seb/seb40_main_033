@@ -2,6 +2,7 @@ package server.team33.user.entity;
 
 import lombok.*;
 import server.team33.audit.Auditable;
+import server.team33.cart.entity.Cart;
 
 import javax.persistence.*;
 import java.security.Principal;
@@ -59,6 +60,9 @@ public class User extends Auditable implements Principal {
     public String getName(){
         return getEmail();
     }
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Cart cart;
 
     //        private List<Wish> wishList;
     //    private List<Order> orders;

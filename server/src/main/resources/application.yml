@@ -77,6 +77,8 @@ spring:
 
 logging:
   level:
+    org.apache.http: DEBUG
+    httpclient.wire: DEBUG
     org:
       springframework:
         orm:

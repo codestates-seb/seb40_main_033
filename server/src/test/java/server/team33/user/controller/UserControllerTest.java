@@ -33,7 +33,6 @@ class UserControllerTest {
     private MockMvc mockMvc;
     private Gson gson;
     private String authorization;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -41,16 +40,16 @@ class UserControllerTest {
     @BeforeEach
     void init() throws Exception{
         userRepository.deleteAll();
-        UserDto.Post userDto = UserDto.Post.builder().address("sdfsdfsdfsdfsdfsd").displayName("test").realName("sdf").email("tkfkd@ddmfi.com").password("sdfsdfsdf").phone("2393949494").build();
-        User user1 = mapper.dtoToUser(userDto);
-        userService.joinUser(user1);
-        LoginDto dto = LoginDto.builder().username("tkfkd@ddmfi.com").password("sdfsdfsdf").build();
+        jwt_join();
+        ouath_join();
 
+        LoginDto dto = LoginDto.builder().username("tkfkd@ddmfi.com").password("sdfsdfsdf").build();
         gson = new Gson();
         String s = gson.toJson(dto);
         ResultActions perform = mockMvc.perform(post("/users/login").contentType(MediaType.APPLICATION_JSON).content(s));
         authorization = perform.andReturn().getResponse().getHeader("Authorization");
     }
+
 
     @Test
     void 회원정보_보내기() throws Exception{
@@ -61,10 +60,10 @@ class UserControllerTest {
     @Test
     void 회원_정보_수정() throws Exception{
 
-        UserDto.Post newDto = UserDto.Post.builder().address("서울시 동대문구 압구정동").displayName("김삿갓").realName("김김감").email("tkfkd@ddmfi.com").password("dlszheldektl").phone("101020302323").build();
+        UserDto.Post newDto = UserDto.Post.builder().address("서울시 동대문구 압구정동").displayName("김삿1갓").realName("김김감").email("tkfkd@ddmfi.com").password("dlszheldektl").phone("1010120302323").build();
         String s1 = gson.toJson(newDto);
         //then
-        mockMvc.perform(patch("/users").header("Authorization", authorization).contentType(MediaType.APPLICATION_JSON).content(s1)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.address").value("서울시 동대문구 압구정동")).andExpect(jsonPath("$.displayName").value("김삿갓")).andExpect(jsonPath("$.realName").value("김김감")).andExpect(jsonPath("$.phone").value("101020302323")).andDo(print());
+        mockMvc.perform(patch("/users").header("Authorization", authorization).contentType(MediaType.APPLICATION_JSON).content(s1)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.address").value("서울시 동대문구 압구정동")).andExpect(jsonPath("$.displayName").value("김삿1갓")).andExpect(jsonPath("$.realName").value("김김감")).andExpect(jsonPath("$.phone").value("1010120302323")).andDo(print());
     }
 
     @Test
@@ -85,17 +84,27 @@ class UserControllerTest {
         mockMvc.perform(post("/users/login").contentType(MediaType.APPLICATION_JSON).content(s)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.status").value(HttpStatus.UNAUTHORIZED.value())).andExpect(jsonPath("$.message").value("Unauthorized")).andDo(print());
     }
 
-    @Test
-    void 추가_정보_저장() throws Exception{
-        //given
-        UserDto.Post newDto = UserDto.Post.builder().address("서울시 동대문구 압구정동").displayName("김삿갓").realName("김김감").phone("101020302323").build();
-        //when
-        String s = gson.toJson(newDto);
-        //then
-        mockMvc.perform(post("/users/more-info").header("Authorization",authorization).contentType(MediaType.APPLICATION_JSON).content(s))
-                .andExpect(status().is2xxSuccessful())
-                .andDo(print());
+//    @Test
+//    void 추가_정보_저장() throws Exception{
+//        Optional<User> byId = userRepository.findById(1L);
+//        System.out.println("++++++++++++++"+byId.get().getEmail());
+//        //given
+//        UserDto.PostMoreInfo newDto = UserDto.PostMoreInfo.builder().userId(2L).address("서울시 동대문구 압구정동").displayName("김삿갓").realName("김김감").phone("101020302323").build();
+//        //when
+//        String s = gson.toJson(newDto);
+//        //then
+//        mockMvc.perform(post("/users/more-info").contentType(MediaType.APPLICATION_JSON).content(s))
+//                .andExpect(status().is2xxSuccessful())
+//                .andDo(print());
+//    }
 
+    private void jwt_join(){
+        UserDto.Post userDto = UserDto.Post.builder().address("sdfsdfsdfsdfsdfsd").displayName("test").realName("sdf").email("tkfkd@ddmfi.com").password("sdfsdfsdf").phone("2393949494").build();
+        User user1 = mapper.dtoToUser(userDto);
+        userService.joinUser(user1);
     }
-
+    private void ouath_join(){
+        User user = User.builder().email("tkfka156@gmail.com").providerId("sdfsdf").provider("naver").oauthId("sdfsdfsdf").password("sdfsdf").build();
+        userService.joinUser(user);
+    }
 }
