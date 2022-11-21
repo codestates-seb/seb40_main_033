@@ -2,32 +2,47 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BsToggles } from 'react-icons/bs';
+import { LetterButtonColor } from './LetterButton';
 
 function SortButton({ children }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const handleOpenClick = () => {
 		setIsOpen(!isOpen);
-		console.log(isOpen);
+		// console.log(isOpen);
 	};
-
+	const menus = ['찜 많은순', '높은가격순', '낮은가격순', '인기순'];
 	return (
-		<ButtonContainer>
-			<OpenButton onClick={handleOpenClick}>
-				<IoIosArrowBack />
-			</OpenButton>
-			<NameBox>
-				{children}
-				<BsToggles />
-			</NameBox>
+		<ButtonContainer isOpen={isOpen}>
+			{isOpen ? (
+				<MenuBox isOpen={isOpen}>
+					{menus.map((menu, idx) => (
+						<MenuLi key={`${idx.toString()}-${menu}`}>
+							<LetterButtonColor color="gray" colorCode="200" fontSize="14px">
+								{menu}
+							</LetterButtonColor>
+						</MenuLi>
+					))}
+				</MenuBox>
+			) : null}
+			<MainBox>
+				{' '}
+				<OpenButton onClick={handleOpenClick} isOpen={isOpen}>
+					<IoIosArrowBack />
+				</OpenButton>
+				<NameBox>
+					{children}
+					<BsToggles />
+				</NameBox>
+			</MainBox>
 		</ButtonContainer>
 	);
 }
 
 const ButtonContainer = styled.div`
+	margin-left: 50%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	width: 158px; // 이 부분은 이후 상태로 관리하여, 버튼을 누르면 바뀌게끔 해야 합니다.
 	height: 54px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
 	background-color: white;
@@ -35,12 +50,18 @@ const ButtonContainer = styled.div`
 	border: none;
 	color: var(--purple-200);
 	padding: 13px 20px 13px 13px;
-	cursor: pointer;
+	transition: 0.5s ease;
+	float: right;
+	/* position: absolute;
+	top: 0;
+	right: 0; //float: right 대신 써줘도 됩니다. 둘다 보기에는 같은데 나중에 뭐 쓸지 함 봐야할듯.*/
 `;
 
 const OpenButton = styled.button`
+	z-index: 1;
 	display: flex;
 	flex-direction: row;
+	margin-right: 24px;
 	justify-content: center;
 	align-items: center;
 	width: 29px;
@@ -49,13 +70,26 @@ const OpenButton = styled.button`
 	border: 1px solid #f1f0fe;
 	border-radius: 50px;
 	cursor: pointer;
+	transition: 0.25s ease;
 	& > svg {
 		path {
 			color: var(--purple-200);
 		}
 	}
+	transform: ${({ isOpen }) => (isOpen ? 'scaleX(-1)' : null)};
 `;
+const MainBox = styled.div`
+	background-color: white;
+	z-index: 1;
+	width: 129px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+`;
+
 const NameBox = styled.div`
+	z-index: 1;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -67,4 +101,46 @@ const NameBox = styled.div`
 		}
 	}
 `;
+
+const MenuBox = styled.ul`
+	list-style-type: none;
+	margin-right: 20px;
+	margin-left: 23px;
+	width: 354px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	animation: ${(isOpen) =>
+		isOpen
+			? 'slide-fade-in-dropdown-animation 0.4s ease'
+			: 'slide-fade-out-dropdown-animation 0.4s ease'};
+	@keyframes slide-fade-in-dropdown-animation {
+		0% {
+			transform: translateX(40%);
+		}
+
+		100% {
+			transform: translateX(0);
+		}
+	}
+	@keyframes slide-fade-out-dropdown-animation {
+		0% {
+			transform: translateX(0);
+		}
+
+		100% {
+			transform: translateX(-100%);
+		}
+	}
+`;
+const MenuLi = styled.li`
+	float: left;
+	color: var(--gray-300);
+	button {
+		&:focus {
+			color: var(--purple-200);
+		}
+	}
+`;
+
 export default SortButton;
