@@ -69,7 +69,7 @@ public interface ItemMapper {
         itemCategoryResponse.setReviewSize(item.getReviews().size());
 
         return itemCategoryResponse;
-
+    }
 
     default ItemSimpleResponseDto itemToItemSimpleResponseDto(Item item) {
         ItemSimpleResponseDto itemSimpleResponseDto = new ItemSimpleResponseDto();

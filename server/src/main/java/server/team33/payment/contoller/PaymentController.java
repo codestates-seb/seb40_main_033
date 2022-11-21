@@ -51,7 +51,7 @@ public class PaymentController {
         KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoPayApprove(tid, pgToken);
         Long orderId = Long.valueOf(kakaoPayApproveDto.getPartner_order_id());
         log.info("orderId = {}", orderId);
-        orderService.changeOrderStatus(orderId);
+        orderService.completeOrder(orderId);
 
         return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
     }
@@ -61,7 +61,7 @@ public class PaymentController {
     public ResponseEntity home( @RequestParam("paymentKey") String paymentKey, @RequestParam("amount") int amount, @RequestParam("orderId") String orderId ) throws IOException{
         String result = payService.generalPay(paymentKey, orderId, amount);
         String id = orderId.replace("abcdef", "");
-        orderService.changeOrderStatus(Long.valueOf(id));
+        orderService.completeOrder(Long.valueOf(id));
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
 

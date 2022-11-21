@@ -79,8 +79,15 @@ public class OrderService {
                 () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
         return findOrder;
     }
-    public void changeOrderStatus( Long orderId ){
+    public void completeOrder(Long orderId){
         Optional<Order> orderEntity = orderRepository.findById(orderId);
         orderEntity.ifPresent(order -> order.setOrderStatus(OrderStatus.ORDER_COMPLETE));
     }
+
+    public boolean isShopper(long itemId, long userId) { // 유저의 특정 아이템 구매여부 확인
+        Order order = orderRepository.findByItemAndUser(itemId, userId);
+        if(order == null) return false;
+        else return true;
+    }
+
 }
