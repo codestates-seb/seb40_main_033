@@ -19,3 +19,14 @@ export function ToggleTab() {
 
 	return <DefaultTabButton menuArr={menuArr} toggle />;
 }
+
+export function DayShowTab() {
+	const menuArr = [
+		{ name: '30일', index: 0 },
+		{ name: '60일', index: 1 },
+		{ name: '90일', index: 2 },
+		{ name: '120일', index: 3 },
+	];
+
+	return <DefaultTabButton menuArr={menuArr} />;
+}
