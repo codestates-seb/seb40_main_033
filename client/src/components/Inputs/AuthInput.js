@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-export default function AuthInput({ Ref, onKeyUp, label }) {
+export default function AuthInput({ Ref, onKeyUp, label, className }) {
 	const [value, setValue] = useState('');
 
 	const onChange = (event) => {
@@ -11,16 +11,16 @@ export default function AuthInput({ Ref, onKeyUp, label }) {
 	};
 
 	return (
-		<InputBox isFilled={!!value}>
+		<InputBox isFilled={!!value} className={className}>
 			<input
 				ref={Ref}
-				id="input"
+				id={label}
 				type="text"
 				onKeyUp={onKeyUp}
 				value={value}
 				onChange={onChange}
 			/>
-			<label htmlFor="input" className="placeholder">
+			<label htmlFor={label} className="placeholder">
 				{label}
 			</label>
 			{/* <ErrorSpan>이메일 형식으로 입력해주세요.</ErrorSpan> */}
@@ -43,6 +43,7 @@ const InputBox = styled.div`
 		cursor: text;
 		transition: 0.3s ease-in-out;
 		font-weight: 500;
+		font-size: 18px;
 	}
 	& input[type='text'] {
 		width: 100%;
