@@ -1,8 +1,8 @@
 package server.team33.payment.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class KakaoPayApproveDto {
     private String aid;
     private String tid;
@@ -18,7 +18,8 @@ public class KakaoPayApproveDto {
     private String payload;
     private Amount amount;
     private int quantity;
-    @Data
+
+    @Getter
     public static class Amount {
         private int total;
         private int tax_free;

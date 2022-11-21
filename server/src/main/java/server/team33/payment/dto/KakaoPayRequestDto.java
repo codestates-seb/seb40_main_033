@@ -1,11 +1,11 @@
 package server.team33.payment.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-@Data
+@Getter
 public class KakaoPayRequestDto {
 
     private String tid;
