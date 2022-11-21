@@ -69,8 +69,9 @@ public interface OrderMapper {
         orderDetailResponseDto.setName(order.getName());
         orderDetailResponseDto.setAddress(order.getAddress());
         orderDetailResponseDto.setPhone(order.getPhone());
+        orderDetailResponseDto.setTotalItems(order.getTotalItems());
         orderDetailResponseDto.setTotalPrice(order.getTotalPrice());
-        orderDetailResponseDto.setTotalDiscountPrice(orderDetailResponseDto.getTotalDiscountPrice());
+        orderDetailResponseDto.setTotalDiscountPrice(order.getTotalDiscountPrice());
         orderDetailResponseDto.setExpectPrice(order.getExpectPrice());
         orderDetailResponseDto.setExpectPrice(order.getExpectPrice());
         orderDetailResponseDto.setSubscription(order.isSubscription());
