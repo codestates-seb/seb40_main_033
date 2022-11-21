@@ -25,7 +25,7 @@ export default function AuthInputs() {
 			} else if (event.target === secondRef.current) {
 				setCurrent((prev) => prev + 1);
 			} else if (event.target === thirdRef.current) {
-				console.log(event);
+				console.log(event); // 마지막 인풋엔 submit event를 넣어야 함
 			}
 		}
 	};

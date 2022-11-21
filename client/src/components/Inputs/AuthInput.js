@@ -32,17 +32,16 @@ const InputBox = styled.div`
 	width: 100%;
 	position: relative;
 	font-size: 18px;
-	margin-top: 20px;
+	margin-top: 30px;
 
 	& .placeholder {
 		position: absolute;
 		top: 50%;
-		left: 0px;
+		left: 2px;
 		transform: translateY(-50%);
 		color: var(--gray-200);
-		font-size: inherit;
 		cursor: text;
-		transition: 0.5s ease-in-out;
+		transition: 0.3s ease-in-out;
 		font-weight: 500;
 	}
 	& input[type='text'] {
@@ -51,26 +50,21 @@ const InputBox = styled.div`
 		border: none;
 		outline: none;
 		border-bottom: 1px solid var(--gray-200);
-		font-size: inherit;
+		font-size: 18px;
 	}
 	& input[type='text']:focus {
-		transition: 0.5s ease-in-out;
+		transition: 0.3s ease-in-out;
 		border-bottom: 1px solid var(--purple-200);
 		caret-color: var(--purple-200);
-		& + .placeholder {
-			color: var(--gray-300);
-			font-size: 12px;
-			top: -8px;
-			font-weight: 300;
-		}
 	}
 	${({ isFilled }) =>
 		isFilled &&
 		css`
 			.placeholder {
 				color: var(--gray-300);
-				font-size: 12px;
+				font-size: 13px;
 				top: -8px;
+				left: 0px;
 				font-weight: 300;
 			}
 		`}
