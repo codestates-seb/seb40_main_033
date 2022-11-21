@@ -9,19 +9,27 @@ import server.team33.item.entity.Item;
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
 
+    default ItemDto.ItemDetailResponse itemToItemDetailResponseDto(Item item) {
+        ItemDto.ItemDetailResponse itemDetailResponseDto = new ItemDto.ItemDetailResponse();
 
+        itemDetailResponseDto.setItemId(item.getItemId());
+        itemDetailResponseDto.setThumbnail(item.getThumbnail());
+        itemDetailResponseDto.setTitle(item.getTitle());
+        itemDetailResponseDto.setContent(item.getContent());
+        itemDetailResponseDto.setExpiration(item.getExpiration());
+        itemDetailResponseDto.setBrand(item.getBrand());
+        itemDetailResponseDto.setSales(item.getSales());
+        itemDetailResponseDto.setPrice(item.getPrice());
+        itemDetailResponseDto.setCapacity(item.getCapacity());
+        itemDetailResponseDto.setServingSize(item.getServingSize());
+        itemDetailResponseDto.setDiscountRate(item.getDiscountRate());
+        itemDetailResponseDto.setDiscountPrice(item.getPrice());
+        itemDetailResponseDto.setNutritionFacts(item.getNutritionFacts());
+        itemDetailResponseDto.setItemCategories(item.getItemCategories());
+        itemDetailResponseDto.setReviews(item.getReviews());
+        itemDetailResponseDto.setTalks(item.getTalks());
 
-    default ItemDto.Response itemToItemResponseDto(Item item) {
-        ItemDto.Response itemResponseDto = new ItemDto.Response();
-
-        itemResponseDto.setItemId(item.getItemId());
-        itemResponseDto.setThumbnail(item.getThumbnail());
-        itemResponseDto.setTitle(item.getTitle());
-        itemResponseDto.setPrice(item.getPrice());
-        itemResponseDto.setDiscountRate(item.getDiscountRate());
-        itemResponseDto.setDiscountPrice(itemResponseDto.getPrice());
-
-        return itemResponseDto;
+        return itemDetailResponseDto;
     }
 
     default Item itemPostDtoToItem(ItemDto.post post) {
@@ -38,12 +46,29 @@ public interface ItemMapper {
         item.setContent(post.getContent());
         item.setExpiration(post.getExpiration());
         item.setDiscountPrice(post.getDiscountPrice());
+        item.setItemCategories(post.getItemCategories());
         item.setServingSize(post.getServingSize());
         item.setNutritionFacts(post.getNutritionFacts());
         item.setReviews(post.getReviews());
         item.setTalks(post.getTalks());
 
         return item;
+    }
+
+    default ItemDto.ItemCategoryResponse itemToItemCategoryResponseDto(Item item) {
+        ItemDto.ItemCategoryResponse itemCategoryResponse = new ItemDto.ItemCategoryResponse();
+
+        itemCategoryResponse.setItemId(item.getItemId());
+        itemCategoryResponse.setTitle(item.getTitle());
+        itemCategoryResponse.setContent(item.getContent());
+        itemCategoryResponse.setPrice(item.getPrice());
+        itemCategoryResponse.setBrand(item.getBrand());
+        itemCategoryResponse.setNutritionFacts(item.getNutritionFacts());
+        // 리뷰 별 총점
+        // 찜의 여부 가 추가 될 예정
+        itemCategoryResponse.setReviewSize(item.getReviews().size());
+
+        return itemCategoryResponse;
     }
 
     default ItemSimpleResponseDto itemToItemSimpleResponseDto(Item item) {

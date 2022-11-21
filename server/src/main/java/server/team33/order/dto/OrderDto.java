@@ -45,6 +45,7 @@ public class OrderDto {
         private String name;
         private String address;
         private String phone;
+        private int totalItems;
         private int totalPrice;
         private int totalDiscountPrice;
         private int expectPrice;
@@ -53,6 +54,8 @@ public class OrderDto {
         private OrderStatus orderStatus;
         private ZonedDateTime createdAt;
         private ZonedDateTime updatedAt;
+
+        private int totalQuantity;
     }
 
 }
