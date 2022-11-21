@@ -33,6 +33,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtToken jwtToken;
+
     @Override
     public void onAuthenticationSuccess( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException, ServletException{
 
@@ -40,35 +41,35 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         PrincipalDetails principalDetails = getPrincipalDetails(authentication);
 
         if(principalDetails.getUser().getDisplayName() != null){
+            log.info("일반로그인");
 
-            String s = jwtToken.delegateAccessToken(principalDetails.getUser());
-            String accessToken = "Bearer " + s;
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                        String s = jwtToken.delegateAccessToken(principalDetails.getUser());
+                        String accessToken = "Bearer " + s;
+                        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            String value = objectMapper.writeValueAsString(accessToken);
-            response.getWriter().write(value);
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        String value = objectMapper.writeValueAsString(accessToken);
+                        response.getWriter().write(value);
 
-            response.addHeader("Authorization", accessToken);
-            log.info("토큰 발행 성공");
+                        response.addHeader("Authorization", accessToken);
+                        log.info("토큰 발행 성공");
+//            redirect(request, response, authentication);
             return;
-            //redirect(request, response, authentication);
         }
 
-        log.info("닉네임 없음"); //추가 기입
-        log.error("principal = {}",principalDetails);
+                log.info("닉네임 없음"); //추가 기입
+                log.error("principal = {}",principalDetails);
 
-        User user = principalDetails.getUser();
-        log.error("user = {}",user);
+                User user = principalDetails.getUser();
+                log.error("user = {}",user);
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                    Long userId = user.getUserId();
 
-
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            Long userId = user.getUserId();
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            String value = objectMapper.writeValueAsString(userId);
-            response.getWriter().write(value);
-            log.info("아이디가 필요");
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String value = objectMapper.writeValueAsString(userId);
+                    response.getWriter().write(value);
+                    log.info("아이디가 필요");
+//        redirect(request, response, authentication);
         //            moreInfo(request, response, authentication);
 
     }
@@ -85,7 +86,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
 
     private void redirect( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException{
         PrincipalDetails principalDetails = getPrincipalDetails(authentication);
-        log.error("{}", principalDetails);
+        log.error("principal = {}", principalDetails);
 
         List<String> tokens = delegateToken(principalDetails.getUser(), jwtToken);
 
@@ -114,7 +115,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         queryParams.add("refresh_token", refreshToken);
         log.error("{}", queryParams);
         return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080) // 호스트랑 포트는 나중에 변경해야한다.
-                .path("/recive-token.html").queryParams(queryParams).build().toUri();
+                .path("/users/test").queryParams(queryParams).build().toUri();
     }
 
     private URI infoURI( String accessToken, String refreshToken ){
@@ -124,7 +125,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         queryParams.add("refresh_token", refreshToken);
         log.error("{}", queryParams);
         return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080) // 호스트랑 포트는 나중에 변경해야한다.
-                .path("/recive-token2.html").queryParams(queryParams).build().toUri();
+                .path("/users/test").queryParams(queryParams).build().toUri();
     }
 
 

@@ -28,7 +28,7 @@ public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterC
         jwtLoginFilter.setFilterProcessesUrl("/users/login"); //로그인 디폴트 url
 
         jwtLoginFilter.setAuthenticationFailureHandler(new UserAuthFailureHandler());//로그인 실패시 핸들러 설정
-        jwtLoginFilter.setAuthenticationSuccessHandler(new UserAuthSuccessHandler(jwtToken, userRepository));//로그인 성공시 핸들러 설정
+        jwtLoginFilter.setAuthenticationSuccessHandler(new UserAuthSuccessHandler(jwtToken ));//로그인 성공시 핸들러 설정
 
         JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(redisConfig, jwtToken); //jwt인증 필터 설정
 

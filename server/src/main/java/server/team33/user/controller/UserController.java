@@ -75,10 +75,10 @@ public class UserController {
     }
 
 
-
-    @GetMapping("/test")
-    public String home(){
-        return "sdf";
-    }
+//테스트 컨트롤러
+//    @GetMapping("/test")
+//    public String home(@RequestParam(name = "access_token") String accessToken){
+//        return accessToken;
+//    }
 
 }
