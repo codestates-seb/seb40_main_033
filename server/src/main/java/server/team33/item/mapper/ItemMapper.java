@@ -17,7 +17,7 @@ public interface ItemMapper {
         itemDetailResponseDto.setTitle(item.getTitle());
         itemDetailResponseDto.setContent(item.getContent());
         itemDetailResponseDto.setExpiration(item.getExpiration());
-        itemDetailResponseDto.setBrand(item.getBrand());
+//        itemDetailResponseDto.setBrand(item.getBrand());
         itemDetailResponseDto.setSales(item.getSales());
         itemDetailResponseDto.setPrice(item.getPrice());
         itemDetailResponseDto.setCapacity(item.getCapacity());
@@ -62,7 +62,7 @@ public interface ItemMapper {
         itemCategoryResponse.setTitle(item.getTitle());
         itemCategoryResponse.setContent(item.getContent());
         itemCategoryResponse.setPrice(item.getPrice());
-        itemCategoryResponse.setBrand(item.getBrand());
+//        itemCategoryResponse.setBrand(item.getBrand());
         itemCategoryResponse.setNutritionFacts(item.getNutritionFacts());
         // 리뷰 별 총점
         // 찜의 여부 가 추가 될 예정

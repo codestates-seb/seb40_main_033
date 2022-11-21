@@ -58,9 +58,9 @@ public class Item {
 
     @Column
     private int servingSize;
-
-    @Enumerated(value = EnumType.STRING)
-    private Brand brand;
+//
+//    @Enumerated(value = EnumType.STRING)
+//    private Brand brand;
 
 //    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
 //    private List<Wish> wishes = new ArrayList<>();
