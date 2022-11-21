@@ -180,6 +180,7 @@ const Category = styled.div`
 
 const Hamburger = styled.div`
 	margin: 60px 0 20px 0;
+	cursor: pointer;
 
 	div {
 		width: 18px;
