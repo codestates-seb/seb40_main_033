@@ -1,24 +1,14 @@
 import styled from 'styled-components';
-import { useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
-function CounterBtn() {
-	const [num, setNum] = useState(1);
-
-	const onPlusClick = () => {
-		setNum(num + 1);
-	};
-	const onMinusClick = () => {
-		setNum(num - 1);
-	};
-
+function CounterBtn({ quantity, onPlusClick, onMinusClick }) {
 	return (
 		<BtnContainer>
-			<MinusBtn onClick={onMinusClick} disabled={num === 1}>
+			<MinusBtn onClick={onMinusClick} disabled={quantity === 1}>
 				<AiOutlineMinus />
 			</MinusBtn>
-			<NumDisplay>{num}</NumDisplay>
-			<PlusBtn onClick={onPlusClick} disabled={num === 99}>
+			<NumDisplay>{quantity}</NumDisplay>
+			<PlusBtn onClick={onPlusClick} disabled={quantity === 99}>
 				<AiOutlinePlus />
 			</PlusBtn>
 		</BtnContainer>
@@ -28,7 +18,6 @@ function CounterBtn() {
 const BtnContainer = styled.div`
 	display: inline-flex;
 	background: #ffffff;
-	margin-right: 20%;
 `;
 
 const MinusBtn = styled.button`
@@ -46,6 +35,7 @@ const MinusBtn = styled.button`
 	align-items: center;
 `;
 const NumDisplay = styled.div`
+	font-size: 20px;
 	text-align: center;
 	width: 32px;
 	height: 32px;

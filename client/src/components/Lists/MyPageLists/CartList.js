@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import CounterBtn from '../Buttons/CounterButton';
+import CounterBtn from '../../Buttons/CounterButton';
 
 function CartList() {
 	const [isSub, setIsSub] = useState(true);
