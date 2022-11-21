@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { BsDash } from 'react-icons/bs';
 
-export default function MultiRangeSlider({ min, max }) {
+export default function PriceButton({ min, max, isOpen }) {
 	const [minVal, setMinVal] = useState(min);
 	const [maxVal, setMaxVal] = useState(max);
 	const minValRef = useRef(min);
@@ -39,7 +39,7 @@ export default function MultiRangeSlider({ min, max }) {
 	// Get min and max values when their state changes
 
 	return (
-		<EntireContainer>
+		<EntireContainer isOpen={isOpen}>
 			<SliderContainer>
 				<ThumbLeft
 					type="range"
@@ -76,14 +76,14 @@ export default function MultiRangeSlider({ min, max }) {
 			<ButtomContainer>
 				<ValueBox>
 					<ValueDescription>최저 금액</ValueDescription>
-					<SliderValue>{minVal} 원</SliderValue>
+					<SliderValue>{minVal.toLocaleString('ko-KR')} 원</SliderValue>
 				</ValueBox>
 				<IconBox>
 					<BsDash />
 				</IconBox>
 				<ValueBox>
 					<ValueDescription>최고 금액</ValueDescription>
-					<SliderValue>{maxVal} 원</SliderValue>
+					<SliderValue>{maxVal.toLocaleString('ko-KR')} 원</SliderValue>
 				</ValueBox>
 				<AdoptButton>적용하기</AdoptButton>
 			</ButtomContainer>
@@ -96,7 +96,21 @@ const EntireContainer = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	border: 1px solid;
+	/* border: 1px solid; */
+	margin-right: 60px;
+	animation: ${(isOpen) =>
+		isOpen
+			? 'slide-fade-in-dropdown-animation 0.4s ease'
+			: 'slide-fade-out-dropdown-animation 0.4s ease'};
+	@keyframes slide-fade-in-dropdown-animation {
+		0% {
+			transform: translateX(15%);
+		}
+
+		100% {
+			transform: translateX(0);
+		}
+	}
 `;
 
 const SliderContainer = styled.div`

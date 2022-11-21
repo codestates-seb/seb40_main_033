@@ -64,7 +64,7 @@ const GlobalStyle = createGlobalStyle`
   }  
   * {
     box-sizing: border-box;
-    font-family: 'NanumSquare', "Noto Sans KR", sans-serif;
+    font-family:  'NanumSquare', 'Spoqa Han Sans Neo',"Pretendard Variable", Pretendard, "Noto Sans KR", sans-serif;
     font-size: 13px;
     letter-spacing: -0.02em;
     color: #414141;

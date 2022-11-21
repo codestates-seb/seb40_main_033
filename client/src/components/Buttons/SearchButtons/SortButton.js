@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BsToggles } from 'react-icons/bs';
-import { LetterButtonColor } from './LetterButton';
+import { FiFilter } from 'react-icons/fi';
+import PriceButton from './PriceButton';
+import { LetterButtonColor } from '../LetterButton';
 
-function SortButton({ children }) {
+export function SortButton({ children }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const handleOpenClick = () => {
 		setIsOpen(!isOpen);
@@ -38,12 +40,34 @@ function SortButton({ children }) {
 	);
 }
 
+export function PriceSortButton({ children }) {
+	const [isOpen, setIsOpen] = useState(false);
+	const handleOpenClick = () => {
+		setIsOpen(!isOpen);
+		// console.log(isOpen);
+	};
+	return (
+		<ButtonContainer isOpen={isOpen} price>
+			{isOpen ? <PriceButton min={0} max={100000} /> : null}
+			<MainBox>
+				<OpenButton onClick={handleOpenClick} isOpen={isOpen}>
+					<IoIosArrowBack />
+				</OpenButton>
+				<NameBox>
+					{children}
+					<FiFilter />
+				</NameBox>
+			</MainBox>
+		</ButtonContainer>
+	);
+}
+
 const ButtonContainer = styled.div`
-	margin-left: 50%;
-	display: flex;
+	/* margin-left: 50%; */
+	display: inline-flex;
 	justify-content: space-between;
 	align-items: center;
-	height: 54px;
+	align-items: baseline;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
 	background-color: white;
 	border-radius: 27px;
@@ -52,7 +76,14 @@ const ButtonContainer = styled.div`
 	padding: 13px 20px 13px 13px;
 	transition: 0.5s ease;
 	float: right;
-	/* position: absolute;
+	${(props) =>
+		props.price && props.isOpen
+			? css`
+					align-items: baseline;
+					height: auto;
+					padding: 13px 20px 13px 20px;
+			  `
+			: null}/* position: absolute;
 	top: 0;
 	right: 0; //float: right 대신 써줘도 됩니다. 둘다 보기에는 같은데 나중에 뭐 쓸지 함 봐야할듯.*/
 `;
@@ -94,9 +125,13 @@ const NameBox = styled.div`
 	flex-direction: row;
 	justify-content: space-between;
 	width: 72px;
+	color: var(--purple-200);
 	font-weight: var(--bold);
 	& > svg {
 		path {
+			color: var(--purple-200);
+		}
+		polygon {
 			color: var(--purple-200);
 		}
 	}
@@ -142,5 +177,3 @@ const MenuLi = styled.li`
 		}
 	}
 `;
-
-export default SortButton;
