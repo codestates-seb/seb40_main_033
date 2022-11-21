@@ -23,20 +23,16 @@ public class PayService {
     RestTemplate restTemplate = new RestTemplate();
     private final OrderService orderService;
     MultiValueMap<String, String> parameters;
-    private Integer itemQuantity;
-    private String itemName;
-    private String item_name;
     private Long order_id;
-
 
     public KakaoPayRequestDto kakaoPayRequest( int totalAmount, int quantity, Long orderId ){
 
         Order order = orderService.findOrder(orderId);
-        itemQuantity = order.getTotalItems();
-        itemName = order.getItemOrders().get(0).getItem().getTitle();
-        order_id = orderId;
-        item_name = itemName + " 그 외 " + ( itemQuantity - 1);
 
+        Integer itemQuantity = order.getTotalItems();
+        String itemName = order.getItemOrders().get(0).getItem().getTitle();
+        String item_name = getItem_name(itemQuantity, itemName);
+        order_id = orderId;
 
         MultiValueMap<String, String> parameters = getRequestParams(totalAmount, quantity, item_name, order_id);
         log.info("parameters = {}", parameters);
@@ -74,9 +70,8 @@ public class PayService {
         String value = objectMapper.writeValueAsString(tossRequestDto);
 
         HttpEntity<String> generalRequestEntity = new HttpEntity<>(value, getGeneralHeader());
-        String result = restTemplate.postForObject(url, generalRequestEntity, String.class);
 
-        return result;
+        return restTemplate.postForObject(url, generalRequestEntity, String.class);
     }
 
     private MultiValueMap<String, String> getRequestParams( int totalAmount, int quantity, String item_name, Long order_Id ){ //TODO: 파라미터 추가
@@ -119,5 +114,10 @@ public class PayService {
         httpHeaders.set("Authorization", "Basic dGVzdF9za196WExrS0V5cE5BcldtbzUwblgzbG1lYXhZRzVSOg==");
         httpHeaders.set("Content-Type", "application/json");
         return httpHeaders;
+    }
+
+    private String getItem_name( Integer itemQuantity, String itemName ){
+        if(itemQuantity == 1) return itemName;
+        return itemName + " 그 외 " + ( itemQuantity - 1 );
     }
 }

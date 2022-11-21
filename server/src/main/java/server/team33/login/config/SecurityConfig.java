@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .and()
                 .apply(new CustomFilterConfigurer(jwtToken, redisConfig,userRepository))
                 .and()
-                .oauth2Login(oauth2 -> oauth2.successHandler(new UserAuthSuccessHandler(jwtToken,userRepository)));
+                .oauth2Login(oauth2 -> oauth2.successHandler(new UserAuthSuccessHandler(jwtToken)));
 //                .authorizeHttpRequests(authorize -> authorize.antMatchers(HttpMethod.POST, "/users").permitAll()
 //                .antMatchers(HttpMethod.POST, "/answers").hasRole("USER")
 //                .antMatchers(HttpMethod.PATCH, "/answers/**").hasRole("USER")
