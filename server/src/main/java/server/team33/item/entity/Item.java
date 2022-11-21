@@ -1,13 +1,13 @@
 package server.team33.item.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import server.team33.audit.Auditable;
+import server.team33.category.entity.ItemCategory;
 import server.team33.nutritionFact.entity.NutritionFact;
 import server.team33.review.entity.Review;
 import server.team33.talk.entity.Talk;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,64 +16,66 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Item extends Auditable {
+public class Item {
 
     @Id
     @Column(name = "ITEM_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
 
-    @Column(name = "ITEM_TITLE")
+    @Column
     private String title;
 
-    @Column(name = "ITEM_CONTENT")
+    @Column
     private String content;
 
-    @Column(name = "ITEM_THUMBNAIL")
+    @Column
     private String thumbnail;
 
-    @Column(name = "ITEM_DESCRIPTION_IMAGE")
+    @Column
     private String descriptionImage;
 
-    @Column(name = "ITEM_EXPIRATION")
+    @Column
     private String expiration;
 
-    @Column(name = "ITEM_")
+    @Column
     private int discountPrice;
 
-
-    @Column(name = "ITEM_PRICE")
+    @Column
     private int price;
 
-    @Column(name = "ITEM_DISCOUNT_RATE")
+    @Column
     private int discountRate;
 
-    @Column(name = "ITEM_SALES")
+    @Column
     private int sales;
 
-    @Column(name = "ITEM_CAPACITY")
+    @Column
     private int capacity;
 
-    @Column(name = "ITEM_SERVING_SIZE")
+//    @Column
+//    private boolean isWished;
+
+    @Column
     private int servingSize;
 
-    //private List<Item> items;
+    @Enumerated(value = EnumType.STRING)
+    private Brand brand;
 
-    @JsonIgnore
+//    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
+//    private List<Wish> wishes = new ArrayList<>();
+
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<Review> reviews;
+    private List<ItemCategory> itemCategories = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<Talk> talks;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
+    private List<Review> reviews = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<NutritionFact> nutritionFacts;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
+    private List<Talk> talks = new ArrayList<>();
 
-
-    //@Enumerated(EnumType.STRING)
-    //private Brand brand;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
+    private List<NutritionFact> nutritionFacts = new ArrayList<>();
 
 
 
