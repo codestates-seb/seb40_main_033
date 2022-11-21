@@ -46,3 +46,29 @@ export function LightPurpleButton({
 		</DefaultButton>
 	);
 }
+
+export function ColoredButton({
+	children,
+	width,
+	height,
+	onClick,
+	borderRadius = '100px',
+	bgColor = '#6256e5',
+}) {
+	return (
+		<DefaultButton
+			onClick={onClick}
+			color="gray"
+			colorCode="100"
+			bgColor={bgColor}
+			bgCode="100"
+			width={width}
+			height={height}
+			borderRadius={borderRadius}
+			fontSize="13px"
+			none
+		>
+			{children}
+		</DefaultButton>
+	);
+}

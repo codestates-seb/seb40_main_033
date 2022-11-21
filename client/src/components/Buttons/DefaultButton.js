@@ -14,6 +14,7 @@ const DefaultButton = styled.button`
 		color,
 		colorCode,
 		borderCode,
+		bgColor,
 		bgCode,
 		hoverBgCode,
 		width,
@@ -46,6 +47,16 @@ const DefaultButton = styled.button`
 							color: ${`var(--${hoverColor}-${hoverColorCode})`};
 						}
 				  `}
+		${({ none }) =>
+			none &&
+			css`
+				background-color: ${bgColor};
+				border: none;
+				&:hover {
+					background-color: ${bgColor};
+					font-weight: var(--bold);
+				}
+			`}
 	`}
 `;
 export default DefaultButton;
