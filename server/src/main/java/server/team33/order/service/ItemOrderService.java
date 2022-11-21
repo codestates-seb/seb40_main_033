@@ -50,4 +50,18 @@ public class ItemOrderService {
         return totalDiscountPrice;
     }
 
+    public int countQuantity(List<ItemOrder> itemOrders) { // 주문의 담긴 상품의 총량을 구하는 메서드
+
+        if(itemOrders == null) return 0;
+
+        int totalquantity = 0;
+
+        for(ItemOrder itemOrder : itemOrders) {
+            int quantity = itemOrder.getQuantity();
+            totalquantity += quantity;
+        }
+
+        return totalquantity;
+    }
+
 }

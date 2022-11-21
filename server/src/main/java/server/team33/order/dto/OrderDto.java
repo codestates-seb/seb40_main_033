@@ -54,6 +54,8 @@ public class OrderDto {
         private OrderStatus orderStatus;
         private ZonedDateTime createdAt;
         private ZonedDateTime updatedAt;
+
+        private int totalQuantity;
     }
 
 }

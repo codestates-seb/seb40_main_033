@@ -85,6 +85,8 @@ public interface OrderMapper {
         orderDetailResponseDto.setCreatedAt(order.getCreatedAt());
         orderDetailResponseDto.setUpdatedAt(order.getUpdatedAt());
 
+        orderDetailResponseDto.setTotalQuantity(order.getTotalQuantity());
+
         return orderDetailResponseDto;
     }
 }
