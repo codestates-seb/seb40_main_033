@@ -40,6 +40,7 @@ public class OrderService {
         order.setExpectPrice(order.getTotalPrice() - order.getTotalDiscountPrice());
         order.setUser(user);
         order.setOrderStatus(OrderStatus.ORDER_REQUEST);
+        order.setTotalQuantity(itemOrderService.countQuantity(itemOrders));
 
         for(ItemOrder itemOrder : itemOrders) {
             itemOrder.setOrder(order);

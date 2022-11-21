@@ -56,4 +56,7 @@ public class Order extends Auditable {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus = OrderStatus.ORDER_REQUEST;
+
+    @Transient
+    private int totalQuantity;
 }
