@@ -7,6 +7,14 @@ import './slick.css';
 import './slick-theme.css';
 import { useState } from 'react';
 import { MdPlayArrow, MdPause } from 'react-icons/md';
+import CaroucelInfo from './Caroucel-Info';
+
+const Info = {
+	type: 'EVENT',
+	title: ['내 몸 구석구석 건강 관리', '하루가 더 가뿐해져요'],
+	description: ['멀티비타민 할인전 이벤트', 'NOW ON SALE'],
+	color: '#FE9701',
+};
 
 function SampleArrow(props) {
 	const { className, style, onClick } = props;
@@ -60,9 +68,7 @@ function SimpleSlider() {
 					<SlidePage key={`${i.toString()}-${el}`}>
 						<MultiItem>
 							<SInfo>
-								Hello worldHello worldHello worldHello worldHello world Hello
-								world Hello world Hello world Hello world Hello world Hello
-								world Hello world
+								<CaroucelInfo {...Info} />
 							</SInfo>
 							<SImg />
 						</MultiItem>
@@ -110,7 +116,7 @@ export const SImg = styled.img.attrs({
 
 const SInfo = styled.div`
 	width: 45%;
-	padding-left: 50px;
+	padding-left: 130px;
 `;
 
 export const SlideContainer = styled.div`
