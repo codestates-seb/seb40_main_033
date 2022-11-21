@@ -28,8 +28,7 @@ function CounterBtn() {
 const BtnContainer = styled.div`
 	display: inline-flex;
 	background: #ffffff;
-	margin-left: 50%;
-	margin-top: 25%; //위 두 속성은 단지 편하게 보기 위한 속성입니다. 실제로는 삭제해야 합니다.
+	margin-right: 20%;
 `;
 
 const MinusBtn = styled.button`
