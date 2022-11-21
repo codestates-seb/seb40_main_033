@@ -65,12 +65,12 @@ public class PaymentController {
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/payment/cancel")//TODO 일반결제 카카오페이결제 실패시 url결정해야
+    @GetMapping("/cancel")//TODO 일반결제 카카오페이결제 실패시 url결정해야
     public ResponseEntity cancel(){
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/payment/fail")
+    @GetMapping("/fail")
     public ResponseEntity fail(){
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -15,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import server.team33.login.details.PrincipalDetails;
 import server.team33.login.jwt.JwtToken;
 import server.team33.user.entity.User;
-import server.team33.user.repository.UserRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,9 +33,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtToken jwtToken;
-    private final UserRepository userRepository;
-
-
     @Override
     public void onAuthenticationSuccess( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException, ServletException{
 

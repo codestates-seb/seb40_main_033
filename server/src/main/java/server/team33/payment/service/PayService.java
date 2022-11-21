@@ -23,7 +23,7 @@ public class PayService {
     RestTemplate restTemplate = new RestTemplate();
     private final OrderService orderService;
     MultiValueMap<String, String> parameters;
-    private int itemQuantity;
+    private Integer itemQuantity;
     private String itemName;
     private String item_name;
     private Long order_id;
@@ -31,13 +31,11 @@ public class PayService {
 
     public KakaoPayRequestDto kakaoPayRequest( int totalAmount, int quantity, Long orderId ){
 
-                Order order = orderService.findOrder(orderId);
-                itemQuantity = order.getTotalItems();
-                itemName = order.getItemOrders().get(0).getItem().getTitle();
-
-
+        Order order = orderService.findOrder(orderId);
+        itemQuantity = order.getTotalItems();
+        itemName = order.getItemOrders().get(0).getItem().getTitle();
         order_id = orderId;
-        item_name = itemName + " 그 외 " + ( itemQuantity - 1 );
+        item_name = itemName + " 그 외 " + ( itemQuantity - 1);
 
 
         MultiValueMap<String, String> parameters = getRequestParams(totalAmount, quantity, item_name, order_id);
@@ -61,8 +59,6 @@ public class PayService {
         String url = "https://kapi.kakao.com/v1/payment/approve";
 
         KakaoPayApproveDto kakaoPayApproveDto = restTemplate.postForObject(url, kakaoRequestEntity, KakaoPayApproveDto.class);
-
-
         log.info("결제 승인 응답 객체" + kakaoPayApproveDto);
 
         return kakaoPayApproveDto;
