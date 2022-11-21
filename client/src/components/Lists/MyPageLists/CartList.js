@@ -1,31 +1,57 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import { TfiClose } from 'react-icons/tfi';
 import CounterBtn from '../../Buttons/CounterButton';
+import { DayShowTab } from '../../Tabs/TabButtons';
 
 function CartList() {
+	const price = 6000;
 	const [isSub, setIsSub] = useState(true);
+	const [quantity, setQuantity] = useState(1);
+
+	const onPlusClick = () => {
+		setQuantity(quantity + 1);
+	};
+	const onMinusClick = () => {
+		setQuantity(quantity - 1);
+	};
 
 	return (
 		<Box isSub={isSub}>
 			<CheckBox>
 				<Check type="checkbox" />
 			</CheckBox>
+
 			<Wrap isSub={isSub}>
-				{isSub ? <SubBox /> : null}
+				{isSub ? (
+					<SubBox>
+						<SubWrap>
+							<Text>구독 주기</Text>
+							<DayShowTab />
+						</SubWrap>
+					</SubBox>
+				) : null}
 				<MainBox>
 					<Image> img </Image>
 					<InformationForm>
 						<Brand>California Gold Nutrition</Brand>
 						<Name>오메가3 프리미엄 피쉬 오일</Name>
-						<Price>6000원</Price>
+						<Price>{price} 원</Price>
 					</InformationForm>
 					<QuantityForm>
 						<Quantity>수량</Quantity>
-						<CounterBtn />
-						<PriceBold>6000원</PriceBold>
+						<CounterBtn
+							quantity={quantity}
+							onPlusClick={onPlusClick}
+							onMinusClick={onMinusClick}
+						/>
+						<PriceBold>{price * quantity}원</PriceBold>
 					</QuantityForm>
 				</MainBox>
 			</Wrap>
+			<DeleteBtn isSub={isSub}>
+				<TfiClose />
+			</DeleteBtn>
 		</Box>
 	);
 }
@@ -61,9 +87,25 @@ const Wrap = styled.div`
 `;
 
 const SubBox = styled.div`
-	border: 1px solid blue;
 	width: 849px;
 	height: 90px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const SubWrap = styled.div`
+	margin-top: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 50px;
+`;
+
+const Text = styled.div`
+	font-size: 16px;
+	margin-right: 10px;
+	color: var(--gray-500);
 `;
 
 const MainBox = styled.div`
@@ -75,7 +117,7 @@ const MainBox = styled.div`
 `;
 
 const Image = styled.div`
-	border: 2px solid green;
+	border: 1px solid green;
 	width: 163px;
 	height: 163px;
 	display: flex;
@@ -106,7 +148,6 @@ const Name = styled.div`
 `;
 
 const Price = styled.div`
-	border: 1px solid red;
 	color: var(--gray-600);
 	font-weight: var(--regular);
 `;
@@ -128,10 +169,20 @@ const Quantity = styled.div`
 `;
 
 const PriceBold = styled.div`
-	border: 1px solid red;
 	font-size: 20px;
 	color: var(--gray-600);
 	font-weight: var(--extrabold);
+`;
+
+const DeleteBtn = styled.button`
+	font-size: 11px;
+	border: none;
+	background-color: white;
+	color: var(--gray-400);
+	position: relative;
+	right: 35px;
+	bottom: ${(props) => (props.isSub ? '116px' : '80px')};
+	cursor: pointer;
 `;
 
 export default CartList;

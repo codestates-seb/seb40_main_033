@@ -13,12 +13,9 @@ function Review() {
 				<ReviewForm>리뷰</ReviewForm>
 			</Main>
 			<Button>
-				<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-					수정
-				</LetterButtonColor>
-				<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-					삭제
-				</LetterButtonColor>
+				<LetterButtonColor fontSize="11px">수정</LetterButtonColor>
+				<div>|</div>
+				<LetterButtonColor fontSize="11px">삭제</LetterButtonColor>
 			</Button>
 		</Box>
 	);
@@ -30,12 +27,15 @@ const Box = styled.div`
 	height: 213px;
 	display: flex;
 	align-items: center;
-	justify-content: center;
 `;
 
 const Main = styled.div`
-	width: 560px;
-	height: 160px;
+	border-bottom: 1px solid rgb(235, 235, 235);
+	width: 610px;
+	height: 170px;
+	margin-top: 18px;
+	margin-left: 35px;
+	position: absolute;
 `;
 
 const Name = styled.div`
@@ -47,7 +47,6 @@ const Name = styled.div`
 `;
 
 const Wrap = styled.div`
-	width: 200px;
 	height: 26px;
 	display: flex;
 `;
@@ -68,16 +67,17 @@ const Date = styled.div`
 const ReviewForm = styled.div`
 	border: 1px solid blue;
 	width: 500px;
-	height: 112px;
+	height: 100px;
 `;
 
 const Button = styled.div`
-	width: 70px;
+	width: 80px;
 	height: 20px;
-	display: flex;
 	position: relative;
-	left: 8px;
-	bottom: 75px;
+	left: 580px;
+	bottom: 80px;
+	display: flex;
+	color: var(--gray-200);
 `;
 
 export default Review;

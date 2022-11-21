@@ -9,16 +9,12 @@ function Talk() {
 				<MainForm>
 					<Brand>브랜드</Brand>
 					<Name>이름</Name>
-
-					<TalkForm>Talk</TalkForm>
+					<TalkForm />
 				</MainForm>
 				<Button>
-					<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-						수정
-					</LetterButtonColor>
-					<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-						삭제
-					</LetterButtonColor>
+					<LetterButtonColor fontSize="11px">수정</LetterButtonColor>
+					<div>|</div>
+					<LetterButtonColor fontSize="11px">삭제</LetterButtonColor>
 				</Button>
 			</Form>
 			<Date>날짜</Date>
@@ -27,6 +23,7 @@ function Talk() {
 }
 
 const Box = styled.div`
+	border-bottom: 1px solid rgb(235, 235, 235);
 	background-color: white;
 	width: 864px;
 	height: 187px;
@@ -68,29 +65,31 @@ const Name = styled.div`
 	font-size: 20px;
 `;
 
-const TalkForm = styled.div`
+const TalkForm = styled.input`
 	border: 1px solid orange;
 	width: 700px;
 	height: 82px;
 	color: var(--gray-400);
+	margin-top: 15px;
 `;
 
 const Button = styled.div`
-	width: 70px;
+	width: 80px;
 	height: 20px;
 	display: flex;
 	position: relative;
-	left: 160px;
-	bottom: 76px;
+	left: 150px;
+	bottom: 70px;
+	color: var(--gray-200);
 `;
 
 const Date = styled.div`
 	border: 1px solid green;
 	width: 75px;
-	height: 26px;
+	height: 15px;
 	color: var(--gray-200);
 	position: relative;
-	top: 150px;
+	top: 170px;
 	left: 80px;
 `;
 
