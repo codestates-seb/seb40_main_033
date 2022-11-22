@@ -39,7 +39,6 @@ const Main = styled.div`
 `;
 
 const Name = styled.div`
-	border: 1px solid red;
 	width: 400px;
 	height: 20px;
 	color: var(--gray-600);
@@ -52,20 +51,18 @@ const Wrap = styled.div`
 `;
 
 const Star = styled.div`
-	border: 1px solid green;
 	width: 90px;
 	height: 26px;
 `;
 
 const Date = styled.div`
-	border: 1px solid green;
 	width: 75px;
 	height: 26px;
 	color: var(--gray-200);
 `;
 
 const ReviewForm = styled.div`
-	border: 1px solid blue;
+	border: 1px solid black;
 	width: 500px;
 	height: 100px;
 `;

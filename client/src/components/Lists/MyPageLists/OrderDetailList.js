@@ -37,6 +37,7 @@ function OrderDetailList() {
 }
 
 const Box = styled.div`
+	border-bottom: 1px solid rgb(235, 235, 235);
 	background-color: white;
 	width: 420px;
 	height: 179px;
@@ -72,7 +73,6 @@ const InformationForm = styled.div`
 `;
 
 const Brand = styled.div`
-	border: 1px solid green;
 	color: var(--green-200);
 	font-weight: var(--bold);
 `;
@@ -83,7 +83,6 @@ const Prod = styled.div`
 `;
 
 const Name = styled.div`
-	border: 1px solid purple;
 	color: var(--gray-600);
 	font-weight: var(--bold);
 	display: flex;
@@ -91,7 +90,6 @@ const Name = styled.div`
 `;
 
 const Pill = styled.div`
-	border: 1px solid orange;
 	height: 15px;
 	color: var(--gray-600);
 	font-weight: var(--bold);
@@ -112,7 +110,7 @@ const QuantityForm = styled.div`
 const Bottom = styled.div`
 	display: flex;
 	font-size: 16px;
-	font-weight: var(--extrabold);
+	font-weight: var(--extraBold);
 `;
 
 const Quantity = styled.div`

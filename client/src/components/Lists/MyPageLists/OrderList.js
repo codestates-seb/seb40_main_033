@@ -44,6 +44,7 @@ function OrderList() {
 }
 
 const Box = styled.div`
+	border-bottom: 1px solid rgb(235, 235, 235);
 	background-color: white;
 	width: 864px;
 	height: 208px;
@@ -93,7 +94,6 @@ const Inform = styled.div`
 `;
 
 const ShoppingInfo = styled.div`
-	border: 1px solid black;
 	width: 150px;
 	height: 30px;
 	display: flex;
@@ -104,13 +104,11 @@ const ShoppingInfo = styled.div`
 `;
 
 const Brand = styled.div`
-	border: 1px solid green;
 	color: var(--gray-600);
 	font-weight: var(--bold);
 `;
 
 const Name = styled.div`
-	border: 1px solid purple;
 	color: var(--gray-600);
 	font-weight: var(--bold);
 `;
