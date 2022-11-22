@@ -19,9 +19,9 @@ public interface ItemOrderMapper {
         ItemOrder itemOrder = new ItemOrder();
         itemOrder.setQuantity(itemOrderPostDto.getQuantity());
         itemOrder.setPeriod(itemOrderPostDto.getPeriod());
-        itemOrder.setSubscription(itemOrder.isSubscription());
+        itemOrder.setSubscription(itemOrderPostDto.isSubscription());
 
-        Item item = itemService.findItem(itemOrderPostDto.getItemId());
+        Item item = itemService.findVerifiedItem(itemOrderPostDto.getItemId());
         itemOrder.setItem(item);
 
         return itemOrder;

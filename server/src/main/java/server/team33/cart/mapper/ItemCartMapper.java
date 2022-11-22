@@ -24,7 +24,7 @@ public interface ItemCartMapper {
                 .buyNow(itemCartPostDto.isBuyNow())
                 .subscription(itemCartPostDto.isSubscription())
                 .cart(user.getCart())
-                .item(itemService.findItem(itemId))
+                .item(itemService.findVerifiedItem(itemId))
                 .build();
     }
 

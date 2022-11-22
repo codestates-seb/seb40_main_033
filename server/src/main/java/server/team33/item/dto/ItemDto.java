@@ -35,6 +35,7 @@ public class ItemDto {
         private List<CategoryDto.Post> categories;
         // wish 관련되어 추가될 예정
         private List<NutritionFact> nutritionFacts;
+        private double starAvg;
         private List<Review> reviews;
         private List<Talk> talks;
     }
@@ -58,6 +59,7 @@ public class ItemDto {
         private int discountPrice;
         private List<CategoryDto.Response> categories;
         private List<NutritionFact> nutritionFacts;
+        private double starAvg;
         private List<Review> reviews;
         private List<Talk> talks;
     }

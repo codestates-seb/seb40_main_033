@@ -32,6 +32,7 @@ public interface ItemMapper {
         itemDetailResponseDto.setDiscountPrice(item.getPrice());
         itemDetailResponseDto.setNutritionFacts(item.getNutritionFacts());
         itemDetailResponseDto.setCategories(categoryToCategoryResponseDto(item.getCategories()));
+        itemDetailResponseDto.setStarAvg(item.getStarAvg());
         itemDetailResponseDto.setReviews(item.getReviews());
         itemDetailResponseDto.setTalks(item.getTalks());
 
@@ -56,6 +57,7 @@ public interface ItemMapper {
         item.setCategories(categoryPostDtoToCategory(post.getCategories(), item));
         item.setServingSize(post.getServingSize());
         item.setNutritionFacts(post.getNutritionFacts());
+        item.setStarAvg(post.getStarAvg());
         item.setReviews(post.getReviews());
         item.setTalks(post.getTalks());
 
