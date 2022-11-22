@@ -2,11 +2,10 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { TfiClose } from 'react-icons/tfi';
 import CounterBtn from '../../Buttons/CounterButton';
-import { DayShowTab } from '../../Tabs/TabButtons';
+import { DayControlTab } from '../../Tabs/TabButtons';
 
-function CartList() {
+function SubMngmList() {
 	const price = 6000;
-	const [isSub, setIsSub] = useState(true);
 	const [quantity, setQuantity] = useState(1);
 
 	const onPlusClick = () => {
@@ -17,20 +16,19 @@ function CartList() {
 	};
 
 	return (
-		<Box isSub={isSub}>
+		<Box>
 			<CheckBox>
 				<Check type="checkbox" />
 			</CheckBox>
 
-			<Wrap isSub={isSub}>
-				{isSub ? (
-					<SubBox>
-						<SubWrap>
-							<Text>구독 주기</Text>
-							<DayShowTab />
-						</SubWrap>
-					</SubBox>
-				) : null}
+			<Wrap>
+				<SubBox>
+					<SubWrap>
+						<Text>구독 주기</Text>
+						<DayControlTab />
+					</SubWrap>
+				</SubBox>
+
 				<MainBox>
 					<Image> img </Image>
 					<InformationForm>
@@ -49,7 +47,7 @@ function CartList() {
 					</QuantityForm>
 				</MainBox>
 			</Wrap>
-			<DeleteBtn isSub={isSub}>
+			<DeleteBtn>
 				<TfiClose />
 			</DeleteBtn>
 		</Box>
@@ -59,7 +57,7 @@ function CartList() {
 const Box = styled.div`
 	background-color: white;
 	width: 864px;
-	height: ${(props) => (props.isSub ? '274px' : '203px')};
+	height: 274px;
 	display: flex;
 	align-items: center;
 `;
@@ -79,10 +77,10 @@ const Check = styled.input`
 
 const Wrap = styled.div`
 	width: 850px;
-	height: ${(props) => (props.isSub ? '274px' : '203px')};
+	height: 230px;
 	flex-direction: column;
 	display: flex;
-	justify-content: ${(props) => (props.isSub ? null : 'center')};
+	justify-content: center;
 	align-items: center;
 `;
 
@@ -181,8 +179,8 @@ const DeleteBtn = styled.button`
 	color: var(--gray-400);
 	position: relative;
 	right: 35px;
-	bottom: ${(props) => (props.isSub ? '116px' : '80px')};
+	bottom: 116px;
 	cursor: pointer;
 `;
 
-export default CartList;
+export default SubMngmList;

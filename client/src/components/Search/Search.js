@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { BiSearch } from 'react-icons/bi';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 function Search() {
 	return (
 		<Box>
 			<Input placeholder="검색어를 입력하세요" />
 			<Icon>
-				<BiSearch />
+				<AiOutlineSearch />
 			</Icon>
 		</Box>
 	);
@@ -40,10 +40,10 @@ const Icon = styled.button`
 	display: flex;
 	align-items: center;
 	position: relative;
-	background-color: white;
+	background-color: var(--gray-200);
 	border: none;
 	color: var(--purple-200);
-	font-size: 20px;
+	font-size: 24px;
 	left: 115px;
 `;
 
