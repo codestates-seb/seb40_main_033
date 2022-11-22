@@ -1,7 +1,7 @@
 package server.team33.item.entity;
 
 import lombok.*;
-import server.team33.category.entity.ItemCategory;
+import server.team33.category.entity.Category;
 import server.team33.nutritionFact.entity.NutritionFact;
 import server.team33.review.entity.Review;
 import server.team33.talk.entity.Talk;
@@ -66,7 +66,12 @@ public class Item {
 //    private List<Wish> wishes = new ArrayList<>();
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<ItemCategory> itemCategories = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
+
+    public void addCategories(Category category) {
+        categories.add(category);
+        category.setItem(this);
+    }
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
     private List<Review> reviews = new ArrayList<>();
@@ -76,8 +81,6 @@ public class Item {
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
     private List<NutritionFact> nutritionFacts = new ArrayList<>();
-
-
 
 
 }

@@ -1,9 +1,14 @@
 package server.team33.item.mapper;
 
 import org.mapstruct.Mapper;
+import server.team33.category.dto.CategoryDto;
+import server.team33.category.entity.Category;
 import server.team33.item.dto.ItemDto;
 import server.team33.item.dto.ItemSimpleResponseDto;
 import server.team33.item.entity.Item;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Mapper(componentModel = "spring")
@@ -17,6 +22,7 @@ public interface ItemMapper {
         itemDetailResponseDto.setTitle(item.getTitle());
         itemDetailResponseDto.setContent(item.getContent());
         itemDetailResponseDto.setExpiration(item.getExpiration());
+        //itemDetailResponseDto.setBrand(item.getBrand());
         itemDetailResponseDto.setBrand(item.getBrand());
         itemDetailResponseDto.setSales(item.getSales());
         itemDetailResponseDto.setPrice(item.getPrice());
@@ -25,7 +31,7 @@ public interface ItemMapper {
         itemDetailResponseDto.setDiscountRate(item.getDiscountRate());
         itemDetailResponseDto.setDiscountPrice(item.getPrice());
         itemDetailResponseDto.setNutritionFacts(item.getNutritionFacts());
-        itemDetailResponseDto.setItemCategories(item.getItemCategories());
+        itemDetailResponseDto.setCategories(categoryToCategoryResponseDto(item.getCategories()));
         itemDetailResponseDto.setReviews(item.getReviews());
         itemDetailResponseDto.setTalks(item.getTalks());
 
@@ -39,6 +45,7 @@ public interface ItemMapper {
         item.setThumbnail(post.getThumbnail());
         item.setDescriptionImage(post.getDescriptionImage());
         item.setDiscountRate(post.getDiscountRate());
+        item.setBrand(post.getBrand());
         item.setCapacity(post.getCapacity());
         item.setPrice(post.getPrice());
         item.setSales(post.getSales());
@@ -46,7 +53,7 @@ public interface ItemMapper {
         item.setContent(post.getContent());
         item.setExpiration(post.getExpiration());
         item.setDiscountPrice(post.getDiscountPrice());
-        item.setItemCategories(post.getItemCategories());
+        item.setCategories(categoryPostDtoToCategory(post.getCategories(), item));
         item.setServingSize(post.getServingSize());
         item.setNutritionFacts(post.getNutritionFacts());
         item.setReviews(post.getReviews());
@@ -54,6 +61,27 @@ public interface ItemMapper {
 
         return item;
     }
+    default List<CategoryDto.Response> categoryToCategoryResponseDto(List<Category> categories) {
+        return categories.stream().map(category -> {
+            CategoryDto.Response response = new CategoryDto.Response();
+
+            response.setCategoryName(category.getCategoryName());
+            return response;
+        }).collect(Collectors.toList());
+    }
+
+
+    default List<Category> categoryPostDtoToCategory(List<CategoryDto.Post> posts, Item item) {
+        return posts.stream().map(post -> {
+            Category category = new Category();
+
+            category.setCategoryName(post.getCategoryName());
+            category.setItem(item);
+            return category;
+        }).collect(Collectors.toList());
+    }
+
+
 
     default ItemDto.ItemCategoryResponse itemToItemCategoryResponseDto(Item item) {
         ItemDto.ItemCategoryResponse itemCategoryResponse = new ItemDto.ItemCategoryResponse();
@@ -61,8 +89,9 @@ public interface ItemMapper {
         itemCategoryResponse.setItemId(item.getItemId());
         itemCategoryResponse.setTitle(item.getTitle());
         itemCategoryResponse.setContent(item.getContent());
-        itemCategoryResponse.setPrice(item.getPrice());
         itemCategoryResponse.setBrand(item.getBrand());
+        itemCategoryResponse.setPrice(item.getPrice());
+        //itemCategoryResponse.setBrand(item.getBrand());
         itemCategoryResponse.setNutritionFacts(item.getNutritionFacts());
         // 리뷰 별 총점
         // 찜의 여부 가 추가 될 예정
@@ -74,7 +103,7 @@ public interface ItemMapper {
     default ItemSimpleResponseDto itemToItemSimpleResponseDto(Item item) {
         ItemSimpleResponseDto itemSimpleResponseDto = new ItemSimpleResponseDto();
         itemSimpleResponseDto.setItemId(item.getItemId());
-//        itemSimpleResponseDto.setBrand(item.getBrand());
+        itemSimpleResponseDto.setBrand(item.getBrand());
         itemSimpleResponseDto.setThumbnail(item.getThumbnail());
         itemSimpleResponseDto.setTitle(item.getTitle());
         itemSimpleResponseDto.setServingSize(item.getServingSize());
