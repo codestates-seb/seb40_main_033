@@ -1,4 +1,4 @@
-import DefaultList from './DefaultLIst';
+import DefaultList from './DefaultList';
 
 const item = {
 	data: {
@@ -16,6 +16,6 @@ export function MainList() {
 	return <DefaultList item={item} main />;
 }
 
-export function WishList() {
+export function WishItem() {
 	return <DefaultList item={item} />;
 }
