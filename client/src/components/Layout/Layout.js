@@ -12,11 +12,11 @@ function Layout() {
 	return (
 		<Container>
 			<TopContainer>
-				<LeftNav />
-				<MainContainer>
+				{hide || <LeftNav />}
+				<MainContainer className={hide ? 'noMargin' : null}>
 					<Outlet />
 				</MainContainer>
-				<RightNav />
+				{hide || <RightNav />}
 			</TopContainer>
 			<Footer />
 		</Container>
@@ -29,7 +29,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	width: 100%;
+	min-width: fit-content;
 	min-height: 100vh;
 `;
 
@@ -42,7 +42,12 @@ const TopContainer = styled.div`
 
 const MainContainer = styled.div`
 	display: flex;
+	flex-direction: column;
+	align-items: center;
 	margin: 120px 0 180px 0;
 	max-width: 1240px;
 	width: 100%;
+	&.noMargin {
+		margin: 0;
+	}
 `;
