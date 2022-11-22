@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 
-function Review() {
+function DetailReviewList() {
 	return (
 		<Box>
 			<Main>
@@ -80,4 +80,4 @@ const Button = styled.div`
 	color: var(--gray-200);
 `;
 
-export default Review;
+export default DetailReviewList;

@@ -5,7 +5,7 @@ import { BiBone } from 'react-icons/bi';
 import { GrPowerCycle } from 'react-icons/gr';
 import { RiHeartAddLine } from 'react-icons/ri';
 import { AiOutlinePlusCircle, AiOutlineThunderbolt } from 'react-icons/ai';
-import { Skin, Brain, Intestine, TempLogo, Liver } from '../assets/Icons';
+import { Skin, Brain, Intestine, TempLogo, Liver } from '../../assets/Icons';
 
 function LeftNav() {
 	const [isClicked, setIsClicked] = useState(false);

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { MdArrowForwardIos } from 'react-icons/md';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 
-function DetailOrderList() {
+function OrderDetailList() {
 	const price = 7000;
 	const quantity = 5;
 	const PillsNum = 60;
@@ -130,4 +130,4 @@ const WrapReview = styled.div`
 	cursor: pointer;
 `;
 
-export default DetailOrderList;
+export default OrderDetailList;
