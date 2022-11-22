@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
+import server.team33.item.entity.Item;
+import server.team33.item.repository.ItemRepository;
+import server.team33.item.service.ItemService;
 import server.team33.review.entity.Review;
 import server.team33.review.repository.ReviewRepository;
 import server.team33.user.entity.User;
@@ -18,11 +21,15 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class ReviewService {
+    private final ItemRepository itemRepository;
 
     private final ReviewRepository reviewRepository;
+    private final ItemService itemService;
 
     public Review createReview(Review review) {
-        return reviewRepository.save(review);
+        reviewRepository.save(review);
+        refreshStarAvg(review.getItem().getItemId());
+        return review;
     }
 
     public Review findReview(long reviewId) {
@@ -54,6 +61,7 @@ public class ReviewService {
                 .ifPresent(findReview::setStar);
 
         Review updatedReview = reviewRepository.save(findReview);
+        refreshStarAvg(findReview.getItem().getItemId());
         return updatedReview;
     }
 
@@ -74,6 +82,21 @@ public class ReviewService {
         }
 
         reviewRepository.delete(review);
+        refreshStarAvg(review.getItem().getItemId());
+    }
+
+    public double getStarAvg(long itemId) {
+        Optional<Double> optionalStarAvg = reviewRepository.findReviewAvg(itemId);
+        double starAvg = optionalStarAvg.orElse((double)0);
+        return starAvg;
+    }
+
+
+    // 리뷰 등록, 수정, 삭제 하는 경우 평균 별점을 갱신하는 로직
+    public void refreshStarAvg(long itemId) {
+        Item item = itemService.findVerifiedItem(itemId);
+        item.setStarAvg(getStarAvg(itemId));
+        itemRepository.save(item);
     }
 
 }
