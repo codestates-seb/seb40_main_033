@@ -1,6 +1,8 @@
 package server.team33.item.repository;
 
 import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import server.team33.item.entity.Item;
@@ -11,8 +13,8 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
 
-    @Query(value = "SELECT * FROM ITEM i WHERE i.category_id = :categoryId", nativeQuery = true)
-    List<Item> findAllByCategoryId(@Param("categoryId") long categoryId);
+    @Query("SELECT i FROM Item i join Category c on i.itemId = c.item.itemId WHERE c.categoryName  = :categoryName")
+    Page<Item> findAllByCategoryName(Pageable pageable, @Param("categoryName") String categoryName);
 
 
 //    @Query("SELECT i FROM Item i where i.brand = :brand")

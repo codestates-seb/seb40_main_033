@@ -3,6 +3,7 @@ package server.team33.category.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,8 +16,11 @@ import server.team33.item.dto.ItemDto;
 import server.team33.item.entity.Item;
 import server.team33.item.mapper.ItemMapper;
 import server.team33.item.repository.ItemRepository;
+import server.team33.item.service.ItemService;
+import server.team33.response.MultiResponseDto;
 import server.team33.response.SingleResponseDto;
 
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,9 +33,9 @@ import java.util.stream.Collectors;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final ItemRepository itemRepository;
     private final CategoryMapper categoryMapper;
     private final ItemMapper itemMapper;
+    private final ItemService itemService;
 
 
 
@@ -45,12 +49,15 @@ public class CategoryController {
 
 
     @GetMapping
-    public ResponseEntity getCategoryItems(@RequestParam("categoryName") String categoryName) { // 카테고리별 아이템 목록 조회
-        categoryService.verifyExistCategory(categoryName);
-        Long categoryId = categoryService.findCategoryId(categoryName);
-        List<Item> allByCategories = itemRepository.findAllByCategoryId(categoryId);
-        List<ItemDto.ItemCategoryResponse> lists = allByCategories.stream().map(item -> itemMapper.itemToItemCategoryResponseDto(item)).collect(Collectors.toList());
-        return new ResponseEntity(new SingleResponseDto<>(lists), HttpStatus.OK);
+    public ResponseEntity getCategoryItems(@RequestParam("categoryName") String categoryName,
+                                           @Positive @RequestParam(value="page", defaultValue="1") int page,
+                                           @Positive @RequestParam(value="size", defaultValue="16") int size,
+                                           @RequestParam(value="sort", defaultValue="itemId") String sort) { // 카테고리별 아이템 목록 조회
+
+        Page<Item> pageItems = itemService.findItems(categoryName, page-1, size, sort);
+        List<Item> items = pageItems.getContent();
+
+        return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(items), pageItems), HttpStatus.OK);
     }
 
 

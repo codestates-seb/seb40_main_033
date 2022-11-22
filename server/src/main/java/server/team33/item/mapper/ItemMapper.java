@@ -7,6 +7,7 @@ import server.team33.item.dto.ItemDto;
 import server.team33.item.dto.ItemSimpleResponseDto;
 import server.team33.item.entity.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,6 +101,18 @@ public interface ItemMapper {
         itemCategoryResponse.setReviewSize(item.getReviews().size());
 
         return itemCategoryResponse;
+    }
+
+    default List<ItemDto.ItemCategoryResponse> itemsToItemCategoryResponseDto(List<Item> items) {
+        if(items == null) return null;
+
+        List<ItemDto.ItemCategoryResponse> itemCategoryResponses = new ArrayList<>();
+
+        for(Item item : items) {
+            itemCategoryResponses.add(itemToItemCategoryResponseDto(item));
+        }
+
+        return itemCategoryResponses;
     }
 
     default ItemSimpleResponseDto itemToItemSimpleResponseDto(Item item) {
