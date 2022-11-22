@@ -5,7 +5,7 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 
-function DefaultTabButton({ menuArr, delayButton, toggle }) {
+function DefaultTabButton({ menuArr, delayButton, toggle, fontSize = '18px' }) {
 	const [currentTab, setCurrentTab] = useState(0);
 	const [highlight, setHighlight] = useState({ left: 0, width: 77 });
 	const [delayOpen, setDelayOpen] = useState(false);
@@ -51,7 +51,7 @@ function DefaultTabButton({ menuArr, delayButton, toggle }) {
 
 	return (
 		<TabContainer toggle={toggle}>
-			<TabMenu ref={menuEl}>
+			<TabMenu ref={menuEl} fontSize={fontSize}>
 				{menuArr.map(({ name, index }) => (
 					<li
 						key={`${index}-${name}`}
@@ -106,7 +106,7 @@ const TabMenu = styled.ul`
 	position: relative;
 
 	.submenu {
-		font-size: 18px;
+		font-size: ${(props) => props.fontSize};
 		color: var(--gray-300);
 		text-align: center;
 		padding: 20px 20px;
