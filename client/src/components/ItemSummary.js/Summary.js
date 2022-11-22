@@ -4,6 +4,7 @@ import WishlistBtn from '../Buttons/WishlistButton';
 import FuncTag from '../Buttons/TagButton';
 import { BlackButton, WhiteButton } from '../Buttons/BlackButton';
 import CounterBtn from '../Buttons/CounterButton';
+import { DayShowTab } from '../Tabs/TabButtons';
 
 function Summary() {
 	const func = ['장 건강', '위 건강', '장 건강', '위 건강', '장 건강'];
@@ -57,6 +58,7 @@ function Summary() {
 			</MainContainer>
 			<HiddenContainer isVisible={isVisible}>
 				<HiddenContentBox>
+					<DayShowTab fonSize="14px" />
 					<CountBox>
 						<QuantityTextBox>수량</QuantityTextBox>
 						<CounterBtn
@@ -166,6 +168,9 @@ const HiddenContentBox = styled.div`
 	flex-direction: column;
 	height: 110px;
 	justify-content: space-between;
+	& > :first-child {
+		margin-bottom: 36px;
+	}
 `;
 
 const CountBox = styled.div`

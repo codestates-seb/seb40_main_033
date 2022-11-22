@@ -6,6 +6,7 @@ export function PurpleButton({
 	height,
 	onClick,
 	borderRadius = '6px',
+	fontSize,
 }) {
 	return (
 		<DefaultButton
@@ -17,6 +18,7 @@ export function PurpleButton({
 			height={height}
 			onClick={onClick}
 			borderRadius={borderRadius}
+			fontSize={fontSize}
 		>
 			{children}
 		</DefaultButton>
@@ -29,6 +31,7 @@ export function LightPurpleButton({
 	height,
 	onClick,
 	borderRadius = '6px',
+	fontSize,
 }) {
 	return (
 		<DefaultButton
@@ -41,6 +44,7 @@ export function LightPurpleButton({
 			width={width}
 			height={height}
 			borderRadius={borderRadius}
+			fontSize={fontSize}
 		>
 			{children}
 		</DefaultButton>
