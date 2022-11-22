@@ -21,7 +21,6 @@ function CartList() {
 			<CheckBox>
 				<Check type="checkbox" />
 			</CheckBox>
-
 			<Wrap isSub={isSub}>
 				{isSub ? (
 					<SubBox>
