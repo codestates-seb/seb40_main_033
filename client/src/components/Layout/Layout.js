@@ -35,7 +35,6 @@ const Container = styled.div`
 
 const TopContainer = styled.div`
 	display: flex;
-	position: relative;
 	width: 100%;
 	height: 100%;
 	justify-content: space-between;
@@ -43,5 +42,7 @@ const TopContainer = styled.div`
 
 const MainContainer = styled.div`
 	display: flex;
+	margin: 120px 0 180px 0;
 	max-width: 1240px;
+	width: 100%;
 `;
