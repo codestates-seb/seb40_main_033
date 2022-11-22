@@ -1,124 +1,144 @@
 import { useState } from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import {
 	AiOutlineUser,
 	AiOutlineSearch,
 	AiOutlineShoppingCart,
 } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import { turn, listHover } from './LeftNav';
 
 function RightNav() {
 	const [click, setClick] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
 	const clickBtn = () => {
 		setClick(!click);
 	};
 
+	const handleBtnOpen = () => {
+		setIsOpen(!isOpen);
+	};
+
 	return (
-		<Nav>
-			<IconContainer>
-				<AiOutlineUser />
-				{click ? <Input placeholder="검색어를 입력하세요" /> : null}
-				<AiOutlineSearch
-					className={click ? 'search' : null}
-					onClick={clickBtn}
-				/>
-				<AiOutlineShoppingCart />
-			</IconContainer>
-			<RouteContainer>
-				<Member>
-					기현
-					<button type="button">
-						<Link to="signup">회원가입</Link>
-					</button>
-					<button type="button">
-						<Link to="login">로그인</Link>
-					</button>
-					<button type="button">
-						<Link to="/">메인</Link>
-					</button>
-					<button type="button">
-						<Link to="mypage/note/review">리뷰관리</Link>
-					</button>
-					<button type="button">
-						<Link to="mypage/note/talk">토크관리</Link>
-					</button>
-				</Member>
-				<Member>
-					현수
-					<button type="button">
-						<Link to="mypage/user-info">회원정보</Link>
-					</button>
-					<button type="button">
-						<Link to="mypage/sub-manage">정기구독목록</Link>
-					</button>
-					<button type="button">
-						<Link to="mypage/wish">위시리스트</Link>
-					</button>
-					<button type="button">
-						<Link to="pay/normal">일반결제</Link>
-					</button>
-					<button type="button">
-						<Link to="pay/subscription">정기결제</Link>
-					</button>
-				</Member>
-				<Member>
-					세연
-					<button type="button">
-						<Link to="mypage/order">주문내역</Link>
-					</button>
-					<button type="button">
-						<Link to="mypage/order/1">주문내역상세</Link>
-					</button>
-					<button type="button">
-						<Link to="detail/1">상세</Link>
-					</button>
-				</Member>
-				<Member>
-					지환
-					<button type="button">
-						<Link to="cart/normal">일반장바구니</Link>
-					</button>
-					<button type="button">
-						<Link to="cart/subscription">정기장바구니</Link>
-					</button>
-					<button type="button">
-						<Link to="list">목록</Link>
-					</button>
-					<button type="button">
-						<Link to="search">검색목록</Link>
-					</button>
-				</Member>
-			</RouteContainer>
-		</Nav>
+		<Container>
+			<Nav>
+				<IconContainer>
+					<AiOutlineUser />
+					{click ? <Input placeholder="검색어를 입력하세요" /> : null}
+					<AiOutlineSearch
+						className={click ? 'search' : null}
+						onClick={clickBtn}
+					/>
+					<AiOutlineShoppingCart />
+				</IconContainer>
+				<button className="temp-btn" type="button" onClick={handleBtnOpen}>
+					🔵
+				</button>
+				{isOpen ? (
+					<RouteContainer>
+						<Member>
+							기현
+							<button type="button">
+								<Link to="signup">회원가입</Link>
+							</button>
+							<button type="button">
+								<Link to="login">로그인</Link>
+							</button>
+							<button type="button">
+								<Link to="/">메인</Link>
+							</button>
+							<button type="button">
+								<Link to="mypage/note/review">리뷰관리</Link>
+							</button>
+							<button type="button">
+								<Link to="mypage/note/talk">토크관리</Link>
+							</button>
+						</Member>
+						<Member>
+							현수
+							<button type="button">
+								<Link to="mypage/user-info">회원정보</Link>
+							</button>
+							<button type="button">
+								<Link to="mypage/sub-manage">정기구독목록</Link>
+							</button>
+							<button type="button">
+								<Link to="mypage/wish">위시리스트</Link>
+							</button>
+							<button type="button">
+								<Link to="pay/normal">일반결제</Link>
+							</button>
+							<button type="button">
+								<Link to="pay/subscription">정기결제</Link>
+							</button>
+						</Member>
+						<Member>
+							세연
+							<button type="button">
+								<Link to="mypage/order">주문내역</Link>
+							</button>
+							<button type="button">
+								<Link to="mypage/order/1">주문내역상세</Link>
+							</button>
+							<button type="button">
+								<Link to="detail/1">상세</Link>
+							</button>
+						</Member>
+						<Member>
+							지환
+							<button type="button">
+								<Link to="cart/normal">일반장바구니</Link>
+							</button>
+							<button type="button">
+								<Link to="cart/subscription">정기장바구니</Link>
+							</button>
+							<button type="button">
+								<Link to="list">목록</Link>
+							</button>
+							<button type="button">
+								<Link to="search">검색목록</Link>
+							</button>
+						</Member>
+					</RouteContainer>
+				) : null}
+			</Nav>
+		</Container>
 	);
 }
 /* animation: ${listHover} 0.3s ease-in-out; */
 /* animation: ${turn} 0.3s ease-in-out; */
 /* animation: ${showSearchBar} 0.3s ease-in-out; */
 
-const Nav = styled.nav`
-	position: sticky;
-	margin: 45px 40px 0 0;
-	/* right: 40px; */
-	/* margin-right: 40px; */
-	width: 100px;
-	top: 0px;
-	display: flex;
-	flex-direction: column;
-	/* margin-top: 45px;
-	margin-right: 40px; */
+const Container = styled.div`
+	position: relative;
 `;
 
-const showSearchBar = keyframes`
-	from{
-		opacity: 0;
-	}
-	to{
-		opacity: 100;
+const Nav = styled.nav`
+	position: sticky;
+	top: 45px;
+	margin: 45px 40px 0 0;
+	width: 100px;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: flex-end; */
+	align-items: flex-end;
+
+	.temp-btn {
+		font-size: 16px;
+		margin-top: 30px;
+		border: none;
+		background: none;
 	}
 `;
+
+// const showSearchBar = keyframes`
+// 	from{
+// 		opacity: 0;
+// 	}
+// 	to{
+// 		opacity: 100;
+// 	}
+// `;
 
 // const MyPageIcon = styled.div`
 // 	position: relative;
