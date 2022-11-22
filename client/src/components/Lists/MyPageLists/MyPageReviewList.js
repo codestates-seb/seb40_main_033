@@ -54,7 +54,6 @@ const MainForm = styled.div`
 `;
 
 const Brand = styled.div`
-	border: 1px solid green;
 	width: 100px;
 	height: 20px;
 	color: var(--green-200);
@@ -63,7 +62,6 @@ const Brand = styled.div`
 `;
 
 const Name = styled.div`
-	border: 1px solid red;
 	width: 300px;
 	height: 20px;
 	color: var(--gray-600);
@@ -78,20 +76,17 @@ const Wrap = styled.div`
 `;
 
 const Star = styled.div`
-	border: 1px solid green;
 	width: 90px;
 	height: 26px;
 `;
 
 const Date = styled.div`
-	border: 1px solid green;
 	width: 75px;
 	height: 26px;
 	color: var(--gray-200);
 `;
 
 const ReviewForm = styled.input`
-	border: 1px solid orange;
 	width: 500px;
 	height: 82px;
 	color: var(--gray-400);

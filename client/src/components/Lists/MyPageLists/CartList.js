@@ -21,7 +21,6 @@ function CartList() {
 			<CheckBox>
 				<Check type="checkbox" />
 			</CheckBox>
-
 			<Wrap isSub={isSub}>
 				{isSub ? (
 					<SubBox>
@@ -78,6 +77,7 @@ const Check = styled.input`
 `;
 
 const Wrap = styled.div`
+	border-bottom: 1px solid rgb(235, 235, 235);
 	width: 850px;
 	height: ${(props) => (props.isSub ? '274px' : '203px')};
 	flex-direction: column;
@@ -135,13 +135,11 @@ const InformationForm = styled.div`
 `;
 
 const Brand = styled.div`
-	border: 1px solid green;
 	color: var(--green-200);
 	font-weight: var(--bold);
 `;
 
 const Name = styled.div`
-	border: 1px solid purple;
 	margin-bottom: 25px;
 	color: var(--gray-600);
 	font-weight: var(--bold);
@@ -171,7 +169,7 @@ const Quantity = styled.div`
 const PriceBold = styled.div`
 	font-size: 20px;
 	color: var(--gray-600);
-	font-weight: var(--extrabold);
+	font-weight: var(--extraBold);
 `;
 
 const DeleteBtn = styled.button`

@@ -34,6 +34,7 @@ function PayList() {
 }
 
 const Box = styled.div`
+	border-bottom: 1px solid rgb(235, 235, 235);
 	background-color: white;
 	width: 420px;
 	height: 179px;
@@ -70,7 +71,6 @@ const InformationForm = styled.div`
 `;
 
 const Brand = styled.div`
-	border: 1px solid green;
 	color: var(--green-200);
 	font-weight: var(--bold);
 `;
@@ -81,7 +81,6 @@ const Prod = styled.div`
 `;
 
 const Name = styled.div`
-	border: 1px solid purple;
 	color: var(--gray-600);
 	font-weight: var(--bold);
 	display: flex;
@@ -89,7 +88,6 @@ const Name = styled.div`
 `;
 
 const Pill = styled.div`
-	border: 1px solid orange;
 	height: 15px;
 	color: var(--gray-600);
 	font-weight: var(--bold);
@@ -108,12 +106,11 @@ const QuantityForm = styled.div`
 `;
 
 const SubInfo = styled.div`
-	border: 1px solid green;
 	margin-left: 34px;
 	width: 60px;
 	height: 24px;
 	font-size: 11px;
-	font-weight: var(--Bold);
+	font-weight: var(--bold);
 	color: var(--purple-300);
 	display: flex;
 	align-items: center;
@@ -121,13 +118,13 @@ const SubInfo = styled.div`
 `;
 
 const Quantity = styled.div`
-	color: var(--gray-500);
-	font-weight: var(--regular);
+	color: var(--gray-600);
+	font-weight: var(--extraBold);
 `;
 
 const PriceBold = styled.div`
 	color: var(--gray-600);
-	font-weight: var(--extrabold);
+	font-weight: var(--extraBold);
 `;
 
 const Bottom = styled.div`
