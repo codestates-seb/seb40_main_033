@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/category")
-public class ItemCategoryController {
+public class CategoryController {
 
     private final CategoryService categoryService;
     private final ItemRepository itemRepository;

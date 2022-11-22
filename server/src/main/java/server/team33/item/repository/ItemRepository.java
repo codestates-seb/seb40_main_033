@@ -11,7 +11,7 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
 
-    @Query(value = "SELECT * FROM ITEM i JOIN ITEM_CATEGORY ic ON I.item_id = IC.item_id WHERE category_id = :categoryId", nativeQuery = true)
+    @Query(value = "SELECT * FROM ITEM i WHERE i.category_id = :categoryId", nativeQuery = true)
     List<Item> findAllByCategoryId(@Param("categoryId") long categoryId);
 
 

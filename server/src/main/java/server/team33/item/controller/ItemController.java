@@ -28,7 +28,7 @@ public class ItemController {
         Item item = mapper.itemPostDtoToItem(post);
         log.info("item = {}",item);
         Item result = itemService.createItem(mapper.itemPostDtoToItem(post));
-        return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemResponseDto(result)), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemDetailResponseDto(result)), HttpStatus.OK);
     }
 
     @GetMapping("/{item-id}")
