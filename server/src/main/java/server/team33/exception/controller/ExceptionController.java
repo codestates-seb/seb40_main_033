@@ -94,14 +94,14 @@ public class ExceptionController {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> incorrectResultSizeDataAccessException(
             IncorrectResultSizeDataAccessException e ){
-        ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_ACCEPTABLE, "이미 가입한 아이디가 있습니다.");
+        ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_ACCEPTABLE, e.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
   @ExceptionHandler
     public ResponseEntity<ErrorResponse> HttpClientErrorException(
             HttpClientErrorException e ){
-        ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_ACCEPTABLE, "잘못된 요청입니다.");
+        ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_ACCEPTABLE, e.getResponseBodyAsString());
 
         return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
