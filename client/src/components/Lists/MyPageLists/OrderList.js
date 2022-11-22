@@ -1,7 +1,9 @@
 import styled from 'styled-components';
-import { LetterButtonColor } from '../Buttons/LetterButton';
+import { LetterButtonColor } from '../../Buttons/LetterButton';
 
 function OrderList() {
+	const price = 7000;
+
 	return (
 		<Box>
 			<Wrap>
@@ -11,18 +13,30 @@ function OrderList() {
 						<ShoppingInfo> 배송완료 | 날짜 </ShoppingInfo>
 						<Inform>
 							<Brand>California Gold Nutrition</Brand>
-							<Name>,오메가3 프리미엄 피쉬 오일</Name>
+							<Name>, 오메가3 프리미엄 피쉬 오일</Name>
 						</Inform>
-						<Price>6000원</Price>
+						<Price>{price} 원</Price>
 					</InformationForm>
-					<QuantityForm>
-						<LetterButtonColor color="gray" colorCode="500">
+					<BtnForm>
+						<LetterButtonColor
+							color="gray"
+							colorCode="500"
+							fontSize="16px"
+							hoverColor="gray"
+							hoverColorCode="500"
+						>
 							상세 보기
 						</LetterButtonColor>
-						<LetterButtonColor color="red" colorCode="100">
+						<LetterButtonColor
+							color="red"
+							colorCode="100"
+							fontSize="16px"
+							hoverColor="red"
+							hoverColorCode="100"
+						>
 							주문 취소
 						</LetterButtonColor>
-					</QuantityForm>
+					</BtnForm>
 				</MainBox>
 			</Wrap>
 		</Box>
@@ -56,7 +70,7 @@ const MainBox = styled.div`
 `;
 
 const Image = styled.div`
-	border: 2px solid green;
+	border: 1px solid green;
 	width: 163px;
 	height: 163px;
 	display: flex;
@@ -102,19 +116,19 @@ const Name = styled.div`
 `;
 
 const Price = styled.div`
-	border: 1px solid red;
 	color: var(--gray-600);
 	font-weight: var(--regular);
 	width: 100px;
 `;
 
-const QuantityForm = styled.div`
+const BtnForm = styled.div`
 	width: 100px;
 	height: 50px;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
 	justify-content: center;
+	font-weight: var(--regular);
 `;
 
 export default OrderList;

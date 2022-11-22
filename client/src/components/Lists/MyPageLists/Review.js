@@ -13,15 +13,12 @@ function Review() {
 						<Star>별점</Star>
 						<Date>날짜</Date>
 					</Wrap>
-					<ReviewForm>리뷰</ReviewForm>
+					<ReviewForm />
 				</MainForm>
 				<Button>
-					<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-						수정
-					</LetterButtonColor>
-					<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-						삭제
-					</LetterButtonColor>
+					<LetterButtonColor fontSize="11px">수정</LetterButtonColor>
+					<div>|</div>
+					<LetterButtonColor fontSize="11px">삭제</LetterButtonColor>
 				</Button>
 			</Form>
 		</Box>
@@ -38,8 +35,9 @@ const Box = styled.div`
 `;
 
 const Form = styled.div`
+	border-bottom: 1px solid rgb(235, 235, 235);
 	width: 840px;
-	height: 180px;
+	height: 185px;
 	display: flex;
 	align-items: center;
 `;
@@ -92,7 +90,7 @@ const Date = styled.div`
 	color: var(--gray-200);
 `;
 
-const ReviewForm = styled.div`
+const ReviewForm = styled.input`
 	border: 1px solid orange;
 	width: 500px;
 	height: 82px;
@@ -100,12 +98,14 @@ const ReviewForm = styled.div`
 `;
 
 const Button = styled.div`
-	width: 70px;
+	width: 90px;
 	height: 20px;
 	display: flex;
+	align-items: center;
 	position: relative;
 	left: 140px;
 	bottom: 80px;
+	color: var(--gray-200);
 `;
 
 export default Review;

@@ -1,7 +1,12 @@
 import styled from 'styled-components';
+import { MdArrowForwardIos } from 'react-icons/md';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 
-function DetailList() {
+function DetailOrderList() {
+	const price = 7000;
+	const quantity = 5;
+	const PillsNum = 60;
+
 	return (
 		<Box>
 			<Image> img </Image>
@@ -10,18 +15,21 @@ function DetailList() {
 					<Brand>California Gold Nutrition</Brand>
 					<Prod>
 						<Name>오메가3 프리미엄 피쉬 오일</Name>
-						<Pill>, 60정</Pill>
+						<Pill>, {PillsNum}정</Pill>
 					</Prod>
-					<Price>6000원</Price>
+					<Price>{price} 원</Price>
 				</InformationForm>
 				<QuantityForm>
 					<Bottom>
-						<Quantity> 총갯수 </Quantity>
-						<PriceBold> /총액 </PriceBold>
+						<Quantity> {quantity}개/</Quantity>
+						<PriceBold> {price * quantity} 원</PriceBold>
 					</Bottom>
-					<LetterButtonColor color="gray" colorcode="500">
-						리뷰 쓰기
-					</LetterButtonColor>
+					<WrapReview>
+						<LetterButtonColor color="gray" colorcode="500" fontSize="13px">
+							리뷰 쓰기
+						</LetterButtonColor>
+						<MdArrowForwardIos />
+					</WrapReview>
 				</QuantityForm>
 			</Wrap>
 		</Box>
@@ -38,7 +46,7 @@ const Box = styled.div`
 `;
 
 const Wrap = styled.div`
-	margin-top: 40px;
+	margin-top: 30px;
 	width: 260px;
 	height: 90px;
 	display: flex;
@@ -58,7 +66,7 @@ const Image = styled.div`
 const InformationForm = styled.div`
 	width: 187px;
 	height: 65px;
-	margin-left: 24px;
+	margin-left: 20px;
 	position: relative;
 	bottom: 12px;
 `;
@@ -71,6 +79,7 @@ const Brand = styled.div`
 
 const Prod = styled.div`
 	display: flex;
+	width: 210px;
 `;
 
 const Name = styled.div`
@@ -78,7 +87,7 @@ const Name = styled.div`
 	color: var(--gray-600);
 	font-weight: var(--bold);
 	display: flex;
-	margin-bottom: 15px;
+	margin-bottom: 14px;
 `;
 
 const Pill = styled.div`
@@ -89,7 +98,6 @@ const Pill = styled.div`
 `;
 
 const Price = styled.div`
-	border: 1px solid red;
 	color: var(--gray-600);
 	font-weight: var(--regular);
 `;
@@ -104,18 +112,22 @@ const QuantityForm = styled.div`
 const Bottom = styled.div`
 	display: flex;
 	font-size: 16px;
-`;
-
-const Quantity = styled.div`
-	border: 1px solid red;
-	color: var(--gray-500);
-	font-weight: var(--regular);
-`;
-
-const PriceBold = styled.div`
-	border: 1px solid red;
-	color: var(--gray-600);
 	font-weight: var(--extrabold);
 `;
 
-export default DetailList;
+const Quantity = styled.div`
+	color: var(--gray-500);
+`;
+
+const PriceBold = styled.div`
+	color: var(--gray-600);
+`;
+
+const WrapReview = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+`;
+
+export default DetailOrderList;

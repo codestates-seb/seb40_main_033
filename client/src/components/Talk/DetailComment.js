@@ -12,15 +12,12 @@ function DetailComment() {
 					</Icon>
 					<Name>이름</Name>
 				</Wrap>
-				<TalkForm>글</TalkForm>
+				<TalkForm />
 			</Main>
 			<Button>
-				<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-					수정
-				</LetterButtonColor>
-				<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-					삭제
-				</LetterButtonColor>
+				<LetterButtonColor fontSize="11px">수정</LetterButtonColor>
+				<div>|</div>
+				<LetterButtonColor fontSize="11px">삭제</LetterButtonColor>
 			</Button>
 			<Date>날짜</Date>
 		</Box>
@@ -37,12 +34,16 @@ const Box = styled.div`
 `;
 
 const Main = styled.div`
-	width: 450px;
-	height: 120px;
+	border-bottom: 1px solid rgb(235, 235, 235);
+	width: 600px;
+	height: 130px;
+	margin-left: 8px;
+	margin-top: 10px;
+	position: absolute;
 	flex-direction: column;
 	display: flex;
 	justify-content: space-between;
-	margin-left: 8px;
+	padding-bottom: 12px;
 `;
 
 const Wrap = styled.div`
@@ -67,7 +68,7 @@ const Name = styled.div`
 	margin-left: 10px;
 `;
 
-const TalkForm = styled.div`
+const TalkForm = styled.input`
 	border: 1px solid red;
 	width: 450px;
 	height: 70px;
@@ -78,22 +79,24 @@ const TalkForm = styled.div`
 `;
 
 const Button = styled.div`
-	width: 70px;
+	width: 80px;
 	height: 20px;
 	display: flex;
 	position: relative;
-	bottom: 50px;
-	left: 76px;
+	color: var(--gray-200);
+	bottom: 55px;
+	left: 310px;
 `;
 
 const Date = styled.div`
 	border: 1px solid green;
 	width: 75px;
-	height: 26px;
+	height: 15px;
 	color: var(--gray-200);
 	position: relative;
-	top: 40px;
-	right: 5px;
+	left: 230px;
+	top: 60px;
+	font-size: 13px;
 `;
 
 export default DetailComment;
