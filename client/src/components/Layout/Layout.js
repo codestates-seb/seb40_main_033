@@ -12,11 +12,11 @@ function Layout() {
 	return (
 		<Container>
 			<TopContainer>
-				<LeftNav />
-				<MainContainer>
+				{hide || <LeftNav />}
+				<MainContainer className={hide ? 'noMargin' : null}>
 					<Outlet />
 				</MainContainer>
-				<RightNav />
+				{hide || <RightNav />}
 			</TopContainer>
 			<Footer />
 		</Container>
@@ -45,4 +45,7 @@ const MainContainer = styled.div`
 	margin: 120px 0 180px 0;
 	max-width: 1240px;
 	width: 100%;
+	&.noMargin {
+		margin: 0;
+	}
 `;
