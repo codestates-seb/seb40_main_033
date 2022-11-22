@@ -1,17 +1,18 @@
 import DefalutModal from './DefalutModal';
 import PayList from '../Lists/MyPageLists/PayList';
-import TalkForm from '../Forms/TalkForm';
+import UpdateTalkForm from '../Forms/UpdateTalkForm';
 
+// 토크 수정 모달
 function TalkModal({ setIsOpen, modalIsOpen }) {
 	const data = {
-		title: 'Review',
+		title: 'Talk',
 	};
 
 	return (
 		<DefalutModal
 			title={data.title}
 			list={<PayList />}
-			form={<TalkForm />}
+			form={<UpdateTalkForm />}
 			setIsOpen={setIsOpen}
 			modalIsOpen={modalIsOpen}
 		/>
