@@ -14,16 +14,13 @@ function Comment() {
 						<Icon>
 							<BsArrowReturnRight />
 						</Icon>
-						<TalkForm>Talk</TalkForm>
+						<TalkForm />
 					</Wrap>
 				</MainForm>
 				<Button>
-					<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-						수정
-					</LetterButtonColor>
-					<LetterButtonColor color="gray" colorCode="200" fontSize="11px">
-						삭제
-					</LetterButtonColor>
+					<LetterButtonColor fontSize="11px">수정</LetterButtonColor>
+					<div>|</div>
+					<LetterButtonColor fontSize="11px">삭제</LetterButtonColor>
 				</Button>
 			</Form>
 			<Date>날짜</Date>
@@ -32,6 +29,7 @@ function Comment() {
 }
 
 const Box = styled.div`
+	border-bottom: 1px solid rgb(235, 235, 235);
 	background-color: white;
 	width: 864px;
 	height: 187px;
@@ -77,6 +75,7 @@ const Wrap = styled.div`
 	width: 700px;
 	font-size: 16px;
 	display: flex;
+	margin-top: 12px;
 `;
 
 const Icon = styled.div`
@@ -84,7 +83,7 @@ const Icon = styled.div`
 	font-size: 17px;
 `;
 
-const TalkForm = styled.div`
+const TalkForm = styled.input`
 	border: 1px solid orange;
 	width: 700px;
 	height: 82px;
@@ -92,21 +91,22 @@ const TalkForm = styled.div`
 `;
 
 const Button = styled.div`
-	width: 70px;
+	width: 80px;
 	height: 20px;
 	display: flex;
 	position: relative;
-	left: 160px;
-	bottom: 76px;
+	left: 150px;
+	bottom: 70px;
+	color: var(--gray-200);
 `;
 
 const Date = styled.div`
 	border: 1px solid green;
 	width: 75px;
-	height: 26px;
+	height: 15px;
 	color: var(--gray-200);
 	position: relative;
-	top: 150px;
+	top: 170px;
 	left: 80px;
 `;
 

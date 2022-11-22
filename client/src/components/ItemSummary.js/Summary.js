@@ -47,7 +47,7 @@ function Summary() {
 					</FuncBox>
 					<RateBox>
 						<div>별점임...</div>
-						<PriceBox>{price}원</PriceBox>
+						<PriceBox>{price.toLocaleString('ko-KR')}원</PriceBox>
 					</RateBox>
 				</MiddleBox>
 				<ButtomBox>
@@ -64,8 +64,8 @@ function Summary() {
 							onPlusClick={onPlusClick}
 							onMinusClick={onMinusClick}
 						/>
-						<TotalBox>총 {price * quantity}원</TotalBox>
 					</CountBox>
+					<TotalBox>총 {(price * quantity).toLocaleString('ko-KR')}원</TotalBox>
 					<ButtomBox>
 						<BlackButton>장바구니 담기</BlackButton>
 						<WhiteButton>바로 구매하기</WhiteButton>
@@ -80,7 +80,6 @@ const EntireContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 369px;
-	/* border: 1px solid; //구분을 위한 속성. 다 하고 없애야 한다. */
 	padding: 33px 33px 19px 33px;
 	position: relative; // 히든컨테이너를 숨기기 위해서
 `;
@@ -88,7 +87,6 @@ const EntireContainer = styled.div`
 const MainContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	/* border: 1px solid; //구분을 위한 속성. 다 하고 없애야 한다. */
 	padding-bottom: 46px;
 	z-index: 1; // 숨겨진 히든컨테이너가 안 눌리게 하려구..
 	background-color: white;
@@ -97,7 +95,6 @@ const HeadBox = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	/* border: 1px solid; //구분을 위한 속성. 다 하고 없애야 한다. */
 	margin-bottom: 19px; // MiddleBox와의 간격
 	p {
 		font-size: 20px;
@@ -109,7 +106,6 @@ const MiddleBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: start;
-	/* border: 1px solid; //구분을 위한 속성. 다 하고 없애야 한다. */
 	margin-bottom: 22px;
 	/* .itemName {
 		font-size: 36px;
@@ -122,14 +118,12 @@ const NameBox = styled.div`
 	font-size: 36px;
 	font-weight: var(--extraBold);
 	margin-bottom: 19px; // DescBox와의 간격
-	/* border: 1px solid; //구분을 위한 속성. 다 하고 없애야 한다. */
 `;
 
 const DescBox = styled.div`
 	font-size: 20px;
 	color: var(--gray-300);
 	margin-bottom: 19px;
-	/* border: 1px solid; //구분을 위한 속성. 다 하고 없애야 한다. */
 `;
 const FuncBox = styled.div`
 	margin-bottom: 31px;
@@ -140,7 +134,6 @@ const RateBox = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	width: 300px;
-	/* border: 1px solid; //구분을 위한 속성. 다 하고 없애야 한다. */
 `;
 
 const PriceBox = styled.div`
@@ -164,7 +157,6 @@ const HiddenContainer = styled.div`
 	position: absolute; //
 	/* height: 168px; */
 	top: ${({ isVisible }) => (isVisible === 1 ? '403.5px' : '250.5px')};
-	/* border: 1px solid; //구분을 위한 속성. 다 하고 없애야 한다. */
 	${({ isVisible }) => css`
 		opacity: ${isVisible};
 	`};
@@ -179,18 +171,20 @@ const HiddenContentBox = styled.div`
 const CountBox = styled.div`
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
 	align-items: center;
 `;
 
 const QuantityTextBox = styled.div`
-	font-size: 24px;
+	font-size: 28px;
 	font-weight: var(--extraBold);
-	margin-right: 14px;
 `;
 
 const TotalBox = styled.div`
-	font-size: 24px;
+	font-size: 30px;
 	font-weight: var(--extraBold);
 	margin-left: 10px;
+	align-self: flex-end;
+	margin: 36px 0;
 `;
 export default Summary;

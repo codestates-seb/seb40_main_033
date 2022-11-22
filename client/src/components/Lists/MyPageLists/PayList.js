@@ -2,8 +2,11 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 function PayList() {
-	// true 정기구독 결제목록, false 일반 결제목록
+	const price = 7000;
+	const quantity = 5;
+	const PillsNum = 40;
 
+	// true 정기구독 결제목록, false 일반 결제목록
 	const [isSub, setIsSub] = useState(true);
 
 	return (
@@ -14,15 +17,15 @@ function PayList() {
 					<Brand>California Gold Nutrition</Brand>
 					<Prod>
 						<Name>오메가3 프리미엄 피쉬 오일</Name>
-						<Pill>, 60정</Pill>
+						<Pill>, {PillsNum}정</Pill>
 					</Prod>
 					<Price>6000원</Price>
 				</InformationForm>
 				<QuantityForm>
 					{isSub ? <SubInfo>2주마다</SubInfo> : null}
-					<Bottom>
-						<Quantity>1개/</Quantity>
-						<PriceBold>6000원</PriceBold>
+					<Bottom isSub={isSub}>
+						<Quantity>{quantity} 개/</Quantity>
+						<PriceBold>{price} 원</PriceBold>
 					</Bottom>
 				</QuantityForm>
 			</Wrap>
@@ -40,7 +43,7 @@ const Box = styled.div`
 `;
 
 const Wrap = styled.div`
-	margin-top: 40px;
+	margin-top: 25px;
 	width: 260px;
 	height: 110px;
 	display: flex;
@@ -60,7 +63,7 @@ const Image = styled.div`
 const InformationForm = styled.div`
 	width: 187px;
 	height: 65px;
-	margin-left: 24px;
+	margin-left: 20px;
 	flex-direction: column;
 	display: flex;
 	justify-content: space-between;
@@ -74,6 +77,7 @@ const Brand = styled.div`
 
 const Prod = styled.div`
 	display: flex;
+	width: 210px;
 `;
 
 const Name = styled.div`
@@ -81,7 +85,7 @@ const Name = styled.div`
 	color: var(--gray-600);
 	font-weight: var(--bold);
 	display: flex;
-	margin-bottom: 15px;
+	margin-bottom: 14px;
 `;
 
 const Pill = styled.div`
@@ -92,21 +96,21 @@ const Pill = styled.div`
 `;
 
 const Price = styled.div`
-	border: 1px solid red;
 	color: var(--gray-600);
 	font-weight: var(--regular);
+	width: 120px;
 `;
 
 const QuantityForm = styled.div`
 	width: 100px;
 	position: relative;
-	left: 170px;
+	left: 155px;
 `;
 
 const SubInfo = styled.div`
 	border: 1px solid green;
-	margin-left: 45px;
-	width: 38px;
+	margin-left: 34px;
+	width: 60px;
 	height: 24px;
 	font-size: 11px;
 	font-weight: var(--Bold);
@@ -122,15 +126,14 @@ const Quantity = styled.div`
 `;
 
 const PriceBold = styled.div`
-	border: 1px solid red;
 	color: var(--gray-600);
 	font-weight: var(--extrabold);
 `;
 
 const Bottom = styled.div`
-	width: 83.3px;
 	display: flex;
 	font-size: 16px;
+	margin-top: ${(props) => (props.isSub ? '5px' : '20px')};
 `;
 
 export default PayList;

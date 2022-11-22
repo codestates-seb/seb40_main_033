@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import {
 	AiOutlineUser,
 	AiOutlineSearch,
@@ -20,10 +20,12 @@ function RightNav() {
 				<AiOutlineUser />
 				{click ? (
 					<Box>
-						<Input placeholder="검색어를 입력하세요" />
-						<Icon>
-							<AiOutlineSearch onClick={clickBtn} />
-						</Icon>
+						<Wrap>
+							<Input placeholder="검색어를 입력하세요" />
+							<Icon>
+								<AiOutlineSearch onClick={clickBtn} />
+							</Icon>
+						</Wrap>
 					</Box>
 				) : (
 					<AiOutlineSearch onClick={clickBtn} />
@@ -34,6 +36,15 @@ function RightNav() {
 	);
 }
 
+const move = keyframes`
+0%{	
+		opacity: 0;
+    }
+100%{
+    opacity: 1;
+    }
+`;
+
 const Nav = styled.nav`
 	display: flex;
 	flex-direction: column;
@@ -42,12 +53,15 @@ const Nav = styled.nav`
 `;
 
 const Box = styled.div`
-	margin-right: 230px;
-	width: 248px;
-	height: 47.5px;
+	margin-right: 450px;
+	height: 54px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+`;
+
+const Wrap = styled.div`
+	animation: ${move} 1s 0s 1;
 `;
 
 const Input = styled.input`
@@ -69,13 +83,13 @@ const Input = styled.input`
 
 const Icon = styled.button`
 	display: flex;
-	align-items: center;
 	position: relative;
 	background-color: white;
 	border: none;
 	color: var(--green-100);
 	font-size: 24px;
-	left: 115px;
+	left: 228px;
+	top: 8px;
 	cursor: pointer;
 `;
 
@@ -107,5 +121,14 @@ const IconContainer = styled.li`
 		}
 	}
 `;
+
+// @keyframes slide {
+//   from {
+//     transform: translateX(-100%);
+//   }
+//   to {
+//     transform: translateX(0%);
+//   }
+// }
 
 export default RightNav;
