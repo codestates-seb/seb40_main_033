@@ -54,7 +54,6 @@ const MainForm = styled.div`
 `;
 
 const Brand = styled.div`
-	border: 1px solid green;
 	width: 100px;
 	height: 20px;
 	color: var(--green-200);
@@ -63,7 +62,6 @@ const Brand = styled.div`
 `;
 
 const Name = styled.div`
-	border: 1px solid red;
 	width: 300px;
 	height: 20px;
 	color: var(--gray-600);
@@ -84,7 +82,6 @@ const Icon = styled.div`
 `;
 
 const TalkForm = styled.input`
-	border: 1px solid orange;
 	width: 700px;
 	height: 82px;
 	color: var(--gray-400);
@@ -101,7 +98,6 @@ const Button = styled.div`
 `;
 
 const Date = styled.div`
-	border: 1px solid green;
 	width: 75px;
 	height: 15px;
 	color: var(--gray-200);

@@ -59,7 +59,6 @@ const Icon = styled.div`
 `;
 
 const Name = styled.div`
-	border: 1px solid green;
 	width: 300px;
 	height: 20px;
 	color: var(--gray-600);
@@ -69,7 +68,6 @@ const Name = styled.div`
 `;
 
 const TalkForm = styled.input`
-	border: 1px solid red;
 	width: 450px;
 	height: 70px;
 	color: var(--gray-600);
@@ -89,7 +87,6 @@ const Button = styled.div`
 `;
 
 const Date = styled.div`
-	border: 1px solid green;
 	width: 75px;
 	height: 15px;
 	color: var(--gray-200);
