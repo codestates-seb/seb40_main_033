@@ -4,7 +4,7 @@ import { TfiClose } from 'react-icons/tfi';
 import CounterBtn from '../../Buttons/CounterButton';
 import { DayControlTab } from '../../Tabs/TabButtons';
 
-function SubMngmList() {
+function SubManagementList() {
 	const price = 6000;
 	const [quantity, setQuantity] = useState(1);
 
@@ -183,4 +183,4 @@ const DeleteBtn = styled.button`
 	cursor: pointer;
 `;
 
-export default SubMngmList;
+export default SubManagementList;
