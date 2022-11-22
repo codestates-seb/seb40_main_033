@@ -46,37 +46,44 @@ function LeftNav() {
 
 	// TempLogo는 로고 자리 확인용 임시 아이콘
 	return (
-		<Nav>
-			<TempLogo />
-			<Hamburger onClick={handleBtnClick}>
-				<div className={isClicked ? 'bar1' : null} />
-				<div className={isClicked ? 'bar2' : null} />
-				<div className={isClicked ? 'bar3' : null} />
-			</Hamburger>
-			{isClicked ? (
-				<CategoryContainer>
-					{categories.map((el, i) => (
-						<ListContainer
-							key={`${i.toString()}-${el}`}
-							onMouseEnter={handleBtnHover}
-							onMouseLeave={() => setHoverTarget('')}
-							className={`list-${i}`}
-						>
-							{hoverTarget === el ? icons[i] : null}
-							<Category>{el}</Category>
-						</ListContainer>
-					))}
-				</CategoryContainer>
-			) : null}
-		</Nav>
+		<Container>
+			<Nav>
+				<TempLogo />
+				<Hamburger onClick={handleBtnClick}>
+					<div className={isClicked ? 'bar1' : null} />
+					<div className={isClicked ? 'bar2' : null} />
+					<div className={isClicked ? 'bar3' : null} />
+				</Hamburger>
+				{isClicked ? (
+					<CategoryContainer>
+						{categories.map((el, i) => (
+							<ListContainer
+								key={`${i.toString()}-${el}`}
+								onMouseEnter={handleBtnHover}
+								onMouseLeave={() => setHoverTarget('')}
+								className={`list-${i}`}
+							>
+								{hoverTarget === el ? icons[i] : null}
+								<Category>{el}</Category>
+							</ListContainer>
+						))}
+					</CategoryContainer>
+				) : null}
+			</Nav>
+		</Container>
 	);
 }
 
+const Container = styled.div`
+	position: relative;
+`;
+
 const Nav = styled.nav`
+	position: sticky;
+	top: 45px;
+	margin: 45px 0 0 40px;
 	display: flex;
 	flex-direction: column;
-	margin-top: 45px;
-	margin-left: 40px;
 	width: 100px;
 `;
 
