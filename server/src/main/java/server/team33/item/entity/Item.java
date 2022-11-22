@@ -73,6 +73,9 @@ public class Item {
         category.setItem(this);
     }
 
+    @Column
+    private double starAvg;
+
     @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
     private List<Review> reviews = new ArrayList<>();
 

@@ -3,8 +3,10 @@ package server.team33.review.mapper;
 import org.mapstruct.Mapper;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
+import server.team33.item.mapper.ItemMapper;
 import server.team33.item.service.ItemService;
 import server.team33.order.service.OrderService;
+import server.team33.review.dto.ReviewDetailResponseDto;
 import server.team33.review.dto.ReviewDto;
 import server.team33.review.dto.ReviewResponseDto;
 import server.team33.review.entity.Review;
@@ -28,7 +30,7 @@ public interface ReviewMapper {
             throw new BusinessLogicException(ExceptionCode.ACCESS_DENIED_USER);
         } // 아이템 구매자만 리뷰를 작성할 수 있음
 
-        review.setItem(itemService.findItem(itemId));
+        review.setItem(itemService.findVerifiedItem(itemId));
         review.setContent(reviewDto.getContent());
         review.setStar(reviewDto.getStar());
 
@@ -59,6 +61,7 @@ public interface ReviewMapper {
         reviewResponseDto.setReviewId(review.getReviewId());
         reviewResponseDto.setItemId(review.getItem().getItemId());
         reviewResponseDto.setUserId(review.getUser().getUserId());
+        reviewResponseDto.setDisplayName(review.getUser().getDisplayName());
         reviewResponseDto.setContent(review.getContent());
         reviewResponseDto.setStar(review.getStar());
         reviewResponseDto.setCreatedAt(review.getCreatedAt());
@@ -75,6 +78,33 @@ public interface ReviewMapper {
 
         for(Review review : reviews) {
             reviewResponseDtos.add(reviewToReviewResponseDto(review));
+        }
+
+        return reviewResponseDtos;
+    }
+
+    default ReviewDetailResponseDto reviewToReviewDetailResponseDto(Review review, ItemMapper itemMapper) {
+
+        ReviewDetailResponseDto reviewResponseDto = new ReviewDetailResponseDto();
+        reviewResponseDto.setReviewId(review.getReviewId());
+        reviewResponseDto.setItem(itemMapper.itemToItemSimpleResponseDto(review.getItem()));
+        reviewResponseDto.setUserId(review.getUser().getUserId());
+        reviewResponseDto.setContent(review.getContent());
+        reviewResponseDto.setStar(review.getStar());
+        reviewResponseDto.setCreatedAt(review.getCreatedAt());
+        reviewResponseDto.setUpdatedAt(review.getUpdatedAt());
+
+        return reviewResponseDto;
+    }
+
+    default List<ReviewDetailResponseDto> reviewsToReviewDetailResponseDtos(List<Review> reviews, ItemMapper itemMapper) {
+
+        if(reviews == null) return null;
+
+        List<ReviewDetailResponseDto> reviewResponseDtos = new ArrayList<>();
+
+        for(Review review : reviews) {
+            reviewResponseDtos.add(reviewToReviewDetailResponseDto(review, itemMapper));
         }
 
         return reviewResponseDtos;

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import server.team33.item.mapper.ItemMapper;
 import server.team33.item.service.ItemService;
 import server.team33.order.service.OrderService;
 import server.team33.response.MultiResponseDto;
@@ -33,6 +34,7 @@ public class ReviewController {
     private final ReviewMapper reviewMapper;
     private final UserService userService;
     private final ItemService itemService;
+    private final ItemMapper itemMapper;
     private final OrderService orderService;
 
     @PostMapping("/{item-id}") // 주문 상세 내역에서 작성
@@ -58,7 +60,7 @@ public class ReviewController {
                 reviewMapper.reviewToReviewResponseDto(updatedReview)), HttpStatus.OK);
     }
 
-    @GetMapping("/mypage") // 유저의 작성 리뷰 목록 확인 토크랑 같이?
+    @GetMapping("/mypage")
     public ResponseEntity getUserReviews(@Positive @RequestParam(value="page", defaultValue="1") int page,
                                          @Positive @RequestParam(value="size", defaultValue="7") int size,
                                          @RequestParam(value="sort", defaultValue="reviewId") String sort) {
@@ -68,7 +70,7 @@ public class ReviewController {
         List<Review> reviews = pageReviews.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(
-                reviewMapper.reviewsToReviewResponseDtos(reviews), pageReviews), HttpStatus.OK);
+                reviewMapper.reviewsToReviewDetailResponseDtos(reviews, itemMapper), pageReviews), HttpStatus.OK);
     }
 
     @GetMapping("/{review-id}")

@@ -1,6 +1,9 @@
 package server.team33.item.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import server.team33.item.entity.Item;
 import server.team33.item.repository.ItemRepository;
@@ -29,6 +32,12 @@ public class ItemService {
         Optional<Item> item = itemRepository.findById(itemId);
         Item findItem = item.orElseThrow(() -> new RuntimeException());
         return findItem;
+    }
+
+    public Page<Item> findItems(String categoryName, int page, int size, String sort) {
+        Page<Item> findItems = itemRepository.findAllByCategoryName(
+                PageRequest.of(page, size, Sort.by(sort).descending()), categoryName);
+        return findItems;
     }
 
 

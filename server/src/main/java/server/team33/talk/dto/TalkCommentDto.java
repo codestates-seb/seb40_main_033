@@ -1,4 +1,4 @@
-package server.team33.review.dto;
+package server.team33.talk.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,14 +11,13 @@ import java.time.ZonedDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewResponseDto {
+public class TalkCommentDto { // 상세페이지
 
-    private long reviewId;
-    private long itemId;
+    private long talkCommentId;
     private long userId;
     private String displayName;
     private String content;
-    private int star;
+    private boolean shopper;
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
 }

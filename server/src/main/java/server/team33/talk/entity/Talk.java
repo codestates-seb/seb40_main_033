@@ -2,7 +2,9 @@ package server.team33.talk.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import server.team33.audit.Auditable;
 import server.team33.item.entity.Item;
+import server.team33.user.entity.User;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Talk {
+public class Talk extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +26,14 @@ public class Talk {
     @JoinColumn(name = "ITEM_ID")
     private Item item;
 
-    //private User user;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    private boolean isShopper;
+    private boolean shopper; // true == 해당 아이템을 구매한 유저
 
     @JsonIgnore
     @OneToMany(mappedBy = "talk", cascade = CascadeType.ALL)
