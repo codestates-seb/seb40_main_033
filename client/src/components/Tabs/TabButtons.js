@@ -20,7 +20,7 @@ export function ToggleTab() {
 	return <DefaultTabButton menuArr={menuArr} toggle />;
 }
 
-export function DayShowTab() {
+export function DayShowTab({ fonSize }) {
 	const menuArr = [
 		{ name: '30일', index: 0 },
 		{ name: '60일', index: 1 },
@@ -28,5 +28,5 @@ export function DayShowTab() {
 		{ name: '120일', index: 3 },
 	];
 
-	return <DefaultTabButton menuArr={menuArr} />;
+	return <DefaultTabButton menuArr={menuArr} fontSize={fonSize} />;
 }
