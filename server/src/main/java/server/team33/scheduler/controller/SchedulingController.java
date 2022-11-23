@@ -69,10 +69,12 @@ public class SchedulingController {
         return URLDecoder.decode(nextDeliveryDay, StandardCharsets.UTF_8);
     }
     private List<ItemOrder> getItemOrders( Long orderId ){
+
         Order order = orderService.findOrder(orderId);
         return order.getItemOrders();
     }
     private ItemOrder getItemOrder( Long orderId, Long itemOrderId ){
+
         Order order = orderService.findOrder(orderId);
         return order.getItemOrders().get((int) ( itemOrderId - 1 ));
     }

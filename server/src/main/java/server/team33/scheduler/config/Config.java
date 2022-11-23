@@ -13,6 +13,7 @@ public class Config {
 
     @Bean
     public ThreadPoolTaskScheduler schedulerExecutor(){
+
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
         taskScheduler.setPoolSize(4);
         taskScheduler.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());

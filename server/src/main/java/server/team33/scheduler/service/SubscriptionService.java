@@ -28,6 +28,7 @@ import java.time.ZonedDateTime;
 @Slf4j
 public class SubscriptionService {
     private final ItemOrderService itemOrderService;
+
     @Async
     public void getPaymentDay( ItemOrder itemOrder ) throws IOException{
 

@@ -65,6 +65,7 @@ public class SchedulingService {
 
         scheduledFutureMap.put(String.valueOf(orderId) + itemOrder.getItemOrderId(), scheduledFuture);
     }
+
     private Runnable change( ItemOrder itemOrder, Integer period ){
         return () -> {
             try{
@@ -94,6 +95,7 @@ public class SchedulingService {
             }
         };
     }
+
     private void makeScheduleNull( Long orderId, ItemOrder itemOrder ){
 
         ScheduledFuture<?> scheduledFuture = scheduledFutureMap.get(String.valueOf(orderId) + itemOrder.getItemOrderId());
