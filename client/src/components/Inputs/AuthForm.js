@@ -1,10 +1,10 @@
-/* eslint-disable no-unused-expressions */
 import { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useForm } from 'react-hook-form';
 import AuthInput from './AuthInput';
+import { PurpleButton } from '../Buttons/PurpleButton';
 
-export default function AuthForm() {
+export function AuthForm() {
 	const [current, setCurrent] = useState(1);
 	const [currentChange, setCurrentChange] = useState(false);
 	const firstRef = useRef(null);
@@ -23,6 +23,10 @@ export default function AuthForm() {
 	// 인풋별 register
 	const { ref: ref1, ...rest1 } = register('이메일', {
 		required: '이메일을 작성해주세요.',
+		minLength: {
+			value: 5,
+			message: '이메일 형식으로 작성해주세요.',
+		},
 		pattern: {
 			value: /^[A-Za-z0-9._%+-]+@naver\.com$/,
 			message: '이메일 형식으로 작성해주세요.',
@@ -128,7 +132,19 @@ export default function AuthForm() {
 				watch={watch()}
 				errors={errors?.이메일?.message}
 			/>
-			<button type="submit">Add</button>
+			<CheckBoxLabel htmlFor="check">
+				<input
+					id="check"
+					{...register('동의', { required: true })}
+					type="checkbox"
+					value="true"
+				/>
+				본인은 만 14세 이상이며, 이용약관, 개인정보 수집 및 이용, 개인정보 제공
+				내용, 전자금융거래 약관을 확인하였으며, 동의합니다.
+			</CheckBoxLabel>
+			<PurpleButton width="100px" borderRadius="50px">
+				제출
+			</PurpleButton>
 		</SForm>
 	);
 }
@@ -143,7 +159,7 @@ export const showInput = keyframes`
 		opacity: 1;
 	}
 `;
-const pullInput = keyframes`
+export const pullInput = keyframes`
   0% {
     transform: translateY(-40px);
   }
@@ -153,6 +169,10 @@ const pullInput = keyframes`
 `;
 
 const SForm = styled.form`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	position: relative;
 	width: 300px;
 	// 모든 자식들 가렸다가 current에 따라 보여주기
@@ -164,9 +184,22 @@ const SForm = styled.form`
 		animation: ${pullInput} 0.3s;
 	}
 	// current에 따라 쌓으면서 보여주기
-	& > *:nth-last-child(-n + ${(props) => props.current + 1}) {
+	& > *:nth-last-child(-n + ${(props) => props.current + 2}) {
 		opacity: 1;
 		position: relative;
 		animation: ${showInput} 0.3s;
+	}
+	// 버튼 마진
+	& > button {
+		margin-top: 20px;
+	}
+`;
+
+const CheckBoxLabel = styled.label`
+	display: flex;
+	align-items: center;
+	color: var(--gray-400);
+	& > input {
+		margin-right: 10px;
 	}
 `;

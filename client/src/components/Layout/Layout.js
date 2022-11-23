@@ -20,7 +20,7 @@ function Layout() {
 				</MainContainer>
 				{hide || <RightNav />}
 			</TopContainer>
-			<Footer />
+			{hide || <Footer />}
 		</Container>
 	);
 }
