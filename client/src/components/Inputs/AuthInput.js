@@ -15,6 +15,7 @@ export default function AuthInput({
 		비밀번호: '',
 		닉네임: '',
 	},
+	errors,
 }) {
 	return (
 		<InputBox isFilled={!!watch[label]} className={className}>
@@ -32,6 +33,7 @@ export default function AuthInput({
 			<label htmlFor={label} className="placeholder">
 				{label}
 			</label>
+			<ErrorDiv>{errors}</ErrorDiv>
 		</InputBox>
 	);
 }
@@ -44,7 +46,7 @@ const InputBox = styled.div`
 
 	& .placeholder {
 		position: absolute;
-		top: 50%;
+		top: 20px;
 		left: 2px;
 		transform: translateY(-50%);
 		color: var(--gray-200);
@@ -77,4 +79,12 @@ const InputBox = styled.div`
 				font-weight: 300;
 			}
 		`}
+`;
+
+const ErrorDiv = styled.div`
+	display: block;
+	color: var(--red-100);
+	font-size: 11px;
+	margin-top: 5px;
+	min-height: 15px;
 `;

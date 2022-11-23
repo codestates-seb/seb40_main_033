@@ -22,7 +22,7 @@ export default function AuthForm() {
 
 	// 인풋별 register
 	const { ref: ref1, ...rest1 } = register('이메일', {
-		required: 'email is required',
+		required: '이메일을 작성해주세요.',
 		minLength: 5,
 		pattern: {
 			value: /^[A-Za-z0-9._%+-]+@naver\.com$/,
@@ -103,6 +103,7 @@ export default function AuthForm() {
 				register={rest3}
 				refHook={ref3}
 				watch={watch()}
+				errors={errors?.닉네임?.message}
 			/>
 			<AuthInput
 				refAddress={secondRef}
@@ -111,6 +112,7 @@ export default function AuthForm() {
 				register={rest2}
 				refHook={ref2}
 				watch={watch()}
+				errors={errors?.비밀번호?.message}
 			/>
 			<AuthInput
 				refAddress={firstRef}
@@ -119,9 +121,9 @@ export default function AuthForm() {
 				register={rest1}
 				refHook={ref1}
 				watch={watch()}
+				errors={errors?.이메일?.message}
 			/>
 			<button type="submit">Add</button>
-			{/* <ErrorSpan>이메일 형식으로 입력해주세요.</ErrorSpan> */}
 		</SForm>
 	);
 }
@@ -162,11 +164,4 @@ const SForm = styled.form`
 		position: relative;
 		animation: ${showInput} 0.3s;
 	}
-`;
-
-const ErrorSpan = styled.span`
-	display: inline-block;
-	color: var(--red-100);
-	font-size: 11px;
-	margin-top: 5px;
 `;
