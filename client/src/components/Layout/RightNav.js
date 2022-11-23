@@ -208,6 +208,7 @@ const IconContainer = styled.li`
 	user-select: none;
 
 	& > svg {
+		cursor: pointer;
 		margin: 15px 0;
 		position: relative;
 		font-size: 24px;
