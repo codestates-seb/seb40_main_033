@@ -28,7 +28,6 @@ const Container = styled.header`
 const TextContainer = styled.div`
 	display: flex;
 	align-items: flex-end;
-	border-bottom: 1px solid var(--gray-200);
 	padding: 15px 0 30px 0;
 `;
 
