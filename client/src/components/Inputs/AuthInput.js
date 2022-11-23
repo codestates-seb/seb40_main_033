@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
