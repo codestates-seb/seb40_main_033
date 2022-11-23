@@ -36,13 +36,13 @@ const Tab = styled.nav`
 	justify-content: space-evenly;
 	align-items: center;
 	background-color: #fff;
+	margin-bottom: 40px;
 `;
 
 const TabItem = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* margin-top: 10px; */
 	width: 140px;
 	height: 100%;
 	background-color: #fff;
