@@ -9,8 +9,10 @@ const hideURL = ['/login', '/signup'];
 function Layout() {
 	const { pathname } = useLocation();
 	const hide = hideURL.includes(pathname);
+	const firstPathname = pathname.split('/')[1];
+
 	return (
-		<Container>
+		<Container pathname={firstPathname}>
 			<TopContainer>
 				{hide || <LeftNav />}
 				<MainContainer className={hide ? 'noMargin' : null}>
@@ -31,6 +33,26 @@ const Container = styled.div`
 	justify-content: space-between;
 	min-width: fit-content;
 	min-height: 100vh;
+	${({ pathname }) => {
+		switch (pathname) {
+			case 'cart':
+			case 'pay':
+				return `
+				background-color: var(--gray-100)
+				`;
+			case 'mypage':
+				return `
+				background-image: linear-gradient(to bottom, white 278px, var(--gray-100) 0)
+				`;
+			case '':
+				return `
+				background-image: linear-gradient(to bottom, white 800px, var(--gray-100) 0)
+				`;
+			default:
+				return `
+				background-color: white`;
+		}
+	}}
 `;
 
 const TopContainer = styled.div`
@@ -44,7 +66,8 @@ const MainContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin: 120px 0 180px 0;
+	margin-top: 120px;
+	padding-bottom: 180px;
 	max-width: 1240px;
 	width: 100%;
 	&.noMargin {

@@ -13,7 +13,8 @@ function PageTitle({ title }) {
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
-
+	width: 100%;
+	border-bottom: 1px solid var(--gray-200);
 	svg {
 		width: 43px;
 		height: 20px;
@@ -25,7 +26,6 @@ const Title = styled.h1`
 	font-size: 36px;
 	font-weight: var(--extraBold);
 	padding: 15px 0 30px 0;
-	border-bottom: 1px solid var(--gray-200);
 `;
 
 export default PageTitle;
