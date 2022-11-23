@@ -1,13 +1,14 @@
 // 회원정보
 import { useState } from 'react';
 import styled from 'styled-components';
+import Postcode from '@actbase/react-daum-postcode';
 import {
 	LetterButton,
 	LetterButtonColor,
 } from '../../components/Buttons/LetterButton';
 import DeleteAccountModal from '../../components/Modals/DeleteAccountModal';
+import AddressModal from '../../components/Modals/AddressModal';
 
-// 감싸고 flex, colunm만 주기. 회원탈퇴 버튼에 margin-top: 23px 줄 것 왜냐면 그래야지 화면이 커져도 둘이 붙어있응께
 export default function UserInfo() {
 	const onInfoClick = () => {
 		console.log('정보수정버튼 클릭.. 근데 실제로는 api 요청 드가야 함');
@@ -16,7 +17,7 @@ export default function UserInfo() {
 	const onWithdrawClick = () => {
 		console.log('회원탈퇴버튼 클릭.. 근데 실제로는 api 요청 드가야 함');
 	};
-
+	const [isModal, setModal] = useState(false);
 	const [modalIsOpen, setIsOpen] = useState(false);
 
 	const openModal = () => {
@@ -49,6 +50,21 @@ export default function UserInfo() {
 				회원탈퇴
 			</LetterButtonColor>
 			<DeleteAccountModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} />
+			{isModal ? (
+				<AddressModal setIsOpen={setModal} modalIsOpen={isModal}>
+					<Postcode
+						style={{ width: 600, height: 500 }}
+						jsOptions={{ animation: true, hideMapBtn: true }}
+						onSelected={(data) => {
+							console.log(JSON.stringify(data));
+							setModal(false);
+						}}
+					/>
+				</AddressModal>
+			) : null}
+			<button type="button" onClick={() => setModal(true)}>
+				주소찾기
+			</button>
 		</MainContainer>
 	);
 }
@@ -66,7 +82,18 @@ function Information({ first, second, third, password }) {
 			</UserInfoBox>
 			<UserInfoBox>
 				<InputLabel> {third} </InputLabel>
-				{password ? <InfoInput type="password" /> : <InfoInput type="text" />}
+				{password ? (
+					<InfoInput type="password" />
+				) : (
+					<InfoInput
+						type="text"
+						readOnly
+						onClick={() => {
+							console.log('클릭함');
+						}}
+						// value="암거나"
+					/>
+				)}
 			</UserInfoBox>
 		</InputBox>
 	);
@@ -139,14 +166,14 @@ const InputLabel = styled.label`
 const InfoInput = styled.input`
 	width: 296px;
 	border: 0;
-	border-bottom: 1px solid var(--gray-400);
+	padding-bottom: 4px;
+	border-bottom: 1px solid var(--gray-300);
 	outline: none;
-	font-size: 13px;
+	font-size: 16px;
 	word-break: break-all;
 
 	:focus {
 		border-bottom: 1px solid var(--purple-300);
-		font-weight: var(--bold);
 	}
 	&[type='password'] {
 		font-family: 'Courier New', Courier, monospace;
