@@ -13,5 +13,7 @@ public interface ItemCartRepository extends JpaRepository<ItemCart, Long> {
 
     List<ItemCart> findAllByCartAndSubscription(Cart cart, boolean subscription);
 
+    List<ItemCart> findAllByCartAndSubscriptionAndBuyNow(Cart cart, boolean subscription, boolean buyNow);
+
     void deleteByItemAndCart(Item item, Cart cart); // 주문시 장바구니에서 아이템 삭제
 }

@@ -45,21 +45,39 @@ public class ItemCartService {
         return findItemCart;
     }
 
-    public ItemCart updateItemCart(ItemCart itemCart, int upDown) { // 수량 변경( +1 or -1)
+    public ItemCart updownItemCart(long itemCartId, int upDown) { // 수량 변경( +1 or -1)
+        ItemCart itemCart = findVerifiedItemCart(itemCartId);
         itemCart.addQuantity(upDown);
         itemCartRepository.save(itemCart);
         return itemCart;
     }
 
-    public void deleteItemCart(long itemCartId) {
+    public ItemCart periodItemCart(long itemCartId, int period) { // 정기 구독 주기 변경
+        ItemCart itemCart = findVerifiedItemCart(itemCartId);
+        itemCart.setPeriod(period);
+        return itemCartRepository.save(itemCart);
+    }
+
+    public ItemCart excludeItemCart(long itemCartId, boolean buyNow) { // 아이템 체크 및 해제
+        ItemCart itemCart = findVerifiedItemCart(itemCartId);
+        itemCart.setBuyNow(buyNow);
+        return itemCartRepository.save(itemCart);
+    }
+
+    public void deleteItemCart(long itemCartId) { // 장바구니 항목 삭제
         ItemCart itemCart = findVerifiedItemCart(itemCartId);
         itemCartRepository.delete(itemCart);
     }
 
-    public List<ItemCart> findItemCarts(Cart cart, boolean subscription) {
+    public List<ItemCart> findItemCarts(Cart cart, boolean subscription) { // 장바구니 목록 조회
         return itemCartRepository.findAllByCartAndSubscription(cart, subscription);
-        // isSubscription == true 정기구독 장바구니 목록 조회
-        // isSubscription == false 일반 장바구니 목록 조회
+        // subscription - true 정기구독, false 일반
+    }
+
+    public List<ItemCart> findItemCarts(Cart cart, boolean subscription, boolean buyNow) { // 금액 합계, 주문
+        return itemCartRepository.findAllByCartAndSubscriptionAndBuyNow(cart, subscription, buyNow);
+        // subscription - true 정기구독, false 일반
+        // buyNow - true 체크박스 활성화, false 체크박스 비활성화
     }
 
     public ItemCart findVerifiedItemCart(long itemCartId) {

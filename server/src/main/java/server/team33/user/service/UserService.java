@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.team33.cart.entity.Cart;
+import server.team33.cart.repository.CartRepository;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.login.jwt.JwtToken;
@@ -37,12 +38,14 @@ public class UserService {
     private final AuthUtils authUtils;
     private final JwtToken jwtToken;
     private final UserInfoFilter userInfoFilter;
+    private final CartRepository cartRepository;
 
     public User joinUser( User user ){
         userInfoFilter.filterUserInfo(user);
         encodePassword(user);
         createRole(user);
-        Cart.createCart(user);
+        Cart cart = Cart.createCart(user);
+        cartRepository.save(cart);
         userRepository.save(user);
         return user;
     }

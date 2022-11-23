@@ -8,6 +8,8 @@ import server.team33.cart.entity.ItemCart;
 import server.team33.cart.repository.CartRepository;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
+import server.team33.user.entity.User;
+import server.team33.user.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,7 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final ItemCartService itemCartService;
+    private final UserService userService;
 
     public void refreshCart(long cartId, boolean subscription) { // 가격과 아이템 종류 갱신
         Cart cart = findVerifiedCart(cartId);
@@ -32,6 +35,11 @@ public class CartService {
         }
 
         cartRepository.save(cart);
+    }
+
+    public Cart findMyCart() {
+        User user = userService.getLoginUser();
+        return cartRepository.findByUser(user);
     }
 
     public Cart findCart(long cartId) {
@@ -48,7 +56,7 @@ public class CartService {
 
     public int countTotalDiscountPrice(long cartId, boolean subscription) {
         Cart cart = findVerifiedCart(cartId);
-        List<ItemCart> itemCarts = itemCartService.findItemCarts(cart, subscription);
+        List<ItemCart> itemCarts = itemCartService.findItemCarts(cart, subscription, true);
 
         if(itemCarts == null) return 0;
 
@@ -67,7 +75,7 @@ public class CartService {
 
     private int countTotalPrice(long cartId, boolean subscription) {
         Cart cart = findVerifiedCart(cartId);
-        List<ItemCart> itemCarts = itemCartService.findItemCarts(cart, subscription);
+        List<ItemCart> itemCarts = itemCartService.findItemCarts(cart, subscription, true);
 
         if(itemCarts == null) return 0;
 
@@ -84,6 +92,6 @@ public class CartService {
 
     private int countTotalItems(long cartId, boolean subscription) {
         Cart cart = findVerifiedCart(cartId);
-        return itemCartService.findItemCarts(cart, subscription).size();
+        return itemCartService.findItemCarts(cart, subscription, true).size();
     }
 }
