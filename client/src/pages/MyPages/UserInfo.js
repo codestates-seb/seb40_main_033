@@ -1,35 +1,70 @@
 // 회원정보
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
 	LetterButton,
 	LetterButtonColor,
 } from '../../components/Buttons/LetterButton';
 // 감싸고 flex, colunm만 주기. 회원탈퇴 버튼에 margin-top: 23px 줄 것 왜냐면 그래야지 화면이 커져도 둘이 붙어있응께
-function UserInfo() {
-	const onClick = () => {
-		console.log('정보수정 버튼 클릭.. 근데 실제로는 api 요청 드가야 함');
+export default function UserInfo() {
+	const onInfoClick = () => {
+		console.log('정보수정버튼 클릭.. 근데 실제로는 api 요청 드가야 함');
 	};
 
+	const onWithdrawClick = () => {
+		console.log('회원탈퇴버튼 클릭.. 근데 실제로는 api 요청 드가야 함');
+	};
 	return (
-		<>
+		<MainContainer>
 			<Box>
-				<InputBox />
-				<InputBox />
-				<LetterButton onClick={onClick}>정보 수정</LetterButton>
+				<InfoBox>
+					<InfoHeading>기본 정보</InfoHeading>
+					<Information first="닉네임" second="이메일" third="비밀번호" />
+				</InfoBox>
+				<InfoBox>
+					<InfoHeading>배송지 정보</InfoHeading>
+					<Information first="이름" second="전화번호" third="주소" />
+				</InfoBox>
+				<LetterButton onClick={onInfoClick}>정보 수정</LetterButton>
 			</Box>
 			<LetterButtonColor
-				onClick={onClick}
+				onClick={onWithdrawClick}
 				color="red"
 				colorCode="100"
 				fontSize="11px"
 			>
 				회원탈퇴
 			</LetterButtonColor>
-		</>
+		</MainContainer>
 	);
 }
 
-const Box = styled.div`
+function Information({ first, second, third }) {
+	return (
+		<InputBox>
+			<UserInfoBox>
+				<InputLabel> {first} </InputLabel>
+				<InfoInput type="text" />
+			</UserInfoBox>
+			<UserInfoBox className="middle">
+				<InputLabel> {second} </InputLabel>
+				<InfoInput type="text" />
+			</UserInfoBox>
+			<UserInfoBox>
+				<InputLabel> {third} </InputLabel>
+				<InfoInput type="text" />
+			</UserInfoBox>
+		</InputBox>
+	);
+}
+
+const MainContainer = styled.main`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
+const Box = styled.article`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -53,12 +88,52 @@ const Box = styled.div`
 	}
 `;
 
-const InputBox = styled.div`
+const InfoBox = styled.section`
 	display: flex;
-	flex-direction: column;
-	align-items: center;
 	border: 1px solid black; // 구분을 위한 임시 설정입니다.
 	width: 397px;
 	height: 205px;
+	display: flex;
+	flex-direction: column;
 `;
-export default UserInfo;
+
+const InfoHeading = styled.h2`
+	font-size: 20px;
+	color: var(--gray-500);
+`;
+
+const InputBox = styled.div`
+	margin-left: 22px;
+	margin-top: 46px;
+	border: 1px solid green;
+`;
+const UserInfoBox = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	width: 370px;
+
+	&.middle {
+		margin: 31px 0;
+	}
+`;
+const InputLabel = styled.label`
+	color: var(--gray-400);
+`;
+
+const InfoInput = styled.input`
+	width: 296px;
+	border: 0;
+	border-bottom: 1px solid var(--gray-400);
+	outline: none;
+	font-size: 13px;
+	word-break: break-all;
+
+	:focus {
+		border-bottom: 1px solid var(--purple-300);
+	}
+	&[type='password'] {
+		font-family: 'Courier New', Courier, monospace;
+	}
+`;
