@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import server.team33.cart.service.ItemCartService;
 import server.team33.item.mapper.ItemMapper;
 import server.team33.item.service.ItemService;
 import server.team33.order.dto.ItemOrderDto;
@@ -14,7 +15,6 @@ import server.team33.order.entity.ItemOrder;
 import server.team33.order.entity.Order;
 import server.team33.order.mapper.ItemOrderMapper;
 import server.team33.order.mapper.OrderMapper;
-import server.team33.order.reposiroty.ItemOrderRepository;
 import server.team33.order.service.ItemOrderService;
 import server.team33.order.service.OrderService;
 import server.team33.response.MultiResponseDto;
@@ -24,7 +24,6 @@ import server.team33.user.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -38,24 +37,34 @@ public class OrderController {
     private final OrderService orderService;
     private final ItemService itemService;
     private final ItemOrderService itemOrderService;
+    private final ItemCartService itemCartService;
     private final UserService userService;
     private final OrderMapper orderMapper;
     private final ItemMapper itemMapper;
     private final ItemOrderMapper itemOrderMapper;
-    private ItemOrderRepository itemOrderRepository;
     @PostMapping("/single") // 상세페이지에서 바로 구매하기 요청을 하는 경우
     public ResponseEntity postSingleOrder(@RequestBody @Valid ItemOrderDto.Post itemOrderPostDto) {
 
-        ItemOrder itemOrder = itemOrderService.createItemOrder(
+        List<ItemOrder> itemOrders = itemOrderService.createItemOrder(
                 itemOrderMapper.itemOrderPostDtoToItemOrder(itemOrderPostDto, itemService));
-
-        List<ItemOrder> itemOrders = new ArrayList<>();
-        itemOrders.add(itemOrder);
 
         User user = userService.getLoginUser(); // 기본 배송지 정보를 불러오기 위함.
 
         Order order = orderService.callOrder(itemOrders, user);
 
+        return new ResponseEntity<>(new SingleResponseDto<>(
+                orderMapper.orderToOrderDetailResponseDto(order, itemMapper, itemOrderMapper)), HttpStatus.OK);
+    }
+
+    @PostMapping// 장바구니에서 주문하기
+    public ResponseEntity postOrder(@RequestParam(value="subscription", defaultValue="false") boolean subscription) {
+
+        User user = userService.getLoginUser();
+
+        List<ItemOrder> itemOrders = itemOrderMapper.itemCartsToItemOrders(
+                itemCartService.findItemCarts(user.getCart(), subscription, true), itemCartService);
+
+        Order order = orderService.callOrder(itemOrders, user);
 
         return new ResponseEntity<>(new SingleResponseDto<>(
                 orderMapper.orderToOrderDetailResponseDto(order, itemMapper, itemOrderMapper)), HttpStatus.OK);

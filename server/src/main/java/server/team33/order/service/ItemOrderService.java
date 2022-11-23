@@ -7,6 +7,7 @@ import server.team33.order.entity.ItemOrder;
 import server.team33.order.reposiroty.ItemOrderRepository;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,8 +17,12 @@ public class ItemOrderService {
 
     private final ItemOrderRepository itemOrderRepository;
 
-    public ItemOrder createItemOrder(ItemOrder itemOrder) {
-        return itemOrderRepository.save(itemOrder);
+    public List<ItemOrder> createItemOrder(ItemOrder itemOrder) {
+        itemOrderRepository.save(itemOrder);
+        List<ItemOrder> itemOrders = new ArrayList<>();
+        itemOrders.add(itemOrder);
+
+        return itemOrders;
     }
 
     public int countTotalPrice(List<ItemOrder> itemOrders) {

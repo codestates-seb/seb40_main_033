@@ -15,7 +15,7 @@ public class CartResponseDto {
     @Positive
     private Long cartId;
     private boolean subscription;
-    private MultiResponseDto<ItemCartDto.Response> itemCartResponses;
+    private MultiResponseDto<ItemCartDto.Response> itemCarts;
     private int totalItems;
     private int totalPrice;
     private int totalDiscountPrice;

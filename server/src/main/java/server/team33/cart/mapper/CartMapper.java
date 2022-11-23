@@ -21,19 +21,19 @@ public interface CartMapper {
         cartResponseDto.setCartId(cart.getCartId());
         cartResponseDto.setSubscription(subscription);
 
-        List<ItemCart> itemCarts = itemCartService.findItemCarts(cart, subscription);
+        List<ItemCart> itemCarts = itemCartService.findItemCarts(cart, subscription); // 목록은 체크 + 언체크 모두 조회
 
         itemCartMapper.itemCartsToItemCartResponseDtos(itemMapper, itemCarts);
-        cartResponseDto.setItemCartResponses(new MultiResponseDto<>(
+        cartResponseDto.setItemCarts(new MultiResponseDto<>(
                 itemCartMapper.itemCartsToItemCartResponseDtos(itemMapper, itemCarts)));
 
         if(subscription) {
-            cartResponseDto.setTotalPrice(cart.getSubTotalPrice());
-            cartResponseDto.setTotalItems(cart.getSubTotalItems());
+            cartResponseDto.setTotalPrice(cart.getSubTotalPrice() == null ? 0 : cart.getSubTotalPrice());
+            cartResponseDto.setTotalItems(cart.getSubTotalItems() == null ? 0 : cart.getSubTotalItems());
 
         } else {
-            cartResponseDto.setTotalPrice(cart.getTotalPrice());
-            cartResponseDto.setTotalItems(cart.getTotalItems());
+            cartResponseDto.setTotalPrice(cart.getTotalPrice() == null ? 0 : cart.getTotalPrice());
+            cartResponseDto.setTotalItems(cart.getTotalItems() == null ? 0 : cart.getTotalItems());
         }
 
         cartResponseDto.setTotalDiscountPrice(cartService.countTotalDiscountPrice(cart.getCartId(), subscription));

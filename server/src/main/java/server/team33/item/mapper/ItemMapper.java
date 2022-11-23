@@ -48,6 +48,7 @@ public interface ItemMapper {
         item.setDiscountRate(post.getDiscountRate());
         item.setCapacity(post.getCapacity());
         item.setPrice(post.getPrice());
+        item.setView(0);
         item.setSales(post.getSales());
         item.setTitle(post.getTitle());
         item.setContent(post.getContent());
