@@ -29,6 +29,8 @@ public class ItemOrder extends Auditable {
     @Column(nullable = false)
     private boolean subscription;
 
+    private boolean subscribing;
+
     @Column(name = "NEXT_DELIVERY")
     private ZonedDateTime nextDelivery;
 
