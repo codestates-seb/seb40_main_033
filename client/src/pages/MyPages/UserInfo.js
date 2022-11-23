@@ -27,7 +27,12 @@ export default function UserInfo() {
 			<Box>
 				<InfoBox>
 					<InfoHeading>기본 정보</InfoHeading>
-					<Information first="닉네임" second="이메일" third="비밀번호" />
+					<Information
+						first="닉네임"
+						second="이메일"
+						third="비밀번호"
+						password
+					/>
 				</InfoBox>
 				<InfoBox>
 					<InfoHeading>배송지 정보</InfoHeading>
@@ -48,7 +53,7 @@ export default function UserInfo() {
 	);
 }
 
-function Information({ first, second, third }) {
+function Information({ first, second, third, password }) {
 	return (
 		<InputBox>
 			<UserInfoBox>
@@ -61,7 +66,7 @@ function Information({ first, second, third }) {
 			</UserInfoBox>
 			<UserInfoBox>
 				<InputLabel> {third} </InputLabel>
-				<InfoInput type="text" />
+				{password ? <InfoInput type="password" /> : <InfoInput type="text" />}
 			</UserInfoBox>
 		</InputBox>
 	);
@@ -99,7 +104,7 @@ const Box = styled.article`
 
 const InfoBox = styled.section`
 	display: flex;
-	border: 1px solid black; // 구분을 위한 임시 설정입니다.
+	/* border: 1px solid black; // 구분을 위한 임시 설정입니다. */
 	width: 397px;
 	height: 205px;
 	display: flex;
@@ -114,7 +119,7 @@ const InfoHeading = styled.h2`
 const InputBox = styled.div`
 	margin-left: 22px;
 	margin-top: 46px;
-	border: 1px solid green;
+	/* border: 1px solid green; // 구분을 위한 임시 설정입니다. */
 `;
 const UserInfoBox = styled.div`
 	display: flex;
@@ -141,6 +146,7 @@ const InfoInput = styled.input`
 
 	:focus {
 		border-bottom: 1px solid var(--purple-300);
+		font-weight: var(--bold);
 	}
 	&[type='password'] {
 		font-family: 'Courier New', Courier, monospace;
