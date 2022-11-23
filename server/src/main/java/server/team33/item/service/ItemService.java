@@ -27,6 +27,7 @@ public class ItemService {
     // 아이템 상세페이지 조회 비지니스 로직
     public Item findItem(long itemId) {
         Item item = findVerifiedItem(itemId);
+        item.setView(item.getView()+1);
         return itemRepository.save(item);
     }
 

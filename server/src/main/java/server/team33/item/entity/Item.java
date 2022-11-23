@@ -48,6 +48,9 @@ public class Item {
     private int discountRate;
 
     @Column
+    private int view;
+
+    @Column
     private int sales;
 
     @Column
