@@ -66,7 +66,6 @@ public class Item {
     private Brand brand;
 
 
-
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<Wish> wishList = new ArrayList<>();
 

@@ -5,5 +5,4 @@ import server.team33.order.entity.ItemOrder;
 
 public interface ItemOrderRepository extends JpaRepository<ItemOrder, Long> {
 
-
 }

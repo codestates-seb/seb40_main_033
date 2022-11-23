@@ -24,7 +24,6 @@ public interface ItemMapper {
         itemDetailResponseDto.setContent(item.getContent());
         itemDetailResponseDto.setExpiration(item.getExpiration());
         //itemDetailResponseDto.setBrand(item.getBrand());
-        itemDetailResponseDto.setBrand(item.getBrand());
         itemDetailResponseDto.setSales(item.getSales());
         itemDetailResponseDto.setPrice(item.getPrice());
         itemDetailResponseDto.setCapacity(item.getCapacity());
@@ -47,7 +46,6 @@ public interface ItemMapper {
         item.setThumbnail(post.getThumbnail());
         item.setDescriptionImage(post.getDescriptionImage());
         item.setDiscountRate(post.getDiscountRate());
-        item.setBrand(post.getBrand());
         item.setCapacity(post.getCapacity());
         item.setPrice(post.getPrice());
         item.setSales(post.getSales());
@@ -92,7 +90,7 @@ public interface ItemMapper {
         itemCategoryResponse.setItemId(item.getItemId());
         itemCategoryResponse.setTitle(item.getTitle());
         itemCategoryResponse.setContent(item.getContent());
-        itemCategoryResponse.setBrand(item.getBrand());
+//        itemCategoryResponse.setBrand(item.getBrand());
         itemCategoryResponse.setPrice(item.getPrice());
         //itemCategoryResponse.setBrand(item.getBrand());
         itemCategoryResponse.setNutritionFacts(item.getNutritionFacts());
@@ -118,7 +116,7 @@ public interface ItemMapper {
     default ItemSimpleResponseDto itemToItemSimpleResponseDto(Item item) {
         ItemSimpleResponseDto itemSimpleResponseDto = new ItemSimpleResponseDto();
         itemSimpleResponseDto.setItemId(item.getItemId());
-        itemSimpleResponseDto.setBrand(item.getBrand());
+//        itemSimpleResponseDto.setBrand(item.getBrand());
         itemSimpleResponseDto.setThumbnail(item.getThumbnail());
         itemSimpleResponseDto.setTitle(item.getTitle());
         itemSimpleResponseDto.setServingSize(item.getServingSize());
