@@ -5,6 +5,8 @@ import {
 	LetterButton,
 	LetterButtonColor,
 } from '../../components/Buttons/LetterButton';
+import DeleteAccountModal from '../../components/Modals/DeleteAccountModal';
+
 // 감싸고 flex, colunm만 주기. 회원탈퇴 버튼에 margin-top: 23px 줄 것 왜냐면 그래야지 화면이 커져도 둘이 붙어있응께
 export default function UserInfo() {
 	const onInfoClick = () => {
@@ -13,6 +15,12 @@ export default function UserInfo() {
 
 	const onWithdrawClick = () => {
 		console.log('회원탈퇴버튼 클릭.. 근데 실제로는 api 요청 드가야 함');
+	};
+
+	const [modalIsOpen, setIsOpen] = useState(false);
+
+	const openModal = () => {
+		setIsOpen(true);
 	};
 	return (
 		<MainContainer>
@@ -28,13 +36,14 @@ export default function UserInfo() {
 				<LetterButton onClick={onInfoClick}>정보 수정</LetterButton>
 			</Box>
 			<LetterButtonColor
-				onClick={onWithdrawClick}
+				onClick={openModal}
 				color="red"
 				colorCode="100"
 				fontSize="11px"
 			>
 				회원탈퇴
 			</LetterButtonColor>
+			<DeleteAccountModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} />
 		</MainContainer>
 	);
 }
