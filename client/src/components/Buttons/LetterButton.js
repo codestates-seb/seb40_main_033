@@ -18,7 +18,13 @@ export function LetterButton({ children, width, height, onClick }) {
 	);
 }
 
-export function GrayLetterButton({ children, width, height, onClick }) {
+export function GrayLetterButton({
+	children,
+	width,
+	height,
+	onClick,
+	fontSize = '11px',
+}) {
 	return (
 		<DefaultButton
 			onClick={onClick}
@@ -28,7 +34,7 @@ export function GrayLetterButton({ children, width, height, onClick }) {
 			height={height}
 			hoverColor="gray"
 			hoverColorCode="400"
-			fontSize="11px"
+			fontSize={fontSize}
 			letter
 		>
 			{children}
