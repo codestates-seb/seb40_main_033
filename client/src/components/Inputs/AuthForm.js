@@ -14,7 +14,7 @@ export default function AuthForm() {
 		register,
 		handleSubmit,
 		watch,
-		formState: { errors, touchedFields },
+		formState: { errors },
 		setError,
 	} = useForm({
 		mode: 'onChange',
@@ -23,7 +23,6 @@ export default function AuthForm() {
 	// 인풋별 register
 	const { ref: ref1, ...rest1 } = register('이메일', {
 		required: '이메일을 작성해주세요.',
-		minLength: 5,
 		pattern: {
 			value: /^[A-Za-z0-9._%+-]+@naver\.com$/,
 			message: '이메일 형식으로 작성해주세요.',
@@ -59,17 +58,23 @@ export default function AuthForm() {
 	};
 
 	// current가 바뀔 때마다 input에 포커스를 준다.
-	const handleInput = (event) => {
+	const handleInput = (event, setShowError) => {
 		if (event.key === 'Enter') {
+			setShowError(true);
 			if (event.target === firstRef.current && errors.이메일 === undefined) {
 				setCurrent((prev) => prev + 1);
+				setShowError(false);
 			} else if (
 				event.target === secondRef.current &&
 				errors.비밀번호 === undefined
 			) {
 				setCurrent((prev) => prev + 1);
-			} else if (event.target === thirdRef.current) {
-				console.log(event); // 마지막 인풋엔 submit event를 넣어야 함
+				setShowError(false);
+			} else if (
+				event.target === thirdRef.current &&
+				errors.닉네임 === undefined
+			) {
+				setShowError(false);
 			}
 		}
 	};
