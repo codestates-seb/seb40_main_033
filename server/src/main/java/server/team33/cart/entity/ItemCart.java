@@ -1,9 +1,6 @@
 package server.team33.cart.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import server.team33.audit.Auditable;
@@ -13,6 +10,7 @@ import server.team33.item.entity.Item;
 import javax.persistence.*;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

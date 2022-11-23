@@ -31,11 +31,10 @@ public class CartController {
     private final ItemMapper itemMapper;
     private final ItemCartMapper itemCartMapper;
 
-    @GetMapping("/{cart-id}")
-    public ResponseEntity getCart(@PathVariable("cart-id") @Positive long cartId,
-                                       @RequestParam(value="subscription", defaultValue="false") boolean subscription) {
+    @GetMapping
+    public ResponseEntity getCart(@RequestParam(value="subscription", defaultValue="false") boolean subscription) {
 
-        Cart cart = cartService.findCart(cartId);
+        Cart cart = cartService.findMyCart();
 
         return new ResponseEntity<>(new SingleResponseDto<>(cartMapper.cartToCartResponseDto(
                         cart, cartService, subscription, itemCartService, itemMapper, itemCartMapper)), HttpStatus.OK);
