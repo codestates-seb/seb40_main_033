@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import server.team33.category.dto.CategoryDto;
-import server.team33.category.entity.Category;
 import server.team33.item.entity.Brand;
 import server.team33.nutritionFact.entity.NutritionFact;
 import server.team33.review.entity.Review;

@@ -6,6 +6,7 @@ import server.team33.audit.Auditable;
 import server.team33.item.entity.Item;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -27,6 +28,14 @@ public class ItemOrder extends Auditable {
 
     @Column(nullable = false)
     private boolean subscription;
+
+    private boolean subscribing;
+
+    @Column(name = "NEXT_DELIVERY")
+    private ZonedDateTime nextDelivery;
+
+    @Column(name = "PAYMENT_DAY")
+    private ZonedDateTime paymentDay;
 
     @ManyToOne
     @JoinColumn(name="ITEM_ID")

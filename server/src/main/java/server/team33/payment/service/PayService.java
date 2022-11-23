@@ -20,9 +20,9 @@ import server.team33.payment.dto.KakaoPayRequestDto;
 @Slf4j
 @RequiredArgsConstructor
 public class PayService {
-    RestTemplate restTemplate = new RestTemplate();
+   private RestTemplate restTemplate = new RestTemplate();
     private final OrderService orderService;
-    MultiValueMap<String, String> parameters;
+    private MultiValueMap<String, String> parameters;
     private Long order_id;
 
     public KakaoPayRequestDto kakaoPayRequest( int totalAmount, int quantity, Long orderId ){
@@ -31,10 +31,10 @@ public class PayService {
 
         Integer itemQuantity = order.getTotalItems();
         String itemName = order.getItemOrders().get(0).getItem().getTitle();
-        String item_name = getItem_name(itemQuantity, itemName);
+        String item_name = get_item_name(itemQuantity, itemName);
         order_id = orderId;
 
-        MultiValueMap<String, String> parameters = getRequestParams(totalAmount, quantity, item_name, order_id);
+        parameters = getRequestParams(totalAmount, quantity, item_name, order_id);
         log.info("parameters = {}", parameters);
 
         HttpEntity<MultiValueMap<String, String>> kakaoRequestEntity = new HttpEntity<>(parameters, getKakaoHeader());
@@ -49,7 +49,7 @@ public class PayService {
 
     public KakaoPayApproveDto kakaoPayApprove( String tid, String pgToken ){
 
-        MultiValueMap<String, String> parameters = getApproveParams(tid, pgToken, order_id);
+        parameters = getApproveParams(tid, pgToken, order_id);
 
         HttpEntity<MultiValueMap<String, String>> kakaoRequestEntity = new HttpEntity<>(parameters, getKakaoHeader());
         String url = "https://kapi.kakao.com/v1/payment/approve";
@@ -116,7 +116,7 @@ public class PayService {
         return httpHeaders;
     }
 
-    private String getItem_name( Integer itemQuantity, String itemName ){
+    private String get_item_name( Integer itemQuantity, String itemName ){
         if(itemQuantity == 1) return itemName;
         return itemName + " 그 외 " + ( itemQuantity - 1 );
     }
