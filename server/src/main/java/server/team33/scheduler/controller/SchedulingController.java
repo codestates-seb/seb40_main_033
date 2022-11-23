@@ -26,8 +26,7 @@ public class SchedulingController {
     @GetMapping
     public void startSchedule( @RequestParam(name = "orderId") Long orderId ) throws IOException{
 
-        Order order = orderService.findOrder(orderId);
-        List<ItemOrder> itemOrders = order.getItemOrders();
+        List<ItemOrder> itemOrders = getItemOrders(orderId);
 
         for(ItemOrder itemOrder : itemOrders){
             scheduler.startScheduler(orderId, itemOrder);
@@ -39,8 +38,7 @@ public class SchedulingController {
     public void changeSchedule( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "period") Integer period ){
 
         log.warn("스케쥴 변경");
-        Order order = orderService.findOrder(orderId);
-        List<ItemOrder> itemOrders = order.getItemOrders();
+        List<ItemOrder> itemOrders = getItemOrders(orderId);
 
         for(ItemOrder itemOrder : itemOrders){
             scheduler.changePeriod(orderId, itemOrder, period);
@@ -50,8 +48,7 @@ public class SchedulingController {
     @DeleteMapping("/cancel")
     public ResponseEntity cancelSchedule( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "itemOrderId") Long itemOrderId ){
 
-        Order order = orderService.findOrder(orderId);
-        ItemOrder itemOrder = order.getItemOrders().get((int) (itemOrderId - 1));
+        ItemOrder itemOrder = getItemOrder(orderId, itemOrderId);
         itemOrder.setSubscribing(false);
 
         scheduler.stopScheduler(orderId, itemOrderId);
@@ -63,8 +60,7 @@ public class SchedulingController {
     public void delayDelivery( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "itemOrderId") Long itemOrderId,
                                @RequestParam("delay") String delay ){
 
-        Order order = orderService.findOrder(orderId);
-        ItemOrder itemOrder = order.getItemOrders().get((int) (itemOrderId - 1));
+        ItemOrder itemOrder = getItemOrder(orderId, itemOrderId);
 
         scheduler.delayDelivery(orderId, itemOrder, delay);
     }
@@ -72,6 +68,12 @@ public class SchedulingController {
     public String sdf( @RequestParam(name = "nextDeliveryDay") String nextDeliveryDay){
         return URLDecoder.decode(nextDeliveryDay, StandardCharsets.UTF_8);
     }
-
-
+    private List<ItemOrder> getItemOrders( Long orderId ){
+        Order order = orderService.findOrder(orderId);
+        return order.getItemOrders();
+    }
+    private ItemOrder getItemOrder( Long orderId, Long itemOrderId ){
+        Order order = orderService.findOrder(orderId);
+        return order.getItemOrders().get((int) ( itemOrderId - 1 ));
+    }
 }

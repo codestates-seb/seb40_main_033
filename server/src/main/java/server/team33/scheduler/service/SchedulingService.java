@@ -8,6 +8,7 @@ import org.springframework.scheduling.support.PeriodicTrigger;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.order.entity.ItemOrder;
+import server.team33.order.service.ItemOrderService;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class SchedulingService {
     private final ThreadPoolTaskScheduler scheduler;
     private final SubscriptionService service;
+    private final ItemOrderService itemOrderService;
     private PeriodicTrigger trigger;
     private final ConcurrentMap<String, ScheduledFuture<?>> scheduledFutureMap = new ConcurrentHashMap<>();
 
@@ -39,7 +41,7 @@ public class SchedulingService {
 
     public void changePeriod( Long orderId, ItemOrder itemOrder, Integer period ){
 
-        itemOrder.setPeriod(period);
+        itemOrderService.changePeriod(itemOrder,period);
         log.error("perid = {}", itemOrder.getPeriod());
 
         makeScheduleNull(orderId, itemOrder);
@@ -53,8 +55,7 @@ public class SchedulingService {
 
 
     public void delayDelivery( Long orderId, ItemOrder itemOrder, String delay ){
-
-        itemOrder.setNextDelivery(itemOrder.getNextDelivery().plusDays(Long.parseLong(delay)));
+        itemOrderService.delayDelivery(itemOrder,delay);
         log.info("next delayDelivery = {}", itemOrder.getNextDelivery());
 
         makeScheduleNull(orderId, itemOrder);

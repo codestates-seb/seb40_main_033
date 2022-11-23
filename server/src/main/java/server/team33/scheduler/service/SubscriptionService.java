@@ -9,6 +9,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import server.team33.order.entity.ItemOrder;
+import server.team33.order.service.ItemOrderService;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,21 +27,19 @@ import java.time.ZonedDateTime;
 @Data
 @Slf4j
 public class SubscriptionService {
+    private final ItemOrderService itemOrderService;
     @Async
     public void getPaymentDay( ItemOrder itemOrder ) throws IOException{
 
         MultiValueMap<String, String> queryParam = new LinkedMultiValueMap<>();
 
         ZonedDateTime paymentDay = ZonedDateTime.now();
-
-        itemOrder.setPaymentDay(paymentDay);
         log.info("payment = {}", itemOrder.getPaymentDay());
 
         String nextDelivery = String.valueOf(paymentDay.plusDays(itemOrder.getPeriod()));
         log.info("nextDelivery = {}", nextDelivery);
 
-        itemOrder.setNextDelivery(ZonedDateTime.parse(nextDelivery));
-        log.info("nextDelivery = {}", itemOrder.getNextDelivery());
+        itemOrderService.changeDeliveryInfo(itemOrder, paymentDay, nextDelivery);
 
         connectUri(queryParam, nextDelivery);
     }
