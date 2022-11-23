@@ -8,21 +8,29 @@ import {
 } from '../../components/Buttons/LetterButton';
 import DeleteAccountModal from '../../components/Modals/DeleteAccountModal';
 import AddressModal from '../../components/Modals/AddressModal';
+import GoodbyeModal from '../../components/Modals/GoodbyeModal';
 
 export default function UserInfo() {
 	const onInfoClick = () => {
 		console.log('정보수정버튼 클릭.. 근데 실제로는 api 요청 드가야 함');
 	};
-
-	const onWithdrawClick = () => {
-		console.log('회원탈퇴버튼 클릭.. 근데 실제로는 api 요청 드가야 함');
-	};
 	const [isModal, setModal] = useState(false);
 	const [modalIsOpen, setIsOpen] = useState(false);
+	const [openGoodbye, setOpenGoodbye] = useState(false);
 
-	const openModal = () => {
+	const handleOpenDelete = () => {
 		setIsOpen(true);
 	};
+
+	const handleOpenAddress = () => {
+		setModal(true);
+	};
+
+	const handleOpenGoodbye = () => {
+		setIsOpen(false);
+		setOpenGoodbye(true);
+	};
+
 	return (
 		<MainContainer>
 			<Box>
@@ -37,19 +45,31 @@ export default function UserInfo() {
 				</InfoBox>
 				<InfoBox>
 					<InfoHeading>배송지 정보</InfoHeading>
-					<Information first="이름" second="전화번호" third="주소" />
+					<Information
+						first="이름"
+						second="전화번호"
+						third="주소"
+						handleOpenAddress={handleOpenAddress}
+						address
+					/>
 				</InfoBox>
 				<LetterButton onClick={onInfoClick}>정보 수정</LetterButton>
 			</Box>
 			<LetterButtonColor
-				onClick={openModal}
+				onClick={handleOpenDelete}
 				color="red"
 				colorCode="100"
-				fontSize="11px"
+				fontSize="12px"
 			>
 				회원탈퇴
 			</LetterButtonColor>
-			<DeleteAccountModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} />
+			<DeleteAccountModal
+				setIsOpen={setIsOpen}
+				modalIsOpen={modalIsOpen}
+				handleOpenGoodbye={handleOpenGoodbye}
+				openGoodbye={openGoodbye}
+			/>
+			<GoodbyeModal setIsOpen={setOpenGoodbye} modalIsOpen={openGoodbye} />
 			{isModal ? (
 				<AddressModal setIsOpen={setModal} modalIsOpen={isModal}>
 					<Postcode
@@ -62,14 +82,18 @@ export default function UserInfo() {
 					/>
 				</AddressModal>
 			) : null}
-			<button type="button" onClick={() => setModal(true)}>
-				주소찾기
-			</button>
 		</MainContainer>
 	);
 }
 
-function Information({ first, second, third, password }) {
+function Information({
+	first,
+	second,
+	third,
+	password,
+	handleOpenAddress,
+	address,
+}) {
 	return (
 		<InputBox>
 			<UserInfoBox>
@@ -85,16 +109,15 @@ function Information({ first, second, third, password }) {
 				{password ? (
 					<InfoInput type="password" />
 				) : (
-					<InfoInput
-						type="text"
-						readOnly
-						onClick={() => {
-							console.log('클릭함');
-						}}
-						// value="암거나"
-					/>
+					<InfoInput type="text" readOnly onClick={handleOpenAddress} />
 				)}
 			</UserInfoBox>
+			{address ? (
+				<UserInfoBox>
+					<InputLabel />
+					<InfoInput type="text" placeholder="상세주소를 입력해주세요." />
+				</UserInfoBox>
+			) : null}
 		</InputBox>
 	);
 }
@@ -108,13 +131,13 @@ const MainContainer = styled.main`
 const Box = styled.article`
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	justify-content: space-between;
+	align-items: center;
 	border: 1px solid #f1f1f1;
 	background-color: white;
 	width: 864px;
-	height: 674px;
-	padding: 66px 78px 23px 78px;
+	height: 710px;
+	padding: 60px 50px 30px 50px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	border-radius: 10px;
 
@@ -124,7 +147,7 @@ const Box = styled.article`
 	}
 
 	& + button {
-		margin-top: 22px;
+		margin-top: 27px;
 		font-weight: var(--regular);
 	}
 `;
@@ -133,9 +156,9 @@ const InfoBox = styled.section`
 	display: flex;
 	/* border: 1px solid black; // 구분을 위한 임시 설정입니다. */
 	width: 397px;
-	height: 205px;
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 40px;
 `;
 
 const InfoHeading = styled.h2`
@@ -148,16 +171,17 @@ const InputBox = styled.div`
 	margin-top: 46px;
 	/* border: 1px solid green; // 구분을 위한 임시 설정입니다. */
 `;
+
 const UserInfoBox = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 	width: 370px;
-
-	&.middle {
+	margin-bottom: 31px;
+	/* &.middle {
 		margin: 31px 0;
-	}
+	} */
 `;
 const InputLabel = styled.label`
 	color: var(--gray-400);
@@ -177,5 +201,10 @@ const InfoInput = styled.input`
 	}
 	&[type='password'] {
 		font-family: 'Courier New', Courier, monospace;
+	}
+
+	::placeholder {
+		color: var(--gray-300);
+		font-size: 13px;
 	}
 `;
