@@ -8,8 +8,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import server.team33.exception.bussiness.BusinessLogicException;
-import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.order.entity.ItemOrder;
 
 import java.io.IOException;
@@ -63,8 +61,10 @@ public class SubscriptionService {
 
         boolean noMargin = itemOrder.getNextDelivery().minusDays(itemOrder.getPeriod()).isBefore(ZonedDateTime.now());
 
-
-        if(noMargin) throw new BusinessLogicException(ExceptionCode.PERIOD_NOT_CHANGE);
+        if(noMargin){
+            getPaymentDay(itemOrder);
+            return;
+        }
 
         MultiValueMap<String, String> queryParam = new LinkedMultiValueMap<>();
 
@@ -78,6 +78,7 @@ public class SubscriptionService {
     }
 
     private void connectUri( MultiValueMap<String, String> queryParam, String nextDelivery ){
+
         String encodedNextDelivery = URLEncoder.encode(nextDelivery, StandardCharsets.UTF_8);
         log.info("encodedNextDelivery = {}", encodedNextDelivery);
 
