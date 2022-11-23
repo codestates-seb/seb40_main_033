@@ -72,5 +72,6 @@ const MainContainer = styled.div`
 	width: 100%;
 	&.noMargin {
 		margin: 0;
+		max-width: none;
 	}
 `;
