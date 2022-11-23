@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -9,7 +10,15 @@ export default function AuthForm() {
 	const firstRef = useRef(null);
 	const secondRef = useRef(null);
 	const thirdRef = useRef(null);
-	const { register, handleSubmit, watch, formState } = useForm();
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors, touchedFields },
+		setError,
+	} = useForm({
+		mode: 'onChange',
+	});
 
 	// 인풋별 register
 	const { ref: ref1, ...rest1 } = register('이메일', {
@@ -40,9 +49,6 @@ export default function AuthForm() {
 			message: '2글자 이상 작성해주세요.',
 		},
 	});
-	const onValid = (data) => {
-		console.log('data', data);
-	};
 
 	// current가 변하면 onChange를 true로 바꾸고 0.5초 후에 false로 바꿔주는 함수.
 	const onChangeHandler = () => {
@@ -55,14 +61,11 @@ export default function AuthForm() {
 	// current가 바뀔 때마다 input에 포커스를 준다.
 	const handleInput = (event) => {
 		if (event.key === 'Enter') {
-			if (
-				event.target === firstRef.current &&
-				formState.errors.이메일 === undefined
-			) {
+			if (event.target === firstRef.current && errors.이메일 === undefined) {
 				setCurrent((prev) => prev + 1);
 			} else if (
 				event.target === secondRef.current &&
-				formState.errors.비밀번호 === undefined
+				errors.비밀번호 === undefined
 			) {
 				setCurrent((prev) => prev + 1);
 			} else if (event.target === thirdRef.current) {
@@ -71,13 +74,21 @@ export default function AuthForm() {
 		}
 	};
 
+	console.log('errors', errors);
+
+	// current가 바뀔 때마다 onChangeHandler를 실행시켜서 애니메이션이 작동한다.
 	useEffect(() => {
+		firstRef.current.focus();
 		if (current === 2) {
 			onChangeHandler();
 		} else if (current === 3) {
 			onChangeHandler();
 		}
 	}, [current]);
+
+	const onValid = (data) => {
+		console.log('data', data);
+	};
 
 	return (
 		<SForm
@@ -135,6 +146,7 @@ const pullInput = keyframes`
 `;
 
 const SForm = styled.form`
+	position: relative;
 	width: 300px;
 	// 모든 자식들 가렸다가 current에 따라 보여주기
 	& > * {
