@@ -41,45 +41,44 @@ public class SchedulingService {
 
     public void changePeriod( Long orderId, ItemOrder itemOrder, Integer period ){
 
-        itemOrderService.changePeriod(itemOrder,period);
         log.error("perid = {}", itemOrder.getPeriod());
 
         makeScheduleNull(orderId, itemOrder);
         ScheduledFuture<?> scheduledFuture;
 
         trigger = new PeriodicTrigger(period, TimeUnit.SECONDS);
-        scheduledFuture = this.scheduler.schedule(change(itemOrder), trigger);
+        scheduledFuture = this.scheduler.schedule(change(itemOrder, period), trigger);
 
         scheduledFutureMap.put(String.valueOf(orderId) + itemOrder.getItemOrderId(), scheduledFuture);
     }
 
 
     public void delayDelivery( Long orderId, ItemOrder itemOrder, String delay ){
-        itemOrderService.delayDelivery(itemOrder,delay);
+
         log.info("next delayDelivery = {}", itemOrder.getNextDelivery());
 
         makeScheduleNull(orderId, itemOrder);
         ScheduledFuture<?> scheduledFuture;
 
         trigger = new PeriodicTrigger(itemOrder.getPeriod(), TimeUnit.SECONDS);
-        scheduledFuture = this.scheduler.schedule(delay(itemOrder), trigger);
+        scheduledFuture = this.scheduler.schedule(delay(itemOrder, delay), trigger);
 
         scheduledFutureMap.put(String.valueOf(orderId) + itemOrder.getItemOrderId(), scheduledFuture);
     }
-    private Runnable change( ItemOrder itemOrder ){
+    private Runnable change( ItemOrder itemOrder, Integer period ){
         return () -> {
             try{
-                service.changePaymentDay(itemOrder);
+                service.changePaymentDay(itemOrder, period);
             } catch(IOException e){
                 throw new RuntimeException(e);
             }
         };
     }
 
-    private Runnable delay( ItemOrder itemOrder ){
+    private Runnable delay( ItemOrder itemOrder, String delay ){
         return () -> {
             try{
-                service.delayPaymentDay(itemOrder);
+                service.delayPaymentDay(itemOrder, delay);
             } catch(IOException e){
                 throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
             }

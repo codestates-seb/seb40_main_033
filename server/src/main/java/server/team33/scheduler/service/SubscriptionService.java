@@ -45,9 +45,11 @@ public class SubscriptionService {
     }
 
     @Async
-    public void delayPaymentDay( ItemOrder itemOrder ) throws IOException{
+    public void delayPaymentDay( ItemOrder itemOrder, String delay ) throws IOException{
 
         MultiValueMap<String, String> queryParam = new LinkedMultiValueMap<>();
+
+        itemOrderService.delayDelivery(itemOrder,delay);
 
         String nextDelivery = String.valueOf(itemOrder.getNextDelivery());
         log.info("nextDelivery = {}", nextDelivery);
@@ -56,7 +58,9 @@ public class SubscriptionService {
     }
 
     @Async
-    public void changePaymentDay( ItemOrder itemOrder ) throws IOException{
+    public void changePaymentDay( ItemOrder itemOrder, Integer period ) throws IOException{
+
+        itemOrderService.changePeriod(itemOrder,period);
 
         boolean noMargin = itemOrder.getNextDelivery().minusDays(itemOrder.getPeriod()).isBefore(ZonedDateTime.now());
 
