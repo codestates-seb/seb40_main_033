@@ -63,6 +63,7 @@ public class SubscriptionService {
 
         boolean noMargin = itemOrder.getNextDelivery().minusDays(itemOrder.getPeriod()).isBefore(ZonedDateTime.now());
 
+
         if(noMargin) throw new BusinessLogicException(ExceptionCode.PERIOD_NOT_CHANGE);
 
         MultiValueMap<String, String> queryParam = new LinkedMultiValueMap<>();

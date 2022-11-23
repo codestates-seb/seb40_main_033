@@ -22,11 +22,11 @@ public class SchedulingService {
     private final ThreadPoolTaskScheduler scheduler;
     private final SubscriptionService service;
     private PeriodicTrigger trigger;
-    private final ConcurrentMap<Long, ScheduledFuture<?>> scheduledFutureMap = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, ScheduledFuture<?>> scheduledFutureMap = new ConcurrentHashMap<>();
 
     public void stopScheduler( Long orderId, Long itemOrderId ){
 
-        ScheduledFuture<?> scheduledFuture = scheduledFutureMap.get(orderId + itemOrderId);
+        ScheduledFuture<?> scheduledFuture = scheduledFutureMap.get(String.valueOf(orderId) + itemOrderId);
         scheduledFuture.cancel(true);
     }
 
@@ -34,7 +34,7 @@ public class SchedulingService {
 
         trigger = new PeriodicTrigger(itemOrder.getPeriod(), TimeUnit.SECONDS);
         ScheduledFuture<?> schedule = this.scheduler.schedule(autoPay(itemOrder), trigger);
-        scheduledFutureMap.put(orderId + itemOrder.getItemOrderId(), schedule);
+        scheduledFutureMap.put(String.valueOf(orderId) + itemOrder.getItemOrderId(), schedule);
     }
 
     public void changePeriod( Long orderId, ItemOrder itemOrder, Integer period ){
@@ -48,7 +48,7 @@ public class SchedulingService {
         trigger = new PeriodicTrigger(period, TimeUnit.SECONDS);
         scheduledFuture = this.scheduler.schedule(change(itemOrder), trigger);
 
-        scheduledFutureMap.put(orderId + itemOrder.getItemOrderId(), scheduledFuture);
+        scheduledFutureMap.put(String.valueOf(orderId) + itemOrder.getItemOrderId(), scheduledFuture);
     }
 
 
@@ -63,7 +63,7 @@ public class SchedulingService {
         trigger = new PeriodicTrigger(itemOrder.getPeriod(), TimeUnit.SECONDS);
         scheduledFuture = this.scheduler.schedule(delay(itemOrder), trigger);
 
-        scheduledFutureMap.put(orderId + itemOrder.getItemOrderId(), scheduledFuture);
+        scheduledFutureMap.put(String.valueOf(orderId) + itemOrder.getItemOrderId(), scheduledFuture);
     }
     private Runnable change( ItemOrder itemOrder ){
         return () -> {
@@ -96,7 +96,7 @@ public class SchedulingService {
     }
     private void makeScheduleNull( Long orderId, ItemOrder itemOrder ){
 
-        ScheduledFuture<?> scheduledFuture = scheduledFutureMap.get(orderId + itemOrder.getItemOrderId());
+        ScheduledFuture<?> scheduledFuture = scheduledFutureMap.get(String.valueOf(orderId) + itemOrder.getItemOrderId());
 
         if(scheduledFuture != null) scheduledFuture.cancel(true);
         log.info("스케쥴 취소");
