@@ -4,6 +4,7 @@ import lombok.*;
 import server.team33.audit.Auditable;
 import server.team33.cart.entity.Cart;
 import server.team33.order.entity.Order;
+import server.team33.wish.entity.Wish;
 
 import javax.persistence.*;
 import java.security.Principal;
@@ -60,9 +61,11 @@ public class User extends Auditable implements Principal {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Cart cart;
 
-    //        private List<Wish> wishList;
-        @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-        private List<Order> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) // user가 삭제될 경우 연관관계 wish 도 같이 삭제되도록 설정.
+    private List<Wish> wishList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
         //    @OneToMany(mappedBy = "user")
 //    private List<Review> reviews = new ArrayList<>();

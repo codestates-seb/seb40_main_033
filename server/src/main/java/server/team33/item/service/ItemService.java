@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import server.team33.item.entity.Brand;
 import server.team33.item.entity.Item;
 import server.team33.item.repository.ItemRepository;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final BrandService brandService;
 
 
     public Item createItem(Item item) {
@@ -40,5 +42,12 @@ public class ItemService {
         return findItems;
     }
 
+
+    public Page<Item> findBrandItems(String categoryName, Brand brand, int page, int size, String sort) {
+        brandService.verifyExistBrand(brand);
+        Page<Item> findBrandItems = itemRepository.findAllCategoryNameAndBrand(
+                PageRequest.of(page, size, Sort.by(sort).descending()), categoryName, brand);
+        return findBrandItems;
+    }
 
 }

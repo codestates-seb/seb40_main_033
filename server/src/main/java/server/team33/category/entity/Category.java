@@ -4,8 +4,7 @@ import lombok.*;
 import server.team33.item.entity.Item;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Getter
 @Setter
