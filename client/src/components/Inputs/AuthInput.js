@@ -1,29 +1,38 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-export default function AuthInput({ Ref, onKeyUp, label, className }) {
-	const [value, setValue] = useState('');
-
-	const onChange = (event) => {
-		const { value: newValue } = event.target;
-		setValue(newValue);
-	};
-
+export default function AuthInput({
+	refAddress,
+	onKeyDown,
+	label,
+	className,
+	register,
+	refHook,
+	watch = {
+		이메일: '',
+		비밀번호: '',
+		닉네임: '',
+	},
+}) {
 	return (
-		<InputBox isFilled={!!value} className={className}>
+		<InputBox isFilled={!!watch[label]} className={className}>
 			<input
-				ref={Ref}
 				id={label}
 				type="text"
-				onKeyUp={onKeyUp}
-				value={value}
-				onChange={onChange}
+				onKeyDown={onKeyDown}
+				{...register}
+				name={label}
+				ref={(e) => {
+					refHook(e);
+					refAddress.current = e;
+				}}
 			/>
 			<label htmlFor={label} className="placeholder">
 				{label}
 			</label>
-			{/* <ErrorSpan>이메일 형식으로 입력해주세요.</ErrorSpan> */}
 		</InputBox>
 	);
 }
@@ -69,11 +78,4 @@ const InputBox = styled.div`
 				font-weight: 300;
 			}
 		`}
-`;
-
-const ErrorSpan = styled.span`
-	display: inline-block;
-	color: var(--red-100);
-	font-size: 11px;
-	margin-top: 5px;
 `;
