@@ -12,17 +12,16 @@ import server.team33.category.dto.CategoryDto;
 import server.team33.category.entity.Category;
 import server.team33.category.mapper.CategoryMapper;
 import server.team33.category.service.CategoryService;
-import server.team33.item.dto.ItemDto;
+import server.team33.item.entity.Brand;
 import server.team33.item.entity.Item;
 import server.team33.item.mapper.ItemMapper;
-import server.team33.item.repository.ItemRepository;
+import server.team33.item.service.BrandService;
 import server.team33.item.service.ItemService;
 import server.team33.response.MultiResponseDto;
 import server.team33.response.SingleResponseDto;
 
 import javax.validation.constraints.Positive;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Validated
@@ -36,6 +35,7 @@ public class CategoryController {
     private final CategoryMapper categoryMapper;
     private final ItemMapper itemMapper;
     private final ItemService itemService;
+    private final BrandService brandService;
 
 
 
@@ -61,13 +61,17 @@ public class CategoryController {
     }
 
 
-//    @GetMapping
-//    public ResponseEntity getCategoryBrandItems(@RequestParam("categoryName") String categoryName, @RequestParam("brand") String brand) { // 카테고리별 브랜드별 아이템 목록 조회
-//        itemService.verifyExistBrand(brand);
-//        List<Item> allCategoryNameAndBrands = itemRepository.findAllCategoryNameAndBrand(categoryName, brand);
-//        List<ItemDto.ItemCategoryResponse> lists = allCategoryNameAndBrands.stream().map(item -> itemMapper.itemToItemCategoryResponseDto(item)).collect(Collectors.toList());
-//        return new ResponseEntity(new SingleResponseDto<>(lists), HttpStatus.OK);
-//    }
+    @GetMapping("/brand")
+    public ResponseEntity getCategoryBrandItems(@RequestParam("categoryName") String categoryName,
+                                                @RequestParam("brand") Brand brand,
+                                                @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+                                                @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+                                                @RequestParam(value = "sort", defaultValue = "itemId") String sort) { // 카테고리별 브랜드별 아이템 목록 조회
+        brandService.verifyExistBrand(brand);
+        Page<Item> pageBrandItems = itemService.findBrandItems(categoryName, brand, page - 1, size, sort);
+        List<Item> brandItems = pageBrandItems.getContent();
+        return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(brandItems), pageBrandItems), HttpStatus.OK);
+    }
 //
 //
 //    @GetMapping

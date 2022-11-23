@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import server.team33.item.entity.Brand;
 import server.team33.item.entity.Item;
 
-import java.util.List;
 
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
@@ -17,8 +17,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Page<Item> findAllByCategoryName(Pageable pageable, @Param("categoryName") String categoryName);
 
 
-//    @Query("SELECT i FROM Item i where i.brand = :brand")
-//    List<Item> findAllCategoryNameAndBrand(@Param("categoryName") String categoryName, @Param("brand") String brand);
+    @Query("SELECT i FROM Item i join Category c on i.itemId = c.item.itemId WHERE c.categoryName = :categoryName AND i.brand = :brand")
+    Page<Item> findAllCategoryNameAndBrand(Pageable pageable, @Param("categoryName") String categoryName, @Param("brand") Brand brand);
 //
 //    @Query("SELECT i From Item i where i.discountPrice > 0")
 //    List<Item> findAllCategoryNameSaleItem(@Param("categoryName") String categoryName);
