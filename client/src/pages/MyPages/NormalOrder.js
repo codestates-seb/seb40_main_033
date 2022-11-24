@@ -6,7 +6,7 @@ import OrderList from '../../components/Lists/MyPageLists/OrderList';
 import Pagination from '../../components/Etc/Pagination';
 
 // 주문내역
-function Order() {
+function NormalOrder() {
 	const [lists, setLists] = useState([]);
 	// const [totalPrice, setTotalPrice] = useState(0);
 
@@ -55,4 +55,4 @@ const ListContainer = styled.div`
 	}
 `;
 
-export default Order;
+export default NormalOrder;

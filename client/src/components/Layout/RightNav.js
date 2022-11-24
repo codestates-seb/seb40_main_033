@@ -75,7 +75,7 @@ function RightNav() {
 						<Member>
 							세연
 							<button type="button">
-								<Link to="mypage/order">주문내역</Link>
+								<Link to="mypage/order/normal">주문내역</Link>
 							</button>
 							<button type="button">
 								<Link to="mypage/order/1">주문내역상세</Link>

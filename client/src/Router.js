@@ -15,7 +15,8 @@ import Layout from './components/Layout/Layout';
 import NoteReview from './pages/MyPages/NoteReview';
 import NoteTalk from './pages/MyPages/NoteTalk';
 import OrderDetail from './pages/MyPages/OrderDetail';
-import Order from './pages/MyPages/Order';
+import NormalOrder from './pages/MyPages/NormalOrder';
+import SubscriptionOrder from './pages/MyPages/SubscriptionOrder';
 import UserInfo from './pages/MyPages/UserInfo';
 import WishList from './pages/MyPages/WishList';
 import SubManage from './pages/MyPages/SubManage';
@@ -33,7 +34,8 @@ function Router() {
 					<Route path="login" element={<LogIn />} />
 					<Route path="mypage" element={<MyPage />}>
 						<Route path="user-info" element={<UserInfo />} />
-						<Route path="order" element={<Order />} />
+						<Route path="order/subscription" element={<SubscriptionOrder />} />
+						<Route path="order/normal" element={<NormalOrder />} />
 						<Route path="order/:id" element={<OrderDetail />} />
 						<Route path="sub-manage" element={<SubManage />} />
 						<Route path="wish" element={<WishList />} />
