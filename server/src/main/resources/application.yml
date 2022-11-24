@@ -1,4 +1,13 @@
 spring:
+  quartz:
+    scheduler-name: QuartzScheduler
+    properties:
+      org:
+        quartz:
+          threadPool:
+            threadCount: 5
+    job-store-type: memory
+
   redis:
     lettuce:
         pool:
