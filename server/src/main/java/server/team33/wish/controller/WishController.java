@@ -26,15 +26,15 @@ public class WishController {
     private final WishService wishService;
 
 
-//    @PostMapping("wishes/{item-id}")
-//    public ResponseEntity wishItem(@PathVariable("item-id") @Positive @NotNull long itemId,
-//                                   @RequestParam(value = "wish") boolean wish) {
-//
-//        Wish wishItem = wishService.wishItem(itemId, wish);
-//
-//        return new ResponseEntity<>(new SingleResponseDto<>(wishMapper.wishToWishDto(wishItem)), HttpStatus.OK);
-//
-//    }
+    @PostMapping("wishes/{item-id}")
+    public ResponseEntity wishItem(@PathVariable("item-id") @Positive @NotNull long itemId,
+                                   @RequestParam(value = "wish", defaultValue = "0") int wish) {
+
+        Wish wishItem = wishService.wishItem(itemId, wish);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(wishMapper.wishToWishDto(wishItem)), HttpStatus.OK);
+
+    }
 
 
 

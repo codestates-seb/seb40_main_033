@@ -12,5 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class WishResponseDto {
     private long itemId;
-    private boolean wish;
+    private int wish;
+    private int totalWishes;
 }

@@ -62,7 +62,7 @@ public class Item {
 
 
     @Column
-    private int totalWish;
+    private int totalWishes;
 
 
     @Enumerated(value = EnumType.STRING)

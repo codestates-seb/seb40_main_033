@@ -27,7 +27,7 @@ public class Wish {
     private User user;
 
     @Column
-    private boolean isWish;
+    private int isWish;
 
 
     public void addItem(Item item) {

@@ -10,8 +10,9 @@ public interface WishMapper {
     default WishResponseDto wishToWishDto(Wish wish) {
         WishResponseDto wishResponseDto = new WishResponseDto();
 
-        wishResponseDto.setItemId(wish.getWishId());
-        wishResponseDto.setWish(wish.isWish());
+        wishResponseDto.setItemId(wish.getItem().getItemId());
+        wishResponseDto.setWish(wish.getIsWish());
+        wishResponseDto.setTotalWishes(wish.getItem().getTotalWishes());
 
         return wishResponseDto;
     }
