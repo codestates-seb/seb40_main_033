@@ -203,4 +203,5 @@ const CheckBoxLabel = styled.label`
 	& > input {
 		margin-right: 10px;
 	}
+	margin-top: 10px;
 `;

@@ -15,8 +15,7 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	svg {
-		width: 43px;
-		height: 20px;
+		width: 38px;
 	}
 `;
 

@@ -10,7 +10,9 @@ function SignUp() {
 				<AuthTitle title="회원가입" />
 				<AuthForm />
 			</FormContainer>
-			<Background />
+			<Background>
+				<Text>With Pillivery Ready For Life</Text>
+			</Background>
 		</Container>
 	);
 }
@@ -21,8 +23,6 @@ const Container = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	// 내용물이 반반 비율로 나눠지도록
-	/* flex: 1; */
 	width: 100%;
 	height: 100vh;
 `;
@@ -33,16 +33,30 @@ const FormContainer = styled.div`
 	justify-content: flex-start;
 	align-items: center;
 	padding-top: 50px;
-	width: 80%;
+	width: 90%;
 	height: 100%;
 `;
 
 // 배경 사진이 들어갈 부분
 const Background = styled.div`
+	position: relative;
 	width: 100%;
 	height: 100%;
-	background-image: url(https://cdn.discordapp.com/attachments/1032488198145835108/1045154776045850644/2.png);
+	background-image: url(https://cdn.discordapp.com/attachments/1032488198145835108/1045205511009747074/5.png);
 	background-size: cover;
-	/* background-position: center; */
 	background-repeat: no-repeat;
+`;
+
+// 사진 위에 올릴 문구
+const Text = styled.p`
+	text-align: end;
+	width: min-content;
+	color: white;
+	font-size: 80px;
+	font-weight: var(--extraBold);
+	position: absolute;
+	bottom: 50px;
+	right: 50px;
+	-webkit-text-stroke: 3px white;
+	line-height: 0.9;
 `;
