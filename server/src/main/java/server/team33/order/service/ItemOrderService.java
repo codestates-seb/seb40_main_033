@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
+import server.team33.item.repository.ItemRepository;
 import server.team33.order.entity.ItemOrder;
 import server.team33.order.entity.Order;
 import server.team33.order.reposiroty.ItemOrderRepository;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class ItemOrderService {
 
     private final ItemOrderRepository itemOrderRepository;
+    private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
 
     public List<ItemOrder> createItemOrder( ItemOrder itemOrder ){
@@ -76,6 +78,21 @@ public class ItemOrderService {
         }
 
         return totalquantity;
+    }
+    public void minusSales(List<ItemOrder> itemOrders) { // 주문 취소할 경우 아이템 판매량에서 제외
+
+        for(ItemOrder itemOrder : itemOrders) {
+            int sales = itemOrder.getQuantity();
+            itemOrder.getItem().setSales(itemOrder.getItem().getSales() - sales);
+            itemRepository.save(itemOrder.getItem());
+        }
+    }
+
+    public void plusSales(ItemOrder itemOrder) { // 주문 요청할 경우 아이템 판매량 증가
+
+        int sales = itemOrder.getQuantity();
+        itemOrder.getItem().setSales(itemOrder.getItem().getSales() + sales);
+        itemRepository.save(itemOrder.getItem());
     }
 
     synchronized public ItemOrder setItemPeriod( Long orderId, Long itemOrderId, Integer period ){
