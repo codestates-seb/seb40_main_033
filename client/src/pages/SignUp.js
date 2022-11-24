@@ -58,5 +58,6 @@ const Text = styled.p`
 	bottom: 50px;
 	right: 50px;
 	-webkit-text-stroke: 3px white;
+	user-select: none; // 글씨 드래그 방지
 	line-height: 0.9;
 `;

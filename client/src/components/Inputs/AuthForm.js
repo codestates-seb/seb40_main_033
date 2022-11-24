@@ -84,6 +84,7 @@ export function AuthForm() {
 	};
 
 	console.log('errors', errors);
+	console.log('watch', watch());
 
 	// current가 바뀔 때마다 onChangeHandler를 실행시켜서 애니메이션이 작동한다.
 	useEffect(() => {
@@ -142,7 +143,11 @@ export function AuthForm() {
 				본인은 만 14세 이상이며, 이용약관, 개인정보 수집 및 이용, 개인정보 제공
 				내용, 전자금융거래 약관을 확인하였으며, 동의합니다.
 			</CheckBoxLabel>
-			<PurpleButton width="100px" borderRadius="50px">
+			<PurpleButton
+				width="100px"
+				borderRadius="50px"
+				disabled={{ ...watch() }.동의 ? null : true}
+			>
 				제출
 			</PurpleButton>
 		</SForm>

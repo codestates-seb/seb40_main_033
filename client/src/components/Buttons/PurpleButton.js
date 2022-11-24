@@ -7,6 +7,8 @@ export function PurpleButton({
 	onClick,
 	borderRadius = '6px',
 	fontSize,
+	frontweight = 'bold',
+	disabled,
 }) {
 	return (
 		<DefaultButton
@@ -19,6 +21,9 @@ export function PurpleButton({
 			onClick={onClick}
 			borderRadius={borderRadius}
 			fontSize={fontSize}
+			fontWeight={frontweight}
+			// 비활성화
+			disabled={disabled}
 		>
 			{children}
 		</DefaultButton>
