@@ -1,4 +1,5 @@
 import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { TempLogo } from '../../assets/Icons';
 import { PurpleButton, LightPurpleButton } from '../Buttons/PurpleButton';
@@ -43,6 +44,7 @@ function DefalutModal({
 	pbtnTexts,
 	modalIsOpen,
 	setIsOpen,
+	path, // 모달 닫았을 때 이동할 경로
 	onClick, // 버튼에 넣고 싶은 onClick 함수
 }) {
 	// 모달 열었을 때 작동하는 함수 (필요 시 사용)
@@ -53,8 +55,13 @@ function DefalutModal({
 	// 	Modal.style.transition = 'all 150ms ease-in';
 	// };
 
+	const navigate = useNavigate();
+
 	const closeModal = () => {
 		setIsOpen(false);
+		if (path) {
+			navigate(path);
+		}
 	};
 
 	return (
@@ -79,7 +86,7 @@ function DefalutModal({
 			{lpbtnTexts || pbtnTexts ? (
 				<BtnContainer>
 					{lpbtnTexts ? (
-						<LightPurpleButton fontSize="13px" onClick={closeModal}>
+						<LightPurpleButton fontSize="13px" onClick={onClick}>
 							{lpbtnTexts}
 						</LightPurpleButton>
 					) : null}

@@ -36,6 +36,7 @@ const Tab = styled.nav`
 	justify-content: space-evenly;
 	align-items: center;
 	background-color: #fff;
+	margin-bottom: 40px;
 `;
 
 const TabItem = styled.div`
