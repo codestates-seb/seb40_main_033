@@ -15,7 +15,6 @@ import server.team33.category.service.CategoryService;
 import server.team33.item.entity.Brand;
 import server.team33.item.entity.Item;
 import server.team33.item.mapper.ItemMapper;
-import server.team33.item.service.BrandService;
 import server.team33.item.service.ItemService;
 import server.team33.response.MultiResponseDto;
 import server.team33.response.SingleResponseDto;
@@ -35,7 +34,7 @@ public class CategoryController {
     private final CategoryMapper categoryMapper;
     private final ItemMapper itemMapper;
     private final ItemService itemService;
-    private final BrandService brandService;
+
 
 
 
@@ -67,21 +66,52 @@ public class CategoryController {
                                                 @Positive @RequestParam(value = "page", defaultValue = "1") int page,
                                                 @Positive @RequestParam(value = "size", defaultValue = "16") int size,
                                                 @RequestParam(value = "sort", defaultValue = "itemId") String sort) { // 카테고리별 브랜드별 아이템 목록 조회
-        brandService.verifyExistBrand(brand);
+
         Page<Item> pageBrandItems = itemService.findBrandItems(categoryName, brand, page - 1, size, sort);
         List<Item> brandItems = pageBrandItems.getContent();
         return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(brandItems), pageBrandItems), HttpStatus.OK);
     }
-//
-//
-//    @GetMapping
-//    public ResponseEntity getCategorySaleItems(@RequestParam("categoryName") String categoryName) { // 카테고리별 할인제품 모아보기
-//        categoryService.verifyExistCategory(categoryName);
-//        List<Item> allCategoryNameSaleItems = itemRepository.findAllCategoryNameSaleItem(categoryName);
-//        List<ItemDto.ItemCategoryResponse> lists = allCategoryNameSaleItems.stream().map(item -> itemMapper.itemToItemCategoryResponseDto(item)).collect(Collectors.toList());
-//        return new ResponseEntity(new SingleResponseDto<>(lists), HttpStatus.OK);
-//    }
 
+
+
+    @GetMapping("/sale")
+    public ResponseEntity getCategorySaleItems(@RequestParam("categoryName") String categoryName,
+                                               @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+                                               @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+                                               @RequestParam(value = "sort", defaultValue = "itemId") String sort
+                                              ) { // 카테고리별 할인제품 모아보기
+        Page<Item> pageSaleItems = itemService.findSaleItems(categoryName, page - 1, size, sort);
+        List<Item> saleItems = pageSaleItems.getContent();
+        return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(saleItems), pageSaleItems), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/brand/sale") // 카테고리별 브랜드별 할인제품 모아보기
+    public ResponseEntity getCategoryBrandSaleItems(@RequestParam("categoryName") String categoryName,
+                                                    @RequestParam("brand") Brand brand,
+                                                    @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+                                                    @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+                                                    @RequestParam(value = "sort", defaultValue = "itemId") String sort) {
+        Page<Item> pageBrandSaleItems = itemService.findBrandSaleItems(categoryName, brand, page - 1, size, sort);
+        List<Item> brandSaleItems = pageBrandSaleItems.getContent();
+        return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(brandSaleItems), pageBrandSaleItems), HttpStatus.OK);
+    }
+
+
+
+
+
+
+
+//    @GetMapping
+//    public ResponseEntity getCaategoryBrandSaleItems(@RequestParam("categoryName") String categoryName,
+//                                                     @RequestParam("brand") Brand brand,
+//                                                     @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+//                                                     @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+//                                                     @RequestParam(value = "sort", defaultValue = "itemId") String sort) { // 카테고리별 브랜드별 할인제품 모아보기
+//
+//
+//    }
 
 
 

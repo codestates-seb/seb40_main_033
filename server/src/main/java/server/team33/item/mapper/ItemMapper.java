@@ -23,13 +23,13 @@ public interface ItemMapper {
         itemDetailResponseDto.setTitle(item.getTitle());
         itemDetailResponseDto.setContent(item.getContent());
         itemDetailResponseDto.setExpiration(item.getExpiration());
-        //itemDetailResponseDto.setBrand(item.getBrand());
+        itemDetailResponseDto.setBrand(item.getBrand());
         itemDetailResponseDto.setSales(item.getSales());
         itemDetailResponseDto.setPrice(item.getPrice());
         itemDetailResponseDto.setCapacity(item.getCapacity());
         itemDetailResponseDto.setServingSize(item.getServingSize());
         itemDetailResponseDto.setDiscountRate(item.getDiscountRate());
-        itemDetailResponseDto.setDiscountPrice(item.getPrice());
+        itemDetailResponseDto.setDiscountPrice(item.getDiscountPrice());
         itemDetailResponseDto.setNutritionFacts(item.getNutritionFacts());
         itemDetailResponseDto.setCategories(categoryToCategoryResponseDto(item.getCategories()));
         itemDetailResponseDto.setStarAvg(item.getStarAvg());
@@ -51,6 +51,7 @@ public interface ItemMapper {
         item.setView(0);
         item.setSales(post.getSales());
         item.setTitle(post.getTitle());
+        item.setBrand(post.getBrand());
         item.setContent(post.getContent());
         item.setExpiration(post.getExpiration());
         item.setDiscountPrice(post.getDiscountPrice());
@@ -63,6 +64,7 @@ public interface ItemMapper {
 
         return item;
     }
+
     default List<CategoryDto.Response> categoryToCategoryResponseDto(List<Category> categories) {
         return categories.stream().map(category -> {
             CategoryDto.Response response = new CategoryDto.Response();
@@ -91,9 +93,8 @@ public interface ItemMapper {
         itemCategoryResponse.setItemId(item.getItemId());
         itemCategoryResponse.setTitle(item.getTitle());
         itemCategoryResponse.setContent(item.getContent());
-//        itemCategoryResponse.setBrand(item.getBrand());
+        itemCategoryResponse.setBrand(item.getBrand());
         itemCategoryResponse.setPrice(item.getPrice());
-        //itemCategoryResponse.setBrand(item.getBrand());
         itemCategoryResponse.setNutritionFacts(item.getNutritionFacts());
         // 리뷰 별 총점
         // 찜의 여부 가 추가 될 예정
@@ -108,16 +109,18 @@ public interface ItemMapper {
         List<ItemDto.ItemCategoryResponse> itemCategoryResponses = new ArrayList<>();
 
         for(Item item : items) {
+            System.out.println(item.getItemId());
             itemCategoryResponses.add(itemToItemCategoryResponseDto(item));
         }
 
         return itemCategoryResponses;
     }
 
+
     default ItemSimpleResponseDto itemToItemSimpleResponseDto(Item item) {
         ItemSimpleResponseDto itemSimpleResponseDto = new ItemSimpleResponseDto();
         itemSimpleResponseDto.setItemId(item.getItemId());
-//        itemSimpleResponseDto.setBrand(item.getBrand());
+        itemSimpleResponseDto.setBrand(item.getBrand());
         itemSimpleResponseDto.setThumbnail(item.getThumbnail());
         itemSimpleResponseDto.setTitle(item.getTitle());
         itemSimpleResponseDto.setServingSize(item.getServingSize());
