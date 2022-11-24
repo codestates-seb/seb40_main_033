@@ -25,6 +25,9 @@ public class Order extends Auditable {
     @Column(nullable = false)
     private String address;
 
+    @Column
+    private String detailAddress;
+
     @Column(nullable = false)
     private String phone;
 

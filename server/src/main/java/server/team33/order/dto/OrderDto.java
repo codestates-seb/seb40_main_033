@@ -16,6 +16,7 @@ public class OrderDto {
         private long orderId;
         private String name;
         private String address;
+        private String detailAddress;
         private String phone;
     }
 
@@ -44,6 +45,7 @@ public class OrderDto {
         private long orderId;
         private String name;
         private String address;
+        private String detailAddress;
         private String phone;
         private int totalItems;
         private int totalPrice;
