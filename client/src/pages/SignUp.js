@@ -24,7 +24,7 @@ const Container = styled.div`
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	height: 100vh;
+	min-height: 100vh;
 `;
 
 const FormContainer = styled.div`
@@ -45,6 +45,7 @@ const Background = styled.div`
 	background-image: url(https://cdn.discordapp.com/attachments/1032488198145835108/1045205511009747074/5.png);
 	background-size: cover;
 	background-repeat: no-repeat;
+	overflow: auto;
 `;
 
 // 사진 위에 올릴 문구

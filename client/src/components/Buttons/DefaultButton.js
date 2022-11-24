@@ -23,7 +23,7 @@ const DefaultButton = styled.button`
 		hoverColorCode,
 		fontSize,
 		fontWeight,
-		disabled,
+		disable,
 	}) => css`
 		-webkit-user-select: none; // 글씨 드래그 방지
 		border: 0.5px solid ${`var(--${color}-${borderCode})`};
@@ -59,7 +59,7 @@ const DefaultButton = styled.button`
 					font-weight: var(--bold);
 				}
 			`}
-		${disabled &&
+		${disable &&
 		css`
 			opacity: 0.5;
 			cursor: not-allowed;
