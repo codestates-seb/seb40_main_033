@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
+import ListDate from '../../Etc/ListDate';
 
 function DetailReviewList() {
 	return (
@@ -8,7 +9,7 @@ function DetailReviewList() {
 				<Name>아이디</Name>
 				<Wrap>
 					<Star>별점</Star>
-					<Date>날짜</Date>
+					<ListDate data="2022.11.23T18.30.58" />
 				</Wrap>
 				<ReviewForm>리뷰</ReviewForm>
 			</Main>
@@ -53,12 +54,6 @@ const Wrap = styled.div`
 const Star = styled.div`
 	width: 90px;
 	height: 26px;
-`;
-
-const Date = styled.div`
-	width: 75px;
-	height: 26px;
-	color: var(--gray-200);
 `;
 
 const ReviewForm = styled.div`
