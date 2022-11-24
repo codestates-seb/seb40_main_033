@@ -14,7 +14,6 @@ import server.team33.cart.service.ItemCartService;
 import server.team33.item.mapper.ItemMapper;
 import server.team33.item.service.ItemService;
 import server.team33.response.SingleResponseDto;
-import server.team33.user.mapper.UserMapper;
 import server.team33.user.service.UserService;
 
 import javax.validation.Valid;
@@ -35,42 +34,54 @@ public class ItemCartController {
     private final CartService cartService;
     private final UserService userService;
 
-    @PostMapping("/{item-id}")
+    @PostMapping("/{item-id}") // 장바구니 담기
     public ResponseEntity postItemCart(@Valid @RequestBody ItemCartDto.Post itemCartPostDto,
         @PathVariable("item-id") @Positive long itemId) {
 
         ItemCart itemCart = itemCartService.addItemCart(itemCartMapper.
                 itemCartPostDtoToItemCart(itemId, userService, itemService, itemCartPostDto));
+        cartService.refreshCart(itemCart.getCart().getCartId(), itemCart.isSubscription());
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(itemCartMapper.itemCartToItemCartResponseDto(
                         itemMapper, itemCart)), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/itemcarts/{itemcart-id}")
+    @PatchMapping("/itemcarts/{itemcart-id}") // 장바구니 아이템 수량 변경
     public ResponseEntity upDownItemCart(@PathVariable("itemcart-id") @Positive long itemCartId,
                                           @RequestParam(value="upDown") int upDown) {
-        ItemCart itemCart = itemCartService.findItemCart(itemCartId);
-        ItemCart upDownItemCart = itemCartService.updateItemCart(itemCart, upDown);
+
+        ItemCart upDownItemCart = itemCartService.updownItemCart(itemCartId, upDown);
         cartService.refreshCart(upDownItemCart.getCart().getCartId(), upDownItemCart.isSubscription());
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(itemCartMapper.itemCartToItemCartResponseDto(
-                        itemMapper, upDownItemCart)), HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(
+                itemCartMapper.itemCartToItemCartResponseDto(itemMapper, upDownItemCart)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{cart-id}/itemCarts") // 장바구니에서 특정 아이템 삭제
-    public ResponseEntity deleteItemCart(@PathVariable("cart-id") @Positive long cartId,
-                                         @RequestParam("itemCart-id") @Positive long itemCartId) {
+    @PatchMapping("/itemcarts/period/{itemcart-id}") // 장바구니에서 정기구독 주기 변경
+    public ResponseEntity periodItemCart(@PathVariable("itemcart-id") @Positive long itemCartId,
+                                         @RequestParam(value="period") int period) {
+
+        ItemCart itemCart = itemCartService.periodItemCart(itemCartId, period);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(
+                itemCartMapper.itemCartToItemCartResponseDto(itemMapper, itemCart)), HttpStatus.OK);
+    }
+
+    @PatchMapping("/itemcarts/exclude/{itemcart-id}") // 장바구니 아이템 체크/해제 - 디폴트는 해제 요청
+    public ResponseEntity excludeItemCart(@PathVariable("itemcart-id") @Positive long itemCartId,
+                                        @RequestParam(value="buyNow", defaultValue = "false") boolean buyNow) {
+        ItemCart itemCart = itemCartService.excludeItemCart(itemCartId, buyNow);
+        cartService.refreshCart(itemCart.getCart().getCartId(), itemCart.isSubscription());
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/itemcarts/{itemcart-id}") // 장바구니에서 특정 아이템 삭제
+    public ResponseEntity deleteItemCart(@PathVariable("itemcart-id") @Positive long itemCartId) {
         itemCartService.deleteItemCart(itemCartId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-//    @DeleteMapping("/order/{order-id}")
-//    public ResponseEntity emptyItemCart(@PathVariable("order-id") @Positive long orderId) {
-//
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//    }
-//    TODO : orderDto 를 body 로 받아서 로직 구현
 }

@@ -33,4 +33,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 //    @Query()
 //    List<Item> find9BestItemAnd9SaleItem();
 
+    @Query("SELECT i FROM Item i join Category c on i.itemId = c.item.itemId WHERE c.categoryName  = :categoryName AND i.discountPrice > 0")
+    Page<Item> findAllCategoryNameSaleItem(Pageable pageable, @Param("categoryName") String categoryName);
+
 }

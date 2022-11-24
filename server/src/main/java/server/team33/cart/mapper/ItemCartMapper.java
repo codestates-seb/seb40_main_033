@@ -20,8 +20,8 @@ public interface ItemCartMapper {
         User user = userService.getLoginUser();
         return ItemCart.builder()
                 .quantity(itemCartPostDto.getQuantity())
-                .period(itemCartPostDto.getPeriod())
-                .buyNow(itemCartPostDto.isBuyNow())
+                .period(itemCartPostDto.getPeriod() == null ? 0 : itemCartPostDto.getPeriod())
+                .buyNow(true)
                 .subscription(itemCartPostDto.isSubscription())
                 .cart(user.getCart())
                 .item(itemService.findVerifiedItem(itemId))

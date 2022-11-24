@@ -19,7 +19,7 @@ public class ItemCartDto {
         private Integer quantity;
 
         private Integer period;
-        private boolean buyNow;
+//        private boolean buyNow; 장바구니에 담을 경우 디폴트 == 장바구니에서 선택된 상태
         private boolean subscription;
     }
 
