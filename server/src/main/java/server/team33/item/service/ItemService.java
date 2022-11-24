@@ -50,4 +50,18 @@ public class ItemService {
         return findBrandItems;
     }
 
+    public Page<Item> findSaleItems(String categoryName, int page, int size, String sort) {
+        Page<Item> findSaleItem = itemRepository.findAllCategoryNameAndDiscountRate(
+                PageRequest.of(page, size, Sort.by(sort).descending()), categoryName);
+
+        return findSaleItem;
+    }
+
+    public Page<Item> findBrandSaleItems(String categoryName, Brand brand, int page, int size, String sort) {
+        brandService.verifyExistBrand(brand);
+        Page<Item> findBrandSaleItem = itemRepository.findAllCategoryNameAndDiscountRateAndBrand(
+                PageRequest.of(page, size, Sort.by(sort).descending()), categoryName, brand);
+
+        return findBrandSaleItem;
+    }
 }
