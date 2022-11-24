@@ -1,17 +1,37 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { IoIosArrowBack } from 'react-icons/io';
 
-// 할인상품일 경우 beforePrice: 원래가격, nowPrice: 할인적용가
+// nowPrice가 언제나 판매가입니다!
+// 할인상품일 경우 nowPrice: 할인적용가, beforePrice: 할인 전 원래가격
 // 일반상품일 경우 nowPrice: 정상가
-function Price({ nowPrice, beforePrice, discountRate }) {
+// isTotal값을 받을 경우 총 ~~~~ 원으로 표시됩니다.
+function Price({
+	nowPrice,
+	beforePrice,
+	discountRate,
+	isTotal,
+	fontSize,
+	fontWeight,
+	quantity,
+}) {
 	return (
-		<PriceContainer>
-			<NowPrice>{Number(nowPrice).toLocaleString('ko-KR') || '6,000'}</NowPrice>
-			<IoIosArrowBack />
-			<BeforePrice>
-				{Number(beforePrice).toLocaleString('ko-KR') || '12,000'}
-			</BeforePrice>
-			<Percent>{'50%' || discountRate}</Percent>
+		<PriceContainer fontSize={fontSize} fontWeight={fontWeight}>
+			{isTotal ? <Total>총</Total> : null}
+			<div>
+				{Number(quantity ? nowPrice * quantity : nowPrice).toLocaleString(
+					'ko-KR',
+				)}
+			</div>
+			<div>원</div>
+			{beforePrice ? (
+				<>
+					<IoIosArrowBack />
+					<BeforePrice>
+						{Number(beforePrice).toLocaleString('ko-KR')}
+					</BeforePrice>
+					<Percent>{discountRate}</Percent>
+				</>
+			) : null}
 		</PriceContainer>
 	);
 }
@@ -27,13 +47,18 @@ const PriceContainer = styled.div`
 	}
 
 	& > * {
-		font-size: 16px;
 		margin-right: 2px;
+		color: var(--gray-600);
+		font-size: 16px;
+		${({ fontSize, fontWeight }) => css`
+			font-size: ${fontSize};
+			font-weight: ${`var(--${fontWeight})`};
+		`};
 	}
 `;
 
-const NowPrice = styled.div`
-	font-size: 16px;
+const Total = styled.div`
+	margin-right: 8px;
 `;
 
 const BeforePrice = styled.del`

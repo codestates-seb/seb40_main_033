@@ -1,44 +1,55 @@
 import styled from 'styled-components';
+import { IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
+import ListDate from '../../Etc/ListDate';
+import Price from '../../Etc/Price';
 
 function OrderList() {
-	const price = 7000;
-
 	return (
 		<Box>
-			<Wrap>
+			<ImageContainer>
 				<Image> img </Image>
-				<MainBox>
-					<InformationForm>
-						<ShoppingInfo> 배송완료 | 날짜 </ShoppingInfo>
-						<Inform>
-							<Brand>California Gold Nutrition</Brand>
-							<Name>, 오메가3 프리미엄 피쉬 오일</Name>
-						</Inform>
-						<Price>{price} 원</Price>
-					</InformationForm>
-					<BtnForm>
+			</ImageContainer>
+			<MainContainer>
+				<InformationForm>
+					<ShoppingInfo>
+						<DeliveryStatus>배송완료</DeliveryStatus>
+						<ListDate date="2022-11-23T15:30:25" />
+					</ShoppingInfo>
+					<Name>
+						California Gold Nutrition, 오메가3 프리미엄 피쉬 오일 외 3개
+					</Name>
+					<Price nowPrice="6000" isTotal />
+				</InformationForm>
+				<BtnContainer>
+					<IconBtnContainer>
 						<LetterButtonColor
 							color="gray"
 							colorCode="500"
-							fontSize="16px"
+							fontSize="14px"
 							hoverColor="gray"
 							hoverColorCode="500"
+							fontWeight="regular"
 						>
 							상세 보기
 						</LetterButtonColor>
+						<IoIosArrowForward />
+					</IconBtnContainer>
+					<IconBtnContainer>
 						<LetterButtonColor
 							color="red"
 							colorCode="100"
-							fontSize="16px"
+							fontSize="14px"
 							hoverColor="red"
 							hoverColorCode="100"
+							fontWeight="regular"
 						>
 							주문 취소
 						</LetterButtonColor>
-					</BtnForm>
-				</MainBox>
-			</Wrap>
+						<IoMdClose className="cancel" />
+					</IconBtnContainer>
+				</BtnContainer>
+			</MainContainer>
 		</Box>
 	);
 }
@@ -47,86 +58,82 @@ const Box = styled.div`
 	border-bottom: 1px solid rgb(235, 235, 235);
 	background-color: white;
 	width: 864px;
-	height: 208px;
+	height: 210px;
+	padding: 20px 25px;
 	display: flex;
-	justify-content: center;
 	align-items: center;
 `;
 
-const Wrap = styled.div`
-	width: 820px;
-	height: 163px;
+const MainContainer = styled.div`
 	display: flex;
-	justify-content: 'center';
-	align-items: center;
+	justify-content: space-between;
+	width: 100%;
 `;
 
-const MainBox = styled.div`
-	margin-left: 30px;
-	width: 626px;
-	height: 163px;
+const ImageContainer = styled.div`
 	display: flex;
-	align-items: center;
-	font-size: 16px;
 `;
 
 const Image = styled.div`
 	border: 1px solid green;
-	width: 163px;
-	height: 163px;
+	width: 160px;
+	height: 160px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 `;
 
 const InformationForm = styled.div`
-	width: 524px;
-	height: 90px;
+	width: 450px;
+	display: flex;
 	flex-direction: column;
-	display: flex;
-	justify-content: space-between;
-`;
-
-const Inform = styled.div`
-	margin-bottom: 25px;
-	width: 400px;
-	display: flex;
+	justify-content: center;
+	margin-left: 30px;
 `;
 
 const ShoppingInfo = styled.div`
-	width: 150px;
-	height: 30px;
 	display: flex;
-	align-items: center;
-	color: var(--gray-500);
-	font-size: var(--regular);
-	font-size: 13px;
+	margin-bottom: 10px;
 `;
 
-const Brand = styled.div`
-	color: var(--gray-600);
-	font-weight: var(--bold);
+const DeliveryStatus = styled.div`
+	border-right: 1px solid var(--gray-200);
+	padding-right: 6px;
+	margin-right: 7px;
 `;
 
 const Name = styled.div`
 	color: var(--gray-600);
+	font-size: 16px;
 	font-weight: var(--bold);
+	margin-bottom: 20px;
 `;
 
-const Price = styled.div`
-	color: var(--gray-600);
-	font-weight: var(--regular);
-	width: 100px;
-`;
-
-const BtnForm = styled.div`
-	width: 100px;
-	height: 50px;
+const BtnContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
 	justify-content: center;
-	font-weight: var(--regular);
+`;
+
+const IconBtnContainer = styled.div`
+	margin: 3px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+
+	button {
+		margin-right: 16px;
+	}
+
+	svg {
+		font-size: 15px;
+	}
+
+	.cancel {
+		path {
+			color: var(--red-100);
+		}
+	}
 `;
 
 export default OrderList;

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import Price from '../../Etc/Price';
 
 function PayList() {
 	const price = 7000;
@@ -19,13 +20,18 @@ function PayList() {
 						<Name>오메가3 프리미엄 피쉬 오일</Name>
 						<Pill>, {PillsNum}정</Pill>
 					</Prod>
-					<Price>6000원</Price>
+					<Price nowPrice={price} />
 				</InformationForm>
 				<QuantityForm>
 					{isSub ? <SubInfo>2주마다</SubInfo> : null}
 					<Bottom isSub={isSub}>
 						<Quantity>{quantity} 개/</Quantity>
-						<PriceBold>{price} 원</PriceBold>
+						<Price // 가격 * 수량
+							nowPrice={price}
+							quantity="3" // 수량!
+							fontSize="16px"
+							fontWeight="extraBold"
+						/>
 					</Bottom>
 				</QuantityForm>
 			</Wrap>
@@ -93,12 +99,6 @@ const Pill = styled.div`
 	font-weight: var(--bold);
 `;
 
-const Price = styled.div`
-	color: var(--gray-600);
-	font-weight: var(--regular);
-	width: 120px;
-`;
-
 const QuantityForm = styled.div`
 	width: 100px;
 	position: relative;
@@ -118,11 +118,6 @@ const SubInfo = styled.div`
 `;
 
 const Quantity = styled.div`
-	color: var(--gray-600);
-	font-weight: var(--extraBold);
-`;
-
-const PriceBold = styled.div`
 	color: var(--gray-600);
 	font-weight: var(--extraBold);
 `;

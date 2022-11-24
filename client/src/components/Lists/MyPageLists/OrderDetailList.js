@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { MdArrowForwardIos } from 'react-icons/md';
+import { IoIosArrowForward } from 'react-icons/io';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
+import Price from '../../Etc/Price';
 
 function OrderDetailList() {
 	const price = 7000;
@@ -9,28 +10,32 @@ function OrderDetailList() {
 
 	return (
 		<Box>
-			<Image> img </Image>
+			<ImageContainer>
+				<Image> img </Image>
+			</ImageContainer>
 			<Wrap>
 				<InformationForm>
 					<Brand>California Gold Nutrition</Brand>
-					<Prod>
-						<Name>오메가3 프리미엄 피쉬 오일</Name>
-						<Pill>, {PillsNum}정</Pill>
-					</Prod>
-					<Price>{price} 원</Price>
+					<Name>오메가3 프리미엄 피쉬 오일, {PillsNum}정</Name>
+					<Price fontSize="13px" nowPrice={price} />
 				</InformationForm>
-				<QuantityForm>
-					<Bottom>
-						<Quantity> {quantity}개/</Quantity>
-						<PriceBold> {price * quantity} 원</PriceBold>
-					</Bottom>
-					<WrapReview>
+				<BottomContainer>
+					<Total>
+						<Quantity>{quantity}개 / </Quantity>
+						<Price // 가격 * 수량
+							nowPrice={price}
+							quantity="5" // 수량!
+							fontSize="16px"
+							fontWeight="extraBold"
+						/>
+					</Total>
+					<ReviewContainer>
 						<LetterButtonColor color="gray" colorcode="500" fontSize="13px">
 							리뷰 쓰기
 						</LetterButtonColor>
-						<MdArrowForwardIos />
-					</WrapReview>
-				</QuantityForm>
+						<IoIosArrowForward />
+					</ReviewContainer>
+				</BottomContainer>
 			</Wrap>
 		</Box>
 	);
@@ -39,93 +44,76 @@ function OrderDetailList() {
 const Box = styled.div`
 	border-bottom: 1px solid rgb(235, 235, 235);
 	background-color: white;
-	width: 420px;
-	height: 179px;
+	width: 450px;
+	height: 180px;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	padding: 19px;
+	* {
+		color: var(--gray-600);
+	}
 `;
 
 const Wrap = styled.div`
-	margin-top: 30px;
-	width: 260px;
-	height: 90px;
 	display: flex;
 	flex-direction: column;
-	font-size: 13px;
+	margin-left: 20px;
+	width: 100%;
+`;
+
+const ImageContainer = styled.div`
+	display: flex;
 `;
 
 const Image = styled.div`
 	border: 1px solid green;
-	width: 121px;
-	height: 118px;
+	width: 120px;
+	height: 120px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 `;
 
 const InformationForm = styled.div`
-	width: 187px;
-	height: 65px;
-	margin-left: 20px;
-	position: relative;
-	bottom: 12px;
+	margin-bottom: 20px;
 `;
 
 const Brand = styled.div`
 	color: var(--green-200);
 	font-weight: var(--bold);
-`;
-
-const Prod = styled.div`
-	display: flex;
-	width: 210px;
+	margin-bottom: 5px;
 `;
 
 const Name = styled.div`
-	color: var(--gray-600);
 	font-weight: var(--bold);
-	display: flex;
 	margin-bottom: 14px;
 `;
 
-const Pill = styled.div`
-	height: 15px;
-	color: var(--gray-600);
-	font-weight: var(--bold);
-`;
-
-const Price = styled.div`
-	color: var(--gray-600);
-	font-weight: var(--regular);
-`;
-
-const QuantityForm = styled.div`
-	width: 230px;
-	margin-left: 22px;
+const BottomContainer = styled.div`
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 `;
 
-const Bottom = styled.div`
+const Total = styled.div`
 	display: flex;
-	font-size: 16px;
 	font-weight: var(--extraBold);
+	* {
+		font-size: 16px;
+	}
 `;
 
 const Quantity = styled.div`
-	color: var(--gray-500);
+	margin-right: 3px;
 `;
 
-const PriceBold = styled.div`
-	color: var(--gray-600);
-`;
-
-const WrapReview = styled.div`
+const ReviewContainer = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: center;
 	cursor: pointer;
+	* {
+		color: var(--gray-500);
+	}
 `;
 
 export default OrderDetailList;
