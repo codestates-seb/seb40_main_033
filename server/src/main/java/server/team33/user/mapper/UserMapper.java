@@ -19,6 +19,7 @@ public interface UserMapper {
         user.displayName(userDto.getDisplayName());
         user.password(userDto.getPassword());
         user.address(userDto.getAddress());
+        user.detailAddress(userDto.getDetailAddress());
         user.realName(userDto.getRealName());
         user.phone(userDto.getPhone());
         user.oauthId(DEFAULT_OAUTH2_ID);
@@ -36,6 +37,7 @@ public interface UserMapper {
                 .phone(user.getPhone())
                 .displayName(user.getDisplayName())
                 .address(user.getAddress())
+                .detailAddress(user.getDetailAddress())
                 .email(user.getEmail())
                 .realName(user.getRealName())
                 .updatedAt(method == HttpMethod.GET ? user.getCreatedAt() : ZonedDateTime.now(ZoneId.of("Asia/Seoul")))

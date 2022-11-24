@@ -23,6 +23,8 @@ public class UserDto {
         @NotBlank
         private String address;
         @NotBlank
+        private String detailAddress;
+        @NotBlank
         private String realName;
         @NotBlank
         private String phone;
@@ -39,6 +41,8 @@ public class UserDto {
         @NotNull
         private String address;
         @NotNull
+        private String detailAddress;
+        @NotNull
         private String realName;
         @NotNull
         private String phone;
@@ -52,6 +56,8 @@ public class UserDto {
         private String displayName;
 
         private String address;
+
+        private String detailAddress;
 
         private String realName;
 
@@ -67,6 +73,8 @@ public class UserDto {
         private String displayName;
 
         private String address;
+
+        private String detailAddress;
 
         private String realName;
 

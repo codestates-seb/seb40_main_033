@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import server.team33.order.entity.ItemOrder;
 import server.team33.order.reposiroty.ItemOrderRepository;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,4 +70,16 @@ public class ItemOrderService {
         return totalquantity;
     }
 
+    public void changePeriod( ItemOrder itemOrder, Integer period ){
+        itemOrder.setPeriod(period);
+    }
+
+    public void delayDelivery( ItemOrder itemOrder, String delay ){
+        itemOrder.setNextDelivery(itemOrder.getNextDelivery().plusDays(Long.parseLong(delay)));
+    }
+
+    public void changeDeliveryInfo( ItemOrder itemOrder, ZonedDateTime paymentDay, String nextDelivery ){
+        itemOrder.setPaymentDay(paymentDay);
+        itemOrder.setNextDelivery(ZonedDateTime.parse(nextDelivery));
+    }
 }

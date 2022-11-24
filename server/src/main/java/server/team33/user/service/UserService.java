@@ -65,6 +65,7 @@ public class UserService {
         loginUser.setPhone(userDto.getPhone());
         loginUser.setRealName(userDto.getRealName());
         loginUser.setDisplayName(userDto.getDisplayName());
+        loginUser.setDetailAddress(userDto.getDetailAddress());
         return loginUser;
     }
 
@@ -76,6 +77,7 @@ public class UserService {
             userInfoFilter.filterMoreInfo(loginUser.get());
             loginUser.get().setUserStatus(UserStatus.USER_ACTIVE);
             loginUser.get().setAddress(userDto.getAddress());
+            loginUser.get().setDetailAddress(userDto.getDetailAddress());
             loginUser.get().setRealName(userDto.getRealName());
             loginUser.get().setPhone(userDto.getPhone());
             loginUser.get().setDisplayName(userDto.getDisplayName());

@@ -8,6 +8,7 @@ import org.springframework.scheduling.support.PeriodicTrigger;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.order.entity.ItemOrder;
+import server.team33.order.service.ItemOrderService;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class SchedulingService {
     private final ThreadPoolTaskScheduler scheduler;
     private final SubscriptionService service;
+    private final ItemOrderService itemOrderService;
     private PeriodicTrigger trigger;
     private final ConcurrentMap<String, ScheduledFuture<?>> scheduledFutureMap = new ConcurrentHashMap<>();
 
@@ -39,14 +41,13 @@ public class SchedulingService {
 
     public void changePeriod( Long orderId, ItemOrder itemOrder, Integer period ){
 
-        itemOrder.setPeriod(period);
         log.error("perid = {}", itemOrder.getPeriod());
 
         makeScheduleNull(orderId, itemOrder);
         ScheduledFuture<?> scheduledFuture;
 
         trigger = new PeriodicTrigger(period, TimeUnit.SECONDS);
-        scheduledFuture = this.scheduler.schedule(change(itemOrder), trigger);
+        scheduledFuture = this.scheduler.schedule(change(itemOrder, period), trigger);
 
         scheduledFutureMap.put(String.valueOf(orderId) + itemOrder.getItemOrderId(), scheduledFuture);
     }
@@ -54,31 +55,31 @@ public class SchedulingService {
 
     public void delayDelivery( Long orderId, ItemOrder itemOrder, String delay ){
 
-        itemOrder.setNextDelivery(itemOrder.getNextDelivery().plusDays(Long.parseLong(delay)));
         log.info("next delayDelivery = {}", itemOrder.getNextDelivery());
 
         makeScheduleNull(orderId, itemOrder);
         ScheduledFuture<?> scheduledFuture;
 
         trigger = new PeriodicTrigger(itemOrder.getPeriod(), TimeUnit.SECONDS);
-        scheduledFuture = this.scheduler.schedule(delay(itemOrder), trigger);
+        scheduledFuture = this.scheduler.schedule(delay(itemOrder, delay), trigger);
 
         scheduledFutureMap.put(String.valueOf(orderId) + itemOrder.getItemOrderId(), scheduledFuture);
     }
-    private Runnable change( ItemOrder itemOrder ){
+
+    private Runnable change( ItemOrder itemOrder, Integer period ){
         return () -> {
             try{
-                service.changePaymentDay(itemOrder);
+                service.changePaymentDay(itemOrder, period);
             } catch(IOException e){
                 throw new RuntimeException(e);
             }
         };
     }
 
-    private Runnable delay( ItemOrder itemOrder ){
+    private Runnable delay( ItemOrder itemOrder, String delay ){
         return () -> {
             try{
-                service.delayPaymentDay(itemOrder);
+                service.delayPaymentDay(itemOrder, delay);
             } catch(IOException e){
                 throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
             }
@@ -94,6 +95,7 @@ public class SchedulingService {
             }
         };
     }
+
     private void makeScheduleNull( Long orderId, ItemOrder itemOrder ){
 
         ScheduledFuture<?> scheduledFuture = scheduledFutureMap.get(String.valueOf(orderId) + itemOrder.getItemOrderId());

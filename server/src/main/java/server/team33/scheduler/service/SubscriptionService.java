@@ -8,9 +8,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import server.team33.exception.bussiness.BusinessLogicException;
-import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.order.entity.ItemOrder;
+import server.team33.order.service.ItemOrderService;
 
 import java.io.IOException;
 import java.net.URI;
@@ -28,29 +27,30 @@ import java.time.ZonedDateTime;
 @Data
 @Slf4j
 public class SubscriptionService {
+    private final ItemOrderService itemOrderService;
+
     @Async
     public void getPaymentDay( ItemOrder itemOrder ) throws IOException{
 
         MultiValueMap<String, String> queryParam = new LinkedMultiValueMap<>();
 
         ZonedDateTime paymentDay = ZonedDateTime.now();
-
-        itemOrder.setPaymentDay(paymentDay);
         log.info("payment = {}", itemOrder.getPaymentDay());
 
         String nextDelivery = String.valueOf(paymentDay.plusDays(itemOrder.getPeriod()));
         log.info("nextDelivery = {}", nextDelivery);
 
-        itemOrder.setNextDelivery(ZonedDateTime.parse(nextDelivery));
-        log.info("nextDelivery = {}", itemOrder.getNextDelivery());
+        itemOrderService.changeDeliveryInfo(itemOrder, paymentDay, nextDelivery);
 
         connectUri(queryParam, nextDelivery);
     }
 
     @Async
-    public void delayPaymentDay( ItemOrder itemOrder ) throws IOException{
+    public void delayPaymentDay( ItemOrder itemOrder, String delay ) throws IOException{
 
         MultiValueMap<String, String> queryParam = new LinkedMultiValueMap<>();
+
+        itemOrderService.delayDelivery(itemOrder,delay);
 
         String nextDelivery = String.valueOf(itemOrder.getNextDelivery());
         log.info("nextDelivery = {}", nextDelivery);
@@ -59,12 +59,16 @@ public class SubscriptionService {
     }
 
     @Async
-    public void changePaymentDay( ItemOrder itemOrder ) throws IOException{
+    public void changePaymentDay( ItemOrder itemOrder, Integer period ) throws IOException{
+
+        itemOrderService.changePeriod(itemOrder,period);
 
         boolean noMargin = itemOrder.getNextDelivery().minusDays(itemOrder.getPeriod()).isBefore(ZonedDateTime.now());
 
-
-        if(noMargin) throw new BusinessLogicException(ExceptionCode.PERIOD_NOT_CHANGE);
+        if(noMargin){
+            getPaymentDay(itemOrder);
+            return;
+        }
 
         MultiValueMap<String, String> queryParam = new LinkedMultiValueMap<>();
 
@@ -78,6 +82,7 @@ public class SubscriptionService {
     }
 
     private void connectUri( MultiValueMap<String, String> queryParam, String nextDelivery ){
+
         String encodedNextDelivery = URLEncoder.encode(nextDelivery, StandardCharsets.UTF_8);
         log.info("encodedNextDelivery = {}", encodedNextDelivery);
 
