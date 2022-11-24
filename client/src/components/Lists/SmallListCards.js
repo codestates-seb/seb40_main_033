@@ -4,7 +4,7 @@ import WishlistBtn from '../Buttons/WishlistButton';
 
 // 세연님이 별점 만들면 가져다가 쓰자.
 
-function SmallDefaultList({ items }) {
+function SmallDefaultList({ item }) {
 	return (
 		<EntireContainer>
 			<DefaultContainer>
@@ -19,9 +19,9 @@ function SmallDefaultList({ items }) {
 						/>
 					</ContentContainer>
 					<ContentContainer buttom>
-						<div className="title brandName">{items.title}</div>
-						<div className="title itemName">{items.Name}</div>
-						<div className="title itemPrice">{items.price}</div>
+						<div className="title brandName">{item.brand}</div>
+						<div className="title itemName">{item.title}</div>
+						<div className="title itemPrice">{item.price}</div>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>

@@ -1,16 +1,30 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import SmallListCards from '../components/Lists/SmallListCards';
-import items from '../data/items.json';
+import data from '../data/data';
 
 // 목록 페이지
 function ItemList() {
 	return (
 		<Box>
 			<Brand>
-				<Category>브랜드</Category>
+				<All>전체 +</All>
+				<Category>
+					<BrandList>brand</BrandList>
+					<BrandList>brand</BrandList>
+					<BrandList>brand</BrandList>
+					<BrandList>brand</BrandList>
+					<BrandList>brand</BrandList>
+					<BrandList>brand</BrandList>
+					<BrandList>brand</BrandList>
+					<BrandList>brand</BrandList>
+				</Category>
 			</Brand>
 			<ItemListBox>
-				<SmallListCards items={items} />
+				{data.items.map((item) => (
+					<SmallListCards key={item.itemId} item={item} />
+				))}
+				{/* <SmallListCards /> */}
 			</ItemListBox>
 		</Box>
 	);
@@ -34,10 +48,30 @@ const Brand = styled.div`
 	align-items: center;
 `;
 
+const All = styled.button`
+	border: none;
+	font-weight: var(--extraBold);
+	margin-left: 40px;
+	cursor: pointer;
+	margin-bottom: 78px;
+`;
+
 const Category = styled.div`
-	width: 1000px;
+	width: 940px;
 	height: 100px;
-	margin-left: 50px;
+	margin-left: 70px;
+	display: flex;
+	flex-wrap: wrap;
+`;
+
+const BrandList = styled.div`
+	margin-right: 150px;
+	font-size: 14px;
+	font-weight: var(--bold);
+	color: var(--gray-400);
+	display: flex;
+	align-items: center;
+	cursor: pointer;
 `;
 
 const ItemListBox = styled.div`

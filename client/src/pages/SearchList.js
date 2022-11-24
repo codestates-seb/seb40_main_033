@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import SmallListCards from '../components/Lists/SmallListCards';
-import items from '../data/items.json';
 import Search from '../components/Search/Search';
+import data from '../data/data';
+import SortAndSearchButtons from '../components/Buttons/SearchButtons/SortAndSearchButtons';
 
 // 목록 페이지
-function ItemList() {
+function SearchList() {
 	return (
 		<Box>
 			<Top>
@@ -12,15 +13,16 @@ function ItemList() {
 					<Search />
 				</SearchForm>
 				<Filter>
-					<div>가격필터</div>
-					<div>정렬방법</div>
+					<SortAndSearchButtons />
 				</Filter>
 			</Top>
 			<Mesage>
 				<Text>루테인에 대한 검색 결과입니다</Text>
 			</Mesage>
 			<ItemListBox>
-				<SmallListCards items={items} />
+				{data.items.map((item) => (
+					<SmallListCards key={item.itemId} item={item} />
+				))}
 			</ItemListBox>
 		</Box>
 	);
@@ -50,7 +52,6 @@ const SearchForm = styled.div`
 `;
 
 const Filter = styled.div`
-	border: 1px solid var(--purple-200);
 	width: 158px;
 	height: 113px;
 	flex-direction: column;
@@ -79,4 +80,4 @@ const ItemListBox = styled.div`
 	margin-top: 33px;
 `;
 
-export default ItemList;
+export default SearchList;
