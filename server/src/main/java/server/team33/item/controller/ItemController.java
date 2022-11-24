@@ -11,6 +11,10 @@ import server.team33.item.entity.Item;
 import server.team33.item.mapper.ItemMapper;
 import server.team33.item.service.ItemService;
 import server.team33.response.SingleResponseDto;
+import server.team33.review.mapper.ReviewMapper;
+import server.team33.review.service.ReviewService;
+import server.team33.talk.mapper.TalkMapper;
+import server.team33.talk.service.TalkService;
 
 
 @Slf4j
@@ -23,6 +27,11 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemMapper mapper;
 
+    private final ReviewService reviewService;
+    private final ReviewMapper reviewMapper;
+    private final TalkService talkService;
+    private final TalkMapper talkMapper;
+
     @PostMapping
     public ResponseEntity postItem(@RequestBody ItemDto.post post) { // 아이템 등록을 위한 컨트롤러
         Item item = mapper.itemPostDtoToItem(post);
@@ -32,9 +41,12 @@ public class ItemController {
     }
 
     @GetMapping("/{item-id}")
-    public ResponseEntity getItem(@PathVariable("item-id") long itemId) {
+    public ResponseEntity getItem(@PathVariable("item-id") long itemId,
+                                  @RequestParam(value="reviewPage", defaultValue="1") int reviewPage,
+                                  @RequestParam(value="talkPage", defaultValue="1") int talkPage) {
         Item item = itemService.findItem(itemId);
-        return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemDetailResponseDto(item)), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemDetailResponseDto(
+                item, reviewService, reviewMapper, talkService, talkMapper, reviewPage-1, 3, talkPage-1, 2)), HttpStatus.OK);
     }
 
 //    @GetMapping("/main")

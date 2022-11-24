@@ -6,8 +6,9 @@ import lombok.Setter;
 import server.team33.category.dto.CategoryDto;
 import server.team33.item.entity.Brand;
 import server.team33.nutritionFact.entity.NutritionFact;
-import server.team33.review.entity.Review;
-import server.team33.talk.entity.Talk;
+import server.team33.response.MultiResponseDto;
+import server.team33.review.dto.ReviewResponseDto;
+import server.team33.talk.dto.TalkAndCommentDto;
 
 import java.util.List;
 
@@ -35,8 +36,8 @@ public class ItemDto {
         // wish 관련되어 추가될 예정
         private List<NutritionFact> nutritionFacts;
         private double starAvg;
-        private List<Review> reviews;
-        private List<Talk> talks;
+//        private List<Review> reviews;
+//        private List<Talk> talks;
     }
 
     @Getter
@@ -59,8 +60,8 @@ public class ItemDto {
         private List<CategoryDto.Response> categories;
         private List<NutritionFact> nutritionFacts;
         private double starAvg;
-        private List<Review> reviews;
-        private List<Talk> talks;
+        private MultiResponseDto<ReviewResponseDto> reviews;
+        private MultiResponseDto<TalkAndCommentDto> talks;
     }
 
 

@@ -1,10 +1,14 @@
 package server.team33.talk.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
+import server.team33.item.entity.Item;
 import server.team33.item.repository.ItemRepository;
 import server.team33.item.service.ItemService;
 import server.team33.talk.entity.Talk;
@@ -19,8 +23,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TalkService {
 
-    private final ItemService itemService;
-    private final ItemRepository itemRepository;
     private final TalkRepository talkRepository;
 
     public Talk createTalk(Talk talk) { // 토크 작성 - 상세페이지
@@ -45,6 +47,13 @@ public class TalkService {
         List<Talk> talksByUser = talkRepository.findAllByUser(user);
 
         return talksByUser;
+    }
+
+    public Page<Talk> findItemTalks(Item item, int page, int size) {
+        Page<Talk> pageTalk = talkRepository.findAllByItem(
+                PageRequest.of(page, size, Sort.by("talkId").descending()), item);
+
+        return pageTalk;
     }
 
     public void deleteTalk(long talkId, long userId) { // 토크 삭제 - 작성자만 가능

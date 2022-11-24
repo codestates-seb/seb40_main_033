@@ -1,11 +1,19 @@
 package server.team33.item.mapper;
 
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
 import server.team33.category.dto.CategoryDto;
 import server.team33.category.entity.Category;
 import server.team33.item.dto.ItemDto;
 import server.team33.item.dto.ItemSimpleResponseDto;
 import server.team33.item.entity.Item;
+import server.team33.response.MultiResponseDto;
+import server.team33.review.entity.Review;
+import server.team33.review.mapper.ReviewMapper;
+import server.team33.review.service.ReviewService;
+import server.team33.talk.entity.Talk;
+import server.team33.talk.mapper.TalkMapper;
+import server.team33.talk.service.TalkService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +41,41 @@ public interface ItemMapper {
         itemDetailResponseDto.setNutritionFacts(item.getNutritionFacts());
         itemDetailResponseDto.setCategories(categoryToCategoryResponseDto(item.getCategories()));
         itemDetailResponseDto.setStarAvg(item.getStarAvg());
-        itemDetailResponseDto.setReviews(item.getReviews());
-        itemDetailResponseDto.setTalks(item.getTalks());
+//        itemDetailResponseDto.setReviews(item.getReviews());
+//        itemDetailResponseDto.setTalks(item.getTalks());
+
+        return itemDetailResponseDto;
+    }
+
+    default ItemDto.ItemDetailResponse itemToItemDetailResponseDto(Item item, ReviewService reviewService, ReviewMapper reviewMapper,
+                                                                   TalkService talkService, TalkMapper talkMapper,
+                                                                   int reviewPage, int reviewSize, int talkPage, int talkSize) { // 아이템 상세 조회
+
+        ItemDto.ItemDetailResponse itemDetailResponseDto = new ItemDto.ItemDetailResponse();
+
+        itemDetailResponseDto.setItemId(item.getItemId());
+        itemDetailResponseDto.setThumbnail(item.getThumbnail());
+        itemDetailResponseDto.setTitle(item.getTitle());
+        itemDetailResponseDto.setContent(item.getContent());
+        itemDetailResponseDto.setExpiration(item.getExpiration());
+        itemDetailResponseDto.setBrand(item.getBrand());
+        itemDetailResponseDto.setSales(item.getSales());
+        itemDetailResponseDto.setPrice(item.getPrice());
+        itemDetailResponseDto.setCapacity(item.getCapacity());
+        itemDetailResponseDto.setServingSize(item.getServingSize());
+        itemDetailResponseDto.setDiscountRate(item.getDiscountRate());
+        itemDetailResponseDto.setDiscountPrice(item.getDiscountPrice());
+        itemDetailResponseDto.setNutritionFacts(item.getNutritionFacts());
+        itemDetailResponseDto.setCategories(categoryToCategoryResponseDto(item.getCategories()));
+        itemDetailResponseDto.setStarAvg(item.getStarAvg());
+
+        Page<Review> pageReview = reviewService.findItemReviews(item, reviewPage, reviewSize);
+        List<Review> reviews = pageReview.getContent();
+        itemDetailResponseDto.setReviews(new MultiResponseDto<>(reviewMapper.reviewsToReviewResponseDtos(reviews), pageReview));
+
+        Page<Talk> pageTalk = talkService.findItemTalks(item, talkPage, talkSize);
+        List<Talk> talks = pageTalk.getContent();
+        itemDetailResponseDto.setTalks(new MultiResponseDto<>(talkMapper.talksToTalkAndCommentDtos(talks), pageTalk));
 
         return itemDetailResponseDto;
     }
@@ -59,8 +100,8 @@ public interface ItemMapper {
         item.setServingSize(post.getServingSize());
         item.setNutritionFacts(post.getNutritionFacts());
         item.setStarAvg(post.getStarAvg());
-        item.setReviews(post.getReviews());
-        item.setTalks(post.getTalks());
+//        item.setReviews(post.getReviews());
+//        item.setTalks(post.getTalks());
 
         return item;
     }
