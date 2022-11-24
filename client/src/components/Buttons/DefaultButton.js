@@ -23,6 +23,7 @@ const DefaultButton = styled.button`
 		hoverColor,
 		hoverColorCode,
 		fontSize,
+		fontWeight,
 	}) => css`
 		-webkit-user-select: none; // 글씨 드래그 방지
 		border: 0.5px solid ${`var(--${color}-${borderCode})`};
@@ -32,6 +33,7 @@ const DefaultButton = styled.button`
 		width: ${width};
 		height: ${height};
 		font-size: ${fontSize};
+		font-weight: ${`var(--${fontWeight})`};
 		${(props) =>
 			!props.letter
 				? css`

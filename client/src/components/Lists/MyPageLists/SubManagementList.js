@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { TfiClose } from 'react-icons/tfi';
 import CounterBtn from '../../Buttons/CounterButton';
 import { DayControlTab } from '../../Tabs/TabButtons';
+import Price from '../../Etc/Price';
 
 function SubManagementList() {
 	const price = 6000;
@@ -34,7 +35,7 @@ function SubManagementList() {
 					<InformationForm>
 						<Brand>California Gold Nutrition</Brand>
 						<Name>오메가3 프리미엄 피쉬 오일</Name>
-						<Price>{price} 원</Price>
+						<Price nowPrice={price} />
 					</InformationForm>
 					<QuantityForm>
 						<Quantity>수량</Quantity>
@@ -43,7 +44,12 @@ function SubManagementList() {
 							onPlusClick={onPlusClick}
 							onMinusClick={onMinusClick}
 						/>
-						<PriceBold>{price * quantity}원</PriceBold>
+						<Price // 가격 * 수량
+							nowPrice={price}
+							quantity="3" // 수량!
+							fontSize="20px"
+							fontWeight="extraBold"
+						/>
 					</QuantityForm>
 				</MainBox>
 			</Wrap>
@@ -143,11 +149,6 @@ const Name = styled.div`
 	font-weight: var(--bold);
 `;
 
-const Price = styled.div`
-	color: var(--gray-600);
-	font-weight: var(--regular);
-`;
-
 const QuantityForm = styled.div`
 	width: 402px;
 	height: 32px;
@@ -162,12 +163,6 @@ const Quantity = styled.div`
 	margin-left: 15px;
 	color: var(--gray-500);
 	font-weight: var(--regular);
-`;
-
-const PriceBold = styled.div`
-	font-size: 20px;
-	color: var(--gray-600);
-	font-weight: var(--extraBold);
 `;
 
 const DeleteBtn = styled.button`

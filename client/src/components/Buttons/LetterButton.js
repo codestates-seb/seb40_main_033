@@ -52,6 +52,7 @@ export function LetterButtonColor({
 	hoverColor,
 	hoverColorCode,
 	fontSize,
+	fontWeight,
 }) {
 	return (
 		<DefaultButton
@@ -63,6 +64,7 @@ export function LetterButtonColor({
 			hoverColor={hoverColor}
 			hoverColorCode={hoverColorCode}
 			fontSize={fontSize}
+			fontWeight={fontWeight}
 			letter
 		>
 			{children}

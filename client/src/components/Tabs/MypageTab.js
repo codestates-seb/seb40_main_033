@@ -43,7 +43,6 @@ const TabItem = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* margin-top: 10px; */
 	width: 140px;
 	height: 100%;
 	background-color: #fff;
