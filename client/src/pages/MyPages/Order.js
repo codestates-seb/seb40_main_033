@@ -1,21 +1,39 @@
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { ToggleTab } from '../../components/Tabs/TabButtons';
 import OrderList from '../../components/Lists/MyPageLists/OrderList';
 import Pagination from '../../components/Etc/Pagination';
 
 // 주문내역
 function Order() {
+	const [lists, setLists] = useState([]);
+	// const [totalPrice, setTotalPrice] = useState(0);
+
+	// console.log(tempPrice);
+	// console.log('totalPrice', totalPrice);
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:3001/orders')
+			.then((res) => {
+				setLists(res.data);
+			})
+			.catch((err) => {
+				throw new Error(err);
+			});
+		// const temp = lists.map((list) => list.itemOrders.map((order) => order[0]));
+		// console.log('🌳temp', temp);
+	}, []);
+
 	return (
 		<>
 			<ToggleTab />
 			<ListContainer>
-				<OrderList />
-				<OrderList />
-				<OrderList />
-				<OrderList />
-				<OrderList />
-				<OrderList />
-				<OrderList />
+				{lists &&
+					lists.map((list) => (
+						<OrderList key={list.orderId} list={list} totalPrice />
+					))}
 			</ListContainer>
 			<Pagination total="10" limit="8" />
 		</>
