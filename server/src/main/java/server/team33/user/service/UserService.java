@@ -65,6 +65,7 @@ public class UserService {
         loginUser.setPhone(userDto.getPhone());
         loginUser.setRealName(userDto.getRealName());
         loginUser.setDisplayName(userDto.getDisplayName());
+        loginUser.setDetailAddress(userDto.getDetailAddress());
         return loginUser;
     }
 

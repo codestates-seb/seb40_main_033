@@ -37,6 +37,9 @@ public class User extends Auditable implements Principal {
 
     @Column()
     private String address;
+    @Column(name = "Datail_ADDRESS")
+
+    private String detailAddress;
 
     @Column(name = "REAL_NAME")
     private String realName;
