@@ -73,5 +73,6 @@ const MainContainer = styled.div`
 	&.noMargin {
 		margin: 0;
 		max-width: none;
+		padding-bottom: 0;
 	}
 `;

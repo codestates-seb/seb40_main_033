@@ -199,6 +199,7 @@ const CheckBoxLabel = styled.label`
 	display: flex;
 	align-items: center;
 	color: var(--gray-400);
+	width: 98%;
 	& > input {
 		margin-right: 10px;
 	}
