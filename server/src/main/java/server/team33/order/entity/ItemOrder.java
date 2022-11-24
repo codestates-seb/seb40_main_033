@@ -44,4 +44,6 @@ public class ItemOrder extends Auditable {
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
     private Order order;
+
+
 }
