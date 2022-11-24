@@ -20,7 +20,7 @@ function Layout() {
 				</MainContainer>
 				{hide || <RightNav />}
 			</TopContainer>
-			<Footer />
+			{hide || <Footer />}
 		</Container>
 	);
 }
@@ -72,5 +72,7 @@ const MainContainer = styled.div`
 	width: 100%;
 	&.noMargin {
 		margin: 0;
+		max-width: none;
+		padding-bottom: 0;
 	}
 `;

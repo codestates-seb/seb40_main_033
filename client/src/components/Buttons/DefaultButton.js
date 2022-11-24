@@ -6,7 +6,6 @@ const DefaultButton = styled.button`
 	align-items: center;
 	transition: 0.3s all;
 	font-size: 16px;
-	font-weight: var(--bold);
 	width: 150px;
 	height: 35px;
 	cursor: pointer;
@@ -24,6 +23,7 @@ const DefaultButton = styled.button`
 		hoverColorCode,
 		fontSize,
 		fontWeight,
+		disable,
 	}) => css`
 		-webkit-user-select: none; // 글씨 드래그 방지
 		border: 0.5px solid ${`var(--${color}-${borderCode})`};
@@ -59,6 +59,16 @@ const DefaultButton = styled.button`
 					font-weight: var(--bold);
 				}
 			`}
+		${disable &&
+		css`
+			opacity: 0.5;
+			cursor: not-allowed;
+			background-color: var(--gray-200);
+			&:hover {
+				background-color: var(--gray-200);
+				font-weight: var(--regular);
+			}
+		`}
 	`}
 `;
 export default DefaultButton;

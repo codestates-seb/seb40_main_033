@@ -1,29 +1,49 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react';
+/* eslint-disable no-param-reassign */
+import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
-export default function AuthInput({ Ref, onKeyUp, label, className }) {
-	const [value, setValue] = useState('');
+export default function AuthInput({
+	refAddress,
+	onKeyDown,
+	label,
+	className,
+	register,
+	refHook,
+	watch = {
+		이메일: '',
+		비밀번호: '',
+		닉네임: '',
+	},
+	errors,
+	onFocus,
+}) {
+	const [showError, setShowError] = useState(false);
 
-	const onChange = (event) => {
-		const { value: newValue } = event.target;
-		setValue(newValue);
-	};
+	useEffect(() => {
+		if (!errors) {
+			setShowError(false);
+		}
+	}, [errors]);
 
 	return (
-		<InputBox isFilled={!!value} className={className}>
+		<InputBox isFilled={!!watch[label]} className={className}>
 			<input
-				ref={Ref}
 				id={label}
 				type="text"
-				onKeyUp={onKeyUp}
-				value={value}
-				onChange={onChange}
+				onKeyDown={(e) => onKeyDown(e, setShowError)}
+				{...register}
+				name={label}
+				ref={(e) => {
+					refHook(e);
+					refAddress.current = e;
+				}}
+				className={showError ? 'showError' : null}
+				onFocus={onFocus}
 			/>
 			<label htmlFor={label} className="placeholder">
 				{label}
 			</label>
-			{/* <ErrorSpan>이메일 형식으로 입력해주세요.</ErrorSpan> */}
+			<ErrorDiv className={showError ? 'showError' : null}>{errors}</ErrorDiv>
 		</InputBox>
 	);
 }
@@ -32,16 +52,16 @@ const InputBox = styled.div`
 	width: 100%;
 	position: relative;
 	font-size: 18px;
-	margin-top: 30px;
+	margin-top: 15px;
 
 	& .placeholder {
 		position: absolute;
-		top: 50%;
+		top: 20px;
 		left: 2px;
 		transform: translateY(-50%);
+		transition: 0.3s ease-in-out;
 		color: var(--gray-200);
 		cursor: text;
-		transition: 0.3s ease-in-out;
 		font-weight: 500;
 		font-size: 18px;
 	}
@@ -52,11 +72,15 @@ const InputBox = styled.div`
 		outline: none;
 		border-bottom: 1px solid var(--gray-200);
 		font-size: 18px;
+		transition: 0.2s ease-in-out;
 	}
 	& input[type='text']:focus {
-		transition: 0.3s ease-in-out;
 		border-bottom: 1px solid var(--purple-200);
 		caret-color: var(--purple-200);
+		&.showError {
+			border-bottom: 1px solid var(--red-100);
+			caret-color: var(--red-100);
+		}
 	}
 	${({ isFilled }) =>
 		isFilled &&
@@ -64,16 +88,20 @@ const InputBox = styled.div`
 			.placeholder {
 				color: var(--gray-300);
 				font-size: 13px;
-				top: -8px;
+				top: 0px;
 				left: 0px;
 				font-weight: 300;
 			}
 		`}
 `;
 
-const ErrorSpan = styled.span`
-	display: inline-block;
-	color: var(--red-100);
+const ErrorDiv = styled.div`
+	display: block;
+	color: white;
+	&.showError {
+		color: var(--red-100);
+	}
 	font-size: 11px;
 	margin-top: 5px;
+	min-height: 15px;
 `;
