@@ -68,6 +68,7 @@ public interface OrderMapper {
         orderDetailResponseDto.setOrderId(order.getOrderId());
         orderDetailResponseDto.setName(order.getName());
         orderDetailResponseDto.setAddress(order.getAddress());
+        orderDetailResponseDto.setDetailAddress(order.getDetailAddress());
         orderDetailResponseDto.setPhone(order.getPhone());
         orderDetailResponseDto.setTotalItems(order.getTotalItems());
         orderDetailResponseDto.setTotalPrice(order.getTotalPrice());

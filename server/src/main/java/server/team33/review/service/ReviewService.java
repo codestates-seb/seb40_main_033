@@ -46,6 +46,14 @@ public class ReviewService {
         return pageReviews;
     }
 
+    public Page<Review> findItemReviews(Item item, int page, int size) {
+
+        Page<Review> pageReview = reviewRepository.findAllByItem(
+                PageRequest.of(page, size, Sort.by("reviewId").descending()), item);
+
+        return pageReview;
+    }
+
     public long findReviewWriter(long reviewId) { // 작성자만 수정, 삭제를 할 수 있도록 리뷰의 작성자 찾기
         Review review = findVerifiedReview(reviewId);
         return review.getUser().getUserId();

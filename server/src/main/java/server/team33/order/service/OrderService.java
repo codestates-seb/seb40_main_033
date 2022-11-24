@@ -32,6 +32,7 @@ public class OrderService {
         order.setItemOrders(itemOrders);
         order.setName(user.getName());
         order.setAddress(user.getAddress());
+        order.setDetailAddress(user.getDetailAddress());
         order.setPhone(user.getPhone());
         order.setSubscription(itemOrders.get(0).isSubscription());
         order.setTotalItems(itemOrders.size());
@@ -44,6 +45,7 @@ public class OrderService {
 
         for(ItemOrder itemOrder : itemOrders) {
             itemOrder.setOrder(order);
+            itemOrderService.plusSales(itemOrder); // 판매량 누적
             itemOrderRepository.save(itemOrder);
         }
 
@@ -59,6 +61,7 @@ public class OrderService {
     public void cancelOrder(long orderId) {
         Order findOrder = findOrder(orderId);
         findOrder.setOrderStatus(OrderStatus.ORDER_CANCEL);
+        itemOrderService.minusSales(findOrder.getItemOrders()); // 주문 취소 -> 판매량 집계에서 제외
         orderRepository.save(findOrder);
     }
 

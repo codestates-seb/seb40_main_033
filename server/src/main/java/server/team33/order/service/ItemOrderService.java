@@ -3,6 +3,7 @@ package server.team33.order.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.team33.item.repository.ItemRepository;
 import server.team33.order.entity.ItemOrder;
 import server.team33.order.reposiroty.ItemOrderRepository;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class ItemOrderService {
 
     private final ItemOrderRepository itemOrderRepository;
+    private final ItemRepository itemRepository;
 
     public List<ItemOrder> createItemOrder(ItemOrder itemOrder) {
         itemOrderRepository.save(itemOrder);
@@ -68,6 +70,22 @@ public class ItemOrderService {
         }
 
         return totalquantity;
+    }
+
+    public void minusSales(List<ItemOrder> itemOrders) { // 주문 취소할 경우 아이템 판매량에서 제외
+
+        for(ItemOrder itemOrder : itemOrders) {
+            int sales = itemOrder.getQuantity();
+            itemOrder.getItem().setSales(itemOrder.getItem().getSales() - sales);
+            itemRepository.save(itemOrder.getItem());
+        }
+    }
+
+    public void plusSales(ItemOrder itemOrder) { // 주문 요청할 경우 아이템 판매량 증가
+
+        int sales = itemOrder.getQuantity();
+        itemOrder.getItem().setSales(itemOrder.getItem().getSales() + sales);
+        itemRepository.save(itemOrder.getItem());
     }
 
     public void changePeriod( ItemOrder itemOrder, Integer period ){
