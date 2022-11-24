@@ -18,7 +18,6 @@ import server.team33.user.entity.User;
 import server.team33.user.service.UserService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -79,6 +78,35 @@ public interface TalkMapper {
         }
 
         return talkResponseDtos;
+    }
+
+    default TalkAndCommentDto talkToTalkAndCommentDto(Talk talk) {
+
+        TalkAndCommentDto talkAndCommentDto = new TalkAndCommentDto();
+        talkAndCommentDto.setTalkId(talk.getTalkId());
+        talkAndCommentDto.setUserId(talk.getUser().getUserId());
+        talkAndCommentDto.setItemId(talk.getItem().getItemId());
+        talkAndCommentDto.setContent(talk.getContent());
+        talkAndCommentDto.setShopper(talk.isShopper());
+        talkAndCommentDto.setCreatedAt(talk.getCreatedAt());
+        talkAndCommentDto.setUpdatedAt(talk.getUpdatedAt());
+
+        List<TalkCommentDto> talkCommentDtos = talkCommentsToTalkCommentDtos(talk.getTalkComments());
+        talkAndCommentDto.setTalkComments(talkCommentDtos);
+
+        return talkAndCommentDto;
+    }
+
+    default List<TalkAndCommentDto> talksToTalkAndCommentDtos(List<Talk> talks) {
+
+        if(talks == null) return null;
+
+        List<TalkAndCommentDto> talkAndCommentDtos = new ArrayList<>();
+
+        for(Talk talk : talks) {
+            talkAndCommentDtos.add(talkToTalkAndCommentDto(talk));
+        }
+        return talkAndCommentDtos;
     }
 
     default TalkDetailResponseDto talkToTalkDetailResponseDto(Talk talk, ItemMapper itemMapper) {
@@ -149,6 +177,19 @@ public interface TalkMapper {
         commentDto.setUpdatedAt(talkComment.getUpdatedAt());
 
         return commentDto;
+    }
+
+    default List<TalkCommentDto> talkCommentsToTalkCommentDtos(List<TalkComment> talkComments) {
+
+        if(talkComments == null) return null;
+
+        List<TalkCommentDto> talkCommentDtos = new ArrayList<>();
+
+        for(TalkComment talkComment : talkComments) {
+            talkCommentDtos.add(talkCommentToTalkCommentDto(talkComment));
+        }
+
+        return talkCommentDtos;
     }
 
     default TalkOrCommentDto toTalkOrCommentDto(Talk talk, ItemMapper itemMapper) { // 마이페이지 - 토크 조회
