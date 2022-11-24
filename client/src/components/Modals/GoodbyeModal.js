@@ -13,7 +13,7 @@ import DefalutModal from './DefalutModal';
 	ex)) <LetterButton onClick={openModal}>버튼</LetterButton>
 */
 
-function GoobyeModal({ setIsOpen, modalIsOpen }) {
+function GoodbyeModal({ setIsOpen, modalIsOpen }) {
 	const data = {
 		title: 'Good bye',
 		contents: '그동안 감사했습니다.\n 더 나은 서비스로 찾아뵙겠습니다.',
@@ -25,8 +25,9 @@ function GoobyeModal({ setIsOpen, modalIsOpen }) {
 			contents={data.contents}
 			setIsOpen={setIsOpen}
 			modalIsOpen={modalIsOpen}
+			path="/"
 		/>
 	);
 }
 
-export default GoobyeModal;
+export default GoodbyeModal;
