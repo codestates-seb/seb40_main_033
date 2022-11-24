@@ -36,7 +36,6 @@ class UserControllerTest {
     @Autowired
     private UserRepository userRepository;
 
-
     @BeforeEach
     void init() throws Exception{
         userRepository.deleteAll();
