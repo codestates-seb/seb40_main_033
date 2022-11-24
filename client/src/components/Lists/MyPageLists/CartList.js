@@ -6,7 +6,7 @@ import { DayShowTab } from '../../Tabs/TabButtons';
 
 function CartList() {
 	const price = 6000;
-	const [isSub, setIsSub] = useState(true);
+	const [isSub, setIsSub] = useState(false);
 	const [quantity, setQuantity] = useState(1);
 
 	const onPlusClick = () => {
