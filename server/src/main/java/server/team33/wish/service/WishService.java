@@ -1,6 +1,9 @@
 package server.team33.wish.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import server.team33.item.entity.Item;
 import server.team33.item.repository.ItemRepository;
@@ -52,5 +55,10 @@ public class WishService {
     public int getWishes(long itemId) {
         int wishValue = wishRepository.findWishValue(itemId);
         return wishValue;
+    }
+
+
+    public Page<Wish> findWishes(long userId, int page, int size, String sort) {
+        return wishRepository.findAllByUser(PageRequest.of(page, size, Sort.by(sort).descending()), userId);
     }
 }
