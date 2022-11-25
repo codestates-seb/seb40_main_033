@@ -74,7 +74,7 @@ const Destination = styled.div`
 	display: flex;
 
 	& > * {
-		font-size: 16px;
+		font-size: 15px;
 	}
 
 	> label {
