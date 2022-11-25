@@ -29,7 +29,9 @@ export default function AuthInput({
 		<InputBox isFilled={!!watch[label]} className={className}>
 			<input
 				id={label}
-				type="text"
+				type={
+					label === '비밀번호' || label === '비밀번호확인' ? 'password' : 'text'
+				}
 				onKeyDown={(e) => onKeyDown(e, setShowError)}
 				{...register}
 				name={label}
@@ -65,7 +67,8 @@ const InputBox = styled.div`
 		font-weight: 500;
 		font-size: 18px;
 	}
-	& input[type='text'] {
+	& input[type='text'],
+	input[type='password'] {
 		width: 100%;
 		height: 40px;
 		border: none;
@@ -74,7 +77,26 @@ const InputBox = styled.div`
 		font-size: 18px;
 		transition: 0.2s ease-in-out;
 	}
-	& input[type='text']:focus {
+
+	// 자동완성 파란색 배경 삭제
+	-webkit-autofill {
+		box-shadow: 0 0 0 30px #fff inset;
+		-webkit-text-fill-color: #000;
+	}
+	-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active {
+		transition: background-color 5000s ease-in-out 0s;
+	}
+
+	// 비밀번호 점으로 표시되는 글씨체로 변경
+	input[type='password'] {
+		font-family: 'Courier New', Courier, monospace;
+	}
+
+	& input[type='text']:focus,
+	input[type='password']:focus {
 		border-bottom: 1px solid var(--purple-200);
 		caret-color: var(--purple-200);
 		&.showError {
@@ -93,6 +115,15 @@ const InputBox = styled.div`
 				font-weight: 300;
 			}
 		`}
+	& input[id='주소']:focus {
+		.placeholder {
+			color: var(--gray-300);
+			font-size: 13px;
+			top: 0px;
+			left: 0px;
+			font-weight: 300;
+		}
+	}
 `;
 
 const ErrorDiv = styled.div`

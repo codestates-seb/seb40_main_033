@@ -17,6 +17,7 @@ export function AuthForm() {
 	const fifthRef = useRef(null);
 	const sixthRef = useRef(null);
 	const seventhRef = useRef(null);
+	const eighthRef = useRef(null);
 	const {
 		register,
 		handleSubmit,
@@ -35,7 +36,8 @@ export function AuthForm() {
 			message: '이메일 형식으로 작성해주세요.',
 		},
 		pattern: {
-			value: /^[A-Za-z0-9._%+-]+@naver\.com$/,
+			value:
+				/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
 			message: '이메일 형식으로 작성해주세요.',
 		},
 	});
@@ -77,17 +79,16 @@ export function AuthForm() {
 	});
 	const { ref: ref6, ...rest6 } = register('전화번호', {
 		required: '작성해주세요.',
-		minLength: {
-			value: 2,
-			message: '2글자 이상 작성해주세요.',
+		pattern: {
+			value: /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/,
+			message: '000-0000-0000 형식으로 작성해주세요.',
 		},
 	});
 	const { ref: ref7, ...rest7 } = register('주소', {
+		// required: '작성해주세요.',
+	});
+	const { ref: ref8, ...rest8 } = register('상세주소', {
 		required: '작성해주세요.',
-		minLength: {
-			value: 2,
-			message: '2글자 이상 작성해주세요.',
-		},
 	});
 
 	// current가 변하면 onChange를 true로 바꾸고 0.5초 후에 false로 바꿔주는 함수.
@@ -135,24 +136,23 @@ export function AuthForm() {
 			) {
 				setCurrent(7);
 				setShowError(false);
-			} else if (
-				event.target === seventhRef.current &&
-				errors.주소 === undefined
-			) {
-				setCurrent(8);
-				setShowError(false);
+				// setIsModalOpen(true);
 			}
 		}
 	};
 
 	// current가 바뀔 때마다 onChangeHandler를 실행시켜서 애니메이션이 작동한다.
 	useEffect(() => {
-		firstRef.current.focus();
 		if (current >= 2) {
 			onChangeHandler();
 		}
 	}, [current]);
 
+	useEffect(() => {
+		firstRef.current.focus();
+	}, []);
+
+	// submit 되면 실행되는 함수.
 	const onValid = (data) => {
 		console.log('data', data);
 	};
@@ -163,16 +163,15 @@ export function AuthForm() {
 			current={current}
 			onSubmit={handleSubmit(onValid)}
 		>
-			<CheckBoxLabel htmlFor="check">
-				<input
-					id="check"
-					{...register('동의', { required: true })}
-					type="checkbox"
-					value="true"
-				/>
-				본인은 만 14세 이상이며, 이용약관, 개인정보 수집 및 이용, 개인정보 제공
-				내용, 전자금융거래 약관을 확인하였으며, 동의합니다.
-			</CheckBoxLabel>
+			<AuthInput
+				refAddress={eighthRef}
+				onKeyDown={handleInput}
+				label="상세주소"
+				register={rest8}
+				refHook={ref8}
+				watch={watch()}
+				errors={errors?.상세주소?.message}
+			/>
 			<AuthInput
 				refAddress={seventhRef}
 				onKeyDown={handleInput}
@@ -244,18 +243,19 @@ export function AuthForm() {
 			>
 				제출
 			</PurpleButton>
-			{isModalOpen ? (
+			{isModalOpen && (
 				<AddressModal modalIsOpen={isModalOpen} setIsOpen={setIsModalOpen}>
 					<Postcode
 						style={{ width: 600, height: 500 }}
 						jsOptions={{ animation: true, hideMapBtn: true }}
 						onSelected={(data) => {
-							console.log(JSON.stringify(data));
 							setIsModalOpen(false);
+							seventhRef.current.value = `(${data.zonecode}) ${data.address}`;
+							setCurrent(8);
 						}}
 					/>
 				</AddressModal>
-			) : null}
+			)}
 		</SForm>
 	);
 }
@@ -304,15 +304,4 @@ const SForm = styled.form`
 	& > button {
 		margin-top: 20px;
 	}
-`;
-
-const CheckBoxLabel = styled.label`
-	display: flex;
-	align-items: center;
-	color: var(--gray-400);
-	width: 98%;
-	& > input {
-		margin-right: 10px;
-	}
-	margin-top: 10px;
 `;
