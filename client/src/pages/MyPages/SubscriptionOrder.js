@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToggleTab } from '../../components/Tabs/TabButtons';
 import OrderList from '../../components/Lists/MyPageLists/OrderList';
@@ -8,22 +8,16 @@ import Pagination from '../../components/Etc/Pagination';
 // 주문내역
 function SubscriptionOrder() {
 	const [lists, setLists] = useState([]);
-	// const [totalPrice, setTotalPrice] = useState(0);
-
-	// console.log(tempPrice);
-	// console.log('totalPrice', totalPrice);
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:3001/orders')
+			.get('http://localhost:3001/subOrders')
 			.then((res) => {
 				setLists(res.data);
 			})
 			.catch((err) => {
 				throw new Error(err);
 			});
-		// const temp = lists.map((list) => list.itemOrders.map((order) => order[0]));
-		// console.log('🌳temp', temp);
 	}, []);
 
 	return (
@@ -50,9 +44,11 @@ const ListContainer = styled.div`
 	background-color: white;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 
-	&:last-child {
-		// 마지막 리스트의 border-bottom 제거!
+	& > {
+		:last-child {
+			border: none;
+		}
 	}
 `;
 
-export default SubscriptionOrder;
+export default React.memo(SubscriptionOrder);
