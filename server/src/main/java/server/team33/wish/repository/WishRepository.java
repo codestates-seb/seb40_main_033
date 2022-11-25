@@ -13,8 +13,11 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
 
 
     Wish findByItemAndUser(Item item, User user);
+
     List<Wish> findAllByItem(long itemId);
 
-//    @Query("SELECT sum()")
-//    int findWishValue(@Param("itemId") long itemId);
+    @Query("SELECT sum(w.isWish) from Wish w where w.item.itemId = :itemId")
+    int findWishValue(@Param("itemId") long itemId);
+
+
 }
