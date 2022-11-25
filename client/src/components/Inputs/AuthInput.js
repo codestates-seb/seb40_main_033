@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
@@ -16,6 +15,7 @@ export default function AuthInput({
 		닉네임: '',
 	},
 	errors,
+	onFocus,
 }) {
 	const [showError, setShowError] = useState(false);
 
@@ -38,6 +38,7 @@ export default function AuthInput({
 					refAddress.current = e;
 				}}
 				className={showError ? 'showError' : null}
+				onFocus={onFocus}
 			/>
 			<label htmlFor={label} className="placeholder">
 				{label}
