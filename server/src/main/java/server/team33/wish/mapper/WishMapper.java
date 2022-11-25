@@ -1,14 +1,17 @@
 package server.team33.wish.mapper;
 
 import org.mapstruct.Mapper;
-import server.team33.wish.dto.WishResponseDto;
+import server.team33.wish.dto.WishDto;
 import server.team33.wish.entity.Wish;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface WishMapper {
 
-    default WishResponseDto wishToWishDto(Wish wish) {
-        WishResponseDto wishResponseDto = new WishResponseDto();
+    default WishDto.WishResponseDto wishToWishDto(Wish wish) {
+        WishDto.WishResponseDto wishResponseDto = new WishDto.WishResponseDto();
 
         wishResponseDto.setItemId(wish.getItem().getItemId());
         wishResponseDto.setWish(wish.getIsWish());
@@ -17,4 +20,35 @@ public interface WishMapper {
         return wishResponseDto;
     }
 
+
+    default WishDto.WishItemResponseDto wishToWishItemDto(Wish wish) {
+        WishDto.WishItemResponseDto wishItemResponseDto = new WishDto.WishItemResponseDto();
+
+        wishItemResponseDto.setItemId(wish.getItem().getItemId());
+        wishItemResponseDto.setThumbnail(wish.getItem().getThumbnail());
+        wishItemResponseDto.setTitle(wish.getItem().getTitle());
+        wishItemResponseDto.setContent(wish.getItem().getContent());
+        wishItemResponseDto.setPrice(wish.getItem().getPrice());
+        wishItemResponseDto.setBrand(wish.getItem().getBrand());
+        wishItemResponseDto.setNutritionFacts(wish.getItem().getNutritionFacts());
+        // 리뷰 총 별점
+        wishItemResponseDto.setReviewSize(wish.getItem().getReviews().size());
+
+        return wishItemResponseDto;
+    }
+
+    default List<WishDto.WishItemResponseDto> wishesToWishItemResponse(List<Wish> wishes) {
+        if (wishes == null) return null;
+
+        List<WishDto.WishItemResponseDto> wishItemResponses = new ArrayList<>();
+
+        for (Wish wish : wishes) {
+            System.out.println("============================");
+            System.out.println(wish.getItem().getItemId());
+            System.out.println("===========================");
+            wishItemResponses.add(wishToWishItemDto(wish));
+        }
+
+        return wishItemResponses;
+    }
 }
