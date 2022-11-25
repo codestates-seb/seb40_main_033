@@ -69,12 +69,12 @@ const InputBox = styled.div`
 	}
 	& input[type='text'],
 	input[type='password'] {
-		width: 100%;
+		width: 300px;
 		height: 40px;
 		border: none;
 		outline: none;
 		border-bottom: 1px solid var(--gray-200);
-		font-size: 18px;
+		/* font-size: 18px; */
 		transition: 0.2s ease-in-out;
 	}
 
@@ -115,15 +115,6 @@ const InputBox = styled.div`
 				font-weight: 300;
 			}
 		`}
-	& input[id='주소']:focus {
-		.placeholder {
-			color: var(--gray-300);
-			font-size: 13px;
-			top: 0px;
-			left: 0px;
-			font-weight: 300;
-		}
-	}
 `;
 
 const ErrorDiv = styled.div`

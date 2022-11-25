@@ -24,6 +24,8 @@ export function AuthForm() {
 		watch,
 		formState: { errors },
 		setError,
+		setValue,
+		setFocus,
 	} = useForm({
 		mode: 'onChange',
 	});
@@ -85,7 +87,7 @@ export function AuthForm() {
 		},
 	});
 	const { ref: ref7, ...rest7 } = register('주소', {
-		// required: '작성해주세요.',
+		required: '작성해주세요.',
 	});
 	const { ref: ref8, ...rest8 } = register('상세주소', {
 		required: '작성해주세요.',
@@ -136,7 +138,6 @@ export function AuthForm() {
 			) {
 				setCurrent(7);
 				setShowError(false);
-				// setIsModalOpen(true);
 			}
 		}
 	};
@@ -149,14 +150,14 @@ export function AuthForm() {
 	}, [current]);
 
 	useEffect(() => {
-		firstRef.current.focus();
+		setFocus('firstName');
 	}, []);
 
 	// submit 되면 실행되는 함수.
 	const onValid = (data) => {
 		console.log('data', data);
 	};
-
+	console.log('wat', watch());
 	return (
 		<SForm
 			className={currentChange ? 'pull' : null}
@@ -239,7 +240,7 @@ export function AuthForm() {
 			<PurpleButton
 				width="100px"
 				borderRadius="50px"
-				disable={{ ...watch() }.동의 ? null : true}
+				disable={!{ ...watch() }.상세주소 ? true : null}
 			>
 				제출
 			</PurpleButton>
@@ -250,8 +251,9 @@ export function AuthForm() {
 						jsOptions={{ animation: true, hideMapBtn: true }}
 						onSelected={(data) => {
 							setIsModalOpen(false);
-							seventhRef.current.value = `(${data.zonecode}) ${data.address}`;
+							setValue('주소', `(${data.zonecode})${data.address}`);
 							setCurrent(8);
+							setFocus('상세주소');
 						}}
 					/>
 				</AddressModal>
