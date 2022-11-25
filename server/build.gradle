@@ -45,6 +45,8 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.10'
 	//http클라이어트 디버깅
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+	//quartz 라이브러리
+	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 }
 
 
