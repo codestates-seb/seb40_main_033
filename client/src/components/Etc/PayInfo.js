@@ -77,16 +77,17 @@ const Destination = styled.div`
 		font-size: 16px;
 	}
 
-	label {
+	> label {
 		width: 110px;
 	}
 
 	.address {
 		width: 300px;
+		line-height: 1.3;
 	}
 
 	& {
-		margin: 10px 0;
+		margin: 12px 0;
 	}
 `;
 
@@ -115,5 +116,5 @@ const LabelContainer = styled.div`
 `;
 
 const Label = styled.label`
-	color: var(--gray-300);
+	color: var(--gray-400);
 `;
