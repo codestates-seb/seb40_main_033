@@ -7,6 +7,7 @@ import server.team33.category.entity.Category;
 import server.team33.item.dto.ItemDto;
 import server.team33.item.dto.ItemSimpleResponseDto;
 import server.team33.item.entity.Item;
+import server.team33.item.service.ItemService;
 import server.team33.response.MultiResponseDto;
 import server.team33.review.entity.Review;
 import server.team33.review.mapper.ReviewMapper;
@@ -172,4 +173,12 @@ public interface ItemMapper {
         return itemSimpleResponseDto;
     }
 
+
+    default ItemDto.ItemMainTop9Response itemToItemMainTop9ResponseDto(ItemService itemService) {
+        ItemDto.ItemMainTop9Response itemMainTop9Response = new ItemDto.ItemMainTop9Response();
+
+        itemMainTop9Response.setBestItem(new MultiResponseDto<>(itemsToItemCategoryResponseDto(itemService.findTop9BestItems())));
+        itemMainTop9Response.setSaleItem(new MultiResponseDto<>(itemsToItemCategoryResponseDto(itemService.findTop9SaleItems())));
+        return itemMainTop9Response;
+    }
 }
