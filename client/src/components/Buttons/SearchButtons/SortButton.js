@@ -15,7 +15,7 @@ export function SortButton({ children }) {
 	const menus = ['찜 많은순', '높은가격순', '낮은가격순', '인기순'];
 	return (
 		<ButtonContainer isOpen={isOpen}>
-			{isOpen ? (
+			{isOpen && (
 				<MenuBox isOpen={isOpen}>
 					{menus.map((menu, idx) => (
 						<MenuLi key={`${idx.toString()}-${menu}`}>
@@ -25,7 +25,7 @@ export function SortButton({ children }) {
 						</MenuLi>
 					))}
 				</MenuBox>
-			) : null}
+			)}
 			<MainBox>
 				{' '}
 				<OpenButton onClick={handleOpenClick} isOpen={isOpen}>
@@ -48,7 +48,7 @@ export function PriceSortButton({ children }) {
 	};
 	return (
 		<ButtonContainer isOpen={isOpen} price>
-			{isOpen ? <PriceButton min={0} max={100000} /> : null}
+			{isOpen && <PriceButton min={0} max={100000} />}
 			<MainBox>
 				<OpenButton onClick={handleOpenClick} isOpen={isOpen}>
 					<IoIosArrowBack />

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import WishlistBtn from '../Buttons/WishlistButton';
 import FuncTag from '../Buttons/TagButton';
 import { BlackButton, WhiteButton } from '../Buttons/BlackButton';
@@ -7,17 +7,18 @@ import CounterBtn from '../Buttons/CounterButton';
 import { DayShowTab } from '../Tabs/TabButtons';
 
 function Summary() {
-	const func = ['장 건강', '위 건강', '장 건강', '위 건강', '장 건강'];
+	const func = ['장 건강', '위 건강', '장 건강', '위 건강', '장 건강']; // 걍 임시로 받아놓는 효능 나중에 수정해야함
 	const price = 16000; // 나중에 let으로 바꿔줘야 할 수도..
 	const [quantity, setQuantity] = useState(1);
 	const [isVisible, setIsVisible] = useState(1); // 나중에 0으로 바꿔주세요
-	const onPlusClick = () => {
-		setQuantity(quantity + 1);
-	};
-	const onMinusClick = () => {
-		setQuantity(quantity - 1);
-	};
-
+	// const onPlusClick = () => {
+	// 	setQuantity(quantity + 1);
+	// };
+	const onPlusClick = useCallback(() => setQuantity(quantity + 1), [quantity]); // useCallback을 사용해서 다시 만듬. 이 함수는 반복생성x. 반복생성되었으면 console.log가 계속 찍혔을 것.
+	// const onMinusClick = () => {
+	// 	setQuantity(quantity - 1);
+	// };
+	const onMinusClick = useCallback(() => setQuantity(quantity - 1), [quantity]);
 	const onClick = () => {
 		if (isVisible === 1) {
 			setIsVisible(0);
@@ -25,7 +26,10 @@ function Summary() {
 			setIsVisible(1);
 		}
 	};
-
+	// useEffect(() => {
+	// 	// useCallback이 잘 실행되고 있는지 확인하기 위한 장치입니다. 나중에 다 보시거든 그냥 없애버리세요!
+	// 	console.log('다시됨');
+	// }, [onPlusClick]);
 	return (
 		<EntireContainer test>
 			<MainContainer>
