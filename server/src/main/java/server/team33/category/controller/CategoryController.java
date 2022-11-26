@@ -97,22 +97,4 @@ public class CategoryController {
         return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(brandSaleItems), pageBrandSaleItems), HttpStatus.OK);
     }
 
-
-
-
-
-
-
-//    @GetMapping
-//    public ResponseEntity getCaategoryBrandSaleItems(@RequestParam("categoryName") String categoryName,
-//                                                     @RequestParam("brand") Brand brand,
-//                                                     @Positive @RequestParam(value = "page", defaultValue = "1") int page,
-//                                                     @Positive @RequestParam(value = "size", defaultValue = "16") int size,
-//                                                     @RequestParam(value = "sort", defaultValue = "itemId") String sort) { // 카테고리별 브랜드별 할인제품 모아보기
-//
-//
-//    }
-
-
-
 }

@@ -9,6 +9,7 @@ import server.team33.item.entity.Brand;
 import server.team33.item.entity.Item;
 import server.team33.item.repository.ItemRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +21,6 @@ public class ItemService {
 
 
     public Item createItem(Item item) {
-
         return itemRepository.save(item);
     }
 
@@ -65,4 +65,13 @@ public class ItemService {
 
         return findBrandSaleItem;
     }
+
+    public List<Item> findTop9BestItems() {
+        return itemRepository.findOrderByBestItem();
+    }
+
+    public List<Item> findTop9SaleItems() {
+        return itemRepository.findOrderBySaleItem();
+    }
+
 }

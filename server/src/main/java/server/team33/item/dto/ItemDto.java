@@ -80,4 +80,12 @@ public class ItemDto {
         //item 의 찜의 여부
         private int reviewSize;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ItemMainTop9Response {
+        private MultiResponseDto<ItemCategoryResponse> bestItem;
+        private MultiResponseDto<ItemCategoryResponse> saleItem;
+    }
 }

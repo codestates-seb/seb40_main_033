@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import server.team33.item.entity.Brand;
 import server.team33.item.entity.Item;
 
+import java.util.List;
 
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
@@ -30,7 +31,11 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Page<Item> findAllCategoryNameAndDiscountRateAndBrand(Pageable pageable, @Param("categoryName") String categoryName, @Param("brand") Brand brand);
 
 
-//    @Query()
-//    List<Item> find9BestItemAnd9SaleItem();
+    @Query(value = "SELECT * FROM ITEM Order by sales desc limit 9", nativeQuery = true)
+    List<Item> findOrderByBestItem();
+
+
+    @Query(value = "SELECT * FROM ITEM where item.discount_rate > 0 order by discount_rate desc limit 9", nativeQuery = true)
+    List<Item> findOrderBySaleItem();
 
 }

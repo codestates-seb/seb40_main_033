@@ -22,17 +22,15 @@ import server.team33.talk.service.TalkService;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/items")
 public class ItemController {
     private final ItemService itemService;
     private final ItemMapper mapper;
-
     private final ReviewService reviewService;
     private final ReviewMapper reviewMapper;
     private final TalkService talkService;
     private final TalkMapper talkMapper;
 
-    @PostMapping
+    @PostMapping("/items")
     public ResponseEntity postItem(@RequestBody ItemDto.post post) { // 아이템 등록을 위한 컨트롤러
         Item item = mapper.itemPostDtoToItem(post);
         log.info("item = {}",item);
@@ -40,7 +38,7 @@ public class ItemController {
         return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemDetailResponseDto(result)), HttpStatus.OK);
     }
 
-    @GetMapping("/{item-id}")
+    @GetMapping("/items/{item-id}")
     public ResponseEntity getItem(@PathVariable("item-id") long itemId,
                                   @RequestParam(value="reviewPage", defaultValue="1") int reviewPage,
                                   @RequestParam(value="talkPage", defaultValue="1") int talkPage) {
@@ -49,12 +47,12 @@ public class ItemController {
                 item, reviewService, reviewMapper, talkService, talkMapper, reviewPage-1, 3, talkPage-1, 2)), HttpStatus.OK);
     }
 
-//    @GetMapping("/main")
-//    public ResponseEntity getBestAndSaleItems() { // 메인화면에서 best 제품 9개 , 할인제품 9개
-//        List<Item> bestItemAnd9SaleItem = itemRepository.find9BestItemAnd9SaleItem();
-//        List<ItemDto.ItemCategoryResponse> lists = bestItemAnd9SaleItem.stream().map(item -> mapper.itemToItemCategoryResponseDto(item)).collect(Collectors.toList());
-//        return new ResponseEntity(new SingleResponseDto<>(lists), HttpStatus.OK);
-//    }
+
+
+    @GetMapping("/main") // 메인화면에서 best 제품 9개 , 할인제품 9개 조회하기
+    public ResponseEntity getMainItem() {
+        return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemMainTop9ResponseDto(itemService)), HttpStatus.OK);
+    }
 
 
 }
