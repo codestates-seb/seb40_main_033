@@ -38,4 +38,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(value = "SELECT * FROM ITEM where item.discount_rate > 0 order by discount_rate desc limit 9", nativeQuery = true)
     List<Item> findOrderBySaleItem();
 
+    Page<Item> findByTitleContaining(Pageable pageable, String keyword);
+
+    Page<Item> findByPriceBetween(Pageable pageable, int low, int high);
+
+    Page<Item> findByTitleContainingAndPriceBetween(Pageable pageable, String keyword, int low, int high);
+
 }
