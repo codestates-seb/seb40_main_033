@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import ListDate from '../../Etc/ListDate';
 import Price from '../../Etc/Price';
@@ -8,9 +9,9 @@ import Price from '../../Etc/Price';
 function OrderList({ list }) {
 	const navigate = useNavigate();
 
-	const handleDetailBtnClick = () => {
-		navigate(`${list.orderId}`);
-	};
+	const handleDetailBtnClick = useCallback(() => {
+		navigate(`/mypage/order/${list.orderId}`);
+	}, []);
 
 	return (
 		<Box>
@@ -23,9 +24,7 @@ function OrderList({ list }) {
 					</ShoppingInfo>
 					<Name>
 						{list.itemOrders[0].item.brand}, {list.itemOrders[0].item.title}{' '}
-						{list.itemOrders.length > 1
-							? `외 ${list.itemOrders.length - 1}개`
-							: null}
+						{list.itemOrders.length > 1 && `외 ${list.itemOrders.length - 1}개`}
 					</Name>
 					<Price nowPrice={list.itemOrders[0].item.price} isTotal />
 				</InformationForm>
@@ -43,7 +42,7 @@ function OrderList({ list }) {
 						</LetterButtonColor>
 						<IoIosArrowForward />
 					</IconBtnContainer>
-					{list.orderStatus === '주문완료' ? (
+					{list.orderStatus === '주문완료' && (
 						<IconBtnContainer>
 							<LetterButtonColor
 								color="red"
@@ -57,7 +56,7 @@ function OrderList({ list }) {
 							</LetterButtonColor>
 							<IoMdClose className="cancel" />
 						</IconBtnContainer>
-					) : null}
+					)}
 				</BtnContainer>
 			</MainContainer>
 		</Box>
