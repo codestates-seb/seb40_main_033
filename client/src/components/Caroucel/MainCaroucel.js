@@ -107,7 +107,7 @@ export const MultiItem = styled.div`
 `;
 
 export const SImg = styled.img.attrs({
-	src: 'https://withmuu1.cdn-nhncommerce.com/data/hero/c78012304f20bf3f8b655042765a06ba_58602.jpg',
+	src: 'https://withmuu1.cdn-nhncommerce.com/data/hero/6db2926d8e2296cf434ef8c2bc73fcb6_66058.jpg',
 })`
 	width: 55%;
 	border-radius: 50%;
@@ -115,13 +115,12 @@ export const SImg = styled.img.attrs({
 
 const SInfo = styled.div`
 	width: 45%;
-	padding-left: 130px;
+	padding-left: 180px;
 `;
 
 export const SlideContainer = styled.div`
-	padding: 0 20px;
 	/* width 옵션으로 전체 width 값을 지정할 수 있음 */
-	width: 1360px;
+	width: 1090px;
 
 	.slick-center ${MultiItem} {
 		/* center 모드일때 center에게 강조할 경우 사용 */
@@ -133,17 +132,15 @@ export const SlideContainer = styled.div`
 
 	${MultiItem} {
 		/* center 모드일때 center 외 속성에게 사용 */
-		/* opacity: 0.8; */
 		transition: all 300ms ease;
-		transform: scale(0.5);
-		top: 130px;
+		transform: scale(0.4);
+		top: 155px;
 	}
 `;
 
 export const SlidePage = styled.div`
-	/* background-color: skyblue; */
 	padding: ${(props) => props.padding};
-	width: 1000px;
+	/* width: 1000px; */
 
 	${MultiItem} {
 		/* center 옵션의 경우 MultiTem 속성을 추가로 사용해서 내부 옵션을 추가로 줘야함 */
@@ -154,7 +151,7 @@ export const SlidePage = styled.div`
 		/* 센터아이템 왼쪽에 보여주기 */
 		left: -130%;
 		.slick-center & {
-			left: -108%;
+			/* left: -108%; */
 			${SInfo} {
 				color: var(--gray-500);
 				transition: all 300ms ease;
