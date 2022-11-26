@@ -2,7 +2,26 @@
 import styled, { css } from 'styled-components';
 import WishlistBtn from '../Buttons/WishlistButton';
 import { ShortTextStar } from '../Stars/TextStar';
-// 세연님이 별점 만들면 가져다가 쓰자.
+/* Default List는 item(배열)을 props를 받는 컴포넌트 입니다.
+[{
+	"thumbnail": "/",
+	"descriptionImage": "/",
+	"title":"비타민B",
+	"content": "비타민B에 대한 설명!!!",
+	"expiration": "2023-12-31",
+	"brand": "BRAND2",
+	"sales": 0,
+	"price": 12000,
+	"capacity": 60,
+	"servingSize": 3,
+	"discountRate": 20,
+	"discountPrice": 9600,
+	"categories": [
+		{
+			"categoryName": "눈_건강"
+		}
+	]]
+배열의 구성은 이러하며, 실제 api에 어떻게 오느냐에 따라 내용물을 변경하셔도 됩니다. */
 function DefaultList({ item }) {
 	return (
 		<EntireContainer>
