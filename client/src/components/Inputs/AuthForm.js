@@ -6,7 +6,7 @@ import AuthInput from './AuthInput';
 import { PurpleButton } from '../Buttons/PurpleButton';
 import AddressModal from '../Modals/AddressModal';
 
-export function AuthForm() {
+export function AuthForm({ signUp }) {
 	const [current, setCurrent] = useState(1);
 	const [currentChange, setCurrentChange] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -93,52 +93,67 @@ export function AuthForm() {
 		required: '작성해주세요.',
 	});
 
-	// current가 변하면 onChange를 true로 바꾸고 0.5초 후에 false로 바꿔주는 함수.
-	const onChangeHandler = () => {
-		setCurrentChange(true);
-		setTimeout(() => {
-			setCurrentChange(false);
-		}, 500);
-	};
-
 	// current가 바뀔 때마다 input에 포커스를 준다.
 	const handleInput = (event, setShowError) => {
 		if (event.key === 'Enter') {
 			setShowError(true);
 			if (event.target === firstRef.current && errors.이메일 === undefined) {
-				setCurrent(2);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === secondRef.current &&
 				errors.비밀번호 === undefined
 			) {
-				setCurrent(3);
+				setCurrent(current + 1);
 				setShowError(false);
+				if (signUp) {
+					console.log('Login');
+				}
 			} else if (
 				event.target === thirdRef.current &&
 				errors.비밀번호확인 === undefined
 			) {
-				setCurrent(4);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === fourthRef.current &&
 				errors.닉네임 === undefined
 			) {
-				setCurrent(5);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === fifthRef.current &&
 				errors.이름 === undefined
 			) {
-				setCurrent(6);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === sixthRef.current &&
 				errors.전화번호 === undefined
 			) {
-				setCurrent(7);
+				setCurrent(current + 1);
+				setShowError(false);
+			} else if (
+				event.target === seventhRef.current &&
+				errors.주소 === undefined
+			) {
+				setShowError(false);
+			} else if (
+				event.target === sixthRef.current &&
+				errors.상세주소 === undefined
+			) {
 				setShowError(false);
 			}
+		}
+	};
+
+	// current가 변하면 onChange를 true로 바꾸고 0.5초 후에 false로 바꿔주는 함수.
+	const onChangeHandler = () => {
+		if (current <= 8) {
+			setCurrentChange(true);
+			setTimeout(() => {
+				setCurrentChange(false);
+			}, 500);
 		}
 	};
 
@@ -150,75 +165,82 @@ export function AuthForm() {
 	}, [current]);
 
 	useEffect(() => {
-		setFocus('firstName');
+		setFocus('이메일');
 	}, []);
 
 	// submit 되면 실행되는 함수.
 	const onValid = (data) => {
 		console.log('data', data);
 	};
+
 	console.log('wat', watch());
+	console.log('current', current);
+
 	return (
 		<SForm
 			className={currentChange ? 'pull' : null}
 			current={current}
 			onSubmit={handleSubmit(onValid)}
 		>
-			<AuthInput
-				refAddress={eighthRef}
-				onKeyDown={handleInput}
-				label="상세주소"
-				register={rest8}
-				refHook={ref8}
-				watch={watch()}
-				errors={errors?.상세주소?.message}
-			/>
-			<AuthInput
-				refAddress={seventhRef}
-				onKeyDown={handleInput}
-				label="주소"
-				register={rest7}
-				refHook={ref7}
-				watch={watch()}
-				errors={errors?.주소?.message}
-				onFocus={() => setIsModalOpen(true)}
-			/>
-			<AuthInput
-				refAddress={sixthRef}
-				onKeyDown={handleInput}
-				label="전화번호"
-				register={rest6}
-				refHook={ref6}
-				watch={watch()}
-				errors={errors?.전화번호?.message}
-			/>
-			<AuthInput
-				refAddress={fifthRef}
-				onKeyDown={handleInput}
-				label="이름"
-				register={rest5}
-				refHook={ref5}
-				watch={watch()}
-				errors={errors?.이름?.message}
-			/>
-			<AuthInput
-				refAddress={fourthRef}
-				onKeyDown={handleInput}
-				label="닉네임"
-				register={rest4}
-				refHook={ref4}
-				watch={watch()}
-				errors={errors?.닉네임?.message}
-			/>
-			<AuthInput
-				refAddress={thirdRef}
-				onKeyDown={handleInput}
-				label="비밀번호확인"
-				register={rest3}
-				refHook={ref3}
-				watch={watch()}
-				errors={errors?.비밀번호확인?.message}
-			/>
+			{signUp && (
+				<>
+					<AuthInput
+						refAddress={eighthRef}
+						onKeyDown={handleInput}
+						label="상세주소"
+						register={rest8}
+						refHook={ref8}
+						watch={watch()}
+						errors={errors?.상세주소?.message}
+					/>
+					<AuthInput
+						refAddress={seventhRef}
+						onKeyDown={handleInput}
+						label="주소"
+						register={rest7}
+						refHook={ref7}
+						watch={watch()}
+						errors={errors?.주소?.message}
+						onFocus={() => setIsModalOpen(true)}
+					/>
+					<AuthInput
+						refAddress={sixthRef}
+						onKeyDown={handleInput}
+						label="전화번호"
+						register={rest6}
+						refHook={ref6}
+						watch={watch()}
+						errors={errors?.전화번호?.message}
+					/>
+					<AuthInput
+						refAddress={fifthRef}
+						onKeyDown={handleInput}
+						label="이름"
+						register={rest5}
+						refHook={ref5}
+						watch={watch()}
+						errors={errors?.이름?.message}
+					/>
+					<AuthInput
+						refAddress={fourthRef}
+						onKeyDown={handleInput}
+						label="닉네임"
+						register={rest4}
+						refHook={ref4}
+						watch={watch()}
+						errors={errors?.닉네임?.message}
+					/>
+					<AuthInput
+						refAddress={thirdRef}
+						onKeyDown={handleInput}
+						label="비밀번호확인"
+						register={rest3}
+						refHook={ref3}
+						watch={watch()}
+						errors={errors?.비밀번호확인?.message}
+					/>
+				</>
+			)}
 			<AuthInput
 				refAddress={secondRef}
 				onKeyDown={handleInput}
@@ -238,11 +260,11 @@ export function AuthForm() {
 				errors={errors?.이메일?.message}
 			/>
 			<PurpleButton
-				width="100px"
+				width="110px"
 				borderRadius="50px"
-				disable={!{ ...watch() }.상세주소 ? true : null}
+				disable={signUp && !{ ...watch() }.상세주소 ? true : null}
 			>
-				제출
+				{signUp ? '계정 만들기' : '로그인'}
 			</PurpleButton>
 			{isModalOpen && (
 				<AddressModal modalIsOpen={isModalOpen} setIsOpen={setIsModalOpen}>
@@ -252,7 +274,7 @@ export function AuthForm() {
 						onSelected={(data) => {
 							setIsModalOpen(false);
 							setValue('주소', `(${data.zonecode})${data.address}`);
-							setCurrent(8);
+							setCurrent(current + 1);
 							setFocus('상세주소');
 						}}
 					/>

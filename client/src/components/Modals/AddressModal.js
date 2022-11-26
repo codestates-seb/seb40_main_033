@@ -1,5 +1,4 @@
 import Modal from 'react-modal';
-import styled from 'styled-components';
 import './style.css';
 
 const customStyles = {
