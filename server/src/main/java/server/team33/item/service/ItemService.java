@@ -74,4 +74,25 @@ public class ItemService {
         return itemRepository.findOrderBySaleItem();
     }
 
+    public Page<Item> searchItems(String keyword, int page, int size, String sort) {
+        Page<Item> searchItems = itemRepository.findByTitleContaining(
+                PageRequest.of(page, size, Sort.by(sort).descending()), keyword);
+
+        return searchItems;
+    }
+
+    public Page<Item> pricefilteredItems(int low, int high, int page, int size, String sort) {
+        Page<Item> filteredItems = itemRepository.findByPriceBetween(
+                PageRequest.of(page, size, Sort.by(sort).descending()), low, high);
+
+        return filteredItems;
+    }
+
+    public Page<Item> searchPriceFilteredItems(String keyword, int low, int high, int page, int size, String sort) {
+        Page<Item> itemPage = itemRepository.findByTitleContainingAndPriceBetween(
+                PageRequest.of(page, size, Sort.by(sort).descending()),keyword, low, high);
+
+        return itemPage;
+    }
+
 }
