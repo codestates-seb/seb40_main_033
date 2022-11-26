@@ -8,22 +8,28 @@ import { IoIosArrowBack } from 'react-icons/io';
 function Price({
 	nowPrice,
 	beforePrice,
-	discountRate,
-	isTotal,
+	discountRate, // 할인율
+	isTotal, // 총액인지
+	quantity, // 수량
+	minus, // 앞에 -가 붙는 지 (결제 정보!)
 	fontSize,
 	fontWeight,
-	quantity,
 }) {
 	return (
-		<PriceContainer fontSize={fontSize} fontWeight={fontWeight}>
-			{isTotal ? <Total>총</Total> : null}
+		<PriceContainer
+			className={minus && 'minus'}
+			fontSize={fontSize}
+			fontWeight={fontWeight}
+		>
+			{isTotal && <Label>총</Label>}
+			{minus && <Label>-</Label>}
 			<div>
 				{Number(quantity ? nowPrice * quantity : nowPrice).toLocaleString(
 					'ko-KR',
 				)}
 			</div>
 			<div>원</div>
-			{beforePrice ? (
+			{beforePrice && (
 				<>
 					<IoIosArrowBack />
 					<BeforePrice>
@@ -31,7 +37,7 @@ function Price({
 					</BeforePrice>
 					<Percent>{discountRate}</Percent>
 				</>
-			) : null}
+			)}
 		</PriceContainer>
 	);
 }
@@ -55,10 +61,16 @@ const PriceContainer = styled.div`
 			font-weight: ${`var(--${fontWeight})`};
 		`};
 	}
+
+	&.minus {
+		& > * {
+			color: var(--purple-300);
+		}
+	}
 `;
 
-const Total = styled.div`
-	margin-right: 8px;
+const Label = styled.label`
+	margin-right: 7px;
 `;
 
 const BeforePrice = styled.del`

@@ -12,7 +12,7 @@ const TabName = [
 
 const link = [
 	'user-info',
-	'order',
+	'order/normal',
 	'sub-manage',
 	'wish',
 	'note/review',
@@ -35,7 +35,6 @@ export default function MypageTab() {
 						onClick={() => setSeletedTab(index)}
 						isSelected={seletedTab === index}
 					>
-						{/* span -> link 변경 예정 */}
 						{name}
 					</TabItem>
 				</Link>

@@ -26,7 +26,7 @@ function OrderDetailList() {
 							nowPrice={price}
 							quantity="5" // 수량!
 							fontSize="16px"
-							fontWeight="extraBold"
+							fontWeight="Bold"
 						/>
 					</Total>
 					<ReviewContainer>
@@ -75,13 +75,13 @@ const Image = styled.div`
 `;
 
 const InformationForm = styled.div`
-	margin-bottom: 20px;
+	margin-bottom: 23px;
 `;
 
 const Brand = styled.div`
 	color: var(--green-200);
 	font-weight: var(--bold);
-	margin-bottom: 5px;
+	margin-bottom: 4px;
 `;
 
 const Name = styled.div`
@@ -97,7 +97,7 @@ const BottomContainer = styled.div`
 
 const Total = styled.div`
 	display: flex;
-	font-weight: var(--extraBold);
+	font-weight: var(--bold);
 	* {
 		font-size: 16px;
 	}
