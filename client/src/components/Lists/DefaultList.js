@@ -1,35 +1,38 @@
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
 import WishlistBtn from '../Buttons/WishlistButton';
+import { ShortTextStar } from '../Stars/TextStar';
 // 세연님이 별점 만들면 가져다가 쓰자.
-
-function DefaultList() {
+function DefaultList({ item }) {
 	return (
 		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
-					<ContentContainer>
-						<WishlistBtn />
-					</ContentContainer>
+					<ContentContainer />
 					<ContentContainer middle>
 						<ItemImg
 							src="https://cdn.pillyze.io/products/v1/12k/9445bfe9-12669/500"
 							alt="상품 이미지"
 						/>
 					</ContentContainer>
-					<ContentContainer buttom>
-						<div className="title brandName">네이처메이드</div>
-						<div className="title itemName">멀티비타민 60정</div>
-						<div className="title itemPrice">6,000원</div>
+					<ContentContainer bottom>
+						<div className="title brandName">{/* {item.brand} */} 뭐든</div>
+						<div className="title itemName">{/* {item.title} */} 나오시고</div>
+						<div className="title itemPrice">
+							{/* {item.price.toLocaleString('ko-KR')}  */} 16,000 원
+						</div>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
 			<DefaultContainer className="hover" hover>
 				<ContentBox>
+					<ContentContainer star>
+						<ShortTextStar />
+					</ContentContainer>
 					<ContentContainer middle>
 						<ItemDescription>
-							필수 영양소 멀티비타민&미네랄 20종. 활력충전을 위한 고함량 비타민
-							B군
+							{/* {item.content} */}
+							상품설명이 들어갈 자리입니다. 아껴주세요.
 						</ItemDescription>
 					</ContentContainer>
 				</ContentBox>
@@ -90,11 +93,16 @@ const ContentContainer = styled.div`
 					justify-content: center;
 					padding-bottom: 93px;
 			  `
-			: props.buttom
+			: props.bottom
 			? css`
 					z-index: 1;
 					flex-direction: column;
 					justify-content: none;
+			  `
+			: props.star
+			? css`
+					flex-direction: row;
+					margin-top: 5px;
 			  `
 			: null}
 
