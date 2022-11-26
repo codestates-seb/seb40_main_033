@@ -81,6 +81,7 @@ const DefaultContainer = styled.div`
 	width: 297px;
 	height: 469px;
 	border-radius: 10px;
+	background-color: white;
 	box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
 	transition: 0.25s;
 	${(props) =>
