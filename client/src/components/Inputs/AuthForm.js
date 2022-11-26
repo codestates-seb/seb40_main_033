@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -57,8 +58,8 @@ export function AuthForm({ signUp }) {
 		},
 	});
 	const { ref: ref3, ...rest3 } = register('비밀번호확인', {
-		required: '비밀번호를 다시 입력해주세요.',
-		validate: {
+		required: signUp && '비밀번호를 다시 입력해주세요.',
+		validate: signUp && {
 			matchPreviousPassword: (value) => {
 				const { 비밀번호 } = watch();
 				return 비밀번호 === value || '비밀번호가 일치하지 않습니다.';
@@ -66,31 +67,31 @@ export function AuthForm({ signUp }) {
 		},
 	});
 	const { ref: ref4, ...rest4 } = register('닉네임', {
-		required: '작성해주세요.',
+		required: signUp && '작성해주세요.',
 		minLength: {
 			value: 2,
 			message: '2글자 이상 작성해주세요.',
 		},
 	});
 	const { ref: ref5, ...rest5 } = register('이름', {
-		required: '작성해주세요.',
+		required: signUp && '작성해주세요.',
 		minLength: {
 			value: 2,
 			message: '2글자 이상 작성해주세요.',
 		},
 	});
 	const { ref: ref6, ...rest6 } = register('전화번호', {
-		required: '작성해주세요.',
+		required: signUp && '작성해주세요.',
 		pattern: {
 			value: /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/,
 			message: '000-0000-0000 형식으로 작성해주세요.',
 		},
 	});
 	const { ref: ref7, ...rest7 } = register('주소', {
-		required: '작성해주세요.',
+		required: signUp && '작성해주세요.',
 	});
 	const { ref: ref8, ...rest8 } = register('상세주소', {
-		required: '작성해주세요.',
+		required: signUp && '작성해주세요.',
 	});
 
 	// current가 바뀔 때마다 input에 포커스를 준다.
@@ -106,9 +107,6 @@ export function AuthForm({ signUp }) {
 			) {
 				setCurrent(current + 1);
 				setShowError(false);
-				if (signUp) {
-					console.log('Login');
-				}
 			} else if (
 				event.target === thirdRef.current &&
 				errors.비밀번호확인 === undefined
@@ -170,11 +168,16 @@ export function AuthForm({ signUp }) {
 
 	// submit 되면 실행되는 함수.
 	const onValid = (data) => {
-		console.log('data', data);
+		if (signUp) {
+			console.log('signUp', data);
+		} else {
+			console.log('logIn', data);
+		}
 	};
 
 	console.log('wat', watch());
-	console.log('current', current);
+	console.log('err', errors);
+	// console.log('current', current);
 
 	return (
 		<SForm
@@ -262,7 +265,15 @@ export function AuthForm({ signUp }) {
 			<PurpleButton
 				width="110px"
 				borderRadius="50px"
-				disable={signUp && !{ ...watch() }.상세주소 ? true : null}
+				disable={
+					signUp
+						? !{ ...watch() }.상세주소
+							? true
+							: null
+						: !{ ...watch() }.비밀번호
+						? true
+						: null
+				}
 			>
 				{signUp ? '계정 만들기' : '로그인'}
 			</PurpleButton>
