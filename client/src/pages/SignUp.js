@@ -1,25 +1,43 @@
 import styled from 'styled-components';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import AuthTitle from '../components/Etc/AuthTitle';
 import { AuthForm } from '../components/Inputs/AuthForm';
 
 // 회원가입 페이지
 function SignUp() {
+	const handleGet = () => {
+		// axios
+		// 	.get('https://dc27-36-38-67-137.jp.ngrok.io/items/1')
+		// 	.then((response) => {
+		// 		const { data } = response;
+		// 		console.log(data);
+		// 	})
+		// 	.catch((error) => console.log(error));
+	};
+
 	return (
-		<Container>
+		<AuthContainer>
 			<FormContainer>
 				<AuthTitle title="회원가입" />
-				<AuthForm />
+				<AuthForm signUp />
+				{/* <button type="button" onClick={handleGet}>
+					겟요청
+				</button> */}
+				<LinkContainer>
+					이미 계정이 있으신가요? <Link to="/login">로그인</Link>
+				</LinkContainer>
 			</FormContainer>
 			<Background>
 				<Text>With Pillivery Ready For Life</Text>
 			</Background>
-		</Container>
+		</AuthContainer>
 	);
 }
 
 export default SignUp;
 
-const Container = styled.div`
+export const AuthContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -27,7 +45,7 @@ const Container = styled.div`
 	min-height: 100vh;
 `;
 
-const FormContainer = styled.div`
+export const FormContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -37,8 +55,19 @@ const FormContainer = styled.div`
 	height: 100%;
 `;
 
+export const LinkContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+	a {
+		color: var(--purple-200);
+		margin-left: 5px;
+	}
+`;
+
 // 배경 사진이 들어갈 부분
-const Background = styled.div`
+export const Background = styled.div`
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -49,7 +78,7 @@ const Background = styled.div`
 `;
 
 // 사진 위에 올릴 문구
-const Text = styled.p`
+export const Text = styled.p`
 	text-align: end;
 	width: min-content;
 	color: white;

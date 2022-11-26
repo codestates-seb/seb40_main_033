@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -6,7 +7,7 @@ import AuthInput from './AuthInput';
 import { PurpleButton } from '../Buttons/PurpleButton';
 import AddressModal from '../Modals/AddressModal';
 
-export function AuthForm() {
+export function AuthForm({ signUp }) {
 	const [current, setCurrent] = useState(1);
 	const [currentChange, setCurrentChange] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,12 +18,15 @@ export function AuthForm() {
 	const fifthRef = useRef(null);
 	const sixthRef = useRef(null);
 	const seventhRef = useRef(null);
+	const eighthRef = useRef(null);
 	const {
 		register,
 		handleSubmit,
 		watch,
 		formState: { errors },
 		setError,
+		setValue,
+		setFocus,
 	} = useForm({
 		mode: 'onChange',
 	});
@@ -35,7 +39,8 @@ export function AuthForm() {
 			message: '이메일 형식으로 작성해주세요.',
 		},
 		pattern: {
-			value: /^[A-Za-z0-9._%+-]+@naver\.com$/,
+			value:
+				/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
 			message: '이메일 형식으로 작성해주세요.',
 		},
 	});
@@ -53,8 +58,8 @@ export function AuthForm() {
 		},
 	});
 	const { ref: ref3, ...rest3 } = register('비밀번호확인', {
-		required: '비밀번호를 다시 입력해주세요.',
-		validate: {
+		required: signUp && '비밀번호를 다시 입력해주세요.',
+		validate: signUp && {
 			matchPreviousPassword: (value) => {
 				const { 비밀번호 } = watch();
 				return 비밀번호 === value || '비밀번호가 일치하지 않습니다.';
@@ -62,100 +67,117 @@ export function AuthForm() {
 		},
 	});
 	const { ref: ref4, ...rest4 } = register('닉네임', {
-		required: '작성해주세요.',
+		required: signUp && '작성해주세요.',
 		minLength: {
 			value: 2,
 			message: '2글자 이상 작성해주세요.',
 		},
 	});
 	const { ref: ref5, ...rest5 } = register('이름', {
-		required: '작성해주세요.',
+		required: signUp && '작성해주세요.',
 		minLength: {
 			value: 2,
 			message: '2글자 이상 작성해주세요.',
 		},
 	});
 	const { ref: ref6, ...rest6 } = register('전화번호', {
-		required: '작성해주세요.',
-		minLength: {
-			value: 2,
-			message: '2글자 이상 작성해주세요.',
+		required: signUp && '작성해주세요.',
+		pattern: {
+			value: /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/,
+			message: '000-0000-0000 형식으로 작성해주세요.',
 		},
 	});
 	const { ref: ref7, ...rest7 } = register('주소', {
-		required: '작성해주세요.',
-		minLength: {
-			value: 2,
-			message: '2글자 이상 작성해주세요.',
-		},
+		required: signUp && '작성해주세요.',
 	});
-
-	// current가 변하면 onChange를 true로 바꾸고 0.5초 후에 false로 바꿔주는 함수.
-	const onChangeHandler = () => {
-		setCurrentChange(true);
-		setTimeout(() => {
-			setCurrentChange(false);
-		}, 500);
-	};
+	const { ref: ref8, ...rest8 } = register('상세주소', {
+		required: signUp && '작성해주세요.',
+	});
 
 	// current가 바뀔 때마다 input에 포커스를 준다.
 	const handleInput = (event, setShowError) => {
 		if (event.key === 'Enter') {
 			setShowError(true);
 			if (event.target === firstRef.current && errors.이메일 === undefined) {
-				setCurrent(2);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === secondRef.current &&
 				errors.비밀번호 === undefined
 			) {
-				setCurrent(3);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === thirdRef.current &&
 				errors.비밀번호확인 === undefined
 			) {
-				setCurrent(4);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === fourthRef.current &&
 				errors.닉네임 === undefined
 			) {
-				setCurrent(5);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === fifthRef.current &&
 				errors.이름 === undefined
 			) {
-				setCurrent(6);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === sixthRef.current &&
 				errors.전화번호 === undefined
 			) {
-				setCurrent(7);
+				setCurrent(current + 1);
 				setShowError(false);
 			} else if (
 				event.target === seventhRef.current &&
 				errors.주소 === undefined
 			) {
-				setCurrent(8);
+				setShowError(false);
+			} else if (
+				event.target === sixthRef.current &&
+				errors.상세주소 === undefined
+			) {
 				setShowError(false);
 			}
 		}
 	};
 
+	// current가 변하면 onChange를 true로 바꾸고 0.5초 후에 false로 바꿔주는 함수.
+	const onChangeHandler = () => {
+		if (current <= 8) {
+			setCurrentChange(true);
+			setTimeout(() => {
+				setCurrentChange(false);
+			}, 500);
+		}
+	};
+
 	// current가 바뀔 때마다 onChangeHandler를 실행시켜서 애니메이션이 작동한다.
 	useEffect(() => {
-		firstRef.current.focus();
 		if (current >= 2) {
 			onChangeHandler();
 		}
 	}, [current]);
 
+	useEffect(() => {
+		setFocus('이메일');
+	}, []);
+
+	// submit 되면 실행되는 함수.
 	const onValid = (data) => {
-		console.log('data', data);
+		if (signUp) {
+			console.log('signUp', data);
+		} else {
+			console.log('logIn', data);
+		}
 	};
+
+	console.log('wat', watch());
+	console.log('err', errors);
+	// console.log('current', current);
 
 	return (
 		<SForm
@@ -163,62 +185,65 @@ export function AuthForm() {
 			current={current}
 			onSubmit={handleSubmit(onValid)}
 		>
-			<CheckBoxLabel htmlFor="check">
-				<input
-					id="check"
-					{...register('동의', { required: true })}
-					type="checkbox"
-					value="true"
-				/>
-				본인은 만 14세 이상이며, 이용약관, 개인정보 수집 및 이용, 개인정보 제공
-				내용, 전자금융거래 약관을 확인하였으며, 동의합니다.
-			</CheckBoxLabel>
-			<AuthInput
-				refAddress={seventhRef}
-				onKeyDown={handleInput}
-				label="주소"
-				register={rest7}
-				refHook={ref7}
-				watch={watch()}
-				errors={errors?.주소?.message}
-				onFocus={() => setIsModalOpen(true)}
-			/>
-			<AuthInput
-				refAddress={sixthRef}
-				onKeyDown={handleInput}
-				label="전화번호"
-				register={rest6}
-				refHook={ref6}
-				watch={watch()}
-				errors={errors?.전화번호?.message}
-			/>
-			<AuthInput
-				refAddress={fifthRef}
-				onKeyDown={handleInput}
-				label="이름"
-				register={rest5}
-				refHook={ref5}
-				watch={watch()}
-				errors={errors?.이름?.message}
-			/>
-			<AuthInput
-				refAddress={fourthRef}
-				onKeyDown={handleInput}
-				label="닉네임"
-				register={rest4}
-				refHook={ref4}
-				watch={watch()}
-				errors={errors?.닉네임?.message}
-			/>
-			<AuthInput
-				refAddress={thirdRef}
-				onKeyDown={handleInput}
-				label="비밀번호확인"
-				register={rest3}
-				refHook={ref3}
-				watch={watch()}
-				errors={errors?.비밀번호확인?.message}
-			/>
+			{signUp && (
+				<>
+					<AuthInput
+						refAddress={eighthRef}
+						onKeyDown={handleInput}
+						label="상세주소"
+						register={rest8}
+						refHook={ref8}
+						watch={watch()}
+						errors={errors?.상세주소?.message}
+					/>
+					<AuthInput
+						refAddress={seventhRef}
+						onKeyDown={handleInput}
+						label="주소"
+						register={rest7}
+						refHook={ref7}
+						watch={watch()}
+						errors={errors?.주소?.message}
+						onFocus={() => setIsModalOpen(true)}
+					/>
+					<AuthInput
+						refAddress={sixthRef}
+						onKeyDown={handleInput}
+						label="전화번호"
+						register={rest6}
+						refHook={ref6}
+						watch={watch()}
+						errors={errors?.전화번호?.message}
+					/>
+					<AuthInput
+						refAddress={fifthRef}
+						onKeyDown={handleInput}
+						label="이름"
+						register={rest5}
+						refHook={ref5}
+						watch={watch()}
+						errors={errors?.이름?.message}
+					/>
+					<AuthInput
+						refAddress={fourthRef}
+						onKeyDown={handleInput}
+						label="닉네임"
+						register={rest4}
+						refHook={ref4}
+						watch={watch()}
+						errors={errors?.닉네임?.message}
+					/>
+					<AuthInput
+						refAddress={thirdRef}
+						onKeyDown={handleInput}
+						label="비밀번호확인"
+						register={rest3}
+						refHook={ref3}
+						watch={watch()}
+						errors={errors?.비밀번호확인?.message}
+					/>
+				</>
+			)}
 			<AuthInput
 				refAddress={secondRef}
 				onKeyDown={handleInput}
@@ -238,24 +263,34 @@ export function AuthForm() {
 				errors={errors?.이메일?.message}
 			/>
 			<PurpleButton
-				width="100px"
+				width="110px"
 				borderRadius="50px"
-				disable={{ ...watch() }.동의 ? null : true}
+				disable={
+					signUp
+						? !{ ...watch() }.상세주소
+							? true
+							: null
+						: !{ ...watch() }.비밀번호
+						? true
+						: null
+				}
 			>
-				제출
+				{signUp ? '계정 만들기' : '로그인'}
 			</PurpleButton>
-			{isModalOpen ? (
+			{isModalOpen && (
 				<AddressModal modalIsOpen={isModalOpen} setIsOpen={setIsModalOpen}>
 					<Postcode
 						style={{ width: 600, height: 500 }}
 						jsOptions={{ animation: true, hideMapBtn: true }}
 						onSelected={(data) => {
-							console.log(JSON.stringify(data));
 							setIsModalOpen(false);
+							setValue('주소', `(${data.zonecode})${data.address}`);
+							setCurrent(current + 1);
+							setFocus('상세주소');
 						}}
 					/>
 				</AddressModal>
-			) : null}
+			)}
 		</SForm>
 	);
 }
@@ -304,15 +339,4 @@ const SForm = styled.form`
 	& > button {
 		margin-top: 20px;
 	}
-`;
-
-const CheckBoxLabel = styled.label`
-	display: flex;
-	align-items: center;
-	color: var(--gray-400);
-	width: 98%;
-	& > input {
-		margin-right: 10px;
-	}
-	margin-top: 10px;
 `;

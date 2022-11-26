@@ -46,7 +46,7 @@ const Container = styled.div`
 				`;
 			case '':
 				return `
-				background-image: linear-gradient(to bottom, white 800px, var(--gray-100) 0)
+				background-image: linear-gradient(to bottom, white 770px, var(--gray-100) 0)
 				`;
 			default:
 				return `

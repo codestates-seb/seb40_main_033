@@ -59,7 +59,8 @@
 }
 
 .slick-prev {
-	left: 410px;
+	/*! 왼쪽 화살표 위치 조절 */
+	left: 310px;
 }
 [dir='rtl'] .slick-prev {
 	right: -25px;
@@ -73,7 +74,8 @@
 }
 
 .slick-next {
-	right: 450px;
+	/*! 오른쪽 화살표 위치 조절 */
+	right: 340px;
 }
 [dir='rtl'] .slick-next {
 	right: auto;

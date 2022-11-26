@@ -1,6 +1,11 @@
-// 메인페이지
+import SimpleSlider from '../components/Caroucel/MainCaroucel';
+
 function Home() {
-	return <h1>Home</h1>;
+	return (
+		<div>
+			<SimpleSlider />
+		</div>
+	);
 }
 
 export default Home;
