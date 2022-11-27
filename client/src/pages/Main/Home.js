@@ -1,4 +1,4 @@
-import MainCaroucel from '../components/Caroucel/MainCaroucel';
+import MainCaroucel from '../../components/Caroucel/MainCaroucel';
 import MainSection from './MainSection';
 
 function Home() {

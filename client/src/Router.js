@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NormalCart from './pages/NormalCart';
 import SubCart from './pages/SubCart';
 import Detail from './pages/Detail';
-import Home from './pages/Home';
+import Home from './pages/Main/Home';
 import ItemList from './pages/ItemList';
 import LogIn from './pages/Auth/LogIn';
 import MyPage from './pages/MyPage';

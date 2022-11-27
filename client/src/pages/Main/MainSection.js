@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import CardCaroucel from '../components/Caroucel/CardCaroucel';
-import RecommendedTitle from '../components/Etc/RecommendedTitle';
-import { MainList } from '../components/Lists/ListCards';
+import CardCaroucel from '../../components/Caroucel/CardCaroucel';
+import RecommendedTitle from '../../components/Etc/RecommendedTitle';
 
 export default function MainSection() {
 	return (
