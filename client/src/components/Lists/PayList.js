@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import Price from '../../Etc/Price';
+import Price from '../Etc/Price';
 
 function PayList() {
 	const price = 7000;
