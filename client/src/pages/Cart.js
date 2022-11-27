@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import PageTitle from '../components/Etc/PageTitle';
 
 function Cart() {
-	const { pathname } = useLocation();
+	const isMatch = useMatch('/cart');
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (pathname === '/cart') {
+		if (isMatch) {
 			navigate('/cart/normal');
 		}
 	}, []);
