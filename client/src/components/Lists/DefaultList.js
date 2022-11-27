@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
-import WishlistBtn from '../Buttons/WishlistButton';
+import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
 /* Default List는 item(배열)을 props를 받는 컴포넌트 입니다.
 [{
@@ -37,9 +37,16 @@ function DefaultList({ item }) {
 					<ContentContainer bottom>
 						<div className="title brandName">{/* {item.brand} */} 뭐든</div>
 						<div className="title itemName">{/* {item.title} */} 나오시고</div>
-						<div className="title itemPrice">
-							{/* {item.price.toLocaleString('ko-KR')}  */} 16,000 원
-						</div>
+						<Price
+							nowPrice={8000}
+							// item.price
+							beforePrice={10000}
+							// item.discountPrice
+							discountRate="20%"
+							// item.discountRate
+							fontSize="20px"
+							font-weight="var(--regular)"
+						/>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
@@ -72,6 +79,9 @@ const EntireContainer = styled.div`
 			color: white;
 		}
 		.brandName {
+			color: var(--gray-200);
+		}
+		.beforeDiscounted {
 			color: var(--gray-200);
 		}
 	}
