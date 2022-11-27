@@ -64,6 +64,7 @@ export function PriceSortButton({ children }) {
 
 const ButtonContainer = styled.div`
 	/* margin-left: 50%; */
+	position: relative;
 	display: inline-flex;
 	justify-content: space-between;
 	align-items: center;

@@ -64,13 +64,11 @@ const Button = styled.button`
 	font-size: 20px;
 	&:hover {
 		cursor: pointer;
-		transform: translateY(-8px);
 	}
 
 	&[disabled] {
 		cursor: revert;
 		color: var(--gray-500);
-		transform: translateY(-8px);
 		${(props) =>
 			props.arrow
 				? css`

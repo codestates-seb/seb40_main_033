@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
-function WishlistBtn() {
-	const [isWanted, setIsWanted] = useState(false);
-	const handleClick = () => {
+function WishlistBtn({ isChecked }) {
+	const [isWanted, setIsWanted] = useState({ isChecked });
+	const handleClick = useCallback(() => {
 		setIsWanted(!isWanted);
-	};
-
+	}, [isWanted]);
 	return (
 		<WishBox>
 			<FaHeart

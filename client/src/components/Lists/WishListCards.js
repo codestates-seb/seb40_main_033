@@ -1,17 +1,22 @@
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
-import WishlistBtn from '../Buttons/WishlistButton';
 import Price from '../Etc/Price';
+import WishlistBtn from '../Buttons/WishlistButton';
 import { ShortTextStar } from '../Stars/TextStar';
-// 세연님이 별점 만들면 가져다가 쓰자.
+// 나중에 이 CardList 컴포넌트들에 대한 전반적인 리팩터링이 필요하긴 할 듯..
 
-function SmallDefaultList({ item }) {
+function WishListCards({ item }) {
 	console.log(item, 'item임/');
 	return (
 		<EntireContainer id="이거임">
 			<DefaultContainer>
 				<ContentBox>
-					<ContentContainer />
+					<ContentContainer>
+						<WishlistBtn
+							isChecked
+							/* 이 부분은 나중에 api로 받아오는 정보에서 뽑아서 결정해야함..다만 지금같은 경우 무조건 표시되어 있어서 이렇게 작성함  */
+						/>
+					</ContentContainer>
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
@@ -100,7 +105,6 @@ const ContentBox = styled.div`
 const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
-	margin-top: 10px;
 	${(props) =>
 		props.middle
 			? css`
@@ -149,4 +153,4 @@ const ItemDescription = styled.p`
 	letter-spacing: -0.04em;
 `;
 
-export default SmallDefaultList;
+export default WishListCards;

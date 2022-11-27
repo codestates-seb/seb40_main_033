@@ -1,30 +1,31 @@
 import styled from 'styled-components';
-import SmallListCards from '../components/Lists/SmallListCards';
-import Search from '../components/Search/Search';
-import data from '../data/data';
-import SortAndSearchButtons from '../components/Buttons/SearchButtons/SortAndSearchButtons';
+// import SmallListCards from '../components/Lists/SmallListCards';
+// import Search from '../components/Search/Search';
+// import data from '../data/data';
+// import SortAndSearchButtons from '../components/Buttons/SearchButtons/SortAndSearchButtons';
 
 // 목록 페이지
 function SearchList() {
 	return (
-		<Box>
-			<Top>
-				<SearchForm>
-					<Search />
-				</SearchForm>
-				<Filter>
-					<SortAndSearchButtons />
-				</Filter>
-			</Top>
-			<Mesage>
-				<Text>루테인에 대한 검색 결과입니다</Text>
-			</Mesage>
-			<ItemListBox>
-				{data.items.map((item) => (
-					<SmallListCards key={item.itemId} item={item} />
-				))}
-			</ItemListBox>
-		</Box>
+		// <Box>
+		// 	<Top>
+		// 		<SearchForm>
+		// 			<Search />
+		// 		</SearchForm>
+		// 		<Filter>
+		// 			<SortAndSearchButtons />
+		// 		</Filter>
+		// 	</Top>
+		// 	<Mesage>
+		// 		<Text>루테인에 대한 검색 결과입니다</Text>
+		// 	</Mesage>
+		// 	<ItemListBox>
+		// 		{data.items.map((item) => (
+		// 			<SmallListCards key={item.itemId} item={item} />
+		// 		))}
+		// 	</ItemListBox>
+		// </Box>
+		<h1>searchlist</h1>
 	);
 }
 
