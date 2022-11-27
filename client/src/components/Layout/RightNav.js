@@ -24,7 +24,7 @@ function RightNav() {
 			<Nav>
 				<IconContainer>
 					<AiOutlineUser />
-					{click ? <Input placeholder="검색어를 입력하세요" /> : null}
+					{click ? <SearchBar placeholder="검색어를 입력하세요" /> : null}
 					<AiOutlineSearch
 						className={click ? 'search' : null}
 						onClick={clickBtn}
@@ -111,6 +111,7 @@ function RightNav() {
 
 const Container = styled.div`
 	position: relative;
+	z-index: 999;
 `;
 
 const Nav = styled.nav`
@@ -131,7 +132,7 @@ const Nav = styled.nav`
 	}
 `;
 
-// const showSearchBar = keyframes`
+// const showSearchBar = `
 // 	from{
 // 		opacity: 0;
 // 	}
@@ -176,7 +177,7 @@ const Nav = styled.nav`
 // 	}
 // `;
 
-const Input = styled.input`
+const SearchBar = styled.input`
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -190,6 +191,7 @@ const Input = styled.input`
 	position: absolute;
 	right: -10px;
 	top: 61px;
+
 	:focus {
 		outline: none;
 	}
