@@ -116,6 +116,7 @@ const ContentBox = styled.div`
 const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
+	margin-top: 10px;
 	${(props) =>
 		props.middle
 			? css`

@@ -1,37 +1,43 @@
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
 import WishlistBtn from '../Buttons/WishlistButton';
-
+import Price from '../Etc/Price';
+import { ShortTextStar } from '../Stars/TextStar';
 // 세연님이 별점 만들면 가져다가 쓰자.
 
 function SmallDefaultList({ item }) {
+	console.log(item, 'item임/');
 	return (
-		<EntireContainer>
+		<EntireContainer id="이거임">
 			<DefaultContainer>
 				<ContentBox>
-					<ContentContainer>
-						<WishlistBtn />
-					</ContentContainer>
+					<ContentContainer />
 					<ContentContainer middle>
-						<ItemImg
-							src="https://cdn.pillyze.io/products/v1/12k/9445bfe9-12669/500"
-							alt="상품 이미지"
-						/>
+						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
 					<ContentContainer buttom>
 						<div className="title brandName">{item.brand}</div>
 						<div className="title itemName">{item.title}</div>
-						<div className="title itemPrice">{item.price}</div>
+						<Price
+							nowPrice={8000}
+							// item.price
+							beforePrice={10000}
+							// item.discountPrice
+							discountRate="20%"
+							// item.discountRate
+							fontSize="16px"
+							font-weight="var(--regular)"
+						/>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
 			<DefaultContainer className="hover" hover>
 				<ContentBox>
+					<ContentContainer star>
+						<ShortTextStar />
+					</ContentContainer>
 					<ContentContainer middle>
-						<ItemDescription>
-							필수 영양소 멀티비타민&미네랄 20종. 활력충전을 위한 고함량 비타민
-							B군
-						</ItemDescription>
+						<ItemDescription>{item.content}</ItemDescription>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
@@ -43,6 +49,10 @@ const EntireContainer = styled.div`
 	cursor: pointer;
 	display: inline-flex;
 	position: relative;
+	margin-right: 20px;
+	margin-bottom: 30px;
+	/* background-color: white; */
+	/* border: 1px solid red; // 구분을 쉽게 하기 위한 선입니다. */
 	&:hover {
 		.hover {
 			opacity: 1;
@@ -51,6 +61,9 @@ const EntireContainer = styled.div`
 			color: white;
 		}
 		.brandName {
+			color: var(--gray-200);
+		}
+		.beforeDiscounted {
 			color: var(--gray-200);
 		}
 	}
@@ -62,6 +75,7 @@ const DefaultContainer = styled.div`
 	border-radius: 10px;
 	box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
 	transition: 0.25s;
+	background-color: white;
 	${(props) =>
 		props.hover // hover라는 프롭스가 들어간 디폴트 컨테이너
 			? css`
@@ -86,6 +100,7 @@ const ContentBox = styled.div`
 const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
+	margin-top: 10px;
 	${(props) =>
 		props.middle
 			? css`
@@ -98,6 +113,11 @@ const ContentContainer = styled.div`
 					z-index: 1;
 					flex-direction: column;
 					justify-content: none;
+			  `
+			: props.star
+			? css`
+					flex-direction: row;
+					margin-top: 5px;
 			  `
 			: null}
 
