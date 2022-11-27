@@ -1,15 +1,24 @@
 import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
+import { useCallback, useState } from 'react';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import Price from '../../Etc/Price';
+import ReviewModal from '../../Modals/ReviewModal';
 
-function OrderDetailList() {
+function OrderDetailList({ inModal }) {
 	const price = 7000;
 	const quantity = 5;
 	const PillsNum = 60;
 
+	const [modalIsOpen, setIsOpen] = useState(false);
+
+	const openModal = useCallback(() => {
+		setIsOpen(true);
+	}, []);
+	console.log('modalIsOpen', modalIsOpen);
+
 	return (
-		<Box>
+		<Box className={inModal && 'in-modal'}>
 			<ImageContainer>
 				<Image> img </Image>
 			</ImageContainer>
@@ -29,12 +38,24 @@ function OrderDetailList() {
 							fontWeight="Bold"
 						/>
 					</Total>
-					<ReviewContainer>
-						<LetterButtonColor color="gray" colorcode="500" fontSize="13px">
-							리뷰 쓰기
-						</LetterButtonColor>
-						<IoIosArrowForward />
-					</ReviewContainer>
+					{!inModal && (
+						<ReviewContainer>
+							<LetterButtonColor
+								onClick={openModal}
+								color="gray"
+								colorcode="500"
+								fontSize="13px"
+							>
+								리뷰 쓰기
+							</LetterButtonColor>
+							<IoIosArrowForward />
+						</ReviewContainer>
+					)}
+					<ReviewModal
+						modalIsOpen={modalIsOpen}
+						setIsOpen={setIsOpen}
+						OrderDetailList={OrderDetailList}
+					/>
 				</BottomContainer>
 			</Wrap>
 		</Box>
@@ -51,6 +72,9 @@ const Box = styled.div`
 	padding: 19px;
 	* {
 		color: var(--gray-600);
+	}
+	&.in-modal {
+		width: 100%;
 	}
 `;
 

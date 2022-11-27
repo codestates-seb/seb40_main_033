@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { BsDash } from 'react-icons/bs';
+import { LightPurpleButton } from '../PurpleButton';
 
 export default function PriceButton({ min, max, isOpen }) {
 	const [minVal, setMinVal] = useState(min);
@@ -73,7 +74,7 @@ export default function PriceButton({ min, max, isOpen }) {
 					<SliderRange ref={range} />
 				</Slider>
 			</SliderContainer>
-			<ButtomContainer>
+			<BottomContainer>
 				<ValueBox>
 					<ValueDescription>최저 금액</ValueDescription>
 					<SliderValue>{minVal.toLocaleString('ko-KR')} 원</SliderValue>
@@ -81,13 +82,19 @@ export default function PriceButton({ min, max, isOpen }) {
 				<IconBox>
 					<BsDash />
 				</IconBox>
-				<ValueBox>
+				<ValueBox className="right">
 					<ValueDescription>최고 금액</ValueDescription>
 					<SliderValue>{maxVal.toLocaleString('ko-KR')} 원</SliderValue>
 				</ValueBox>
-				<AdoptButton>적용하기</AdoptButton>
-				<SailButton>할인상품 모아보기</SailButton>
-			</ButtomContainer>
+				<LightPurpleButton
+					className="apply"
+					fontWeight="bold"
+					fontSize="12px"
+					width="65px"
+				>
+					적용하기
+				</LightPurpleButton>
+			</BottomContainer>
 		</EntireContainer>
 	);
 }
@@ -96,10 +103,10 @@ const EntireContainer = styled.div`
 	display: inline-flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items: center;
-	/* border: 1px solid; */
+	align-items: flex-end;
 	margin-right: 60px;
-	/* animation: ${(isOpen) =>
+	margin: 16px 60px 4px 8px;
+	animation: ${(isOpen) =>
 		isOpen
 			? 'slide-fade-in-dropdown-animation 0.4s ease'
 			: 'slide-fade-out-dropdown-animation 0.4s ease'};
@@ -111,7 +118,7 @@ const EntireContainer = styled.div`
 		100% {
 			transform: translateX(0);
 		}
-	} */
+	}
 `;
 
 const SliderContainer = styled.div`
@@ -145,6 +152,7 @@ const ThumbLeft = styled.input`
 	}
 	z-index: 3;
 `;
+
 const ThumbRight = styled.input`
 	-webkit-appearance: none;
 	&::-webkit-slider-thumb {
@@ -176,6 +184,7 @@ const SliderTrack = styled.div`
 	z-index: 1;
 	height: 2px;
 `;
+
 const SliderRange = styled.div`
 	background-color: var(--purple-200);
 	position: absolute;
@@ -183,7 +192,7 @@ const SliderRange = styled.div`
 	height: 2px;
 `;
 
-const ButtomContainer = styled.div`
+const BottomContainer = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -199,6 +208,9 @@ const ValueBox = styled.div`
 	border: 0.8px solid var(--gray-300);
 	border-radius: 6px;
 	padding: 7px;
+	&.right {
+		margin-right: 20px;
+	}
 `;
 const ValueDescription = styled.div`
 	color: var(--gray-300);
@@ -218,48 +230,5 @@ const IconBox = styled.div`
 		path {
 			color: var(--gray-300);
 		}
-	}
-`;
-
-const AdoptButton = styled.button`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 69px;
-	height: 32px;
-	border: 0.5px solid var(--purple-200);
-	border-radius: 6px;
-	background-color: var(--purple-100);
-	font-size: 11px;
-	font-weight: var(--bold);
-	color: var(--purple-200);
-	transition: 0.3s all;
-	cursor: pointer;
-	margin-left: 20px;
-	&:hover {
-		background-color: var(--purple-200);
-		color: var(--purple-100);
-	}
-`;
-
-const SailButton = styled.button`
-	position: absolute;
-	right: 34px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 64px;
-	height: 38px;
-	border: 0.5px solid var(--purple-200);
-	border-radius: 6px;
-	background-color: var(--purple-100);
-	font-size: 11px;
-	font-weight: var(--bold);
-	color: var(--purple-200);
-	cursor: pointer;
-	margin-left: 20px;
-	&:hover {
-		background-color: var(--purple-200);
-		color: var(--purple-100);
 	}
 `;

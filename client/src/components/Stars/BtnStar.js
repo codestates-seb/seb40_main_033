@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import styled from 'styled-components';
 
@@ -6,7 +6,7 @@ function BtnStar() {
 	const [clickedStar, setClickedStar] = useState('');
 	const [hoveredStar, setHoveredStar] = useState('');
 
-	const handleStarClick = (e) => {
+	const handleStarClick = useCallback((e) => {
 		if (e.target.localName === 'path') {
 			return;
 		}
@@ -16,11 +16,11 @@ function BtnStar() {
 		} else {
 			setClickedStar(e.target.id);
 		}
-	};
+	}, []);
 
-	const handleStarHover = (e) => {
+	const handleStarHover = useCallback((e) => {
 		setHoveredStar(e.target.id);
-	};
+	}, []);
 
 	return (
 		<StarContainer>

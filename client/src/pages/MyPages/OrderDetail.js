@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import React from 'react';
 import OrderDetailList from '../../components/Lists/MyPageLists/OrderDetailList';
 import { PaymentInfo, DestinationInfo } from '../../components/Etc/PayInfo';
 
@@ -11,7 +12,6 @@ function OrderDetail() {
 				<span />
 				<PaymentInfo options />
 			</LeftContainer>
-
 			<RightContainer>
 				<Title>주문 상세 내역</Title>
 				<OrderDetailList />
@@ -21,10 +21,6 @@ function OrderDetail() {
 		</Box>
 	);
 }
-/*
-
-
-*/
 
 const Box = styled.div`
 	display: flex;
@@ -62,4 +58,4 @@ const Title = styled.h1`
 	/* text-align: left; */
 `;
 
-export default OrderDetail;
+export default React.memo(OrderDetail);

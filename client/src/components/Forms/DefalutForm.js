@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 // height: input 높이   target: 상품에 대한 {target}를 20자 이상 적어주세요
@@ -17,9 +17,9 @@ function DefalutForm({
 		console.log(contents);
 	}, [contents]);
 
-	const handleInputChange = (e) => {
+	const handleInputChange = useCallback((e) => {
 		setContents(e.target.value);
-	};
+	}, []);
 
 	// contents가 20자가 넘지 않은 상태에서 제출할 경우에, InfoMessage 강조해주세요~!
 	return (

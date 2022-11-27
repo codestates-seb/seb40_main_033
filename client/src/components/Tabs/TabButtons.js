@@ -11,13 +11,20 @@ export function DayControlTab() {
 	return <DefaultTabButton menuArr={menuArr} delayButton />;
 }
 
-export function ToggleTab() {
+export function ToggleTab({ currentIdx, highlightLeftValue }) {
 	const menuArr = [
 		{ name: '일반', index: 0 },
 		{ name: '정기', index: 1 },
 	];
 
-	return <DefaultTabButton menuArr={menuArr} toggle />;
+	return (
+		<DefaultTabButton
+			currentIdx={currentIdx}
+			highlightLeftValue={highlightLeftValue}
+			menuArr={menuArr}
+			toggle
+		/>
+	);
 }
 
 export function DayShowTab({ fonSize }) {
