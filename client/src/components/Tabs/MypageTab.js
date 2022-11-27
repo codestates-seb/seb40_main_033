@@ -15,7 +15,18 @@ const link = ['user-info', 'order/normal', 'sub-manage', 'wish', 'note/review'];
 export default function MypageTab() {
 	const { pathname } = useLocation();
 	const splitedPathname = pathname.split('/mypage/');
-	const pathIdx = link.indexOf(splitedPathname[1]);
+	let pathIdx;
+
+	// order가 포함되면 pathIdx는 무조건 1
+	if (pathname.includes('order')) {
+		pathIdx = 1;
+		// note가 포함되면 pathIdx는 무조건 4
+	} else if (pathname.includes('note')) {
+		pathIdx = 4;
+	} else {
+		pathIdx = link.indexOf(splitedPathname[1]);
+	}
+
 	const [seletedTab, setSeletedTab] = useState(pathIdx);
 
 	const handleTabClick = useCallback((e) => {
