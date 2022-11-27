@@ -1,9 +1,8 @@
 import DefalutModal from './DefalutModal';
-import PayList from '../Lists/MyPageLists/PayList';
 import ReviewForm from '../Forms/ReviewForm';
 import BtnStar from '../Stars/BtnStar';
 
-function ReviewModal({ setIsOpen, modalIsOpen }) {
+function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList }) {
 	const data = {
 		title: 'Review',
 	};
@@ -11,7 +10,7 @@ function ReviewModal({ setIsOpen, modalIsOpen }) {
 	return (
 		<DefalutModal
 			title={data.title}
-			list={<PayList />}
+			list={<OrderDetailList inModal />}
 			form={<ReviewForm />}
 			star={<BtnStar />}
 			setIsOpen={setIsOpen}
