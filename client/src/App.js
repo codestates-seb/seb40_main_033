@@ -1,14 +1,18 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { Provider } from 'react-redux';
 import GlobalStyle from './assets/style/GlobalStyle';
 import Router from './Router';
+import store from './redux/store/store';
 
 const queryClient = new QueryClient();
 
 function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<GlobalStyle />
-			<Router />
+			<Provider store={store}>
+				<GlobalStyle />
+				<Router />
+			</Provider>
 		</QueryClientProvider>
 	);
 }
