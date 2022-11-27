@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import './slick.css';
 import './slick-theme.css';
 import { IoIosArrowBack } from 'react-icons/io';
-import CaroucelInfo from './Caroucel-Info';
 import { MainList } from '../Lists/ListCards';
 
 const ArrowButton = styled.button`
@@ -31,7 +30,7 @@ const ArrowButton = styled.button`
 			`
 		transform: rotate(180deg);
 		left: 30%;
-	`}
+		`}
 	}
 `;
 

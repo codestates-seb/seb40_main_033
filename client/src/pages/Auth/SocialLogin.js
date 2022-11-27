@@ -8,7 +8,7 @@ const KakaoImg = styled.img.attrs({
 })`
 	height: 40px;
 	width: 40px;
-	padding: 8px 6px 6px 7px;
+	padding: 9px 7px 7px 8px;
 `;
 
 const GoogleSVG = styled(Google)`
