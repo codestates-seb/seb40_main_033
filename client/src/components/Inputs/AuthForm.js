@@ -265,7 +265,7 @@ export function AuthForm({ signUp }) {
 				errors={errors?.이메일?.message}
 			/>
 			<PurpleButton
-				width="110px"
+				width={signUp ? '110px' : '134px'}
 				borderRadius="50px"
 				disable={
 					signUp
