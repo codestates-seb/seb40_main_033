@@ -7,7 +7,7 @@ import MyPageHeader from '../components/Etc/MyPageHeader';
 import { ToggleTab } from '../components/Tabs/TabButtons';
 
 const togglePath = ['/mypage/order/normal', '/mypage/order/subscription'];
-const leftValueArr = [0, 72];
+const leftValueArr = [0, 68];
 
 function MyPage() {
 	const { pathname } = useLocation();
