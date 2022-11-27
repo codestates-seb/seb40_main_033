@@ -1,28 +1,35 @@
 import styled from 'styled-components';
 import { IoIosArrowForward, IoMdClose } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import ListDate from '../../Etc/ListDate';
 import Price from '../../Etc/Price';
 
-function OrderList() {
+function OrderList({ list }) {
+	const navigate = useNavigate();
+
+	const handleDetailBtnClick = useCallback(() => {
+		navigate(`/mypage/order/${list.orderId}`);
+	}, []);
+
 	return (
 		<Box>
-			<ImageContainer>
-				<Image> img </Image>
-			</ImageContainer>
+			<Image src={list.itemOrders[0].item.thumbnail} alt="상품 이미지" />
 			<MainContainer>
 				<InformationForm>
 					<ShoppingInfo>
-						<DeliveryStatus>배송완료</DeliveryStatus>
-						<ListDate date="2022-11-23T15:30:25" />
+						<DeliveryStatus>{list.orderStatus}</DeliveryStatus>
+						<ListDate date={list.createdAt} />
 					</ShoppingInfo>
 					<Name>
-						California Gold Nutrition, 오메가3 프리미엄 피쉬 오일 외 3개
+						{list.itemOrders[0].item.brand}, {list.itemOrders[0].item.title}{' '}
+						{list.itemOrders.length > 1 && `외 ${list.itemOrders.length - 1}개`}
 					</Name>
-					<Price nowPrice="6000" isTotal />
+					<Price nowPrice={list.itemOrders[0].item.price} isTotal />
 				</InformationForm>
 				<BtnContainer>
-					<IconBtnContainer>
+					<IconBtnContainer onClick={handleDetailBtnClick}>
 						<LetterButtonColor
 							color="gray"
 							colorCode="500"
@@ -35,19 +42,21 @@ function OrderList() {
 						</LetterButtonColor>
 						<IoIosArrowForward />
 					</IconBtnContainer>
-					<IconBtnContainer>
-						<LetterButtonColor
-							color="red"
-							colorCode="100"
-							fontSize="14px"
-							hoverColor="red"
-							hoverColorCode="100"
-							fontWeight="regular"
-						>
-							주문 취소
-						</LetterButtonColor>
-						<IoMdClose className="cancel" />
-					</IconBtnContainer>
+					{list.orderStatus === '주문완료' && (
+						<IconBtnContainer>
+							<LetterButtonColor
+								color="red"
+								colorCode="100"
+								fontSize="14px"
+								hoverColor="red"
+								hoverColorCode="100"
+								fontWeight="regular"
+							>
+								주문 취소
+							</LetterButtonColor>
+							<IoMdClose className="cancel" />
+						</IconBtnContainer>
+					)}
 				</BtnContainer>
 			</MainContainer>
 		</Box>
@@ -70,12 +79,7 @@ const MainContainer = styled.div`
 	width: 100%;
 `;
 
-const ImageContainer = styled.div`
-	display: flex;
-`;
-
-const Image = styled.div`
-	border: 1px solid green;
+const Image = styled.img`
 	width: 160px;
 	height: 160px;
 	display: flex;
