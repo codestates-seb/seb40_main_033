@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -57,12 +58,12 @@ function DefalutModal({
 
 	const navigate = useNavigate();
 
-	const closeModal = () => {
+	const closeModal = useCallback(() => {
 		setIsOpen(false);
 		if (path) {
 			navigate(path);
 		}
-	};
+	}, []);
 
 	return (
 		<Modal
