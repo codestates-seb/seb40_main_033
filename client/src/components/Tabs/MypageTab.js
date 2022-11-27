@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const TabName = [
 	'회원정보',
@@ -10,29 +10,26 @@ const TabName = [
 	'작성글 관리',
 ];
 
-const link = [
-	'user-info',
-	'order/normal',
-	'sub-manage',
-	'wish',
-	'note/review',
-	'note/talk',
-];
+const link = ['user-info', 'order/normal', 'sub-manage', 'wish', 'note/review'];
 
 export default function MypageTab() {
-	const [seletedTab, setSeletedTab] = useState(0);
+	const { pathname } = useLocation();
+	const splitedPathname = pathname.split('/mypage/');
+	const pathIdx = link.indexOf(splitedPathname[1]);
+	const [seletedTab, setSeletedTab] = useState(pathIdx);
 
-	// const handleTabClick = (e) => {
-	// 	console.log(e.target.id);
-	// 	// setSeletedTab(index);
-	// };
+	const handleTabClick = useCallback((e) => {
+		setSeletedTab(Number(e.target.id));
+	}, []);
 
 	return (
 		<Tab>
 			{TabName.map((name, index) => (
 				<Link to={link[index]} key={`${index.toString()}-${name}`}>
 					<TabItem
-						onClick={() => setSeletedTab(index)}
+						id={index}
+						// onClick={handleTabClick}
+						onClick={handleTabClick}
 						isSelected={seletedTab === index}
 					>
 						{name}
