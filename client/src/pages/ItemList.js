@@ -1,32 +1,33 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import SmallListCards from '../components/Lists/SmallListCards';
-import data from '../data/data';
+// import SmallListCards from '../components/Lists/SmallListCards';
+// import data from '../data/data';
 
 // 목록 페이지
 function ItemList() {
 	return (
-		<Box>
-			<Brand>
-				<All>전체 +</All>
-				<Category>
-					<BrandList>brand</BrandList>
-					<BrandList>brand</BrandList>
-					<BrandList>brand</BrandList>
-					<BrandList>brand</BrandList>
-					<BrandList>brand</BrandList>
-					<BrandList>brand</BrandList>
-					<BrandList>brand</BrandList>
-					<BrandList>brand</BrandList>
-				</Category>
-			</Brand>
-			<ItemListBox>
-				{data.items.map((item) => (
-					<SmallListCards key={item.itemId} item={item} />
-				))}
-				{/* <SmallListCards /> */}
-			</ItemListBox>
-		</Box>
+		// <Box>
+		// 	<Brand>
+		// 		<All>전체 +</All>
+		// 		<Category>
+		// 			<BrandList>brand</BrandList>
+		// 			<BrandList>brand</BrandList>
+		// 			<BrandList>brand</BrandList>
+		// 			<BrandList>brand</BrandList>
+		// 			<BrandList>brand</BrandList>
+		// 			<BrandList>brand</BrandList>
+		// 			<BrandList>brand</BrandList>
+		// 			<BrandList>brand</BrandList>
+		// 		</Category>
+		// 	</Brand>
+		// 	<ItemListBox>
+		// 		{data.items.map((item) => (
+		// 			<SmallListCards key={item.itemId} item={item} />
+		// 		))}
+		// 		{/* <SmallListCards /> */}
+		// 	</ItemListBox>
+		// </Box>
+		<h1>itemlists</h1>
 	);
 }
 

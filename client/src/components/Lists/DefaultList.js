@@ -1,35 +1,64 @@
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
-import WishlistBtn from '../Buttons/WishlistButton';
-// 세연님이 별점 만들면 가져다가 쓰자.
-
-function DefaultList() {
+import Price from '../Etc/Price';
+import { ShortTextStar } from '../Stars/TextStar';
+/* Default List는 item(배열)을 props를 받는 컴포넌트 입니다.
+[{
+	"thumbnail": "/",
+	"descriptionImage": "/",
+	"title":"비타민B",
+	"content": "비타민B에 대한 설명!!!",
+	"expiration": "2023-12-31",
+	"brand": "BRAND2",
+	"sales": 0,
+	"price": 12000,
+	"capacity": 60,
+	"servingSize": 3,
+	"discountRate": 20,
+	"discountPrice": 9600,
+	"categories": [
+		{
+			"categoryName": "눈_건강"
+		}
+	]]
+배열의 구성은 이러하며, 실제 api에 어떻게 오느냐에 따라 내용물을 변경하셔도 됩니다. */
+function DefaultList({ item }) {
 	return (
 		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
-					<ContentContainer>
-						<WishlistBtn />
-					</ContentContainer>
+					<ContentContainer />
 					<ContentContainer middle>
 						<ItemImg
 							src="https://cdn.pillyze.io/products/v1/12k/9445bfe9-12669/500"
 							alt="상품 이미지"
 						/>
 					</ContentContainer>
-					<ContentContainer buttom>
-						<div className="title brandName">네이처메이드</div>
-						<div className="title itemName">멀티비타민 60정</div>
-						<div className="title itemPrice">6,000원</div>
+					<ContentContainer bottom>
+						<div className="title brandName">{/* {item.brand} */} 뭐든</div>
+						<div className="title itemName">{/* {item.title} */} 나오시고</div>
+						<Price
+							nowPrice={8000}
+							// item.price
+							beforePrice={10000}
+							// item.discountPrice
+							discountRate="20%"
+							// item.discountRate
+							fontSize="20px"
+							font-weight="var(--regular)"
+						/>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
 			<DefaultContainer className="hover" hover>
 				<ContentBox>
+					<ContentContainer star>
+						<ShortTextStar />
+					</ContentContainer>
 					<ContentContainer middle>
 						<ItemDescription>
-							필수 영양소 멀티비타민&미네랄 20종. 활력충전을 위한 고함량 비타민
-							B군
+							{/* {item.content} */}
+							상품설명이 들어갈 자리입니다. 아껴주세요.
 						</ItemDescription>
 					</ContentContainer>
 				</ContentBox>
@@ -52,6 +81,9 @@ const EntireContainer = styled.div`
 		.brandName {
 			color: var(--gray-200);
 		}
+		.beforeDiscounted {
+			color: var(--gray-200);
+		}
 	}
 `;
 
@@ -59,6 +91,7 @@ const DefaultContainer = styled.div`
 	width: 297px;
 	height: 469px;
 	border-radius: 10px;
+	background-color: white;
 	box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
 	transition: 0.25s;
 	${(props) =>
@@ -83,6 +116,7 @@ const ContentBox = styled.div`
 const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
+	margin-top: 10px;
 	${(props) =>
 		props.middle
 			? css`
@@ -90,11 +124,16 @@ const ContentContainer = styled.div`
 					justify-content: center;
 					padding-bottom: 93px;
 			  `
-			: props.buttom
+			: props.bottom
 			? css`
 					z-index: 1;
 					flex-direction: column;
 					justify-content: none;
+			  `
+			: props.star
+			? css`
+					flex-direction: row;
+					margin-top: 5px;
 			  `
 			: null}
 

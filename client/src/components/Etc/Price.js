@@ -8,7 +8,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 function Price({
 	nowPrice,
 	beforePrice,
-	discountRate, // 할인율
+	discountRate, // 할인율이 ~%로 문자열로 들어와야 합니다.
 	isTotal, // 총액인지
 	quantity, // 수량
 	minus, // 앞에 -가 붙는 지 (결제 정보!)
@@ -23,17 +23,17 @@ function Price({
 		>
 			{isTotal && <Label>총</Label>}
 			{minus && <Label>-</Label>}
-			<div>
+			<div className="title">
 				{Number(quantity ? nowPrice * quantity : nowPrice).toLocaleString(
 					'ko-KR',
 				)}
 			</div>
-			<div>원</div>
+			<div className="title">원</div>
 			{beforePrice && (
 				<>
 					<IoIosArrowBack />
-					<BeforePrice>
-						{Number(beforePrice).toLocaleString('ko-KR')}
+					<BeforePrice className="beforeDiscounted">
+						{Number(beforePrice).toLocaleString('ko-KR')} 원
 					</BeforePrice>
 					<Percent>{discountRate}</Percent>
 				</>

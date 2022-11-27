@@ -86,6 +86,7 @@ export default function PriceButton({ min, max, isOpen }) {
 					<SliderValue>{maxVal.toLocaleString('ko-KR')} 원</SliderValue>
 				</ValueBox>
 				<AdoptButton>적용하기</AdoptButton>
+				<SailButton>할인상품 모아보기</SailButton>
 			</ButtomContainer>
 		</EntireContainer>
 	);
@@ -98,7 +99,7 @@ const EntireContainer = styled.div`
 	align-items: center;
 	/* border: 1px solid; */
 	margin-right: 60px;
-	animation: ${(isOpen) =>
+	/* animation: ${(isOpen) =>
 		isOpen
 			? 'slide-fade-in-dropdown-animation 0.4s ease'
 			: 'slide-fade-out-dropdown-animation 0.4s ease'};
@@ -110,7 +111,7 @@ const EntireContainer = styled.div`
 		100% {
 			transform: translateX(0);
 		}
-	}
+	} */
 `;
 
 const SliderContainer = styled.div`
@@ -233,6 +234,28 @@ const AdoptButton = styled.button`
 	font-weight: var(--bold);
 	color: var(--purple-200);
 	transition: 0.3s all;
+	cursor: pointer;
+	margin-left: 20px;
+	&:hover {
+		background-color: var(--purple-200);
+		color: var(--purple-100);
+	}
+`;
+
+const SailButton = styled.button`
+	position: absolute;
+	right: 34px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 64px;
+	height: 38px;
+	border: 0.5px solid var(--purple-200);
+	border-radius: 6px;
+	background-color: var(--purple-100);
+	font-size: 11px;
+	font-weight: var(--bold);
+	color: var(--purple-200);
 	cursor: pointer;
 	margin-left: 20px;
 	&:hover {
