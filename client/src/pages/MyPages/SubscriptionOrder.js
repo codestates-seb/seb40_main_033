@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { ToggleTab } from '../../components/Tabs/TabButtons';
 import OrderList from '../../components/Lists/MyPageLists/OrderList';
 import Pagination from '../../components/Etc/Pagination';
 
@@ -22,7 +21,6 @@ function SubscriptionOrder() {
 
 	return (
 		<>
-			<ToggleTab />
 			<ListContainer>
 				{lists &&
 					lists.map((list) => (
