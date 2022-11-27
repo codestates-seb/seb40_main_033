@@ -1,19 +1,39 @@
 import styled from 'styled-components';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import AuthTitle from '../components/Etc/AuthTitle';
-import { AuthForm } from '../components/Inputs/AuthForm';
+import AuthTitle from '../../components/Etc/AuthTitle';
+import { AuthForm } from '../../components/Inputs/AuthForm';
 
+const URI = 'https://dangerous-newt-46.loca.lt';
+const data = {
+	userId: 1,
+	displayName: 'loopy12',
+	realName: '손오공',
+	address: '서울특별시 부평구 본동 광명아파트',
+	phone: '03030303030',
+	detailAddress: 'sdfsdsdf',
+};
 // 회원가입 페이지
 function SignUp() {
 	const handleGet = () => {
-		// axios
-		// 	.get('https://dc27-36-38-67-137.jp.ngrok.io/items/1')
-		// 	.then((response) => {
-		// 		const { data } = response;
-		// 		console.log(data);
-		// 	})
-		// 	.catch((error) => console.log(error));
+		fetch(`${URI}/users/more-info`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+		})
+			.then((res) => res.json())
+			.then((res) => console.log(res));
+	};
+	const token =
+		'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYmFuZ2lvbjkzQGdtYWlsLmNvbSIsInN1YiI6ImJhbmdpb245M0BnbWFpbC5jb20iLCJleHAiOjE2Njk1NDkzOTAsImlhdCI6MTY2OTU0NzU5MH0.uFow8FzJCVwVsNF94N6RANTrxrxdoqmhyLez8Z76TQg';
+
+	const handleLogOut = () => {
+		fetch(`${URI}/users/logout`, {
+			method: 'GET',
+			headers: { Authorization: `Bearer ${token}` },
+		})
+			.then((res) => res.json())
+			.then((res) => console.log(res));
 	};
 
 	return (
@@ -21,9 +41,12 @@ function SignUp() {
 			<FormContainer>
 				<AuthTitle title="회원가입" />
 				<AuthForm signUp />
-				{/* <button type="button" onClick={handleGet}>
+				<button type="button" onClick={handleGet}>
 					겟요청
-				</button> */}
+				</button>
+				<button type="button" onClick={handleLogOut}>
+					로그아웃
+				</button>
 				<LinkContainer>
 					이미 계정이 있으신가요? <Link to="/login">로그인</Link>
 				</LinkContainer>

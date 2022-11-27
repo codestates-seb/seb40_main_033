@@ -6,6 +6,7 @@ import './slick.css';
 import './slick-theme.css';
 import { useState } from 'react';
 import { MdPlayArrow, MdPause } from 'react-icons/md';
+import { IoIosArrowBack } from 'react-icons/io';
 import CaroucelInfo from './Caroucel-Info';
 
 const Info = {
@@ -15,25 +16,31 @@ const Info = {
 	color: '#FE9701',
 };
 
-function SampleArrow(props) {
-	const { className, style, onClick } = props;
-	return (
-		<div
-			className={className}
-			style={{
-				...style,
-				display: 'block',
-				background: 'black',
-				width: '30px',
-				height: '30px',
-				borderRadius: '50%',
-			}}
-			onClick={onClick}
-		/>
-	);
-}
+const ArrowButton = styled.button`
+	width: 29px;
+	height: 29px;
+	background-color: black;
+	border-radius: 50px;
+	transition: 0.25s ease;
+	& > svg {
+		path {
+			color: white;
+		}
+		position: absolute;
+		top: 25%;
+		left: 25%;
+		${({ right }) =>
+			// 180도 회전
+			right &&
+			`
+		transform: rotate(180deg);
+		top: 28%;
+		left: 30%;
+	`}
+	}
+`;
 
-function SimpleSlider() {
+function MainCaroucel() {
 	const [sliderRef, setSliderRef] = useState(null);
 	const [isPlaying, setIsPlaying] = useState(true);
 
@@ -47,8 +54,16 @@ function SimpleSlider() {
 		autoplaySpeed: 5000,
 		pauseOnHover: true,
 		// variableWidth: true,
-		nextArrow: <SampleArrow />,
-		prevArrow: <SampleArrow />,
+		nextArrow: (
+			<ArrowButton right>
+				<IoIosArrowBack />
+			</ArrowButton>
+		),
+		prevArrow: (
+			<ArrowButton left>
+				<IoIosArrowBack />
+			</ArrowButton>
+		),
 		className: 'center',
 		centerMode: true,
 		centerPadding: '0px',
@@ -98,7 +113,7 @@ function SimpleSlider() {
 	);
 }
 
-export default SimpleSlider;
+export default MainCaroucel;
 
 // * 캐러셀 스타일
 export const MultiItem = styled.div`

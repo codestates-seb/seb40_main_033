@@ -1,6 +1,7 @@
+/* eslint-disable no-return-assign */
 import { Link } from 'react-router-dom';
-import AuthTitle from '../components/Etc/AuthTitle';
-import { AuthForm } from '../components/Inputs/AuthForm';
+import AuthTitle from '../../components/Etc/AuthTitle';
+import { AuthForm } from '../../components/Inputs/AuthForm';
 import {
 	AuthContainer,
 	Background,
@@ -8,6 +9,7 @@ import {
 	LinkContainer,
 	Text,
 } from './SignUp';
+import SocialLogin from './SocialLogin';
 
 // 로그인 페이지
 function LogIn() {
@@ -16,6 +18,7 @@ function LogIn() {
 			<FormContainer>
 				<AuthTitle title="로그인" />
 				<AuthForm />
+				<SocialLogin />
 				<LinkContainer>
 					아직 회원이 아니신가요? <Link to="/signup">회원가입</Link>
 				</LinkContainer>

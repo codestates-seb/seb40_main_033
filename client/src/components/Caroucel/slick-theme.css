@@ -32,7 +32,7 @@
 .slick-next:focus {
 	color: red;
 	outline: none;
-	background: transparent;
+	/* background: transparent; */
 }
 .slick-prev:hover:before,
 .slick-prev:focus:before,
@@ -67,7 +67,7 @@
 	left: auto;
 }
 .slick-prev:before {
-	content: '←';
+	content: '';
 }
 [dir='rtl'] .slick-prev:before {
 	content: '→';
@@ -82,7 +82,7 @@
 	left: -25px;
 }
 .slick-next:before {
-	content: '→';
+	content: '';
 }
 [dir='rtl'] .slick-next:before {
 	content: '←';
