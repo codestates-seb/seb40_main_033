@@ -6,15 +6,26 @@ import MypageTab from '../components/Tabs/MypageTab';
 import MyPageHeader from '../components/Etc/MyPageHeader';
 import { ToggleTab } from '../components/Tabs/TabButtons';
 
+const togglePath = ['/mypage/order/normal', '/mypage/order/subscription'];
+const leftValueArr = [0, 72];
+
 function MyPage() {
 	const { pathname } = useLocation();
+	const currentIdx = togglePath.indexOf(pathname);
+	const highlightLeftValue = leftValueArr[currentIdx];
 	// 일반/정기 토글이 주문내역에서만 보이도록
 	const show = pathname.includes('/order');
+
 	return (
 		<Container>
 			<MyPageHeader />
 			<MypageTab />
-			{show && <ToggleTab />}
+			{show && (
+				<ToggleTab
+					currentIdx={currentIdx}
+					highlightLeftValue={highlightLeftValue}
+				/>
+			)}
 			<Outlet />
 		</Container>
 	);
