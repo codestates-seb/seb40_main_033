@@ -26,7 +26,6 @@ const Box = styled.div`
 	display: flex;
 	justify-content: space-between;
 	width: 1038px;
-	margin-top: 50px;
 `;
 
 const LeftContainer = styled.section`
