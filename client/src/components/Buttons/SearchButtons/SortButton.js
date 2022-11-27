@@ -101,7 +101,7 @@ const ButtonContainer = styled.div`
 		position: absolute;
 		right: 0px;
 		top: -60px;
-		z-index: 999;
+		z-index: 2;
 	}
 `;
 
