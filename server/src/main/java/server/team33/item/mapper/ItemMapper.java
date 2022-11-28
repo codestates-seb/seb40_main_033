@@ -8,6 +8,8 @@ import server.team33.item.dto.ItemDto;
 import server.team33.item.dto.ItemSimpleResponseDto;
 import server.team33.item.entity.Item;
 import server.team33.item.service.ItemService;
+import server.team33.nutritionFact.dto.NutritionFactDto;
+import server.team33.nutritionFact.entity.NutritionFact;
 import server.team33.response.MultiResponseDto;
 import server.team33.review.entity.Review;
 import server.team33.review.mapper.ReviewMapper;
@@ -39,7 +41,7 @@ public interface ItemMapper {
         itemDetailResponseDto.setServingSize(item.getServingSize());
         itemDetailResponseDto.setDiscountRate(item.getDiscountRate());
         itemDetailResponseDto.setDiscountPrice(item.getDiscountPrice());
-        itemDetailResponseDto.setNutritionFacts(item.getNutritionFacts());
+        itemDetailResponseDto.setNutritionFacts(nutritionFactToNutritionFactResponseDto(item.getNutritionFacts()));
         itemDetailResponseDto.setCategories(categoryToCategoryResponseDto(item.getCategories()));
         itemDetailResponseDto.setStarAvg(item.getStarAvg());
 //        itemDetailResponseDto.setReviews(item.getReviews());
@@ -66,7 +68,7 @@ public interface ItemMapper {
         itemDetailResponseDto.setServingSize(item.getServingSize());
         itemDetailResponseDto.setDiscountRate(item.getDiscountRate());
         itemDetailResponseDto.setDiscountPrice(item.getDiscountPrice());
-        itemDetailResponseDto.setNutritionFacts(item.getNutritionFacts());
+        itemDetailResponseDto.setNutritionFacts(nutritionFactToNutritionFactResponseDto(item.getNutritionFacts()));
         itemDetailResponseDto.setCategories(categoryToCategoryResponseDto(item.getCategories()));
         itemDetailResponseDto.setStarAvg(item.getStarAvg());
 
@@ -99,13 +101,35 @@ public interface ItemMapper {
         item.setDiscountPrice(post.getDiscountPrice());
         item.setCategories(categoryPostDtoToCategory(post.getCategories(), item));
         item.setServingSize(post.getServingSize());
-        item.setNutritionFacts(post.getNutritionFacts());
+        item.setNutritionFacts(nutritionFactPostDtoToNutritionFact(post.getNutritionFacts(), item));
         item.setStarAvg(post.getStarAvg());
 //        item.setReviews(post.getReviews());
 //        item.setTalks(post.getTalks());
 
         return item;
     }
+
+    default List<NutritionFactDto.Response> nutritionFactToNutritionFactResponseDto(List<NutritionFact> nutritionFacts) {
+        return nutritionFacts.stream().map(nutritionFact -> {
+            NutritionFactDto.Response response = new NutritionFactDto.Response();
+
+            response.setIngredient(nutritionFact.getIngredient());
+            response.setVolume(nutritionFact.getVolume());
+            return response;
+        }).collect(Collectors.toList());
+    }
+
+    default List<NutritionFact> nutritionFactPostDtoToNutritionFact(List<NutritionFactDto.Post> posts, Item item) {
+        return posts.stream().map(post -> {
+            NutritionFact nutritionFact = new NutritionFact();
+
+            nutritionFact.setIngredient(post.getIngredient());
+            nutritionFact.setVolume(post.getVolume());
+            nutritionFact.setItem(item);
+            return nutritionFact;
+        }).collect(Collectors.toList());
+    }
+
 
     default List<CategoryDto.Response> categoryToCategoryResponseDto(List<Category> categories) {
         return categories.stream().map(category -> {
