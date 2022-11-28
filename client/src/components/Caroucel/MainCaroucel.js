@@ -122,7 +122,7 @@ export const MultiItem = styled.div`
 `;
 
 export const SImg = styled.img.attrs({
-	src: 'https://withmuu1.cdn-nhncommerce.com/data/hero/6db2926d8e2296cf434ef8c2bc73fcb6_66058.jpg',
+	src: 'https://cdn.discordapp.com/attachments/997446041811046432/1046621249238999140/pills.png',
 })`
 	width: 55%;
 	border-radius: 50%;
@@ -154,9 +154,6 @@ export const SlideContainer = styled.div`
 `;
 
 export const SlidePage = styled.div`
-	padding: ${(props) => props.padding};
-	/* width: 1000px; */
-
 	${MultiItem} {
 		/* center 옵션의 경우 MultiTem 속성을 추가로 사용해서 내부 옵션을 추가로 줘야함 */
 		margin: 10px;

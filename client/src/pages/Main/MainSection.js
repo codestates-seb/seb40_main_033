@@ -15,7 +15,7 @@ const SectionContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 100px;
+	margin-top: 120px;
 	width: 100%;
 	max-width: 1200px;
 `;
