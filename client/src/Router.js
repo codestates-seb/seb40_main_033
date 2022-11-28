@@ -2,14 +2,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NormalCart from './pages/NormalCart';
 import SubCart from './pages/SubCart';
 import Detail from './pages/Detail';
-import Home from './pages/Home';
+import Home from './pages/Main/Home';
 import ItemList from './pages/ItemList';
-import LogIn from './pages/LogIn';
+import LogIn from './pages/Auth/LogIn';
 import MyPage from './pages/MyPage';
 import NotFound from './pages/NotFound';
 import Payment from './pages/Payment';
 import SearchList from './pages/SearchList';
-import SignUp from './pages/SignUp';
+import SignUp from './pages/Auth/SignUp';
 import SubPayment from './pages/SubPayment';
 import Layout from './components/Layout/Layout';
 import NoteReview from './pages/MyPages/NoteReview';
@@ -20,6 +20,7 @@ import SubscriptionOrder from './pages/MyPages/SubscriptionOrder';
 import UserInfo from './pages/MyPages/UserInfo';
 import WishList from './pages/MyPages/WishList';
 import SubManage from './pages/MyPages/SubManage';
+import Cart from './pages/Cart';
 
 function Router() {
 	return (
@@ -27,8 +28,10 @@ function Router() {
 			<Routes>
 				<Route element={<Layout />}>
 					<Route index element={<Home />} />
-					<Route path="cart/normal" element={<NormalCart />} />
-					<Route path="cart/subscription" element={<SubCart />} />
+					<Route path="cart" element={<Cart />}>
+						<Route path="normal" element={<NormalCart />} />
+						<Route path="subscription" element={<SubCart />} />
+					</Route>
 					<Route path="detail/:id" element={<Detail />} />
 					<Route path="list" element={<ItemList />} />
 					<Route path="login" element={<LogIn />} />

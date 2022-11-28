@@ -99,43 +99,44 @@ export function AuthForm({ signUp }) {
 		if (event.key === 'Enter') {
 			setShowError(true);
 			if (event.target === firstRef.current && errors.이메일 === undefined) {
-				setCurrent(current + 1);
+				setCurrent(2);
 				setShowError(false);
 			} else if (
 				event.target === secondRef.current &&
 				errors.비밀번호 === undefined
 			) {
-				setCurrent(current + 1);
+				setCurrent(3);
 				setShowError(false);
 			} else if (
 				event.target === thirdRef.current &&
 				errors.비밀번호확인 === undefined
 			) {
-				setCurrent(current + 1);
+				setCurrent(4);
 				setShowError(false);
 			} else if (
 				event.target === fourthRef.current &&
 				errors.닉네임 === undefined
 			) {
-				setCurrent(current + 1);
+				setCurrent(5);
 				setShowError(false);
 			} else if (
 				event.target === fifthRef.current &&
 				errors.이름 === undefined
 			) {
-				setCurrent(current + 1);
+				setCurrent(6);
 				setShowError(false);
 			} else if (
 				event.target === sixthRef.current &&
 				errors.전화번호 === undefined
 			) {
-				setCurrent(current + 1);
+				setCurrent(7);
 				setShowError(false);
 			} else if (
 				event.target === seventhRef.current &&
 				errors.주소 === undefined
 			) {
 				setShowError(false);
+				setCurrent(8);
 			} else if (
 				event.target === sixthRef.current &&
 				errors.상세주소 === undefined
@@ -147,7 +148,7 @@ export function AuthForm({ signUp }) {
 
 	// current가 변하면 onChange를 true로 바꾸고 0.5초 후에 false로 바꿔주는 함수.
 	const onChangeHandler = () => {
-		if (current <= 8) {
+		if (current !== 7) {
 			setCurrentChange(true);
 			setTimeout(() => {
 				setCurrentChange(false);
@@ -162,6 +163,7 @@ export function AuthForm({ signUp }) {
 		}
 	}, [current]);
 
+	// 렌더링 되면 첫번째 input에 포커스를 준다.
 	useEffect(() => {
 		setFocus('이메일');
 	}, []);
@@ -175,8 +177,8 @@ export function AuthForm({ signUp }) {
 		}
 	};
 
-	console.log('wat', watch());
-	console.log('err', errors);
+	// console.log('wat', watch());
+	// console.log('err', errors);
 	// console.log('current', current);
 
 	return (
@@ -263,7 +265,7 @@ export function AuthForm({ signUp }) {
 				errors={errors?.이메일?.message}
 			/>
 			<PurpleButton
-				width="110px"
+				width={signUp ? '110px' : '134px'}
 				borderRadius="50px"
 				disable={
 					signUp
@@ -285,7 +287,7 @@ export function AuthForm({ signUp }) {
 						onSelected={(data) => {
 							setIsModalOpen(false);
 							setValue('주소', `(${data.zonecode})${data.address}`);
-							setCurrent(current + 1);
+							setCurrent(8);
 							setFocus('상세주소');
 						}}
 					/>
