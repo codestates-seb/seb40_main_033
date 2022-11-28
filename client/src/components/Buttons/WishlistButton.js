@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
 import { useCallback, useState } from 'react';
 
-function WishlistBtn({ isChecked }) {
+function WishlistButton({ isChecked }) {
 	const [isWanted, setIsWanted] = useState({ isChecked });
 	const handleClick = useCallback(() => {
 		setIsWanted(!isWanted);
@@ -39,4 +39,4 @@ const WishBox = styled.div`
 	}
 `;
 
-export default WishlistBtn;
+export default WishlistButton;
