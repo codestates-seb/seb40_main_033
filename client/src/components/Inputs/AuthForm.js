@@ -7,7 +7,7 @@ import AuthInput from './AuthInput';
 import { PurpleButton } from '../Buttons/PurpleButton';
 import AddressModal from '../Modals/AddressModal';
 
-export function AuthForm({ signUp, mutate, handleLogIn }) {
+export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 	const [current, setCurrent] = useState(1);
 	const [currentChange, setCurrentChange] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -172,10 +172,10 @@ export function AuthForm({ signUp, mutate, handleLogIn }) {
 	const onValid = (data) => {
 		if (signUp) {
 			console.log('signUp', data);
-			handleLogIn(data);
+			handleSignUp(data);
 		} else {
 			console.log('signIn', data);
-			mutate({ email: data.이메일, password: data.비밀번호 });
+			handleLogIn(data);
 		}
 	};
 

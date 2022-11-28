@@ -62,12 +62,12 @@ function SignUp() {
 	// 전화번호: '010-123-123';
 	// 주소: '(12417)경기 가평군 가평읍 광장로22번길 27-9';
 
-	// const handleLogIn = (userData) => {
-	// 	axiosInstance
-	// 		.post(`/users/login`, userData)
-	// 		.then((res) => console.log(res))
-	// 		.catch((err) => console.log(err));
-	// };
+	const handleSignUp = (userData) => {
+		axiosInstance
+			.post(`/users/login`, userData)
+			.then((res) => console.log(res))
+			.catch((err) => console.log(err));
+	};
 
 	const handleMoreInfo = () => {
 		fetch(`${URI}/users/more-info`, {
@@ -101,7 +101,7 @@ function SignUp() {
 		<AuthContainer>
 			<FormContainer>
 				<AuthTitle title="회원가입" />
-				<AuthForm signUp handleLogIn={handleLogIn} />
+				<AuthForm signUp handleSignUp={handleSignUp} />
 				<button type="button" onClick={handleGet}>
 					회원가입
 				</button>

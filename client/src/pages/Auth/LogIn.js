@@ -31,11 +31,16 @@ function LogIn() {
 		accessToken,
 	);
 
+	const handleLogIn = (data) => {
+		mutate({ email: data.이메일, password: data.비밀번호 });
+		navigate(-1, { replace: true });
+	};
+
 	return (
 		<AuthContainer>
 			<FormContainer>
 				<AuthTitle title="로그인" />
-				<AuthForm mutate={mutate} />
+				<AuthForm handleLogIn={handleLogIn} />
 				<SocialLogin />
 				<LinkContainer>
 					아직 회원이 아니신가요? <Link to="/signup">회원가입</Link>
