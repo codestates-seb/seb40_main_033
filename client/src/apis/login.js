@@ -1,3 +1,4 @@
+/* eslint-disable no-promise-executor-return */
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
@@ -5,13 +6,13 @@ import { login } from '../redux/slice/userSlice';
 import axiosInstance from '../utils/axiosInstance';
 
 const handleLogin = async ({ email, password }) => {
-	const { headers } = await axiosInstance.post('/users/login', {
+	const { data } = await axiosInstance.post('/users/login', {
 		username: email,
 		password,
 	});
 	// const { authorization: accessToken, refresh: refreshToken } = headers;
-
 	// return { accessToken, refreshToken };
+	return data;
 };
 
 export const fetchUserInfos = async () => {
@@ -34,9 +35,13 @@ export default function useLogin() {
 	const [errMsg, setErrMsg] = useState('');
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
 		(form) => handleLogin(form),
+		// () =>
+		// 	new Promise(() => {
+		// 		return { accessToken: 'asdasd', refreshToken: 'sdfsdf' };
+		// 	}),
 		{
-			onSuccess: async ({ accessToken, refreshToken }, { keepLoggedIn }) => {
-				dispatch(login({ accessToken, refreshToken, keepLoggedIn }));
+			onSuccess: async (data, { email }) => {
+				dispatch(login({ accessToken: data.split(' ')[1], email }));
 			},
 			onError: async (data) => {
 				const { response } = data;

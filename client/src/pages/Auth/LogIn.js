@@ -1,4 +1,5 @@
 /* eslint-disable no-return-assign */
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import useLogin from '../../apis/login';
 import AuthTitle from '../../components/Etc/AuthTitle';
@@ -18,6 +19,17 @@ function LogIn() {
 	const navigate = useNavigate();
 
 	const { mutate, isLoading, isSuccess, isError } = useLogin();
+	const { loginStatus, accessToken, email } = useSelector(
+		(store) => store.user,
+	);
+	console.log(
+		'email',
+		email,
+		'loginStatus',
+		loginStatus,
+		'accessToken',
+		accessToken,
+	);
 
 	return (
 		<AuthContainer>

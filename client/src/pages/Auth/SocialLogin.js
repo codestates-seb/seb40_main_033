@@ -64,7 +64,7 @@ const SocialButton = styled.button`
 `;
 
 export default function SocialLogin() {
-	const URI = 'https://true.loca.lt/oauth2/authorization';
+	const URI = 'https://wicked-husky-45.loca.lt/oauth2/authorization';
 	const loginRequestHandler = (type) => {
 		window.location.assign((window.location.href = `${URI}/${type}`));
 	};

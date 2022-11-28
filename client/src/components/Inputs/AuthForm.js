@@ -174,7 +174,7 @@ export function AuthForm({ signUp, mutate, handleLogIn }) {
 			console.log('signUp', data);
 			handleLogIn(data);
 		} else {
-			console.log({ email: data.이메일, password: data.비밀번호 });
+			console.log('signIn', data);
 			mutate({ email: data.이메일, password: data.비밀번호 });
 		}
 	};

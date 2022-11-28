@@ -6,7 +6,7 @@ import { AuthForm } from '../../components/Inputs/AuthForm';
 import axiosInstance from '../../utils/axiosInstance';
 
 // const URI = 'http://ec2-3-35-17-245.ap-northeast-2.compute.amazonaws.com:8080';
-const URI = 'https://true.loca.lt/';
+const URI = 'https://wicked-husky-45.loca.lt';
 const data = {
 	displayName: 'sdfsdf',
 	address: 'sdgelblf',
@@ -43,15 +43,15 @@ function SignUp() {
 			.then((res) => console.log(res));
 	};
 
-	// const handleLogIn = () => {
-	// 	fetch(`${URI}/users/login`, {
-	// 		method: 'POST',
-	// 		headers: { 'Content-Type': 'application/json' },
-	// 		body: JSON.stringify(LoginData),
-	// 	})
-	// 		.then((res) => res.json())
-	// 		.then((res) => console.log(res));
-	// };
+	const handleLogIn = () => {
+		fetch(`${URI}/users/login`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(LoginData),
+		})
+			.then((res) => res.json())
+			.then((res) => console.log(res));
+	};
 
 	// 닉네임: 'asd';
 	// 비밀번호: 'asdfg';
@@ -62,12 +62,12 @@ function SignUp() {
 	// 전화번호: '010-123-123';
 	// 주소: '(12417)경기 가평군 가평읍 광장로22번길 27-9';
 
-	const handleLogIn = (userData) => {
-		axiosInstance
-			.post(`/users/login`, userData)
-			.then((res) => console.log(res))
-			.catch((err) => console.log(err));
-	};
+	// const handleLogIn = (userData) => {
+	// 	axiosInstance
+	// 		.post(`/users/login`, userData)
+	// 		.then((res) => console.log(res))
+	// 		.catch((err) => console.log(err));
+	// };
 
 	const handleMoreInfo = () => {
 		fetch(`${URI}/users/more-info`, {
