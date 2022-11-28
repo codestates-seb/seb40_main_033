@@ -1,6 +1,5 @@
 // 상세페이지의 talk 작성 form
 import DefalutForm from './DefalutForm';
-import { LetterButton } from '../Buttons/LetterButton';
 
 function TalkForm() {
 	return (
@@ -9,7 +8,6 @@ function TalkForm() {
 			maxLength={150}
 			height={130}
 			target="토크"
-			letterButton={<LetterButton fontSize="13px">작성완료</LetterButton>}
 		/>
 	);
 }

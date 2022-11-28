@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-
+import { LetterButton } from '../Buttons/LetterButton';
+import { PurpleButton } from '../Buttons/PurpleButton';
 // height: input 높이   target: 상품에 대한 {target}를 20자 이상 적어주세요
 function DefalutForm({
 	placeholder,
@@ -30,6 +31,7 @@ function DefalutForm({
 				onChange={handleInputChange}
 				maxLength={maxLength}
 				height={height}
+				target
 			/>
 			<Count height={height}>
 				{contents && `${contents.length}/${maxLength}`}
@@ -43,10 +45,14 @@ function DefalutForm({
 						상품에 대한 {target}를 20자 이상 적어주세요.
 					</InfoMessage>
 				)}
-				{letterButton ? (
-					<LetterBtnContainer>{letterButton}</LetterBtnContainer>
+				{target === '토크' ? (
+					<TalkSubmitBtn>
+						<LetterButton className="talk-submit">작성완료</LetterButton>
+					</TalkSubmitBtn>
 				) : (
-					purpleButton
+					<PurpleButton width="76px" height="32px" fontSize="13px">
+						작성완료
+					</PurpleButton>
 				)}
 			</BottomContainer>
 		</Form>
@@ -57,12 +63,20 @@ const Form = styled.form`
 	display: flex;
 	flex-direction: column;
 	margin-top: 40px;
+	width: fit-content;
 `;
 
 // Message & Button 컨테이너
 const BottomContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
+	position: relative;
+`;
+
+const TalkSubmitBtn = styled.div`
+	position: absolute;
+	bottom: 30px;
+	right: 8px;
 `;
 
 const Input = styled.textarea`
@@ -108,12 +122,6 @@ const ErrMessage = styled.div`
 const InfoMessage = styled.div`
 	font-size: 11px;
 	color: var(--gray-300);
-`;
-
-const LetterBtnContainer = styled.div`
-	position: relative;
-	bottom: 34px;
-	right: 4px;
 `;
 
 // const Container = styled.div`
