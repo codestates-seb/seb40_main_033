@@ -27,17 +27,16 @@ function Payment() {
 const PaymentContainer = styled.main`
 	display: flex;
 	flex-direction: row;
-	border: 1px solid black; // 구분을 위한 임시 속성
 `;
 const PayInfoBox = styled.article`
 	width: 620px;
 	display: flex;
 	flex-direction: column;
-	border: 1px solid red; // 구분을 위한 임시 속성
 	${(props) =>
 		props.left
 			? css`
 					padding-right: 30px;
+					border-right: 1px solid var(--gray-200);
 			  `
 			: css`
 					padding-left: 30px;
