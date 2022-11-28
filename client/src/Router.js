@@ -17,7 +17,7 @@ import NoteTalk from './pages/MyPages/NoteTalk';
 import OrderDetail from './pages/MyPages/OrderDetail';
 import NormalOrder from './pages/MyPages/NormalOrder';
 import SubscriptionOrder from './pages/MyPages/SubscriptionOrder';
-import UserInfo from './pages/MyPages/UserInfo';
+import { UserInfo } from './pages/MyPages/UserInfo';
 import WishList from './pages/MyPages/WishList';
 import SubManage from './pages/MyPages/SubManage';
 import Cart from './pages/Cart';
