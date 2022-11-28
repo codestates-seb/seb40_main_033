@@ -3,7 +3,7 @@ import PayPageContainer from './PayPageContainer';
 // 해당 컴포넌트는 외부에서 상품 정복 혹은 가능하면 가격 정보만 받아서 뿌려주어야 함. 지금이야 급해서 그냥 하드코딩 해 놨음
 export default function FinalPaymentInformation() {
 	return (
-		<PayInfoContainer>
+		<PayPageContainer>
 			<PayInfoHeading>최종 결제 정보</PayInfoHeading>
 			<FinalPayInformation>
 				<TotalBox>
@@ -19,17 +19,9 @@ export default function FinalPaymentInformation() {
 					<TotalPrice total>120,000 원</TotalPrice>
 				</TotalBox>
 			</FinalPayInformation>
-		</PayInfoContainer>
+		</PayPageContainer>
 	);
 }
-
-const PayInfoContainer = styled.section`
-	width: 588px;
-	background-color: white;
-	border-radius: 10px;
-	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
-	padding: 50px 54px;
-`;
 
 const PayInfoHeading = styled.h2`
 	font-size: 20px;
@@ -41,7 +33,7 @@ const FinalPayInformation = styled.article`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	width: 480px;
+	width: 454px;
 	height: 75px;
 `;
 
