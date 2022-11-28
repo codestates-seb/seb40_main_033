@@ -1,7 +1,6 @@
-/* eslint-disable no-return-assign */
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import useLogin from '../../hooks/useLogin';
+import useLogIn from '../../hooks/useLogIn';
 import AuthTitle from '../../components/Etc/AuthTitle';
 import { AuthForm } from '../../components/Inputs/AuthForm';
 import {
@@ -11,14 +10,14 @@ import {
 	LinkContainer,
 	Text,
 } from './SignUp';
-import SocialLogin from './SocialLogin';
+import SocialLogIn from './SocialLogIn';
 
 // 로그인 페이지
 function LogIn() {
 	// 다른 페이지로 이동 후 뒤로가기 시 로그인 페이지로 이동하지 않도록 함
 	const navigate = useNavigate();
 
-	const { mutate, isLoading, isSuccess, isError } = useLogin();
+	const { mutate, isLoading, isSuccess, isError } = useLogIn();
 	const { loginStatus, accessToken, email } = useSelector(
 		(store) => store.user,
 	);
@@ -41,7 +40,7 @@ function LogIn() {
 			<FormContainer>
 				<AuthTitle title="로그인" />
 				<AuthForm handleLogIn={handleLogIn} />
-				<SocialLogin />
+				<SocialLogIn />
 				<LinkContainer>
 					아직 회원이 아니신가요? <Link to="/signup">회원가입</Link>
 					{/* <text onClick={() => navigate('/signup', { replace: true })}>

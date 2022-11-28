@@ -1,6 +1,16 @@
 import axiosInstance from '../utils/axiosInstance';
 
-export const fetchLogin = async ({ email, password }) => {
+export const fetchSignUp = async ({ email, password, name }) => {
+	const { data } = await axiosInstance.post('/users', {
+		username: email,
+		password,
+		name,
+	});
+
+	return data;
+};
+
+export const fetchLogIn = async ({ email, password }) => {
 	const { data } = await axiosInstance.post('/users/login', {
 		username: email,
 		password,
@@ -18,4 +28,14 @@ export const fetchUserInfos = async () => {
 	});
 
 	return data.data;
+};
+
+export const fetchLogOut = async () => {
+	const { data } = await axiosInstance.post('/users/logout', {
+		headers: {
+			tokenNeeded: true,
+		},
+	});
+
+	return data;
 };

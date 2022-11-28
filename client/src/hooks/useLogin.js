@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
-import { fetchLogin } from '../apis/login';
+import { fetchLogIn } from '../apis/userApis';
 import { login } from '../redux/slice/userSlice';
 
 const ERROR_MESSAGE = {
@@ -9,7 +9,7 @@ const ERROR_MESSAGE = {
 	Forbidden: '유효하지 않은 접근입니다.',
 };
 
-export default function useLogin() {
+export default function useLogIn() {
 	const dispatch = useDispatch();
 	const [errMsg, setErrMsg] = useState('');
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
@@ -17,7 +17,7 @@ export default function useLogin() {
 		// 	new Promise(() => {
 		// 		return { accessToken: 'asdasd', refreshToken: 'sdfsdf' };
 		// 	}),
-		(form) => fetchLogin(form),
+		(form) => fetchLogIn(form),
 		{
 			onSuccess: async (data, { email }) => {
 				dispatch(login({ accessToken: data.split(' ')[1], email }));
