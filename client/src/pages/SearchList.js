@@ -15,7 +15,7 @@ function SearchList() {
 			setLoding(true);
 			try {
 				// const query = category === 'all' ? '' : `&category=${category}`;
-				const response = await axios.get(`http://localhost:3001/item`);
+				const response = await axios.get(`http://localhost:3002/item`);
 				setIsItem(response.data); // [{id:1 ~~}, {id:2 ~~}]
 				console.log(response);
 				// console.log('response.data.item', response.itemData);

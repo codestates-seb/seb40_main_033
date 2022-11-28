@@ -1,6 +1,7 @@
 // 정기 장바구니
 import styled from 'styled-components';
-import { ToggleTab } from '../../components/Tabs/TabButtons';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import {
 	PurpleButton,
@@ -9,22 +10,34 @@ import {
 
 // 일반 장바구니
 function NormalCart() {
-	const price = 20000;
-	const discount = 2000;
+	const [cartItem, setCartItem] = useState([]);
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:3001/cartProducts')
+			.then((response) => {
+				setCartItem(response.data);
+			})
+			.catch((err) => {
+				throw new Error(err);
+			});
+	}, []);
 
 	return (
 		<Box>
 			<List>
-				<CartList />
+				{cartItem.map((item) => (
+					<CartList key={item.cartId} item={item} />
+				))}
 			</List>
 			<Bottom>
 				<Display>
 					<Text>합계</Text>
-					<Number>{price}</Number>
+					<Number>totalPrice</Number>
 					<Text>할인 금액</Text>
-					<Number>{discount}</Number>
+					<Number>totalDiscountPrice</Number>
 					<Text>결제 예정 금액</Text>
-					<TotalNumber>{price - discount}</TotalNumber>
+					<TotalNumber>totalPrice - totalDiscountPrice</TotalNumber>
 				</Display>
 				<Button>
 					<LightPurpleButton width="143px" height="50px">

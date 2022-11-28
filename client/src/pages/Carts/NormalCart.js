@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { ToggleTab } from '../../components/Tabs/TabButtons';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import {
 	PurpleButton,
@@ -8,22 +9,34 @@ import {
 
 // 일반 장바구니
 function NormalCart() {
-	const price = 20000;
-	const discount = 2000;
+	const [cartItem, setCartItem] = useState([]);
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:3001/cartProducts')
+			.then((response) => {
+				setCartItem(response.data);
+			})
+			.catch((err) => {
+				throw new Error(err);
+			});
+	}, []);
 
 	return (
 		<Box>
 			<List>
-				<CartList />
+				{cartItem.map((item) => (
+					<CartList key={item.cartId} item={item} />
+				))}
 			</List>
 			<Bottom>
 				<Display>
 					<Text>합계</Text>
-					<Number>{price}</Number>
+					<Number>totalPrice</Number>
 					<Text>할인 금액</Text>
-					<Number>{discount}</Number>
+					<Number>totalDiscountPrice</Number>
 					<Text>결제 예정 금액</Text>
-					<TotalNumber>{price - discount}</TotalNumber>
+					<TotalNumber>totalPrice - totalDiscountPrice</TotalNumber>
 				</Display>
 				<Button>
 					<LightPurpleButton width="143px" height="50px">
@@ -45,25 +58,6 @@ const Box = styled.div`
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-`;
-
-const Top = styled.div`
-	border-bottom: 1px solid var(--gray-200);
-	width: 1115px;
-	height: 100px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-`;
-
-const Title = styled.div`
-	font-weight: var(--extraBold);
-	font-size: 36px;
-`;
-
-const TabButton = styled.div`
-	width: 196px;
-	height: 54px;
 `;
 
 const List = styled.div`

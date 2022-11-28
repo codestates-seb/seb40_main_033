@@ -89,7 +89,7 @@ const ButtonContainer = styled.div`
 	color: var(--purple-200);
 	padding: 13px 20px 13px 13px;
 	transition: 0.5s ease;
-	float: right;
+	/* float: right; */
 	${(props) =>
 		props.price && props.isOpen
 			? css`
