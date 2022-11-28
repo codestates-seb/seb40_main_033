@@ -64,7 +64,7 @@ const SocialButton = styled.button`
 `;
 
 export default function SocialLogin() {
-	const URI = 'https://dangerous-newt-46.loca.lt/oauth2/authorization';
+	const URI = 'https://true.loca.lt/oauth2/authorization';
 	const loginRequestHandler = (type) => {
 		window.location.assign((window.location.href = `${URI}/${type}`));
 	};

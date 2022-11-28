@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
-export const initialUser = {
+const initialState = {
 	loginStatus: false,
 	keepLoggedIn: false,
 	accessToken: '',
@@ -10,7 +10,7 @@ export const initialUser = {
 
 const userSlice = createSlice({
 	name: 'auth',
-	initialState: { isLogin: false },
+	initialState,
 	reducers: {
 		login: (state, { payload }) => {
 			const { accessToken, refreshToken, keepLoggedIn } = payload;
@@ -23,7 +23,7 @@ const userSlice = createSlice({
 			state.loginStatus = true;
 		},
 		logout: () => {
-			return initialUser;
+			return initialState;
 		},
 	},
 });

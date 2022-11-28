@@ -35,10 +35,9 @@ const ArrowButton = styled.button`
 			// 180도 회전
 			right &&
 			`
-		transform: rotate(180deg);
-		top: 25%;
-		left: 28%;
-	`}
+			transform: rotate(180deg);
+			left: 28%;
+		`}
 	}
 `;
 
@@ -55,7 +54,6 @@ function MainCaroucel() {
 		autoplay: true,
 		autoplaySpeed: 5000,
 		pauseOnHover: true,
-		// variableWidth: true,
 		nextArrow: (
 			<ArrowButton right>
 				<IoIosArrowBack />

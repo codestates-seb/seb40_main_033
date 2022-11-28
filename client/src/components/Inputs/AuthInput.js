@@ -6,7 +6,6 @@ export default function AuthInput({
 	refAddress,
 	onKeyDown,
 	label,
-	className,
 	register,
 	refHook,
 	watch = {
@@ -26,7 +25,7 @@ export default function AuthInput({
 	}, [errors]);
 
 	return (
-		<InputBox isFilled={!!watch[label]} className={className}>
+		<InputBox isFilled={!!watch[label]}>
 			<input
 				id={label}
 				type={

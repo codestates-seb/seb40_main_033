@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useForm } from 'react-hook-form';
 import Postcode from '@actbase/react-daum-postcode';
@@ -7,7 +7,7 @@ import AuthInput from './AuthInput';
 import { PurpleButton } from '../Buttons/PurpleButton';
 import AddressModal from '../Modals/AddressModal';
 
-export function AuthForm({ signUp }) {
+export function AuthForm({ signUp, mutate, handleLogIn }) {
 	const [current, setCurrent] = useState(1);
 	const [currentChange, setCurrentChange] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -172,14 +172,21 @@ export function AuthForm({ signUp }) {
 	const onValid = (data) => {
 		if (signUp) {
 			console.log('signUp', data);
+			handleLogIn(data);
 		} else {
-			console.log('logIn', data);
+			console.log({ email: data.이메일, password: data.비밀번호 });
+			mutate({ email: data.이메일, password: data.비밀번호 });
 		}
 	};
 
 	// console.log('wat', watch());
 	// console.log('err', errors);
 	// console.log('current', current);
+
+	// setIsModalOpen을 useCallBack으로 감싸서 자식 컴포넌트에 넘겨준다.
+	const setIsModalOpenCallback = useCallback(() => {
+		setIsModalOpen(true);
+	}, [isModalOpen]);
 
 	return (
 		<SForm
@@ -206,7 +213,7 @@ export function AuthForm({ signUp }) {
 						refHook={ref7}
 						watch={watch()}
 						errors={errors?.주소?.message}
-						onFocus={() => setIsModalOpen(true)}
+						onFocus={setIsModalOpenCallback}
 					/>
 					<AuthInput
 						refAddress={sixthRef}
