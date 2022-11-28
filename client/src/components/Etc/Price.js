@@ -23,12 +23,12 @@ function Price({
 		>
 			{isTotal && <Label>총</Label>}
 			{minus && <Label>-</Label>}
-			<div className="title">
+			<div>
 				{Number(quantity ? nowPrice * quantity : nowPrice).toLocaleString(
 					'ko-KR',
 				)}
 			</div>
-			<div className="title">원</div>
+			<div className="won">원</div>
 			{beforePrice && (
 				<>
 					<IoIosArrowBack />
@@ -53,7 +53,6 @@ const PriceContainer = styled.div`
 	}
 
 	& > * {
-		margin-right: 2px;
 		color: var(--gray-600);
 		font-size: 16px;
 		${({ fontSize, fontWeight }) => css`
@@ -66,6 +65,9 @@ const PriceContainer = styled.div`
 		& > * {
 			color: var(--purple-300);
 		}
+	}
+	.won {
+		margin-left: 2px;
 	}
 `;
 

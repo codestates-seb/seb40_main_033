@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import GlobalStyle from './assets/style/GlobalStyle';
 import Router from './Router';
 import store from './redux/store/store';
@@ -13,6 +14,7 @@ function App() {
 				<GlobalStyle />
 				<Router />
 			</Provider>
+			<ReactQueryDevtools />
 		</QueryClientProvider>
 	);
 }
