@@ -109,5 +109,26 @@ public class ItemService {
         return itemPage;
     }
 
+    public Page<Item> priceFilteredCategoryItems(String categoryName, int low, int high, int page, int size, String sort) {
+        Page<Item> itemPage = itemRepository.findByCategoryNameAndPriceBetween(PageRequest.of(page, size, Sort.by(sort).descending()), categoryName, low, high);
+        return itemPage;
+    }
+
+    public Page<Item> priceFilteredCategorySaleItems(String categoryName, int low, int high, int page, int size, String sort) {
+        Page<Item> itemPage = itemRepository.findByCategoryNameAndSaleAndPriceBetween(PageRequest.of(page, size, Sort.by(sort).descending()), categoryName, low, high);
+        return itemPage;
+    }
+
+    public Page<Item> priceFilteredCategoryAndBrandItems(String categoryName, Brand brand, int low, int high, int page, int size, String sort) {
+        Page<Item> itemPage = itemRepository.findByCategoryNameAndBrandAndPriceBetween(PageRequest.of(page, size, Sort.by(sort).descending()), categoryName, brand, low, high);
+        return itemPage;
+    }
+
+    public Page<Item> priceFilteredCategoryAndBrandAndSaleItems(String categoryName, Brand brand, int low, int high, int page, int size, String sort) {
+        Page<Item> itemPage = itemRepository.findByCategoryNameAndBrandAndSaleAndPriceBetween(PageRequest.of(page, size, Sort.by(sort).descending()), categoryName, brand, low, high);
+        return itemPage;
+    }
+
+
 
 }

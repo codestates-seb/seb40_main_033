@@ -97,4 +97,52 @@ public class CategoryController {
         return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(brandSaleItems), pageBrandSaleItems), HttpStatus.OK);
     }
 
+    @GetMapping("/price")
+    public ResponseEntity getCategoryPriceFilteredItems(@RequestParam("categoryName") String categoryName,
+                                                        @RequestParam("low") int low, @RequestParam("high") int high,
+                                                        @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+                                                        @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+                                                        @RequestParam(value = "sort", defaultValue = "sales") String sort) { // 카테고리 + 가격 필터
+
+        Page<Item> itemPage = itemService.priceFilteredCategoryItems(categoryName, low, high, page - 1, size, sort);
+        List<Item> itemList = itemPage.getContent();
+        return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(itemList), itemPage), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/sale/price")
+    public ResponseEntity getCategorySalePriceFilteredItems(@RequestParam("categoryName") String categoryName,
+                                                            @RequestParam("low") int low, @RequestParam("high") int high,
+                                                            @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+                                                            @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+                                                            @RequestParam(value = "sort", defaultValue = "sales") String sort) { // 카테고리 + 할인 + 가격필터
+        Page<Item> itemPage = itemService.priceFilteredCategorySaleItems(categoryName, low, high, page - 1, size, sort);
+        List<Item> itemList = itemPage.getContent();
+        return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(itemList), itemPage), HttpStatus.OK);
+    }
+
+    @GetMapping("/brand/price")
+    public ResponseEntity getCategoryBrandPriceFilteredItems(@RequestParam("categoryName") String categoryName,
+                                                             @RequestParam("brand") Brand brand,
+                                                             @RequestParam("low") int low, @RequestParam("high") int high,
+                                                             @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+                                                             @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+                                                             @RequestParam(value = "sort", defaultValue = "sales") String sort) { // 카테고리 + 브랜드 + 가격필터
+        Page<Item> itemPage = itemService.priceFilteredCategoryAndBrandItems(categoryName, brand, low, high, page - 1, size, sort);
+        List<Item> itemList = itemPage.getContent();
+        return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(itemList), itemPage), HttpStatus.OK);
+    }
+
+    @GetMapping("/brand/sale/price")
+    public ResponseEntity getCategoryBrandSaleFilteredItems(@RequestParam("categoryName") String categoryName,
+                                                            @RequestParam("brand") Brand brand,
+                                                            @RequestParam("low") int low, @RequestParam("high") int high,
+                                                            @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+                                                            @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+                                                            @RequestParam(value = "sort", defaultValue = "sales") String sort) { // 카테고리 + 브랜드 + 할인 + 가격필터
+        Page<Item> itemPage = itemService.priceFilteredCategoryAndBrandAndSaleItems(categoryName, brand, low, high, page - 1, size, sort);
+        List<Item> itemList = itemPage.getContent();
+        return new ResponseEntity(new MultiResponseDto<>(itemMapper.itemsToItemCategoryResponseDto(itemList), itemPage), HttpStatus.OK);
+    }
+
 }

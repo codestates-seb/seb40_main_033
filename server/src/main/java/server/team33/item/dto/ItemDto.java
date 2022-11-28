@@ -33,11 +33,8 @@ public class ItemDto {
         private int discountRate;
         private int discountPrice;
         private List<CategoryDto.Post> categories;
-        // wish 관련되어 추가될 예정
         private List<NutritionFactDto.Post> nutritionFacts;
         private double starAvg;
-//        private List<Review> reviews;
-//        private List<Talk> talks;
     }
 
     @Getter
