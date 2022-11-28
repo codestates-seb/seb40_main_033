@@ -17,8 +17,8 @@ const Info = {
 };
 
 const ArrowButton = styled.button`
-	width: 29px;
-	height: 29px;
+	width: 40px;
+	height: 40px;
 	background-color: black;
 	border-radius: 50px;
 	transition: 0.25s ease;
@@ -26,17 +26,18 @@ const ArrowButton = styled.button`
 		path {
 			color: white;
 		}
+		width: 20px;
+		height: 20px;
 		position: absolute;
 		top: 25%;
-		left: 25%;
+		left: 23%;
 		${({ right }) =>
 			// 180도 회전
 			right &&
 			`
-		transform: rotate(180deg);
-		top: 28%;
-		left: 30%;
-	`}
+			transform: rotate(180deg);
+			left: 28%;
+		`}
 	}
 `;
 
@@ -53,7 +54,6 @@ function MainCaroucel() {
 		autoplay: true,
 		autoplaySpeed: 5000,
 		pauseOnHover: true,
-		// variableWidth: true,
 		nextArrow: (
 			<ArrowButton right>
 				<IoIosArrowBack />
@@ -122,7 +122,7 @@ export const MultiItem = styled.div`
 `;
 
 export const SImg = styled.img.attrs({
-	src: 'https://withmuu1.cdn-nhncommerce.com/data/hero/6db2926d8e2296cf434ef8c2bc73fcb6_66058.jpg',
+	src: 'https://cdn.discordapp.com/attachments/997446041811046432/1046621249238999140/pills.png',
 })`
 	width: 55%;
 	border-radius: 50%;
@@ -154,9 +154,6 @@ export const SlideContainer = styled.div`
 `;
 
 export const SlidePage = styled.div`
-	padding: ${(props) => props.padding};
-	/* width: 1000px; */
-
 	${MultiItem} {
 		/* center 옵션의 경우 MultiTem 속성을 추가로 사용해서 내부 옵션을 추가로 줘야함 */
 		margin: 10px;

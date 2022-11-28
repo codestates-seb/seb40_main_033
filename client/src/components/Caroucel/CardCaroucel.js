@@ -8,28 +8,30 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { MainList } from '../Lists/ListCards';
 
 const ArrowButton = styled.button`
-	width: 29px;
-	height: 29px;
+	width: 40px;
+	height: 40px;
 	background-color: white;
 	border: 1px solid #f1f0fe;
 	border-radius: 50px;
 	transition: 0.25s ease;
 	position: absolute;
-	right: 0;
-	${({ left }) => left && `left: 0;`}
+	right: -24px;
+	${({ left }) => left && `left: -40px;`}
 	& > svg {
 		path {
 			color: var(--purple-200);
 		}
+		width: 20px;
+		height: 20px;
 		position: absolute;
-		top: 25%;
-		left: 25%;
+		top: 23%;
+		left: 22%;
 		${({ right }) =>
 			// 180도 회전
 			right &&
 			`
-		transform: rotate(180deg);
-		left: 30%;
+			transform: rotate(180deg);
+			left: 28%;
 		`}
 	}
 `;
@@ -37,14 +39,10 @@ const ArrowButton = styled.button`
 function CardCaroucel() {
 	const settings = {
 		// dots: true,
-		// infinite: true,
+		infinite: false,
 		speed: 500,
 		slidesToShow: 3,
 		slidesToScroll: 1,
-		// autoplay: true,
-		// autoplaySpeed: 5000,
-		// pauseOnHover: true,
-		// variableWidth: true,
 		nextArrow: (
 			<ArrowButton right>
 				<IoIosArrowBack />
@@ -55,9 +53,6 @@ function CardCaroucel() {
 				<IoIosArrowBack />
 			</ArrowButton>
 		),
-		// className: 'center',
-		// centerMode: true,
-		// centerPadding: '0px',
 	};
 
 	return (
@@ -79,10 +74,10 @@ export default CardCaroucel;
 export const SlideContainer = styled.div`
 	/* width 옵션으로 전체 width 값을 지정할 수 있음 */
 	width: 1000px;
+	padding-left: 16px;
 `;
 
 export const SlidePage = styled.div`
-	padding: ${(props) => props.padding};
 	width: 297px;
-	border: blue solid 1px;
+	padding: 8px;
 `;

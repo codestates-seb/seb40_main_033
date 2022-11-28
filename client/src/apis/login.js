@@ -5,10 +5,13 @@ import { login } from '../redux/slice/userSlice';
 import axiosInstance from '../utils/axiosInstance';
 
 const handleLogin = async ({ email, password }) => {
-	const { headers } = await axiosInstance.post('/login', { email, password });
-	const { authorization: accessToken, refresh: refreshToken } = headers;
+	const { headers } = await axiosInstance.post('/users/login', {
+		username: email,
+		password,
+	});
+	// const { authorization: accessToken, refresh: refreshToken } = headers;
 
-	return { accessToken, refreshToken };
+	// return { accessToken, refreshToken };
 };
 
 export const fetchUserInfos = async () => {
