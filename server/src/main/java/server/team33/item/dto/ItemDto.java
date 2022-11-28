@@ -6,7 +6,6 @@ import lombok.Setter;
 import server.team33.category.dto.CategoryDto;
 import server.team33.item.entity.Brand;
 import server.team33.nutritionFact.dto.NutritionFactDto;
-import server.team33.nutritionFact.entity.NutritionFact;
 import server.team33.response.MultiResponseDto;
 import server.team33.review.dto.ReviewResponseDto;
 import server.team33.talk.dto.TalkAndCommentDto;
@@ -69,17 +68,17 @@ public class ItemDto {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class ItemCategoryResponse {
+    public static class ItemCategoryResponse { // 목록 조회
         private Long itemId;
         private String thumbnail;
         private String title;
         private String content;
+        private int capacity;
         private int price;
-        private Brand brand;
-        private List<NutritionFact> nutritionFacts;
-        // 리뷰 총 별점
-        //item 의 찜의 여부
+        private double starAvg;
         private int reviewSize;
+        private Brand brand;
+        private List<NutritionFactDto.Response> nutritionFacts;
     }
 
     @Getter

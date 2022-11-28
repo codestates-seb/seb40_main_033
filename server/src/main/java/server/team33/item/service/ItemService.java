@@ -90,9 +90,24 @@ public class ItemService {
 
     public Page<Item> searchPriceFilteredItems(String keyword, int low, int high, int page, int size, String sort) {
         Page<Item> itemPage = itemRepository.findByTitleContainingAndPriceBetween(
-                PageRequest.of(page, size, Sort.by(sort).descending()),keyword, low, high);
+                PageRequest.of(page, size, Sort.by(sort).descending()), keyword, low, high);
 
         return itemPage;
     }
+
+    public Page<Item> searchSaleItems(String keyword, int page, int size, String sort) {
+        Page<Item> itemPage = itemRepository.findByTitleContainingAndDiscountRateGreaterThan(
+                PageRequest.of(page, size, Sort.by(sort).descending()),keyword, 0);
+
+        return itemPage;
+    }
+
+    public Page<Item> searchSalePriceFilteredItems(String keyword, int low, int high, int page, int size, String sort) {
+        Page<Item> itemPage = itemRepository.findByTitleContainingAndDiscountRateGreaterThanAndPriceBetween(
+                PageRequest.of(page, size, Sort.by(sort).descending()), keyword, 0, low, high);
+
+        return itemPage;
+    }
+
 
 }

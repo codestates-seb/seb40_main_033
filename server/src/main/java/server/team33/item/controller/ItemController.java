@@ -89,5 +89,25 @@ public class ItemController {
         return new ResponseEntity(new MultiResponseDto<>(mapper.itemsToItemCategoryResponseDto(itemList), itemPage), HttpStatus.OK);
     }
 
+    @GetMapping("/search/sale")
+    public ResponseEntity searchSaleItems(@RequestParam("keyword") String keyword,
+                                          @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+                                          @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+                                          @RequestParam(value = "sort", defaultValue = "sales") String sort) { // 키워드 검색 + 세일
+        Page<Item> itemPage = itemService.searchSaleItems(keyword, page-1, size, sort);
+        List<Item> itemList = itemPage.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(mapper.itemsToItemCategoryResponseDto(itemList), itemPage), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/sale/price")
+    public ResponseEntity searchSalePriceFilteredItems(@RequestParam("keyword") String keyword, @RequestParam("low") int low, @RequestParam("high") int high,
+                                                       @Positive @RequestParam(value = "page", defaultValue = "1") int page,
+                                                       @Positive @RequestParam(value = "size", defaultValue = "16") int size,
+                                                       @RequestParam(value = "sort", defaultValue = "sales") String sort) { // 키워드 검색 + 세일 + 가격 필터
+        Page<Item> itemPage = itemService.searchSalePriceFilteredItems(keyword, low, high, page-1, size, sort);
+        List<Item> itemList = itemPage.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(mapper.itemsToItemCategoryResponseDto(itemList), itemPage), HttpStatus.OK);
+    }
+
 }
 
