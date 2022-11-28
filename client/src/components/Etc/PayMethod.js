@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
+import AddressModal from '../Modals/AddressModal';
 
 export default function PayMethod() {
 	const clientKey = process.env.REACT_APP_CLIENT_API_KEY;
-
+	const [isPayModal, setPayModal] = useState(false);
 	const tossPay = () =>
 		loadTossPayments(clientKey).then((tossPayments) => {
 			// 카드 결제 메서드 실행
@@ -24,7 +25,9 @@ export default function PayMethod() {
 				},
 			});
 		});
-
+	const kakaoClick = () => {
+		setPayModal(true);
+	};
 	return (
 		<PayPageContainer>
 			<PayMethodHeading>결제 수단</PayMethodHeading>
@@ -39,7 +42,7 @@ export default function PayMethod() {
 				>
 					카드 결제
 				</LightPurpleButton>
-				<KakaoPayButton>
+				<KakaoPayButton onClick={kakaoClick}>
 					<KakaoPayImg />
 					카카오페이
 				</KakaoPayButton>
@@ -53,6 +56,11 @@ export default function PayMethod() {
 					회원 본인은 구매 조건, 주문 내용 확인 및 결제에 동의합니다.
 				</Clauses>
 			</ClauseContainer>
+			{isPayModal && (
+				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
+					<PayFrame src="https://www.youtube.com/" title="결제창" />
+				</AddressModal>
+			)}
 		</PayPageContainer>
 	);
 }
@@ -110,4 +118,9 @@ const Clauses = styled.p`
 	color: var(--gray-300);
 	font-size: 11px;
 	line-height: 13px;
+`;
+
+const PayFrame = styled.iframe`
+	width: 300px;
+	height: 500px;
 `;
