@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FaStar } from 'react-icons/fa';
 
 // 별 다섯개
-export function LongTextStar() {
+export function LongTextStar({ noText }) {
 	return (
 		<StarContainer>
 			<Icon>
@@ -12,8 +12,12 @@ export function LongTextStar() {
 				<FaStar />
 				<FaStar />
 			</Icon>
-			<Score>4.8</Score>
-			<Count>(150)</Count>
+			{!noText && (
+				<>
+					<Score>4.8</Score>
+					<Count>(150)</Count>
+				</>
+			)}
 		</StarContainer>
 	);
 }
