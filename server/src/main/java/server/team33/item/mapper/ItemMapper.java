@@ -157,14 +157,15 @@ public interface ItemMapper {
         ItemDto.ItemCategoryResponse itemCategoryResponse = new ItemDto.ItemCategoryResponse();
 
         itemCategoryResponse.setItemId(item.getItemId());
+        itemCategoryResponse.setThumbnail(item.getThumbnail());
         itemCategoryResponse.setTitle(item.getTitle());
         itemCategoryResponse.setContent(item.getContent());
-        itemCategoryResponse.setBrand(item.getBrand());
+        itemCategoryResponse.setCapacity(item.getCapacity());
         itemCategoryResponse.setPrice(item.getPrice());
-        itemCategoryResponse.setNutritionFacts(item.getNutritionFacts());
-        // 리뷰 별 총점
-        // 찜의 여부 가 추가 될 예정
+        itemCategoryResponse.setStarAvg(item.getStarAvg());
         itemCategoryResponse.setReviewSize(item.getReviews().size());
+        itemCategoryResponse.setBrand(item.getBrand());
+        itemCategoryResponse.setNutritionFacts(nutritionFactToNutritionFactResponseDto(item.getNutritionFacts()));
 
         return itemCategoryResponse;
     }

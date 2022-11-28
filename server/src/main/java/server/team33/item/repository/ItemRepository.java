@@ -44,4 +44,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Page<Item> findByTitleContainingAndPriceBetween(Pageable pageable, String keyword, int low, int high);
 
+    Page<Item> findByTitleContainingAndDiscountRateGreaterThan(Pageable pageable, String keyword, int minRate);
+
+    Page<Item> findByTitleContainingAndDiscountRateGreaterThanAndPriceBetween(Pageable pageable, String keyword, int minRate, int low, int high);
+
 }
