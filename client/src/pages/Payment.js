@@ -1,11 +1,10 @@
 // 일반결제 페이지
 import styled, { css } from 'styled-components';
 import PageTitle from '../components/Etc/PageTitle';
-import { DestinationInfo } from '../components/Etc/PayInfo';
 import FinalPaymentInformation from '../components/Etc/FinalPaymentInfomation';
 import PayItemInformation from '../components/Etc/PayItemInformation';
 import PayDestination from '../components/Etc/PayDestination';
-import PaymentInfoMethod from '../components/Etc/PaymentInfoMethod';
+import PayMethod from '../components/Etc/PayMethod';
 
 function Payment() {
 	return (
@@ -13,7 +12,8 @@ function Payment() {
 			<PageTitle title="일반결제" />
 			<PaymentContainer>
 				<PayInfoBox left>
-					<PaymentInfoMethod />
+					<PayDestination />
+					<PayMethod />
 				</PayInfoBox>
 				<PayInfoBox right>
 					<PayItemInformation />
