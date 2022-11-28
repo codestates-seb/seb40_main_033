@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign */
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import useLogin from '../../apis/login';
+import useLogin from '../../hooks/useLogin';
 import AuthTitle from '../../components/Etc/AuthTitle';
 import { AuthForm } from '../../components/Inputs/AuthForm';
 import {

@@ -31,6 +31,11 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 		mode: 'onChange',
 	});
 
+	// setIsModalOpen을 useCallBack으로 감싸서 자식 컴포넌트에 넘겨준다.
+	const setIsModalOpenCallback = useCallback(() => {
+		setIsModalOpen(true);
+	}, [isModalOpen]);
+
 	// 인풋별 register
 	const { ref: ref1, ...rest1 } = register('이메일', {
 		required: '이메일을 작성해주세요.',
@@ -178,15 +183,6 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 			handleLogIn(data);
 		}
 	};
-
-	// console.log('wat', watch());
-	// console.log('err', errors);
-	// console.log('current', current);
-
-	// setIsModalOpen을 useCallBack으로 감싸서 자식 컴포넌트에 넘겨준다.
-	const setIsModalOpenCallback = useCallback(() => {
-		setIsModalOpen(true);
-	}, [isModalOpen]);
 
 	return (
 		<SForm
