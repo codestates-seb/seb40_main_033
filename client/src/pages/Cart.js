@@ -15,7 +15,7 @@ function Cart() {
 
 	return (
 		<Container>
-			<PageTitle />
+			<PageTitle title="장바구니" />
 			<Outlet />
 		</Container>
 	);
