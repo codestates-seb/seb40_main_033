@@ -13,7 +13,7 @@ import DeleteAccountModal from '../../components/Modals/DeleteAccountModal';
 import AddressModal from '../../components/Modals/AddressModal';
 import GoodbyeModal from '../../components/Modals/GoodbyeModal';
 
-export default function UserInfo() {
+export function UserInfo() {
 	const user = {
 		displayName: 'loopy',
 		email: 'loopy@gmail.com',
@@ -107,8 +107,8 @@ export default function UserInfo() {
 		},
 	});
 	const adressReg = register('주소', {
-		required: false,
-		// required: true,  원래 얘로 해둬야 함
+		// required: false,
+		required: '주소를 입력해주세요.',
 	});
 	const detailAddressReg = register('상세주소', {
 		required: false,
@@ -227,7 +227,7 @@ export default function UserInfo() {
 	);
 }
 
-function Information({
+export function Information({
 	label,
 	handleOpenAddress,
 	register,
@@ -237,7 +237,9 @@ function Information({
 }) {
 	return (
 		<UserInfoBox>
-			{label === '비밀번호재확인' || label === '상세주소' ? (
+			{label === '비밀번호재확인' ||
+			label === '상세주소' ||
+			label === 'detailAddress' ? (
 				<InputLabel />
 			) : (
 				<InputLabel> {label} </InputLabel>
@@ -250,8 +252,12 @@ function Information({
 							? 'password'
 							: 'text'
 					}
-					readOnly={label === '이메일' || label === '주소'}
-					{...(label === '주소' && { onClick: handleOpenAddress })}
+					readOnly={
+						label === '이메일' || label === '주소' || label === 'address'
+					}
+					{...((label === '주소' || label === 'address') && {
+						onClick: handleOpenAddress,
+					})}
 					placeholder={label}
 					{...register}
 					name={label}
