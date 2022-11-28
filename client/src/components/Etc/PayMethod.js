@@ -13,10 +13,10 @@ export default function PayMethod() {
 		loadTossPayments(clientKey).then((tossPayments) => {
 			// 카드 결제 메서드 실행
 			tossPayments.requestPayment('카드', {
-				amount: 123223, // 가격
+				amount: 123223, // 총가격
 				orderId: `9abcdef`, // 주문 id
 				orderName: '영양제', // 결제상품 이름
-				customerName: `도현수`, // 판매자, 판매처 이름
+				customerName: `Pillivery`, // 판매자, 판매처 이름
 				successUrl: 'http://localhost:3000', // 성공시 리다이렉트 주소
 				failUrl: 'http://localhost:3000', // 실패시 리다이렉트 주소
 				validHours: 24, // 유효시간
