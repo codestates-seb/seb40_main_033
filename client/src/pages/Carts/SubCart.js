@@ -1,11 +1,11 @@
 // 정기 장바구니
 import styled from 'styled-components';
-import { ToggleTab } from '../components/Tabs/TabButtons';
-import CartList from '../components/Lists/MyPageLists/CartList';
+import { ToggleTab } from '../../components/Tabs/TabButtons';
+import CartList from '../../components/Lists/MyPageLists/CartList';
 import {
 	PurpleButton,
 	LightPurpleButton,
-} from '../components/Buttons/PurpleButton';
+} from '../../components/Buttons/PurpleButton';
 
 // 일반 장바구니
 function NormalCart() {
@@ -14,12 +14,6 @@ function NormalCart() {
 
 	return (
 		<Box>
-			<Top>
-				<Title>장바구니</Title>
-				<TabButton>
-					<ToggleTab />
-				</TabButton>
-			</Top>
 			<List>
 				<CartList />
 			</List>
