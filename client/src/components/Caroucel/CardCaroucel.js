@@ -8,28 +8,30 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { MainList } from '../Lists/ListCards';
 
 const ArrowButton = styled.button`
-	width: 29px;
-	height: 29px;
+	width: 40px;
+	height: 40px;
 	background-color: white;
 	border: 1px solid #f1f0fe;
 	border-radius: 50px;
 	transition: 0.25s ease;
 	position: absolute;
-	right: -20px;
+	right: -24px;
 	${({ left }) => left && `left: -40px;`}
 	& > svg {
 		path {
 			color: var(--purple-200);
 		}
+		width: 20px;
+		height: 20px;
 		position: absolute;
-		top: 25%;
-		left: 25%;
+		top: 23%;
+		left: 22%;
 		${({ right }) =>
 			// 180도 회전
 			right &&
 			`
 			transform: rotate(180deg);
-			left: 30%;
+			left: 28%;
 		`}
 	}
 `;

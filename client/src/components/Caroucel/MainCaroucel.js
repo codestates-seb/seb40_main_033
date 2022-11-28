@@ -17,8 +17,8 @@ const Info = {
 };
 
 const ArrowButton = styled.button`
-	width: 29px;
-	height: 29px;
+	width: 40px;
+	height: 40px;
 	background-color: black;
 	border-radius: 50px;
 	transition: 0.25s ease;
@@ -26,16 +26,18 @@ const ArrowButton = styled.button`
 		path {
 			color: white;
 		}
+		width: 20px;
+		height: 20px;
 		position: absolute;
 		top: 25%;
-		left: 25%;
+		left: 23%;
 		${({ right }) =>
 			// 180도 회전
 			right &&
 			`
 		transform: rotate(180deg);
-		top: 28%;
-		left: 30%;
+		top: 25%;
+		left: 28%;
 	`}
 	}
 `;

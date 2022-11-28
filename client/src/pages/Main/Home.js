@@ -6,6 +6,8 @@ function Home() {
 		<div>
 			<MainCaroucel />
 			<MainSection />
+			<MainSection />
+			<MainSection />
 		</div>
 	);
 }
