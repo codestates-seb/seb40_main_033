@@ -6,7 +6,7 @@ import { DayShowTab } from '../../Tabs/TabButtons';
 
 function CartList() {
 	const price = 6000;
-	const [isSub, setIsSub] = useState(false);
+	const [isSubscription, setIsSubscription] = useState(false);
 	const [quantity, setQuantity] = useState(1);
 
 	const onPlusClick = () => {
@@ -17,12 +17,12 @@ function CartList() {
 	};
 
 	return (
-		<Box isSub={isSub}>
+		<Box isSub={isSubscription}>
 			<CheckBox>
 				<Check type="checkbox" />
 			</CheckBox>
-			<Wrap isSub={isSub}>
-				{isSub ? (
+			<Wrap isSub={isSubscription}>
+				{isSubscription ? (
 					<SubBox>
 						<SubWrap>
 							<Text>구독 주기</Text>
@@ -48,7 +48,7 @@ function CartList() {
 					</QuantityForm>
 				</MainBox>
 			</Wrap>
-			<DeleteBtn isSub={isSub}>
+			<DeleteBtn isSub={isSubscription}>
 				<TfiClose />
 			</DeleteBtn>
 		</Box>

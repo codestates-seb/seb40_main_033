@@ -1,33 +1,61 @@
-import styled from 'styled-components';
-import { useState } from 'react';
-// import SmallListCards from '../components/Lists/SmallListCards';
-// import data from '../data/data';
+import styled, { css } from 'styled-components';
+import { useCallback, useState, useEffect } from 'react';
+import axios from 'axios';
+import Categories from '../components/Categories/Categories';
+import SmallListCards from '../components/Lists/SmallListCards';
+import PageTitle from '../components/Etc/PageTitle';
 
 // 목록 페이지
 function ItemList() {
+	const [category, setCategory] = useState('all');
+	const [isItem, setIsItem] = useState(null);
+	const [loding, setLoding] = useState(false);
+
+	const onSelect = useCallback((ctg) => {
+		setCategory(ctg);
+		// console.log('category', category);
+	}, []);
+
+	useEffect(() => {
+		const itemData = async () => {
+			setLoding(true);
+			try {
+				// const query = category === 'all' ? '' : `&category=${category}`;
+				const response = await axios.get(`http://localhost:3002/item`);
+				setIsItem(response.data); // [{id:1 ~~}, {id:2 ~~}]
+				console.log(response);
+				// console.log('response.data.item', response.itemData);
+				console.log('isItem', isItem);
+			} catch (e) {
+				console.log(e);
+			}
+			setLoding(false);
+		};
+		itemData();
+	}, [category]);
+
+	// 대기 중 일때
+	if (loding) {
+		return <ItemListBox> 대기중 ..</ItemListBox>;
+	}
+
+	// 값이 설정되지 않았을 때
+	if (!isItem) {
+		return null;
+	}
+
 	return (
-		// <Box>
-		// 	<Brand>
-		// 		<All>전체 +</All>
-		// 		<Category>
-		// 			<BrandList>brand</BrandList>
-		// 			<BrandList>brand</BrandList>
-		// 			<BrandList>brand</BrandList>
-		// 			<BrandList>brand</BrandList>
-		// 			<BrandList>brand</BrandList>
-		// 			<BrandList>brand</BrandList>
-		// 			<BrandList>brand</BrandList>
-		// 			<BrandList>brand</BrandList>
-		// 		</Category>
-		// 	</Brand>
-		// 	<ItemListBox>
-		// 		{data.items.map((item) => (
-		// 			<SmallListCards key={item.itemId} item={item} />
-		// 		))}
-		// 		{/* <SmallListCards /> */}
-		// 	</ItemListBox>
-		// </Box>
-		<h1>itemlists</h1>
+		<Box>
+			<PageTitle title="눈 건강" />
+			<Brand>
+				<Categories category={category} onSelect={onSelect} />
+			</Brand>
+			<ItemListBox>
+				{isItem.map((item) => (
+					<SmallListCards key={item.id} item={item} />
+				))}
+			</ItemListBox>
+		</Box>
 	);
 }
 
@@ -47,32 +75,6 @@ const Brand = styled.div`
 	height: 138px;
 	display: flex;
 	align-items: center;
-`;
-
-const All = styled.button`
-	border: none;
-	font-weight: var(--extraBold);
-	margin-left: 40px;
-	cursor: pointer;
-	margin-bottom: 78px;
-`;
-
-const Category = styled.div`
-	width: 940px;
-	height: 100px;
-	margin-left: 70px;
-	display: flex;
-	flex-wrap: wrap;
-`;
-
-const BrandList = styled.div`
-	margin-right: 150px;
-	font-size: 14px;
-	font-weight: var(--bold);
-	color: var(--gray-400);
-	display: flex;
-	align-items: center;
-	cursor: pointer;
 `;
 
 const ItemListBox = styled.div`

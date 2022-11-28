@@ -5,7 +5,7 @@ import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
 // 세연님이 별점 만들면 가져다가 쓰자.
 
-function SmallDefaultList({ item }) {
+function SmallListCards({ item }) {
 	console.log(item, 'item임/');
 	return (
 		<EntireContainer id="이거임">
@@ -149,4 +149,4 @@ const ItemDescription = styled.p`
 	letter-spacing: -0.04em;
 `;
 
-export default SmallDefaultList;
+export default SmallListCards;

@@ -1,31 +1,55 @@
 import styled from 'styled-components';
-// import SmallListCards from '../components/Lists/SmallListCards';
-// import Search from '../components/Search/Search';
-// import data from '../data/data';
-// import SortAndSearchButtons from '../components/Buttons/SearchButtons/SortAndSearchButtons';
-
+import { useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
+import SmallListCards from '../components/Lists/SmallListCards';
+import Search from '../components/Search/Search';
+import SortAndSearchButtons from '../components/Buttons/SearchButtons/SortAndSearchButtons';
+import PageTitle from '../components/Etc/PageTitle';
 // 목록 페이지
 function SearchList() {
+	const [isItem, setIsItem] = useState(null);
+	const [loding, setLoding] = useState(false);
+
+	useEffect(() => {
+		const itemData = async () => {
+			setLoding(true);
+			try {
+				// const query = category === 'all' ? '' : `&category=${category}`;
+				const response = await axios.get(`http://localhost:3002/item`);
+				setIsItem(response.data); // [{id:1 ~~}, {id:2 ~~}]
+				console.log(response);
+				// console.log('response.data.item', response.itemData);
+				console.log('isItem', isItem);
+			} catch (e) {
+				console.log(e);
+			}
+			setLoding(false);
+		};
+		itemData();
+	}, []);
+
+	// 대기 중 일때
+	if (loding) {
+		return <ItemListBox> 대기중 ..</ItemListBox>;
+	}
+
+	// 값이 설정되지 않았을 때
+	if (!isItem) {
+		return null;
+	}
+
 	return (
-		// <Box>
-		// 	<Top>
-		// 		<SearchForm>
-		// 			<Search />
-		// 		</SearchForm>
-		// 		<Filter>
-		// 			<SortAndSearchButtons />
-		// 		</Filter>
-		// 	</Top>
-		// 	<Mesage>
-		// 		<Text>루테인에 대한 검색 결과입니다</Text>
-		// 	</Mesage>
-		// 	<ItemListBox>
-		// 		{data.items.map((item) => (
-		// 			<SmallListCards key={item.itemId} item={item} />
-		// 		))}
-		// 	</ItemListBox>
-		// </Box>
-		<h1>searchlist</h1>
+		<Box>
+			<PageTitle />
+			<Mesage>
+				<Text>에 대한 검색 결과입니다</Text>
+			</Mesage>
+			<ItemListBox>
+				{isItem.map((item) => (
+					<SmallListCards key={item.id} item={item} />
+				))}
+			</ItemListBox>
+		</Box>
 	);
 }
 
@@ -36,29 +60,6 @@ const Box = styled.div`
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-`;
-
-const Top = styled.div`
-	border-bottom: 1px solid var(--gray-200);
-	width: 1115px;
-	height: 138px;
-	display: flex;
-	align-items: center;
-`;
-
-const SearchForm = styled.div`
-	margin-top: 80px;
-	width: 1000px;
-	height: 100px;
-`;
-
-const Filter = styled.div`
-	width: 158px;
-	height: 113px;
-	flex-direction: column;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 `;
 
 const Mesage = styled.div`
