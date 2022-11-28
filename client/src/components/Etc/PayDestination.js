@@ -1,106 +1,36 @@
 import { useCallback, useState } from 'react';
-import styled, { css } from 'styled-components';
-import Postcode from '@actbase/react-daum-postcode';
-import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
 import PayPageContainer from './PayPageContainer';
-import AddressModal from '../Modals/AddressModal';
-import { LetterButton } from '../Buttons/LetterButton';
-import { Information } from '../../pages/MyPages/UserInfo';
 
-function PayDestination({ destInputValue, setDestInputValue }) {
+export default function PayDestination() {
 	const [isModal, setModal] = useState(false);
-	const onAddressChange = useCallback((data) => {
-		setDestInputValue({
-			...destInputValue,
-			address: `(${data.zonecode})${data.address}`,
-		});
-		setModal(false);
-	});
-	const onDestChange = useCallback(
-		(e) => {
-			const { value, name } = e.target;
-			setDestInputValue({ ...destInputValue, [name]: value });
-		},
-		[destInputValue],
-	);
-	const handleOpenDestAddress = useCallback(() => {
-		setModal(true);
-	}, [isModal]);
-	const handleDestEdit = useCallback((e) => {
-		e.preventDefault(); // 반드시 필요
-		console.log(destInputValue);
-		// 이 부분은 order로 patch요청을 보내는 함수가 들어가야 합니다. 지금은 그냥 바쁘고 서버도 없어서 콘솔로만 찍은거에여.
-	});
-	const {
-		register,
-		formState: { errors },
-		// setError,
-	} = useForm({
-		mode: 'onBlur',
-	});
-	const nameReg = register('이름', {
-		required: '이름을 입력해주세요.',
-		pattern: {
-			value: /^[가-힣]{2,5}$/, // 한글 영문자
-			message: '한글 5글자 이내로 작성해주세요.',
-		},
-	});
-	const telReg = register('전화번호', {
-		required: '전화번호를 입력해주세요.',
-		pattern: {
-			value: /^\d{2,3}-\d{3,4}-\d{4}$/,
-			message: '올바른 형식으로 작성해주세요.',
-		},
-	});
-	const addressReg = register('주소', {
-		required: '주소를 입력해 주세요.',
-	});
-	const detailAddressReg = register('상세주소', {
-		required: false,
+	const [destInputValue, setDestInputValue] = useState({
+		realName: '도현수',
+		phone: '010-99369-9771',
+		address: '(12321) 경기도 수원시 장안구 이;ㅏ런ㅁ아',
+		detailAddress: '201 동 703호',
 	});
 	return (
 		<PayPageContainer>
 			<PayDestHeading>배송지 정보</PayDestHeading>
 			<DestInputContainer>
-				<Information
-					label="이름"
-					register={nameReg}
-					onTextChange={onDestChange}
-					errors={errors?.이름?.message}
-					value={destInputValue.name}
-				/>
-				<Information
-					label="전화번호"
-					register={telReg}
-					onTextChange={onDestChange}
-					errors={errors?.전화번호?.message}
-					value={destInputValue.phone}
-				/>
-				<Information
-					label="주소"
-					handleOpenAddress={handleOpenDestAddress}
-					register={addressReg}
-					errors={errors?.주소?.message}
-					value={destInputValue.address}
-				/>
-				<Information
-					label="상세주소"
-					register={detailAddressReg}
-					onTextChange={onDestChange}
-					errors={errors?.상세주소?.message}
-					value={destInputValue.detailAddress}
-				/>
-				<LetterButton onClick={handleDestEdit}>배송지 정보 변경</LetterButton>
+				<DestInputBox>
+					<DestInputLabel>이름</DestInputLabel>
+					<Destination>{destInputValue.realName}</Destination>
+				</DestInputBox>
+				<DestInputBox>
+					<DestInputLabel>전화번호</DestInputLabel>
+					<Destination>{destInputValue.phone}</Destination>
+				</DestInputBox>
+				<DestInputBox>
+					<DestInputLabel>주소</DestInputLabel>
+					<Destination>{destInputValue.address}</Destination>
+				</DestInputBox>
+				<DestInputBox>
+					<DestInputLabel />
+					<Destination>{destInputValue.detailAddress}</Destination>
+				</DestInputBox>
 			</DestInputContainer>
-			{isModal && (
-				<AddressModal setIsOpen={setModal} modalIsOpen={isModal}>
-					<Postcode
-						style={{ width: 600, height: 500 }}
-						jsOptions={{ animation: true, hideMapBtn: true }}
-						onSelected={onAddressChange}
-					/>
-				</AddressModal>
-			)}
 		</PayPageContainer>
 	);
 }
@@ -116,9 +46,28 @@ const DestInputContainer = styled.form`
 	display: flex;
 	flex-direction: column;
 	& > button {
-		margin-top: 20px;
 		align-self: flex-end;
 	}
 `;
+const DestInputBox = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 30px;
+	&.last {
+		margin-bottom: 40px;
+	}
+`;
 
-export default PayDestination;
+const DestInputLabel = styled.div`
+	color: var(--gray-400);
+	margin-top: 6px;
+`;
+
+const Destination = styled.div`
+	width: 296px;
+	border: 0;
+	border-bottom: 1px solid var(--gray-300);
+	font-size: 13px;
+	word-break: break-all;
+`;
