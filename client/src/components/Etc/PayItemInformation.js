@@ -1,30 +1,21 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import PayLists from '../Lists/PayLists';
-
+import PayPageContainer from './PayPageContainer';
 // 그 흰 박스긴 한데 뭘 잘못한지를 모르겠어가지구...일단 쓰고 봄
 
 export default function PayItemInformation() {
 	return (
-		<PayItemInfoContainer>
-			<PayItemInfoHeading>상품정보 padding: 50px 54px</PayItemInfoHeading>
+		<PayPageContainer>
+			<PayItemInfoHeading>상품정보</PayItemInfoHeading>
 			<ListContainer>
 				<PayLists />
 				<PayLists />
 				<PayLists />
 				<PayLists />
 			</ListContainer>
-		</PayItemInfoContainer>
+		</PayPageContainer>
 	);
 }
-
-const PayItemInfoContainer = styled.section`
-	width: 588px;
-	background-color: white;
-	border-radius: 10px;
-	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
-	padding: 50px 67px;
-	margin-bottom: 24px;
-`;
 
 const PayItemInfoHeading = styled.h2`
 	font-size: 20px;
