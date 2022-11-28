@@ -1,9 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import PayPageContainer from './PayPageContainer';
 
 export default function PayDestination() {
-	const [isModal, setModal] = useState(false);
 	const [destInputValue, setDestInputValue] = useState({
 		realName: '도현수',
 		phone: '010-99369-9771',
