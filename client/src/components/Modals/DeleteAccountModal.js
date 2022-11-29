@@ -32,7 +32,7 @@ function DeleteAccountModal({ setIsOpen, modalIsOpen, handleOpenGoodbye }) {
 			pbtnTexts={data.pbtnTexts}
 			setIsOpen={setIsOpen}
 			modalIsOpen={modalIsOpen}
-			onClick={handleOpenGoodbye}
+			onClickLpbtn={handleOpenGoodbye}
 		/>
 	);
 }
