@@ -3,14 +3,7 @@ import styled, { css } from 'styled-components';
 import { LetterButton } from '../Buttons/LetterButton';
 import { PurpleButton } from '../Buttons/PurpleButton';
 // height: input 높이   target: 상품에 대한 {target}를 20자 이상 적어주세요
-function DefalutForm({
-	placeholder,
-	maxLength,
-	height,
-	target,
-	purpleButton,
-	letterButton,
-}) {
+function DefalutForm({ placeholder, maxLength, height, target }) {
 	const [contents, setContents] = useState('');
 
 	// textarea에 입력 시 한 글자씩 씹히는 현상 방지용
@@ -31,11 +24,9 @@ function DefalutForm({
 				onChange={handleInputChange}
 				maxLength={maxLength}
 				height={height}
-				target
+				target={target}
 			/>
-			<Count height={height}>
-				{contents && `${contents.length}/${maxLength}`}
-			</Count>
+			<Count>{contents && `${contents.length}/${maxLength}`}</Count>
 			{/* {letterButton} */}
 			<BottomContainer>
 				{contents.length >= maxLength ? (
@@ -62,8 +53,9 @@ function DefalutForm({
 const Form = styled.form`
 	display: flex;
 	flex-direction: column;
-	margin-top: 40px;
+	margin-top: 34px;
 	width: fit-content;
+	position: relative;
 `;
 
 // Message & Button 컨테이너
@@ -71,6 +63,7 @@ const BottomContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
 	position: relative;
+	margin-top: 10px;
 `;
 
 const TalkSubmitBtn = styled.div`
@@ -102,15 +95,10 @@ const Count = styled.div`
 	color: var(--purple-200);
 	height: 9px;
 	font-size: 11px;
-	position: relative;
+	position: absolute;
 	text-align: end;
-	${({ height }) => css`
-		top: ${`${-height + 13}px`};
-	`}
+	top: 13px;
 	right: 11px;
-	/* position: absolute;
-	top: 28px;
-	right: 413px; */
 `;
 
 const ErrMessage = styled.div`
@@ -123,9 +111,5 @@ const InfoMessage = styled.div`
 	font-size: 11px;
 	color: var(--gray-300);
 `;
-
-// const Container = styled.div`
-// 	position: relative;
-// `;
 
 export default DefalutForm;
