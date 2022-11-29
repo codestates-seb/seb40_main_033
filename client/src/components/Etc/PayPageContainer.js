@@ -14,10 +14,10 @@ const InfoHeading = styled.h2`
 	margin-bottom: 44px;
 `;
 const PayItemInfoContainer = styled.section`
-	width: 588px;
+	width: 539px;
 	background-color: white;
 	border-radius: 10px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
-	padding: 50px 67px;
+	padding: 60px 40px;
 	margin-bottom: 24px;
 `;

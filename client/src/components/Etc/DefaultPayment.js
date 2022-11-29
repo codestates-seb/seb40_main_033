@@ -28,7 +28,7 @@ const PaymentContainer = styled.main`
 	flex-direction: row;
 `;
 const PayInfoBox = styled.article`
-	width: 620px;
+	width: 50%;
 	display: flex;
 	flex-direction: column;
 	${(props) =>

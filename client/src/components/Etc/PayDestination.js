@@ -24,7 +24,7 @@ export default function PayDestination() {
 					<DestInputLabel>주소</DestInputLabel>
 					<Destination>{destInputValue.address}</Destination>
 				</DestInputBox>
-				<DestInputBox>
+				<DestInputBox className="last">
 					<DestInputLabel />
 					<Destination>{destInputValue.detailAddress}</Destination>
 				</DestInputBox>
@@ -47,7 +47,7 @@ const DestInputBox = styled.div`
 	justify-content: space-between;
 	margin-bottom: 30px;
 	&.last {
-		margin-bottom: 40px;
+		margin-bottom: 0px;
 	}
 `;
 

@@ -4,7 +4,7 @@ import PayPageContainer from './PayPageContainer';
 
 export default function PayItemInformation({ isSub }) {
 	return (
-		<PayPageContainer Info="상품정보">
+		<PayPageContainer Info="상품 정보">
 			<ListContainer>
 				<PayLists {...(isSub && { isSub: 'isSub' })} />
 				<PayLists {...(isSub && { isSub: 'isSub' })} />
@@ -18,6 +18,7 @@ export default function PayItemInformation({ isSub }) {
 const ListContainer = styled.article`
 	display: flex;
 	flex-direction: column;
+
 	width: 454px;
 	height: 540px;
 	overflow: scroll;
