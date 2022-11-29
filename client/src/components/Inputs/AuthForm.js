@@ -7,7 +7,7 @@ import AuthInput from './AuthInput';
 import { PurpleButton } from '../Buttons/PurpleButton';
 import AddressModal from '../Modals/AddressModal';
 
-export function AuthForm({ signUp, mutate, handleLogIn }) {
+export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 	const [current, setCurrent] = useState(1);
 	const [currentChange, setCurrentChange] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +30,11 @@ export function AuthForm({ signUp, mutate, handleLogIn }) {
 	} = useForm({
 		mode: 'onChange',
 	});
+
+	// setIsModalOpen을 useCallBack으로 감싸서 자식 컴포넌트에 넘겨준다.
+	const setIsModalOpenCallback = useCallback(() => {
+		setIsModalOpen(true);
+	}, [isModalOpen]);
 
 	// 인풋별 register
 	const { ref: ref1, ...rest1 } = register('이메일', {
@@ -172,21 +177,12 @@ export function AuthForm({ signUp, mutate, handleLogIn }) {
 	const onValid = (data) => {
 		if (signUp) {
 			console.log('signUp', data);
-			handleLogIn(data);
+			handleSignUp(data);
 		} else {
-			console.log({ email: data.이메일, password: data.비밀번호 });
-			mutate({ email: data.이메일, password: data.비밀번호 });
+			console.log('signIn', data);
+			handleLogIn(data);
 		}
 	};
-
-	// console.log('wat', watch());
-	// console.log('err', errors);
-	// console.log('current', current);
-
-	// setIsModalOpen을 useCallBack으로 감싸서 자식 컴포넌트에 넘겨준다.
-	const setIsModalOpenCallback = useCallback(() => {
-		setIsModalOpen(true);
-	}, [isModalOpen]);
 
 	return (
 		<SForm

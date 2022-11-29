@@ -1,12 +1,19 @@
+/* eslint-disable no-shadow */
 import styled from 'styled-components';
-// import axios from 'axios';
-import { Link } from 'react-router-dom';
+import {
+	Link,
+	useLocation,
+	useNavigate,
+	useSearchParams,
+} from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useMutation } from 'react-query';
 import AuthTitle from '../../components/Etc/AuthTitle';
 import { AuthForm } from '../../components/Inputs/AuthForm';
-import axiosInstance from '../../utils/axiosInstance';
+import { fetchSignUp } from '../../apis/userApis';
 
 // const URI = 'http://ec2-3-35-17-245.ap-northeast-2.compute.amazonaws.com:8080';
-const URI = 'https://true.loca.lt/';
+const URI = 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080';
 const data = {
 	displayName: 'sdfsdf',
 	address: 'sdgelblf',
@@ -14,12 +21,7 @@ const data = {
 	realName: 'gmeif',
 	phone: '030303013030',
 	email: 'tkfka156@gmail.com',
-	password: 'sdfkemdff',
-};
-
-const LoginData = {
-	username: 'tkfka156@gmail.com',
-	password: 'sdfkemdff',
+	password: 'asdfg',
 };
 
 const moreInfoData = {
@@ -33,7 +35,7 @@ const moreInfoData = {
 
 // 회원가입 페이지
 function SignUp() {
-	const handleGet = () => {
+	const signUp = () => {
 		fetch(`${URI}/users`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -43,16 +45,6 @@ function SignUp() {
 			.then((res) => console.log(res));
 	};
 
-	// const handleLogIn = () => {
-	// 	fetch(`${URI}/users/login`, {
-	// 		method: 'POST',
-	// 		headers: { 'Content-Type': 'application/json' },
-	// 		body: JSON.stringify(LoginData),
-	// 	})
-	// 		.then((res) => res.json())
-	// 		.then((res) => console.log(res));
-	// };
-
 	// 닉네임: 'asd';
 	// 비밀번호: 'asdfg';
 	// 비밀번호확인: 'asdfg';
@@ -61,12 +53,21 @@ function SignUp() {
 	// 이메일: 'coding@naver.com';
 	// 전화번호: '010-123-123';
 	// 주소: '(12417)경기 가평군 가평읍 광장로22번길 27-9';
+	const navigate = useNavigate();
 
-	const handleLogIn = (userData) => {
-		axiosInstance
-			.post(`/users/login`, userData)
-			.then((res) => console.log(res))
-			.catch((err) => console.log(err));
+	const { mutate } = useMutation((form) => fetchSignUp(form), {
+		onSuccess: () => {
+			toast.success('회원가입을 축하합니다 !');
+			navigate('/login');
+		},
+		onError: (error) => {
+			console.error(error);
+			toast.error(error.response.data.message);
+		},
+	});
+
+	const handleSignUp = (data) => {
+		mutate(data);
 	};
 
 	const handleMoreInfo = () => {
@@ -92,21 +93,24 @@ function SignUp() {
 	};
 
 	// url 파라미터 콘솔에 찍기
-	const url = new URL(window.location.href);
-	console.log('🚀 ~ file: SignUp.js ~ line 82 ~ SignUp ~ url', url);
-	const email = url.searchParams.get('email');
-	console.log('🚀 ~ file: SignUp.js ~ line 83 ~ SignUp ~ email', email);
+	// const url = new URL(window.location.href);
+	// console.log('🚀 ~ file: SignUp.js ~ url', url);
+	// const email = url.searchParams.get('email');
+	// console.log('🚀 ~ file: SignUp.js ~ email', email);
+	const [searchParams] = useSearchParams();
+	// console.log('🚀 ~ file: SignUp.js ~ searchParams: ', searchParams);
+	const accessToken = searchParams.get('access_token') || '';
+	console.log('🚀 ~ file: SignUp.js ~ accessToken: ', accessToken);
+	// const location = useLocation();
+	// console.log('🚀 ~ file: SignUp.js ~ location', location);
 
 	return (
 		<AuthContainer>
 			<FormContainer>
 				<AuthTitle title="회원가입" />
-				<AuthForm signUp handleLogIn={handleLogIn} />
-				<button type="button" onClick={handleGet}>
+				<AuthForm signUp handleSignUp={handleSignUp} />
+				<button type="button" onClick={signUp}>
 					회원가입
-				</button>
-				<button type="button" onClick={handleLogIn}>
-					로그인
 				</button>
 				<button type="button" onClick={handleLogOut}>
 					로그아웃

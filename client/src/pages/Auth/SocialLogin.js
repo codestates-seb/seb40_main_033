@@ -63,8 +63,9 @@ const SocialButton = styled.button`
 	}
 `;
 
-export default function SocialLogin() {
-	const URI = 'https://true.loca.lt/oauth2/authorization';
+export default function SocialLogIn() {
+	const URI =
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization';
 	const loginRequestHandler = (type) => {
 		window.location.assign((window.location.href = `${URI}/${type}`));
 	};
