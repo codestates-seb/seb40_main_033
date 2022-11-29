@@ -35,7 +35,7 @@ public class UserDto {
     @Builder
     public static class PostMoreInfo {
         @NotNull
-        private long userId;
+        private String email;
         @NotNull
         private String displayName;
         @NotNull
