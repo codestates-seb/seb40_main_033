@@ -13,12 +13,7 @@ import DefalutModal from './DefalutModal';
 	ex)) <LetterButton onClick={openModal}>버튼</LetterButton>
 */
 
-function DeleteAccountModal({
-	setIsOpen,
-	modalIsOpen,
-	handleOpenGoodbye,
-	openGoodbye,
-}) {
+function DeleteAccountModal({ setIsOpen, modalIsOpen, handleOpenGoodbye }) {
 	const data = {
 		title: '회원탈퇴',
 		contents:
