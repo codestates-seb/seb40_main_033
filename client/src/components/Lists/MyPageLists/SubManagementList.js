@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { TfiClose } from 'react-icons/tfi';
 import CounterBtn from '../../Buttons/CounterButton';
 import { DayControlTab } from '../../Tabs/TabButtons';
@@ -9,19 +9,15 @@ function SubManagementList() {
 	const price = 6000;
 	const [quantity, setQuantity] = useState(1);
 
-	const onPlusClick = () => {
+	const onPlusClick = useCallback(() => {
 		setQuantity(quantity + 1);
-	};
-	const onMinusClick = () => {
+	});
+	const onMinusClick = useCallback(() => {
 		setQuantity(quantity - 1);
-	};
+	});
 
 	return (
 		<Box>
-			<CheckBox>
-				<Check type="checkbox" />
-			</CheckBox>
-
 			<Wrap>
 				<SubBox>
 					<SubWrap>
@@ -46,7 +42,7 @@ function SubManagementList() {
 						/>
 						<Price // 가격 * 수량
 							nowPrice={price}
-							quantity="3" // 수량!
+							quantity={quantity} // 수량!
 							fontSize="20px"
 							fontWeight="extraBold"
 						/>
@@ -109,7 +105,7 @@ const SubWrap = styled.div`
 const Text = styled.div`
 	font-size: 16px;
 	margin-right: 10px;
-	color: var(--gray-500);
+	color: var(--gray-300);
 `;
 
 const MainBox = styled.div`
