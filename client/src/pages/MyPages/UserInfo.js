@@ -2,6 +2,7 @@
 /* eslint-disable no-param-reassign */
 // 회원정보
 import { useCallback, useState } from 'react';
+
 import styled from 'styled-components';
 import Postcode from '@actbase/react-daum-postcode';
 import { useForm } from 'react-hook-form';
@@ -14,6 +15,12 @@ import AddressModal from '../../components/Modals/AddressModal';
 import GoodbyeModal from '../../components/Modals/GoodbyeModal';
 
 export function UserInfo() {
+	// const {
+	// 	isLoading,
+	// 	isError,
+	// 	data: test,
+	// } = useFetch('https://koreanjson.com/posts/1', 'dada');
+	// console.log(isLoading, test, isError);
 	const user = {
 		displayName: 'loopy',
 		email: 'loopy@gmail.com',
