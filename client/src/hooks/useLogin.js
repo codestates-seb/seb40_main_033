@@ -1,42 +1,30 @@
+/* eslint-disable no-promise-executor-return */
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { fetchLogIn } from '../apis/userApis';
 import { login } from '../redux/slice/userSlice';
-import axiosInstance from '../utils/axiosInstance';
-
-const handleLogin = async ({ email, password }) => {
-	const { headers } = await axiosInstance.post('/users/login', {
-		username: email,
-		password,
-	});
-	// const { authorization: accessToken, refresh: refreshToken } = headers;
-
-	// return { accessToken, refreshToken };
-};
-
-export const fetchUserInfos = async () => {
-	const { data } = (await axiosInstance.get)('/user', {
-		headers: {
-			tokenNeeded: true,
-		},
-	});
-
-	return data.data;
-};
 
 const ERROR_MESSAGE = {
 	Unauthorized: '아이디 또는 비밀번호를 다시 확인해주세요.',
 	Forbidden: '유효하지 않은 접근입니다.',
 };
 
-export default function useLogin() {
+export default function useLogIn() {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [errMsg, setErrMsg] = useState('');
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
-		(form) => handleLogin(form),
+		// () => ({ accessToken: 'asdasd', refreshToken: 'sdfsdf' }),
+		(form) => fetchLogIn(form),
 		{
-			onSuccess: async ({ accessToken, refreshToken }, { keepLoggedIn }) => {
-				dispatch(login({ accessToken, refreshToken, keepLoggedIn }));
+			onSuccess: async (data, { email }) => {
+				// dispatch(login({ accessToken: data, email }));
+				// dispatch(login({ accessToken: data.split(' ')[1], email }));
+				toast.success('로그인 되었습니다 !');
+				// navigate('/', { replace: true });
 			},
 			onError: async (data) => {
 				const { response } = data;
@@ -49,6 +37,7 @@ export default function useLogin() {
 				} else {
 					setErrMsg(errorData.message);
 				}
+				toast.error(errMsg);
 			},
 		},
 	);

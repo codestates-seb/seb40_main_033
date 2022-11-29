@@ -6,14 +6,15 @@ const initialState = {
 	keepLoggedIn: false,
 	accessToken: '',
 	refreshToken: '',
+	email: '',
 };
 
 const userSlice = createSlice({
-	name: 'auth',
+	name: 'user',
 	initialState,
 	reducers: {
 		login: (state, { payload }) => {
-			const { accessToken, refreshToken, keepLoggedIn } = payload;
+			const { accessToken, refreshToken, email, keepLoggedIn } = payload;
 
 			if (keepLoggedIn) {
 				state.keepLoggedIn = true;
@@ -21,6 +22,7 @@ const userSlice = createSlice({
 			state.accessToken = accessToken;
 			state.refreshToken = refreshToken;
 			state.loginStatus = true;
+			state.email = email;
 		},
 		logout: () => {
 			return initialState;
