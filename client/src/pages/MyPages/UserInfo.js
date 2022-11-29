@@ -218,7 +218,6 @@ export function UserInfo() {
 				setIsOpen={setIsOpen}
 				modalIsOpen={modalIsOpen}
 				handleOpenGoodbye={handleOpenGoodbye}
-				openGoodbye={openGoodbye}
 			/>
 			<GoodbyeModal setIsOpen={setOpenGoodbye} modalIsOpen={openGoodbye} />
 			{isModal && (

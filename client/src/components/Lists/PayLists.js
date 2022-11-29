@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Price from '../Etc/Price';
 
 export default function PayLists({ isSub }) {
+	// isSub="isSub" 이런식으로 줘야 함
 	const price = 7000;
 	const quantity = 5;
 	const PillsNum = 60;
