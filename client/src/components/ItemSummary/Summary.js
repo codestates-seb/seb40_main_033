@@ -23,8 +23,8 @@ function Summary({
 	const [showOptions, setShowOptions] = useState(false);
 	const [isSub, setIsSub] = useState(false);
 	const [openModal, setOpenModal] = useState(false);
-	const [modalContents, setModalContents] = useState(); // 기본 review/talk 내용
-	useState('장바구니에 상품이 담겼습니다.'); // 장바구니에 이미 담겼을 때 변경
+	const [modalContents, setModalContents] =
+		useState('장바구니에 상품이 담겼습니다.'); // 장바구니에 이미 담겼을 때 변경
 	const navigate = useNavigate();
 
 	const handlePlusClick = useCallback(() => {
