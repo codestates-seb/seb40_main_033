@@ -1,36 +1,66 @@
 import styled from 'styled-components';
+import { useState, useCallback } from 'react';
 import { LetterButtonColor } from '../Buttons/LetterButton';
 import ListDate from '../Etc/ListDate';
 import { LongTextStar } from '../Stars/TextStar';
+import OrderDetailList from './MyPageLists/OrderDetailList';
+import ReviewModal from '../Modals/ReviewModal';
+import DeleteNotesModal from '../Modals/DeleteNotesModal';
 
-function DetailReviewList() {
+function DetailReviewList({ content }) {
+	const [openForm, setOpenForm] = useState(false);
+	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+	const handleFormOpen = () => {
+		setOpenForm(!openForm);
+	};
+
+	const handleDeleteClick = useCallback(() => {
+		setOpenDeleteModal(true);
+	}, []);
+
+	// review 삭제 요청!
+	const handleDeleteTalk = useCallback(() => {
+		console.log('삭제 요청');
+		setOpenDeleteModal(false);
+	}, []);
+
 	return (
 		<Box>
 			<TopContainer>
 				<Name>코알라</Name>
 				<ButtonContainer>
-					<LetterButtonColor fontSize="12px">수정</LetterButtonColor>
+					<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
+						수정
+					</LetterButtonColor>
 					<span />
-					<LetterButtonColor fontSize="12px">삭제</LetterButtonColor>
+					<LetterButtonColor onClick={handleDeleteClick} fontSize="12px">
+						삭제
+					</LetterButtonColor>
 				</ButtonContainer>
 			</TopContainer>
 			<InfoContainer>
 				<LongTextStar noText />
-				<ListDate data="2022.11.23T18.30.58" />
+				<ListDate date="2022/11/23T11:33:33" />
 			</InfoContainer>
-			<Review>
-				저렴한 가격에 좋은 제품입니다. 요새 매일같이 새벽에 자느라 아침마다 항상
-				피곤했는데 꾸준히 먹으니 피로감이 덜해졌어요!! 덕분에 프로젝트에서
-				3인분의 효율을 낼 수 있을 것 같아요!! 팀원들아 나만 믿어~~~! ^^
-			</Review>
+			<Review>{content}</Review>
+			<ReviewModal
+				setIsOpen={setOpenForm}
+				modalIsOpen={openForm}
+				OrderDetailList={OrderDetailList}
+			/>
+			<DeleteNotesModal
+				openDeleteModal={openDeleteModal}
+				setOpenDeleteModal={setOpenDeleteModal}
+				handleDelete={handleDeleteTalk}
+			/>
 		</Box>
 	);
 }
 
-const Box = styled.div`
+const Box = styled.li`
 	background-color: white;
 	width: 100%;
-	height: 210px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -39,9 +69,8 @@ const Box = styled.div`
 `;
 
 const TopContainer = styled.div`
-	/* border-bottom: 1px solid rgb(235, 235, 235); */
 	display: flex;
-	/* align-items: center; */
+	align-items: center;
 	justify-content: space-between;
 	width: 100%;
 `;
@@ -61,10 +90,8 @@ const InfoContainer = styled.div`
 `;
 
 const Review = styled.div`
-	/* border: 1px solid black; */
-
-	/* height: 100px; */
-	/* text-align: left; */
+	width: 100%;
+	height: 100%;
 	align-self: start;
 	padding: 20px 0;
 	color: var(--gray-400);
@@ -73,19 +100,14 @@ const Review = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-	/* width: 80px;
-	height: 20px; */
-	/* position: relative; */
-	/* left: 580px;
-	bottom: 80px; */
 	display: flex;
 	align-items: center;
-	color: var(--gray-200);
+	color: var(--gray-300);
 
 	span {
 		width: 1px;
 		height: 13px;
-		background-color: var(--gray-200);
+		background-color: var(--gray-300);
 	}
 `;
 
