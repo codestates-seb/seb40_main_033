@@ -19,9 +19,11 @@ const userSlice = createSlice({
 			if (keepLoggedIn) {
 				state.keepLoggedIn = true;
 			}
+			if (accessToken) {
+				state.loginStatus = true;
+			}
 			state.accessToken = accessToken;
 			state.refreshToken = refreshToken;
-			state.loginStatus = true;
 			state.email = email;
 		},
 		logout: () => {
