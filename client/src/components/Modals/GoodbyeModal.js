@@ -25,6 +25,7 @@ function GoodbyeModal({ setIsOpen, modalIsOpen }) {
 			contents={data.contents}
 			setIsOpen={setIsOpen}
 			modalIsOpen={modalIsOpen}
+			autoClose
 			path="/"
 		/>
 	);
