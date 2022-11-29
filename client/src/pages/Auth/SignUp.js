@@ -1,7 +1,13 @@
 /* eslint-disable no-shadow */
 import styled from 'styled-components';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import {
+	Link,
+	useLocation,
+	useNavigate,
+	useSearchParams,
+} from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useMutation } from 'react-query';
 import AuthTitle from '../../components/Etc/AuthTitle';
 import { AuthForm } from '../../components/Inputs/AuthForm';
 import { fetchSignUp } from '../../apis/userApis';
@@ -62,10 +68,21 @@ function SignUp() {
 	// 이메일: 'coding@naver.com';
 	// 전화번호: '010-123-123';
 	// 주소: '(12417)경기 가평군 가평읍 광장로22번길 27-9';
+	const navigate = useNavigate();
+
+	const { mutate } = useMutation((form) => fetchSignUp(form), {
+		onSuccess: () => {
+			toast.success('회원가입을 축하합니다 !');
+			navigate('/login');
+		},
+		onError: (error) => {
+			console.error(error);
+			toast.error(error.response.data.message);
+		},
+	});
 
 	const handleSignUp = (data) => {
-		fetchSignUp(data);
-		toast.success('회원가입을 축하합니다 !');
+		mutate(data);
 	};
 
 	const handleMoreInfo = () => {
