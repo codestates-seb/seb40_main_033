@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import PayLists from '../Lists/PayLists';
 import PayPageContainer from './PayPageContainer';
 
-export default function PayItemInformation() {
+export default function PayItemInformation({ isSub }) {
 	return (
 		<PayPageContainer Info="상품정보">
 			<ListContainer>
-				<PayLists />
-				<PayLists />
-				<PayLists />
-				<PayLists />
+				<PayLists {...(isSub && { isSub: 'isSub' })} />
+				<PayLists {...(isSub && { isSub: 'isSub' })} />
+				<PayLists {...(isSub && { isSub: 'isSub' })} />
+				<PayLists {...(isSub && { isSub: 'isSub' })} />
 			</ListContainer>
 		</PayPageContainer>
 	);
