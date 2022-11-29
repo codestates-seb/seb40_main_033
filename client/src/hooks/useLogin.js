@@ -1,6 +1,9 @@
+/* eslint-disable no-promise-executor-return */
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { fetchLogIn } from '../apis/userApis';
 import { login } from '../redux/slice/userSlice';
 
@@ -10,17 +13,18 @@ const ERROR_MESSAGE = {
 };
 
 export default function useLogIn() {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [errMsg, setErrMsg] = useState('');
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
-		// () =>
-		// 	new Promise(() => {
-		// 		return { accessToken: 'asdasd', refreshToken: 'sdfsdf' };
-		// 	}),
-		(form) => fetchLogIn(form),
+		() => ({ accessToken: 'asdasd', refreshToken: 'sdfsdf' }),
+		// (form) => fetchLogIn(form),
 		{
 			onSuccess: async (data, { email }) => {
-				dispatch(login({ accessToken: data.split(' ')[1], email }));
+				dispatch(login({ accessToken: data, email }));
+				// dispatch(login({ accessToken: data.split(' ')[1], email }));
+				toast.success('로그인 되었습니다 !');
+				navigate('/', { replace: true });
 			},
 			onError: async (data) => {
 				const { response } = data;
@@ -33,6 +37,7 @@ export default function useLogIn() {
 				} else {
 					setErrMsg(errorData.message);
 				}
+				toast.error(errMsg);
 			},
 		},
 	);

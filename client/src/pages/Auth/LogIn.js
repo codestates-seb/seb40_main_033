@@ -33,8 +33,6 @@ function LogIn() {
 
 	const handleLogIn = (data) => {
 		mutate({ email: data.이메일, password: data.비밀번호 });
-		toast.success('로그인 되었습니다 !');
-		navigate(-1, { replace: true });
 	};
 	const handleToast = () => {
 		toast.success('로그인 되었습니다 !');

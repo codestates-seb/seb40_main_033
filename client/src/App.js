@@ -16,7 +16,7 @@ function App() {
 				<GlobalStyle />
 				<Router />
 			</Provider>
-			<ToastContainer position="top-center" theme="colored" />
+			<ToastContainer position="top-center" autoClose={3000} theme="colored" />
 			<ReactQueryDevtools />
 		</QueryClientProvider>
 	);
