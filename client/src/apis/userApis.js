@@ -33,7 +33,7 @@ export const fetchLogIn = async ({ email, password }) => {
 };
 
 export const fetchUserInfos = async () => {
-	const { data } = (await axiosInstance.get)('/user', {
+	const { data } = await axiosInstance.get('/user', {
 		headers: {
 			tokenNeeded: true,
 		},

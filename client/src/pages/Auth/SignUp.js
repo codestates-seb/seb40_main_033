@@ -13,7 +13,7 @@ import { AuthForm } from '../../components/Inputs/AuthForm';
 import { fetchSignUp } from '../../apis/userApis';
 
 // const URI = 'http://ec2-3-35-17-245.ap-northeast-2.compute.amazonaws.com:8080';
-const URI = 'https://wicked-husky-45.loca.lt';
+const URI = 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080';
 const data = {
 	displayName: 'sdfsdf',
 	address: 'sdgelblf',
@@ -21,12 +21,7 @@ const data = {
 	realName: 'gmeif',
 	phone: '030303013030',
 	email: 'tkfka156@gmail.com',
-	password: 'sdfkemdff',
-};
-
-const LoginData = {
-	username: 'tkfka156@gmail.com',
-	password: 'sdfkemdff',
+	password: 'asdfg',
 };
 
 const moreInfoData = {
@@ -40,21 +35,11 @@ const moreInfoData = {
 
 // 회원가입 페이지
 function SignUp() {
-	const handleGet = () => {
+	const signUp = () => {
 		fetch(`${URI}/users`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data),
-		})
-			.then((res) => res.json())
-			.then((res) => console.log(res));
-	};
-
-	const handleLogIn = () => {
-		fetch(`${URI}/users/login`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(LoginData),
 		})
 			.then((res) => res.json())
 			.then((res) => console.log(res));
@@ -108,27 +93,24 @@ function SignUp() {
 	};
 
 	// url 파라미터 콘솔에 찍기
-	const url = new URL(window.location.href);
-	console.log('🚀 ~ file: SignUp.js ~ url', url);
-	const email = url.searchParams.get('email');
-	console.log('🚀 ~ file: SignUp.js ~ email', email);
+	// const url = new URL(window.location.href);
+	// console.log('🚀 ~ file: SignUp.js ~ url', url);
+	// const email = url.searchParams.get('email');
+	// console.log('🚀 ~ file: SignUp.js ~ email', email);
 	const [searchParams] = useSearchParams();
-	console.log('🚀 ~ file: SignUp.js ~ searchParams', searchParams);
-	const email2 = searchParams.get('email2') || '';
-	console.log('🚀 ~ file: SignUp.js ~ email', email);
-	const location = useLocation();
-	console.log('🚀 ~ file: SignUp.js ~ location', location);
+	// console.log('🚀 ~ file: SignUp.js ~ searchParams: ', searchParams);
+	const accessToken = searchParams.get('access_token') || '';
+	console.log('🚀 ~ file: SignUp.js ~ accessToken: ', accessToken);
+	// const location = useLocation();
+	// console.log('🚀 ~ file: SignUp.js ~ location', location);
 
 	return (
 		<AuthContainer>
 			<FormContainer>
 				<AuthTitle title="회원가입" />
 				<AuthForm signUp handleSignUp={handleSignUp} />
-				<button type="button" onClick={handleGet}>
+				<button type="button" onClick={signUp}>
 					회원가입
-				</button>
-				<button type="button" onClick={handleLogIn}>
-					로그인
 				</button>
 				<button type="button" onClick={handleLogOut}>
 					로그아웃

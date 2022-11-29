@@ -17,14 +17,14 @@ export default function useLogIn() {
 	const dispatch = useDispatch();
 	const [errMsg, setErrMsg] = useState('');
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
-		() => ({ accessToken: 'asdasd', refreshToken: 'sdfsdf' }),
-		// (form) => fetchLogIn(form),
+		// () => ({ accessToken: 'asdasd', refreshToken: 'sdfsdf' }),
+		(form) => fetchLogIn(form),
 		{
 			onSuccess: async (data, { email }) => {
-				dispatch(login({ accessToken: data, email }));
+				// dispatch(login({ accessToken: data, email }));
 				// dispatch(login({ accessToken: data.split(' ')[1], email }));
 				toast.success('로그인 되었습니다 !');
-				navigate('/', { replace: true });
+				// navigate('/', { replace: true });
 			},
 			onError: async (data) => {
 				const { response } = data;
