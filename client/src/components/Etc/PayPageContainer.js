@@ -1,11 +1,18 @@
 import styled, { css } from 'styled-components';
 
-export default function PayPageContainer({ children, last }) {
+export default function PayPageContainer({ children, Info }) {
 	return (
-		<PayItemInfoContainer className={last}>{children}</PayItemInfoContainer>
+		<PayItemInfoContainer>
+			<InfoHeading>{Info}</InfoHeading>
+			{children}
+		</PayItemInfoContainer>
 	);
 }
-
+const InfoHeading = styled.h2`
+	font-size: 20px;
+	color: var(--gray-500);
+	margin-bottom: 44px;
+`;
 const PayItemInfoContainer = styled.section`
 	width: 588px;
 	background-color: white;

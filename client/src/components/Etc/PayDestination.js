@@ -10,8 +10,7 @@ export default function PayDestination() {
 		detailAddress: '201 동 703호',
 	});
 	return (
-		<PayPageContainer>
-			<PayDestHeading>배송지 정보</PayDestHeading>
+		<PayPageContainer Info="배송지 정보">
 			<DestInputContainer>
 				<DestInputBox>
 					<DestInputLabel>이름</DestInputLabel>
@@ -33,12 +32,6 @@ export default function PayDestination() {
 		</PayPageContainer>
 	);
 }
-
-const PayDestHeading = styled.h2`
-	font-size: 20px;
-	color: var(--gray-500);
-	margin-bottom: 44px;
-`;
 
 const DestInputContainer = styled.form`
 	width: 100%;

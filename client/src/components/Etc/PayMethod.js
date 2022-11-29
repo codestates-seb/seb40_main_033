@@ -29,8 +29,7 @@ export default function PayMethod() {
 		setPayModal(true);
 	};
 	return (
-		<PayPageContainer>
-			<PayMethodHeading>결제 수단</PayMethodHeading>
+		<PayPageContainer Info="결제 수단">
 			<ButtonBox>
 				<LightPurpleButton
 					width="220px"
@@ -64,12 +63,6 @@ export default function PayMethod() {
 		</PayPageContainer>
 	);
 }
-
-const PayMethodHeading = styled.h2`
-	font-size: 20px;
-	color: var(--gray-500);
-	margin-bottom: 44px;
-`;
 
 const ButtonBox = styled.div`
 	display: flex;
