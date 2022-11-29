@@ -34,14 +34,14 @@ const EntireContainer = styled.div`
 	flex-direction: column;
 `;
 const WishBox = styled.main`
-	width: 1090px;
+	width: 100%;
 	/* border: 1px solid; // 구분을 쉽게 하기 위한 선입니다. */
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
 	align-content: flex-start; // 카드들의 구역이 꽉 차는걸 막는 속성..
 	flex-wrap: wrap;
-	padding-left: 20px;
+	padding-left: 39px;
 `;
 
 export default WishList;
