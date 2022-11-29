@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import useLogIn from '../../hooks/useLogIn';
 import AuthTitle from '../../components/Etc/AuthTitle';
 import { AuthForm } from '../../components/Inputs/AuthForm';
@@ -32,7 +33,11 @@ function LogIn() {
 
 	const handleLogIn = (data) => {
 		mutate({ email: data.이메일, password: data.비밀번호 });
+		toast.success('로그인 되었습니다 !');
 		navigate(-1, { replace: true });
+	};
+	const handleToast = () => {
+		toast.success('로그인 되었습니다 !');
 	};
 
 	return (
@@ -47,6 +52,9 @@ function LogIn() {
 						회원가입
 					</text> */}
 				</LinkContainer>
+				<button type="button" onClick={handleToast}>
+					toast
+				</button>
 			</FormContainer>
 			<Background>
 				<Text>With Pillivery Ready For Life</Text>

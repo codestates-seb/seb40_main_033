@@ -1,9 +1,10 @@
+/* eslint-disable no-shadow */
 import styled from 'styled-components';
-// import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import AuthTitle from '../../components/Etc/AuthTitle';
 import { AuthForm } from '../../components/Inputs/AuthForm';
-import axiosInstance from '../../utils/axiosInstance';
+import { fetchSignUp } from '../../apis/userApis';
 
 // const URI = 'http://ec2-3-35-17-245.ap-northeast-2.compute.amazonaws.com:8080';
 const URI = 'https://wicked-husky-45.loca.lt';
@@ -62,11 +63,9 @@ function SignUp() {
 	// 전화번호: '010-123-123';
 	// 주소: '(12417)경기 가평군 가평읍 광장로22번길 27-9';
 
-	const handleSignUp = (userData) => {
-		axiosInstance
-			.post(`/users/login`, userData)
-			.then((res) => console.log(res))
-			.catch((err) => console.log(err));
+	const handleSignUp = (data) => {
+		fetchSignUp(data);
+		toast.success('회원가입을 축하합니다 !');
 	};
 
 	const handleMoreInfo = () => {
@@ -93,9 +92,15 @@ function SignUp() {
 
 	// url 파라미터 콘솔에 찍기
 	const url = new URL(window.location.href);
-	console.log('🚀 ~ file: SignUp.js ~ line 82 ~ SignUp ~ url', url);
+	console.log('🚀 ~ file: SignUp.js ~ url', url);
 	const email = url.searchParams.get('email');
-	console.log('🚀 ~ file: SignUp.js ~ line 83 ~ SignUp ~ email', email);
+	console.log('🚀 ~ file: SignUp.js ~ email', email);
+	const [searchParams] = useSearchParams();
+	console.log('🚀 ~ file: SignUp.js ~ searchParams', searchParams);
+	const email2 = searchParams.get('email2') || '';
+	console.log('🚀 ~ file: SignUp.js ~ email', email);
+	const location = useLocation();
+	console.log('🚀 ~ file: SignUp.js ~ location', location);
 
 	return (
 		<AuthContainer>
