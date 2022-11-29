@@ -14,6 +14,7 @@ import server.team33.user.mapper.UserMapper;
 import server.team33.user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 
@@ -37,10 +38,10 @@ public class UserController {
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
     @PostMapping("/more-info")
-    public ResponseEntity moreInfo( @Valid @RequestBody UserDto.PostMoreInfo userDto) throws IOException{
+    public ResponseEntity moreInfo( @Valid @RequestBody UserDto.PostMoreInfo userDto, HttpServletResponse response ) throws IOException{
         User user = userService.updateOAuthInfo(userDto);
-        String s = userService.giveToken(user);
-        return new ResponseEntity<>(s,HttpStatus.CREATED);
+        userService.giveToken(user, response);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @PatchMapping
     public ResponseEntity updateInfo( @Valid @RequestBody UserDto.Post userDto ){

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import server.team33.cart.entity.Cart;
 import server.team33.cart.repository.CartRepository;
@@ -22,6 +21,7 @@ import server.team33.user.entity.User;
 import server.team33.user.entity.UserStatus;
 import server.team33.user.repository.UserRepository;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.time.ZoneId;
@@ -92,7 +92,7 @@ public class UserService {
         throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
     }
 
-    public String giveToken( User user) throws IOException{
+    public void giveToken( User user, HttpServletResponse response ) throws IOException{
         String s = jwtToken.delegateAccessToken(user);
         String r = jwtToken.delegateRefreshToken(user);
         String accessToken = "Bearer " + s;
@@ -107,9 +107,7 @@ public class UserService {
         URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080) //TODO 호스트랑 포트는 나중에 변경해야한다.
                 .path("/testsss").queryParams(queryParams).build().toUri();
 
-        RestTemplate restTemplate = new RestTemplate();
-        String forObject = restTemplate.getForObject(uri, String.class);
-        return forObject;
+        response.sendRedirect(uri.toString());
     }
     private void createRole( User user ){
         List<String> roles = authUtils.createRoles();
