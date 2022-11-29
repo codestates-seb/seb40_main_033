@@ -4,6 +4,8 @@ import FinalPaymentInformation from './FinalPaymentInfomation';
 import PayItemInformation from './PayItemInformation';
 import PayDestination from './PayDestination';
 import PayMethod from './PayMethod';
+import { PaymentInfo } from './PayInfo';
+import PayPageContainer from './PayPageContainer';
 
 function DefaultPayment({ titleName, isSub }) {
 	return (
@@ -16,7 +18,9 @@ function DefaultPayment({ titleName, isSub }) {
 				</PayInfoBox>
 				<PayInfoBox right>
 					<PayItemInformation isSub={isSub} />
-					<FinalPaymentInformation />
+					<PayPageContainer payment>
+						<PaymentInfo />
+					</PayPageContainer>
 				</PayInfoBox>
 			</PaymentContainer>
 		</>
