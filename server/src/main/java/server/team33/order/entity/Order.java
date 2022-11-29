@@ -62,4 +62,20 @@ public class Order extends Auditable {
 
     @Transient
     private int totalQuantity;
+    public Order( Order origin ){
+
+        this.name = origin.getName();
+        this.address = origin.getAddress();
+        this.detailAddress = origin.getDetailAddress();
+        this.phone = origin.getPhone();
+        this.subscription = origin.isSubscription();
+        this.totalItems = origin.getTotalItems();
+        this.totalPrice = origin.getTotalPrice();
+        this.totalDiscountPrice = origin.getTotalDiscountPrice();
+        this.expectPrice = origin.getExpectPrice();
+        this.user = origin.getUser();
+        this.itemOrders = origin.getItemOrders();
+        this.orderStatus = OrderStatus.ORDER_SUBSCRIBE;
+        this.totalQuantity = origin.getTotalQuantity();
+    }
 }

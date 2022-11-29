@@ -83,15 +83,24 @@ public class OrderService {
                 () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
         return findOrder;
     }
-    public void completeOrder( Order order ){
-        order.setOrderStatus(OrderStatus.ORDER_COMPLETE);
-    }
-
     public boolean isShopper(long itemId, long userId) { // 유저의 특정 아이템 구매여부 확인
         Order order = orderRepository.findByItemAndUser(itemId, userId);
         if(order == null) return false;
         else return true;
     }
+    public void completeOrder( Long orderId ){
+        Order order = findOrder(orderId);
+        order.setOrderStatus(OrderStatus.ORDER_COMPLETE);
+    }
 
+    public void subsOrder( Long orderId ){
+        Order order = findOrder(orderId);
+        order.setOrderStatus(OrderStatus.ORDER_SUBSCRIBE);
+    }
+    public Order deepCopy(Order order){
+        Order newOrder = new Order(order);
+        orderRepository.save(newOrder);
+        return newOrder;
+    }
 
 }

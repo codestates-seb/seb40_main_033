@@ -20,9 +20,11 @@ import server.team33.payment.dto.KakaoPayRequestDto;
 @Slf4j
 @RequiredArgsConstructor
 public class PayService {
-   private RestTemplate restTemplate = new RestTemplate();
+
     private final OrderService orderService;
-    private MultiValueMap<String, String> parameters;
+    private MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    private final String PARTNER_USER_ID = "pillivery";
+    private final String KAKAO_APPROVE_URL = "https://kapi.kakao.com/v1/payment/approve";
     private Long order_id;
 
     public KakaoPayRequestDto kakaoPayRequest( int totalAmount, int quantity, Long orderId ){
@@ -34,35 +36,50 @@ public class PayService {
         String item_name = get_item_name(itemQuantity, itemName);
         order_id = orderId;
 
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters = getRequestParams(totalAmount, quantity, item_name, order_id);
+        parameters = isSubscription(parameters, order);
+
         log.info("parameters = {}", parameters);
 
         HttpEntity<MultiValueMap<String, String>> kakaoRequestEntity = new HttpEntity<>(parameters, getKakaoHeader());
 
         String url = "https://kapi.kakao.com/v1/payment/ready";
+        RestTemplate restTemplate = new RestTemplate();
         KakaoPayRequestDto requestResponse = restTemplate.postForObject(url, kakaoRequestEntity, KakaoPayRequestDto.class);
         log.info("결제 준비 응답객체 " + requestResponse);
 
         return requestResponse;
     }
 
-
     public KakaoPayApproveDto kakaoPayApprove( String tid, String pgToken ){
 
         parameters = getApproveParams(tid, pgToken, order_id);
 
-        HttpEntity<MultiValueMap<String, String>> kakaoRequestEntity = new HttpEntity<>(parameters, getKakaoHeader());
-        String url = "https://kapi.kakao.com/v1/payment/approve";
-
-        KakaoPayApproveDto kakaoPayApproveDto = restTemplate.postForObject(url, kakaoRequestEntity, KakaoPayApproveDto.class);
-        log.info("결제 승인 응답 객체" + kakaoPayApproveDto);
+        KakaoPayApproveDto kakaoPayApproveDto = getKakaoPayApproveDto(parameters);
 
         return kakaoPayApproveDto;
     }
 
-    public String generalPay( String paymentKey, String orderId, int amount ) throws JsonProcessingException{
+    public KakaoPayApproveDto kakaoSubsPayApprove( String tid, String pgToken ){
 
-        String url = "https://api.tosspayments.com/v1/payments/confirm";
+        parameters = getSubsApproveParams(tid, pgToken, order_id);
+
+        KakaoPayApproveDto kakaoPayApproveDto = getKakaoPayApproveDto(parameters);
+
+        return kakaoPayApproveDto;
+    }
+
+    private KakaoPayApproveDto getKakaoPayApproveDto( MultiValueMap<String, String> parameters ){
+        HttpEntity<MultiValueMap<String, String>> kakaoRequestEntity = new HttpEntity<>(parameters, getKakaoHeader());
+
+        RestTemplate restTemplate = new RestTemplate();
+        KakaoPayApproveDto kakaoPayApproveDto = restTemplate.postForObject(KAKAO_APPROVE_URL, kakaoRequestEntity, KakaoPayApproveDto.class);
+        log.info("결제 승인 응답 객체" + kakaoPayApproveDto);
+        return kakaoPayApproveDto;
+    }
+
+    public String generalPay( String paymentKey, String orderId, int amount ) throws JsonProcessingException{
 
         GeneralPayDto tossRequestDto = GeneralPayDto.builder().paymentKey(paymentKey).orderId(orderId).amount(amount).build();
 
@@ -71,34 +88,56 @@ public class PayService {
 
         HttpEntity<String> generalRequestEntity = new HttpEntity<>(value, getGeneralHeader());
 
+        String url = "https://api.tosspayments.com/v1/payments/confirm";
+        RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(url, generalRequestEntity, String.class);
+    }
+
+
+    private MultiValueMap<String, String> getApproveParams( String tid, String pgToken, Long order_id ){ //TODO : 파라미터 추가
+
+        parameters.add("cid", "TC0ONETIME");
+        parameters.add("tid", tid);
+        parameters.add("partner_order_id", String.valueOf(order_id));
+        parameters.add("partner_user_id", PARTNER_USER_ID);
+        parameters.add("pg_token", pgToken);
+
+        return parameters;
+    }
+
+    private MultiValueMap<String, String> getSubsApproveParams( String tid, String pgToken, Long order_id ){ //TODO : 파라미터 추가
+
+        parameters.add("cid", "TCSUBSCRIP");
+        parameters.add("tid", tid);
+        parameters.add("partner_order_id", String.valueOf(order_id));
+        parameters.add("partner_user_id", PARTNER_USER_ID);
+        parameters.add("pg_token", pgToken);
+
+        return parameters;
     }
 
     private MultiValueMap<String, String> getRequestParams( int totalAmount, int quantity, String item_name, Long order_Id ){ //TODO: 파라미터 추가
 
-        parameters = new LinkedMultiValueMap<>();
-
-        parameters.add("cid", "TC0ONETIME");
         parameters.add("partner_order_id", String.valueOf(order_Id));
-        parameters.add("partner_user_id", "pillivery");
+        parameters.add("partner_user_id", PARTNER_USER_ID);
         parameters.add("item_name", item_name);
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(totalAmount));
         parameters.add("tax_free_amount", "0");
-        parameters.add("approval_url", "http://localhost:8080/payments/kakao/success");
         parameters.add("cancel_url", "http://localhost:8080/fail");
         parameters.add("fail_url", "http://localhost:8080/cancel");
 
         return parameters;
     }
 
-    private MultiValueMap<String, String> getApproveParams( String tid, String pgToken, Long order_id ){ //TODO : 파라미터 추가
-        parameters = new LinkedMultiValueMap<>();
+    private MultiValueMap<String, String> isSubscription( MultiValueMap<String, String> parameters, Order order ){
+        if(order.isSubscription()){
+            parameters.add("cid", "TCSUBSCRIP");
+            parameters.add("approval_url", "http://localhost:8080/payments/kakao/subs/success");
+            return parameters;
+        }
         parameters.add("cid", "TC0ONETIME");
-        parameters.add("tid", tid);
-        parameters.add("partner_order_id", String.valueOf(order_id));
-        parameters.add("partner_user_id", "pillivery");
-        parameters.add("pg_token", pgToken);
+        parameters.add("approval_url", "http://localhost:8080/payments/kakao/success");
         return parameters;
     }
 

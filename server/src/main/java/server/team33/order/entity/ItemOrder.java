@@ -29,8 +29,6 @@ public class ItemOrder extends Auditable {
     @Column(nullable = false)
     private boolean subscription;
 
-    private boolean subscribing;
-
     @Column(name = "NEXT_DELIVERY")
     private ZonedDateTime nextDelivery;
 
@@ -45,5 +43,14 @@ public class ItemOrder extends Auditable {
     @JoinColumn(name = "ORDER_ID")
     private Order order;
 
+    public ItemOrder( ItemOrder origin){
+        this.quantity = origin.getQuantity();
+        this.period = origin.getPeriod();
+        this.subscription = origin.isSubscription();
+        this.nextDelivery = origin.getNextDelivery();
+        this.paymentDay = origin.getPaymentDay();
+        this.item = origin.getItem();
+        this.order = origin.getOrder();
+    }
 
 }

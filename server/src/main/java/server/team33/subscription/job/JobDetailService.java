@@ -7,8 +7,6 @@ import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.springframework.stereotype.Component;
 import server.team33.order.entity.ItemOrder;
-import server.team33.order.entity.Order;
-import server.team33.order.service.OrderService;
 
 import static org.quartz.JobBuilder.newJob;
 
@@ -16,16 +14,14 @@ import static org.quartz.JobBuilder.newJob;
 @Component
 @RequiredArgsConstructor
 public class JobDetailService {
-    private final OrderService orderService;
+    public JobDetail buildJobDetail( JobKey jobKey, Long orderId, ItemOrder itemOrder ){
 
-    public JobDetail buildJobDetail( JobKey jobKey, Long orderId, Long itemOrderId ){
+        log.warn("오더아이디 = {}", orderId);
+        log.warn("아이템오더아이디 = {}", itemOrder.getItemOrderId());
 
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("orderId", orderId);
-
-        Order order = orderService.findOrder(orderId);
-        ItemOrder itemOrder = order.getItemOrders().get((int) ( itemOrderId - 1 ));
-        jobDataMap.put("itemOrder",itemOrder);
+        jobDataMap.put("itemOrder", itemOrder);
 
         return newJob(SubscriptionJob.class).withIdentity(jobKey).usingJobData(jobDataMap).build();
     }
