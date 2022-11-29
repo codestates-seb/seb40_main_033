@@ -57,7 +57,10 @@ export default function PayMethod() {
 			</ClauseContainer>
 			{isPayModal && (
 				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
-					<PayFrame src="https://www.youtube.com/" title="결제창" />
+					<PayFrame
+						src="https://online-pay.kakao.com/mockup/v1/bad1d7ce8cefc82bfdf741fa7bdba051d553038913acf6daf6ea46b5a3d3187b/info"
+						title="결제창"
+					/>
 				</AddressModal>
 			)}
 		</PayPageContainer>
