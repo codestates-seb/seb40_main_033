@@ -1,14 +1,15 @@
 package server.team33.user.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 import server.team33.cart.entity.Cart;
 import server.team33.cart.repository.CartRepository;
 import server.team33.exception.bussiness.BusinessLogicException;
@@ -22,6 +23,7 @@ import server.team33.user.repository.UserRepository;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -71,9 +73,10 @@ public class UserService {
 
     public User updateOAuthInfo( UserDto.PostMoreInfo userDto ){
 
-        Optional<User> loginUser = userRepository.findById(userDto.getUserId());
+        Optional<User> loginUser = userRepository.findByEmail(userDto.getEmail());
 
         if(loginUser.isPresent()){
+
             userInfoFilter.filterMoreInfo(loginUser.get());
             loginUser.get().setUserStatus(UserStatus.USER_ACTIVE);
             loginUser.get().setAddress(userDto.getAddress());
@@ -91,12 +94,20 @@ public class UserService {
 
     public void giveToken( User user, HttpServletResponse response ) throws IOException{
         String s = jwtToken.delegateAccessToken(user);
+        String r = jwtToken.delegateRefreshToken(user);
         String accessToken = "Bearer " + s;
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        String refreshToken = "Bearer " + r;
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String value = objectMapper.writeValueAsString(accessToken);
-        response.getWriter().write(value);
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("access_token",accessToken);
+        queryParams.add("refresh_token",refreshToken);
+        log.warn("dfdfdf = {}",queryParams);
+
+
+        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080) //TODO 호스트랑 포트는 나중에 변경해야한다.
+                .path("/testsss").queryParams(queryParams).build().toUri();
+
+        response.sendRedirect(uri.toString());
     }
     private void createRole( User user ){
         List<String> roles = authUtils.createRoles();

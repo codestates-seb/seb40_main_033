@@ -6,19 +6,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.order.entity.Order;
 import server.team33.order.service.OrderService;
+import server.team33.payment.dto.BillingKeyDto;
 import server.team33.payment.dto.KakaoPayApproveDto;
 import server.team33.payment.dto.KakaoPayRequestDto;
 import server.team33.payment.service.PayService;
+import server.team33.payment.service.SubsPayService;
+import server.team33.user.entity.User;
 import server.team33.user.redis.RedisConfig;
 import server.team33.user.service.UserService;
 
@@ -36,10 +36,13 @@ public class PaymentController {
     private Long userId;
     private final UserService userService;
     private final RedisConfig redis;
+    private final SubsPayService subsPayService;
 
     //    @PreAuthorize("isAuthenticated()")
     @GetMapping("/kakao-pay")
     public KakaoPayRequestDto payRequest( @RequestParam(name = "total_amount") int totalAmount, @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "quantity") int quantity ){
+        log.warn("totalAmount = {}", totalAmount);
+        log.warn("quantity = {}", quantity);
 
         userId = userService.getUserId();
         KakaoPayRequestDto requestResponse = payService.kakaoPayRequest(totalAmount, quantity, orderId);
@@ -60,23 +63,70 @@ public class PaymentController {
 
         Long orderId = Long.valueOf(kakaoPayApproveDto.getPartner_order_id());
         log.info("orderId = {}", orderId);
+        orderService.completeOrder(orderId);
+
+        return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/kakao/subs/success")
+    public ResponseEntity paySubsApprove( @RequestParam("pg_token") String pgToken ){
+
+        String tid = (String) redis.redisTemplate().opsForValue().get(String.valueOf(userId));
+        if(tid == null) throw new BusinessLogicException(ExceptionCode.EXPIRED_TID);
+
+        KakaoPayApproveDto kakaoPayApproveDto = payService.kakaoSubsPayApprove(tid, pgToken);
+
+        log.warn("sid 진짜로 = {}", kakaoPayApproveDto);
+
+        Long orderId = Long.valueOf(kakaoPayApproveDto.getPartner_order_id());
+        log.info("orderId = {}", orderId);
+
+        Order order = orderService.findOrder(orderId);
+        User user = order.getUser();
+        user.setSid(kakaoPayApproveDto.getSid());
 
         findSubscription(orderId);
 
         return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
     }
 
-
     @GetMapping("/general/success")
-    public ResponseEntity home( @RequestParam("paymentKey") String paymentKey, @RequestParam("amount") int amount, @RequestParam("orderId") String orderId ) throws IOException{
+    public ResponseEntity home(
+            @RequestParam("paymentKey") String paymentKey, @RequestParam("amount") int amount, @RequestParam(name = "orderId") String orderId ) throws IOException{
 
         String result = payService.generalPay(paymentKey, orderId, amount);
 
-        orderId = orderId.replace("abcdef", "");
+        orderId = orderId.replace("abcdefdd", "");
 
-        findSubscription(Long.valueOf(orderId));
+        orderService.completeOrder(Long.parseLong(orderId));
 
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/general/subs/success")
+    public void home(
+            @RequestParam("customerKey") String customerKey, @RequestParam("authKey") String authKey ) throws IOException, InterruptedException{
+
+        BillingKeyDto.Response billingKey = subsPayService.getBillingKey(authKey, customerKey);
+        billingKey.getBillingKey();
+        log.warn("빌링 키 = {}", billingKey.getBillingKey());
+    }
+
+
+    @GetMapping("/subscription")
+    public ResponseEntity subsPay(
+            @RequestParam(name = "orderId") String orderId ) throws IOException{
+
+        Order order = orderService.findOrder(Long.parseLong(orderId));
+        String sid = order.getUser().getSid();
+        log.warn("sid = {}", sid);
+
+        KakaoPayApproveDto kakaoPayApproveDto = subsPayService.kakaoSubsPayRequest(order.getExpectPrice(), order.getTotalQuantity(), Long.parseLong(orderId), sid);
+
+        orderService.subsOrder(Long.valueOf(orderId));
+
+        return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/cancel")//TODO 일반결제 카카오페이결제 실패시 url결정해야
@@ -89,6 +139,16 @@ public class PaymentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //    private void completeOrder( Long orderId ){
+    //        Order order = orderService.findOrder(orderId);
+    //        orderService.completeOrder(order);
+    //    }
+    //
+    //    private void subscribeOrder( Long orderId ){
+    //        Order order = orderService.findOrder(orderId);
+    //        orderService.subsOrder(order);
+    //    }
+
     private void doScheduling( Long orderId ){
 
         log.info("scheduler orderId = {}", orderId);
@@ -97,7 +157,7 @@ public class PaymentController {
         queryParam.add("orderId", String.valueOf(orderId));
         log.info("query = {}", queryParam);
 
-        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080).path("/schedule") // 호스트랑 포트는 나중에 변경해야한다.
+        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080).path("/schedule")//TODO: 나중에 URL 전체변경
                 .queryParams(queryParam).build().toUri();
         log.info("uri = {}", uri);
 
@@ -106,12 +166,8 @@ public class PaymentController {
     }
 
     private void findSubscription( Long orderId ){
-        Order order = orderService.findOrder(orderId);
-        orderService.completeOrder(order);
-        if(order.isSubscription()){
-            log.info("구독 확인");
-            doScheduling(orderId);
-        }
+        orderService.subsOrder(orderId);
+        doScheduling(orderId);
     }
 
 }

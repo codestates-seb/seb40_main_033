@@ -95,12 +95,12 @@ public class ItemOrderService {
         itemRepository.save(itemOrder.getItem());
     }
 
-    synchronized public ItemOrder setItemPeriod( Long orderId, Long itemOrderId, Integer period ){
+    public ItemOrder setItemPeriod( Long orderId, Integer period ){
 
         Optional<Order> order = orderRepository.findById(orderId);
 
         if(order.isPresent()){
-            ItemOrder itemOrder = order.get().getItemOrders().get((int) ( itemOrderId - 1 ));
+            ItemOrder itemOrder = order.get().getItemOrders().get(0);
             itemOrder.setPeriod(period);
             log.error("주기변경 = {}", itemOrder.getPeriod());
             return itemOrder;
@@ -108,31 +108,45 @@ public class ItemOrderService {
         throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
     }
 
-    synchronized public ItemOrder delayDelivery( Long orderId, Long itemOrderId, Integer delay ){
+    public ItemOrder delayDelivery( Long orderId, Integer delay ){
 
         Optional<Order> order = orderRepository.findById(orderId);
 
         if(order.isPresent()){
-            ItemOrder itemOrder = order.get().getItemOrders().get((int) (itemOrderId- 1));
+            ItemOrder itemOrder = order.get().getItemOrders().get(0);
             ZonedDateTime nextDelivery = itemOrder.getNextDelivery().plusDays(delay);
             itemOrder.setNextDelivery(nextDelivery);
-        return itemOrder;
+            return itemOrder;
         }
         throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
     }
 
-    synchronized public void setDeliveryInfo( Long orderId, Long itemOrderId, ZonedDateTime paymentDay, String nextDelivery ){
+    public ItemOrder setDeliveryInfo( Long orderId, ZonedDateTime paymentDay, String nextDelivery ){
 
         Optional<Order> order = orderRepository.findById(orderId);
 
         if(order.isPresent()){
-            ItemOrder itemOrder = order.get().getItemOrders().get((int) ( itemOrderId - 1 ));
+            ItemOrder itemOrder = order.get().getItemOrders().get(0);
             itemOrder.setNextDelivery(ZonedDateTime.parse(nextDelivery));
             itemOrder.setPaymentDay(paymentDay);
-            log.info("딜리버리정보 = {}", itemOrder.getPaymentDay());
-            log.info("딜리버리정보 = {}", itemOrder.getNextDelivery());
+            log.info("딜리버리정보 결제일 = {}", itemOrder.getPaymentDay());
+            log.info("딜리버리정보 다음 배송일= {}", itemOrder.getNextDelivery());
+            return itemOrder;
         }
-
-
+        throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
     }
+    public ItemOrder itemOrderCopy( Long orderId, Order order ){
+        Optional<Order> orderEntity = orderRepository.findById(orderId);
+        log.warn("여기서 오더 아이디 = {}", order.getOrderId());
+        if(orderEntity.isPresent()){
+            ItemOrder io = orderEntity.get().getItemOrders().get(0);
+            ItemOrder itemOrder = new ItemOrder(io);
+            itemOrder.setOrder(order);
+            plusSales(itemOrder);
+            itemOrderRepository.save(itemOrder);
+            return itemOrder;
+        }
+        throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
+    }
+
 }

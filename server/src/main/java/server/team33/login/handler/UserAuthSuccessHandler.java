@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -31,7 +30,7 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtToken jwtToken;
 
     @Override
@@ -39,10 +38,14 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
 
         log.info("로그인 필터 통과");
         PrincipalDetails principalDetails = getPrincipalDetails(authentication);
+        log.warn("닉네임 = {}", principalDetails.getUser().getDisplayName());
 
-        if(principalDetails.getUser().getDisplayName() != null){
-            log.info("일반로그인");
-
+        if(principalDetails.getUser().getDisplayName() == null){
+            //            log.info("일반로그인");
+            //            //TODO 테스트용 나중에 삭제
+            redirectInfo(request, response, authentication);
+            return;
+        }
                         String s = jwtToken.delegateAccessToken(principalDetails.getUser());
                         String accessToken = "Bearer " + s;
                         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -50,47 +53,28 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
                         ObjectMapper objectMapper = new ObjectMapper();
                         String value = objectMapper.writeValueAsString(accessToken);
                         response.getWriter().write(value);
-
-                        response.addHeader("Authorization", accessToken);
-                        log.info("토큰 발행 성공");
-//            redirect(request, response, authentication);
-            return;
-        }
-
-                log.info("닉네임 없음"); //추가 기입
-                log.error("principal = {}",principalDetails);
-
-                User user = principalDetails.getUser();
-                log.error("user = {}",user);
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    Long userId = user.getUserId();
-
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    String value = objectMapper.writeValueAsString(userId);
-                    response.getWriter().write(value);
-                    log.info("아이디가 필요");
 //        redirect(request, response, authentication);
-        //            moreInfo(request, response, authentication);
-
     }
 
-    private void moreInfo( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException{
-        PrincipalDetails principalDetails = getPrincipalDetails(authentication);
-
-        List<String> tokens = delegateToken(principalDetails.getUser(), jwtToken);
-
-        String uri = infoURI(tokens.get(0), tokens.get(1)).toString();
-        getRedirectStrategy().sendRedirect(request, response, uri);
-
-    }
 
     private void redirect( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException{
         PrincipalDetails principalDetails = getPrincipalDetails(authentication);
         log.error("principal = {}", principalDetails);
 
         List<String> tokens = delegateToken(principalDetails.getUser(), jwtToken);
+        log.warn("토큰1 = {}", tokens.get(0));
 
         String uri = createURI(tokens.get(0), tokens.get(1)).toString();
+        getRedirectStrategy().sendRedirect(request, response, uri);
+    }
+
+    private void redirectInfo( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException{
+        PrincipalDetails principalDetails = getPrincipalDetails(authentication);
+        log.error("principal = {}", principalDetails);
+
+        //        List<String> tokens = delegateToken(principalDetails.getUser(), jwtToken);
+
+        String uri = createInfoURI(principalDetails).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
@@ -104,7 +88,6 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
     }
 
     private PrincipalDetails getPrincipalDetails( Authentication authentication ){
-
         return (PrincipalDetails) authentication.getPrincipal();
     }
 
@@ -114,19 +97,18 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         log.error("{}", queryParams);
         queryParams.add("refresh_token", refreshToken);
         log.error("{}", queryParams);
-        return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080) // 호스트랑 포트는 나중에 변경해야한다.
-                .path("/users/test").queryParams(queryParams).build().toUri();
+        return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(3000) // 호스트랑 포트는 나중에 변경해야한다.
+                .path("/testwww").queryParams(queryParams).build().toUri();
     }
 
-    private URI infoURI( String accessToken, String refreshToken ){
+    private URI createInfoURI( PrincipalDetails principalDetails ){
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("access_token", "Bearer " + accessToken);
+        queryParams.add("userId", String.valueOf(principalDetails.getUser().getUserId()));
         log.error("{}", queryParams);
-        queryParams.add("refresh_token", refreshToken);
+        queryParams.add("email", principalDetails.getUsername());
         log.error("{}", queryParams);
-        return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080) // 호스트랑 포트는 나중에 변경해야한다.
-                .path("/users/test").queryParams(queryParams).build().toUri();
+        return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080) // TODO 호스트랑 포트는 나중에 변경해야한다.
+                .path("/testtt").queryParams(queryParams).build().toUri();
     }
-
 
 }

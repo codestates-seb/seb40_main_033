@@ -34,18 +34,15 @@ public class UserController {
         log.error("user = {}", user.getUserStatus());
         log.error("user = {}", user.getEmail());
         userService.joinUser(user);
-
-        return new ResponseEntity(HttpStatus.CREATED);
+        String response = "회원가입이 완료되었습니다.";
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
-
     @PostMapping("/more-info")
-    public ResponseEntity moreInfo(@Valid @RequestBody UserDto.PostMoreInfo userDto, HttpServletResponse response ) throws IOException{
+    public ResponseEntity moreInfo( @Valid @RequestBody UserDto.PostMoreInfo userDto, HttpServletResponse response ) throws IOException{
         User user = userService.updateOAuthInfo(userDto);
-        userService.giveToken(user,response);
+        userService.giveToken(user, response);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-
     @PatchMapping
     public ResponseEntity updateInfo( @Valid @RequestBody UserDto.Post userDto ){
         log.error("컨트롤러 진입");
@@ -53,7 +50,6 @@ public class UserController {
         UserDto.Response userInfo = mapper.userToDto(user, HttpMethod.PATCH);
         return new ResponseEntity(userInfo, HttpStatus.ACCEPTED);
     }
-
     @GetMapping
     public ResponseEntity getUserInfo(){
         User loginUser = userService.getLoginUser();
@@ -62,9 +58,9 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity handleLogout( HttpServletRequest request ){
+    public String handleLogout( HttpServletRequest request ){
         logout.doLogout(request);
-        return new ResponseEntity(HttpStatus.ACCEPTED);
+        return "로그아웃이 되었습니다!";
     }
 
     @DeleteMapping
@@ -73,12 +69,10 @@ public class UserController {
         logout.doLogout(request);
         return new ResponseEntity<>(user.getUserStatus().getStatus(), HttpStatus.ACCEPTED);
     }
-
-
-//테스트 컨트롤러
-//    @GetMapping("/test")
-//    public String home(@RequestParam(name = "access_token") String accessToken){
-//        return accessToken;
-//    }
+    //테스트 컨트롤러
+    //    @GetMapping("/test")
+    //    public String home(@RequestParam(name = "access_token") String accessToken){
+    //        return accessToken;
+    //    }
 
 }

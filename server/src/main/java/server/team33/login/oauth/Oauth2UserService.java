@@ -41,18 +41,18 @@ public class Oauth2UserService extends DefaultOAuth2UserService {
         OAuth2User oauth2User = super.loadUser(userRequest);
         OAuth2UserInfo oauth2UserInfo = getOAuth2UserInfo(userRequest, oauth2User);
         Map<String, String> userInfo = oauthToJoin(oauth2UserInfo);
-        return getPrincipaDetails(userInfo, oauth2User);
+        return getPrincipalDetails(userInfo, oauth2User);
     }
 
     private OAuth2UserInfo getOAuth2UserInfo( OAuth2UserRequest userRequest, OAuth2User oauth2User ){
         if(userRequest.getClientRegistration().getRegistrationId().equals("google"))
             oAuth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes());
 
-        if(userRequest.getClientRegistration().getRegistrationId().equals("facebook"))
-            oAuth2UserInfo = new FacebookUserInfo(oauth2User.getAttributes());
+        //        if(userRequest.getClientRegistration().getRegistrationId().equals("facebook"))
+        //            oAuth2UserInfo = new FacebookUserInfo(oauth2User.getAttributes());
 
-        if(userRequest.getClientRegistration().getRegistrationId().equals("naver"))
-            oAuth2UserInfo = new NaverUserInfo((Map<String, Object>) oauth2User.getAttributes().get("response"));
+        //        if(userRequest.getClientRegistration().getRegistrationId().equals("naver"))
+        //            oAuth2UserInfo = new NaverUserInfo((Map<String, Object>) oauth2User.getAttributes().get("response"));
 
         if(userRequest.getClientRegistration().getRegistrationId().equals("kakao"))
             oAuth2UserInfo = new KakaoUserInfo(oauth2User.getAttributes(), (Map<String, Object>) oauth2User.getAttributes().get("kakao_account"));
@@ -78,22 +78,34 @@ public class Oauth2UserService extends DefaultOAuth2UserService {
         return userInfo;
     }
 
-    private PrincipalDetails getPrincipaDetails( Map<String, String> userInfo, OAuth2User oauth2User ){
+    private PrincipalDetails getPrincipalDetails( Map<String, String> userInfo, OAuth2User oauth2User ){
 
         Optional<User> userEntity = userRepository.findByOauthId(userInfo.get("oauthId"));
 
         if(userEntity.isEmpty()){
             log.info("소셜 회원가입");
-            User newEntity = User.builder().oauthId(userInfo.get("oauthId")).provider(userInfo.get("provider")).providerId(userInfo.get("providerId")).email(userInfo.get("email")).password(encodePwd().encode("임의의 비밀번호")).roles(authUtils.createRoles()).build();
+            User.UserBuilder builder = User.builder();
+            builder.oauthId(userInfo.get("oauthId"));
+            builder.provider(userInfo.get("provider"));
+            builder.providerId(userInfo.get("providerId"));
+            builder.email(userInfo.get("email"));
+            builder.password(encodePwd().encode("임의의 비밀번호"));
+            builder.roles(authUtils.createRoles());
+            User newEntity = builder.build();
             userRepository.save(newEntity);
             log.info("회원저장완료");
 
             return new PrincipalDetails(newEntity, oauth2User.getAttributes());
         }
-        if(userEntity.get().getUserStatus() == UserStatus.USER_WITHDRAWAL)
-            throw new InternalAuthenticationServiceException("탈퇴한 회원입니다.");
+
+        rejectWithdrawal(userEntity);
 
         return new PrincipalDetails(userEntity.get(), oauth2User.getAttributes());
+    }
+
+    private void rejectWithdrawal( Optional<User> userEntity ){
+        if(userEntity.get().getUserStatus() == UserStatus.USER_WITHDRAWAL)
+            throw new InternalAuthenticationServiceException("탈퇴한 회원입니다.");
     }
 
 

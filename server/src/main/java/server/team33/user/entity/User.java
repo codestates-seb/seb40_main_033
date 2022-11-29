@@ -55,6 +55,11 @@ public class User extends Auditable implements Principal {
     @Column(name = "PROVIDER_ID")
     private String providerId;
 
+    private String sid;
+
+//    @Column(name = "BILLING_KEY")
+//    private String BillingKey;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
