@@ -50,9 +50,9 @@ function Summary({
 	// 결제 페이지로 가는 함수
 	const handlePayClick = useCallback(() => {
 		if (isSub) {
-			navigate('/order/subscription');
+			navigate('/pay/subscription');
 		} else {
-			navigate('/order/normal');
+			navigate('/pay/normal');
 		}
 	}, [isSub]);
 
