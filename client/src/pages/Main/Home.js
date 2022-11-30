@@ -5,8 +5,8 @@ import { login } from '../../redux/slice/userSlice';
 import MainSection from './MainSection';
 
 function Home() {
+	const dispatch = useDispatch();
 	useEffect(() => {
-		const dispatch = useDispatch();
 		const url = new URL(window.location.href);
 		const accessToken = url.searchParams.get('access_token');
 		const refreshToken = url.searchParams.get('refresh_token');

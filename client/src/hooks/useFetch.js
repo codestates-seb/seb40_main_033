@@ -12,8 +12,7 @@ export const useGet = (url, keyValue) => {
 	const { isLoading, isError, data, error } = useQuery(keyValue, () =>
 		axios.get(url),
 	);
-	console.log('isLoading', isLoading);
-	console.log('data', data);
+
 	return { isLoading, isError, data: data?.data, error };
 };
 
@@ -25,8 +24,36 @@ export const usePost = (url) => {
 		{
 			onSuccess: async (res) => {
 				setResponse(res);
-				console.log('isLoading', isLoading);
-				console.log('data', res);
+			},
+		},
+	);
+
+	return { mutate, isLoading, isError, error, response };
+};
+
+export const useDelete = (url) => {
+	const [response, setResponse] = useState(null);
+
+	const { mutate, isLoading, isError, error } = useMutation(
+		() => axios.delete(url),
+		{
+			onSuccess: async (res) => {
+				setResponse(res);
+			},
+		},
+	);
+
+	return { mutate, isLoading, isError, error, response };
+};
+
+export const usePatch = (url) => {
+	const [response, setResponse] = useState(null);
+
+	const { mutate, isLoading, isError, error } = useMutation(
+		(data) => axios.patch(url, data),
+		{
+			onSuccess: async (res) => {
+				setResponse(res);
 			},
 		},
 	);

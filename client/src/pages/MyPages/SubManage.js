@@ -1,29 +1,28 @@
 // 정기구독관리
 import styled, { css } from 'styled-components';
 import SubManagementList from '../../components/Lists/MyPageLists/SubManagementList';
-import { usePost } from '../../hooks/useFetch';
+import { usePost, useDelete, usePatch } from '../../hooks/useFetch';
 
 function SubManage() {
-	const { mutate, isLoading, isError, error, response } = usePost(
-		'https://koreanjson.com/users',
+	const { mutate: patchMu, response: patchRes } = usePatch(
+		'https://jsonplaceholder.typicode.com/todos/1',
 	);
+	const { mutate: deleteMu, response: deleteRes } = useDelete(
+		'https://jsonplaceholder.typicode.com/todos/1',
+	);
+	console.log('patchRes', patchRes);
+	console.log('deleteRes', deleteRes);
 
 	return (
 		<SubManageContainer>
 			<button
 				type="button"
-				onClick={() =>
-					mutate({
-						id: 123,
-						name: '이정도',
-						username: 'jd1386',
-						email: 'lee.jungdo@gmail.com',
-						phone: '010-3192-2910',
-						website: 'https://leejungdo.com',
-					})
-				}
+				onClick={() => patchMu({ title: '테스트 하는데 뭐 문제 있는지?' })}
 			>
-				api test
+				patch
+			</button>
+			<button type="button" onClick={() => deleteMu()}>
+				delete
 			</button>
 			<SubManagementList />
 			<SubManagementList />

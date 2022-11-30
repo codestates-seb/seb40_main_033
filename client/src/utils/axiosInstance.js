@@ -1,4 +1,7 @@
+/* eslint-disable no-param-reassign */
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import store from '../redux/store/store';
 
 const axiosInstance = axios.create({
 	baseURL: 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080', // 서버 url
@@ -7,9 +10,9 @@ const axiosInstance = axios.create({
 
 export default axiosInstance;
 
-// axios.interceptors.request.use(function (config) {
-// 	const { token } = store.getState().session;
-// 	config.headers.Authorization = token;
+axios.interceptors.request.use((config) => {
+	const { accessToken } = store.getState().user;
+	config.headers.Authorization = accessToken;
 
-// 	return config;
-// });
+	return config;
+});
