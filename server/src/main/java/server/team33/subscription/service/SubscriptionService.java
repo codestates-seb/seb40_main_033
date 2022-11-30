@@ -93,7 +93,6 @@ public class SubscriptionService {
         ItemOrder itemOrder = getItemOrder(orderId);
         deleteSchedule(orderId,itemOrder);
         orderService.cancelOrder(orderId);
-        userService.deleteSid(orderId);
         log.warn("canceled item title = {}", itemOrder.getItem().getTitle());
     }
     private void resetSchedule( Long orderId, ItemOrder itemOrder ) throws SchedulerException{

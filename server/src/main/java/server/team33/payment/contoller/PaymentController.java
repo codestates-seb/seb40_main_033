@@ -84,13 +84,12 @@ public class PaymentController {
         Long orderId = Long.valueOf(kakaoPayApproveDto.getPartner_order_id());
         log.info("orderId = {}", orderId);
 
-        Order order = orderService.findOrder(orderId);
-        User user = order.getUser();
-        user.setSid(kakaoPayApproveDto.getSid());
+        hasSid(kakaoPayApproveDto, orderId);
 
         orderService.subsOrder(orderId);
         doKakaoScheduling(orderId);
     }
+
 
     @GetMapping("/general/success")
     public ResponseEntity home(
@@ -174,6 +173,12 @@ public class PaymentController {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getForObject(uri, String.class);
+    }
+    private void hasSid( KakaoPayApproveDto kakaoPayApproveDto, Long orderId){
+        Order order = orderService.findOrder(orderId);
+        User user = order.getUser();
+        if(user.getSid() != null) return;
+        user.setSid(kakaoPayApproveDto.getSid());
     }
 //    private void doGeneralScheduling( Long orderId ){
 //
