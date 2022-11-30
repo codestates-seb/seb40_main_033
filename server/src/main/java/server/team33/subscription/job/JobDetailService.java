@@ -23,6 +23,6 @@ public class JobDetailService {
         jobDataMap.put("orderId", orderId);
         jobDataMap.put("itemOrder", itemOrder);
 
-        return newJob(SubscriptionJob.class).withIdentity(jobKey).storeDurably(true).usingJobData(jobDataMap).build();
+        return newJob(KaKaoSubscriptionJob.class).withIdentity(jobKey).storeDurably(true).usingJobData(jobDataMap).build();
     }
 }

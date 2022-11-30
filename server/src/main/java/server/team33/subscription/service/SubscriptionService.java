@@ -11,6 +11,7 @@ import server.team33.order.service.OrderService;
 import server.team33.subscription.job.JobDetailService;
 import server.team33.subscription.trigger.TriggerService;
 import server.team33.user.entity.User;
+import server.team33.user.service.UserService;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -29,6 +30,7 @@ public class SubscriptionService {
     private final OrderService orderService;
     private final ItemOrderService itemOrderService;
 
+    private final UserService userService;
 
     public void startSchedule( Long orderId, ItemOrder itemOrder ) throws SchedulerException{
         User user = getUser(orderId);
@@ -90,8 +92,8 @@ public class SubscriptionService {
         log.info("cancelScheduler");
         ItemOrder itemOrder = getItemOrder(orderId);
         deleteSchedule(orderId,itemOrder);
-
         orderService.cancelOrder(orderId);
+        userService.deleteSid(orderId);
         log.warn("canceled item title = {}", itemOrder.getItem().getTitle());
     }
     private void resetSchedule( Long orderId, ItemOrder itemOrder ) throws SchedulerException{

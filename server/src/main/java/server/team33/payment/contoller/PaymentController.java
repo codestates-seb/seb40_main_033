@@ -72,7 +72,7 @@ public class PaymentController {
 
 
     @GetMapping("/kakao/subs/success")
-    public ResponseEntity paySubsApprove( @RequestParam("pg_token") String pgToken ){
+    public void paySubsApprove( @RequestParam("pg_token") String pgToken ){
 
         String tid = (String) redis.redisTemplate().opsForValue().get(String.valueOf(userId));
         if(tid == null) throw new BusinessLogicException(ExceptionCode.EXPIRED_TID);
@@ -88,9 +88,8 @@ public class PaymentController {
         User user = order.getUser();
         user.setSid(kakaoPayApproveDto.getSid());
 
-        findSubscription(orderId);
-
-        return new ResponseEntity<>(kakaoPayApproveDto, HttpStatus.CREATED);
+        orderService.subsOrder(orderId);
+        doKakaoScheduling(orderId);
     }
 
     @GetMapping("/general/success")
@@ -99,25 +98,34 @@ public class PaymentController {
 
         String result = payService.generalPay(paymentKey, orderId, amount);
 
-        orderId = orderId.replace("abcdefdd", "");
+        orderId = orderId.replace("abcdef", "");
 
         orderService.completeOrder(Long.parseLong(orderId));
 
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
-//
+
 //    @GetMapping("/general/subs/success")
 //    public void home(
 //            @RequestParam("customerKey") String customerKey, @RequestParam("authKey") String authKey ) throws IOException, InterruptedException{
 //
-//        BillingKeyDto.Response billingKey = subsPayService.getBillingKey(authKey, customerKey);
-//        billingKey.getBillingKey();
-//        log.warn("빌링 키 = {}", billingKey.getBillingKey());
+//        long orderId = getOrderIdAndSetBillingKey(customerKey, authKey);
+//
+//        orderService.subsOrder(orderId);
+//        doGeneralScheduling(orderId);
 //    }
 
 
-    @GetMapping("/subscription")
-    public ResponseEntity subsPay(
+//    @GetMapping("/general/subscription")
+//    public void subsGeneral(
+//            @RequestParam(name = "orderId") String orderId ) throws IOException{
+//        long parseOrderId = Long.parseLong(orderId);
+//        subsPayService.subsApprove(parseOrderId);
+//        orderService.subsOrder(parseOrderId);
+//    }
+
+    @GetMapping("/kakao/subscription")
+    public ResponseEntity subsKakao(
             @RequestParam(name = "orderId") String orderId ) throws IOException{
 
         Order order = orderService.findOrder(Long.parseLong(orderId));
@@ -141,17 +149,18 @@ public class PaymentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //    private void completeOrder( Long orderId ){
-    //        Order order = orderService.findOrder(orderId);
-    //        orderService.completeOrder(order);
-    //    }
-    //
-    //    private void subscribeOrder( Long orderId ){
-    //        Order order = orderService.findOrder(orderId);
-    //        orderService.subsOrder(order);
-    //    }
+//    private long getOrderIdAndSetBillingKey( String customerKey, String authKey ){
+//        String parsedOrderId = customerKey.replace("a", "");
+//        long orderId = Long.parseLong(parsedOrderId);
+//        Order order = orderService.findOrder(orderId);
+//        User user = order.getUser();
+//        BillingKeyDto.Response response = subsPayService.getBillingKey(authKey, customerKey);
+//        String billingKey = response.getBillingKey();
+//        user.setBillingKey(billingKey);
+//        return orderId;
+//    }
 
-    private void doScheduling( Long orderId ){
+    private void doKakaoScheduling( Long orderId ){
 
         log.info("scheduler orderId = {}", orderId);
         MultiValueMap<String, String> queryParam = new LinkedMultiValueMap<>();
@@ -159,17 +168,26 @@ public class PaymentController {
         queryParam.add("orderId", String.valueOf(orderId));
         log.info("query = {}", queryParam);
 
-        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080).path("/schedule")//TODO: 나중에 URL 전체변경
+        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(9090).path("/schedule/kakao")//TODO: 나중에 URL 전체변경
                 .queryParams(queryParam).build().toUri();
         log.info("uri = {}", uri);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getForObject(uri, String.class);
     }
-
-    private void findSubscription( Long orderId ){
-        orderService.subsOrder(orderId);
-        doScheduling(orderId);
-    }
-
+//    private void doGeneralScheduling( Long orderId ){
+//
+//        log.info("scheduler orderId = {}", orderId);
+//        MultiValueMap<String, String> queryParam = new LinkedMultiValueMap<>();
+//
+//        queryParam.add("orderId", String.valueOf(orderId));
+//        log.info("query = {}", queryParam);
+//
+//        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(9090).path("/schedule/general")//TODO: 나중에 URL 전체변경
+//                .queryParams(queryParam).build().toUri();
+//        log.info("uri = {}", uri);
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.getForObject(uri, String.class);
+//    }
 }

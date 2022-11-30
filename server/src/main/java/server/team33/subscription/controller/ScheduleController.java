@@ -18,8 +18,8 @@ import java.util.List;
 public class ScheduleController {
     private final SubscriptionService subscriptionService;
 
-    @GetMapping
-    public ResponseEntity startsSchedule( @RequestParam(name = "orderId") Long orderId ) throws SchedulerException{
+    @GetMapping("/kakao")
+    public ResponseEntity startsKakaoSchedule( @RequestParam(name = "orderId") Long orderId ) throws SchedulerException{
 
         List<ItemOrder> itemOrders = subscriptionService.getItemOrders(orderId);
         for(ItemOrder itemOrder : itemOrders){
@@ -27,6 +27,16 @@ public class ScheduleController {
         }
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+
+//    @GetMapping("/general")
+//    public ResponseEntity startsGeneralSchedule( @RequestParam(name = "orderId") Long orderId ) throws SchedulerException{
+//
+//        List<ItemOrder> itemOrders = subscriptionService.getItemOrders(orderId);
+//        for(ItemOrder itemOrder : itemOrders){
+//            subscriptionService.startSchedule(orderId, itemOrder);
+//        }
+//        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+//    }
 
     @PatchMapping("/change")
     public String changePeriod(
