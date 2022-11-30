@@ -54,7 +54,7 @@ public class ItemDto {
         private int servingSize;
         private int discountRate;
         private int discountPrice;
-        private List<CategoryDto.Response> categories;
+        private List<String> categories;
         private List<NutritionFactDto.Response> nutritionFacts;
         private double starAvg;
         private MultiResponseDto<ReviewResponseDto> reviews;

@@ -31,6 +31,7 @@ public interface ItemMapper {
 
         itemDetailResponseDto.setItemId(item.getItemId());
         itemDetailResponseDto.setThumbnail(item.getThumbnail());
+        itemDetailResponseDto.setDescriptionImage(item.getDescriptionImage());
         itemDetailResponseDto.setTitle(item.getTitle());
         itemDetailResponseDto.setContent(item.getContent());
         itemDetailResponseDto.setExpiration(item.getExpiration());
@@ -42,7 +43,7 @@ public interface ItemMapper {
         itemDetailResponseDto.setDiscountRate(item.getDiscountRate());
         itemDetailResponseDto.setDiscountPrice(item.getDiscountPrice());
         itemDetailResponseDto.setNutritionFacts(nutritionFactToNutritionFactResponseDto(item.getNutritionFacts()));
-        itemDetailResponseDto.setCategories(categoryToCategoryResponseDto(item.getCategories()));
+        itemDetailResponseDto.setCategories(categoryToStringList(item.getCategories()));
         itemDetailResponseDto.setStarAvg(item.getStarAvg());
 //        itemDetailResponseDto.setReviews(item.getReviews());
 //        itemDetailResponseDto.setTalks(item.getTalks());
@@ -58,6 +59,7 @@ public interface ItemMapper {
 
         itemDetailResponseDto.setItemId(item.getItemId());
         itemDetailResponseDto.setThumbnail(item.getThumbnail());
+        itemDetailResponseDto.setDescriptionImage(item.getDescriptionImage());
         itemDetailResponseDto.setTitle(item.getTitle());
         itemDetailResponseDto.setContent(item.getContent());
         itemDetailResponseDto.setExpiration(item.getExpiration());
@@ -69,7 +71,7 @@ public interface ItemMapper {
         itemDetailResponseDto.setDiscountRate(item.getDiscountRate());
         itemDetailResponseDto.setDiscountPrice(item.getDiscountPrice());
         itemDetailResponseDto.setNutritionFacts(nutritionFactToNutritionFactResponseDto(item.getNutritionFacts()));
-        itemDetailResponseDto.setCategories(categoryToCategoryResponseDto(item.getCategories()));
+        itemDetailResponseDto.setCategories(categoryToStringList(item.getCategories()));
         itemDetailResponseDto.setStarAvg(item.getStarAvg());
 
         Page<Review> pageReview = reviewService.findItemReviews(item, reviewPage, reviewSize);
@@ -130,15 +132,19 @@ public interface ItemMapper {
         }).collect(Collectors.toList());
     }
 
-
-    default List<CategoryDto.Response> categoryToCategoryResponseDto(List<Category> categories) {
-        return categories.stream().map(category -> {
-            CategoryDto.Response response = new CategoryDto.Response();
-
-            response.setCategoryName(category.getCategoryName());
-            return response;
-        }).collect(Collectors.toList());
+    default List<String> categoryToStringList(List<Category> categories) {
+        return categories.stream().map(Category::getCategoryName).collect(Collectors.toList());
     }
+
+
+//    default List<CategoryDto.Response> categoryToCategoryResponseDto(List<Category> categories) {
+//        return categories.stream().map(category -> {
+//            CategoryDto.Response response = new CategoryDto.Response();
+//
+//            response.setCategoryName(category.getCategoryName());
+//            return response;
+//        }).collect(Collectors.toList());
+//    }
 
 
     default List<Category> categoryPostDtoToCategory(List<CategoryDto.Post> posts, Item item) {
