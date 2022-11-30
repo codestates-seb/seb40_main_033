@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useCallback } from 'react';
 import { LetterButtonColor } from '../Buttons/LetterButton';
-import ListDate from '../Etc/ListDate';
+import { DotDate } from '../Etc/ListDate';
 import { LongTextStar } from '../Stars/TextStar';
 import OrderDetailList from './MyPageLists/OrderDetailList';
 import ReviewModal from '../Modals/ReviewModal';
@@ -41,7 +41,7 @@ function DetailReviewList({ content }) {
 			</TopContainer>
 			<InfoContainer>
 				<LongTextStar noText />
-				<ListDate date="2022/11/23T11:33:33" />
+				<DotDate date="2022/11/23T11:33:33" />
 			</InfoContainer>
 			<Review>{content}</Review>
 			<ReviewModal

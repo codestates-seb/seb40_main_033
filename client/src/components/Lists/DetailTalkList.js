@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import { useCallback, useState } from 'react';
 import { LetterButtonColor, LetterButton } from '../Buttons/LetterButton';
-import ListDate from '../Etc/ListDate';
+import { DotDate } from '../Etc/ListDate';
 import TalkForm from '../Forms/TalkForm';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
 
@@ -62,7 +62,7 @@ function DetailTalkList({ isReply }) {
 					{!isReply && !writable && (
 						<LetterButton onClick={handleFormOpen}>답변 작성</LetterButton>
 					)}
-					<ListDate date="2022/11/23T11:33:33" />
+					<DotDate date="2022/11/23T11:33:33" />
 				</InfoContainer>
 				{writeReply && (
 					<TalkForm placeholder="토크에 대한 답글을 남겨주세요." />
