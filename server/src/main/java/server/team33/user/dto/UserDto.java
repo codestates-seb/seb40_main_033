@@ -62,6 +62,8 @@ public class UserDto {
         private String realName;
 
         private String phone;
+
+        private boolean social;
     }
 
     @Getter
@@ -81,6 +83,8 @@ public class UserDto {
         private String phone;
 
         private String password;
+
+        private boolean social;
 
         private ZonedDateTime updatedAt;
     }

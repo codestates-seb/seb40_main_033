@@ -42,6 +42,7 @@ public interface UserMapper {
                 .realName(user.getRealName())
                 .updatedAt(method == HttpMethod.GET ? user.getCreatedAt() : ZonedDateTime.now(ZoneId.of("Asia/Seoul")))
                 .password(method == HttpMethod.GET ? null : "비밀번호가 변경되었습니다!")
+                .social(!user.getProviderId().equals("default"))
                 .build();
     }
 }
