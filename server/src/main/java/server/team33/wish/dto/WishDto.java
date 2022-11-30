@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import server.team33.item.entity.Brand;
+import server.team33.nutritionFact.dto.NutritionFactDto;
 import server.team33.nutritionFact.entity.NutritionFact;
 
 import java.util.List;
@@ -20,11 +21,11 @@ public class WishDto {
         private String thumbnail;
         private String title;
         private String content;
+        private int capacity;
         private int price;
         private Brand brand;
-        private List<NutritionFact> nutritionFacts;
-        // 리뷰 총 별점
-        //item 의 찜의 여부
+        private List<NutritionFactDto.Response> nutritionFacts;
+        private double starAvg;
         private int reviewSize;
     }
 

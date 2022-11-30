@@ -33,7 +33,7 @@ public class WishService {
     public Wish wishItem(long itemId, int isWish) {
         User user = userService.getLoginUser();
 
-        Wish wish = wishRepository.findByItemAndUser(itemService.findItem(itemId), user);
+        Wish wish = wishRepository.findByItemAndUser(itemService.findVerifiedItem(itemId), user);
 
         if (wish == null) {
             Wish newWish = new Wish();

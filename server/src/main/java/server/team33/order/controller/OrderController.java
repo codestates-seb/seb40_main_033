@@ -72,13 +72,31 @@ public class OrderController {
 
     @GetMapping // 로그인 한 유저의 일반 / 정기 주문 목록 불러오기
     public ResponseEntity getOrders(@Positive @RequestParam(value="page", defaultValue="1") int page,
-                                       @Positive @RequestParam(value="subscription", defaultValue="false") boolean subscription) {
-        Page<Order> pageOrders = orderService.findOrders(userService.getLoginUser(), page, subscription);
+                                    @RequestParam(value="subscription", defaultValue="false") boolean subscription) {
+        Page<Order> pageOrders = orderService.findOrders(userService.getLoginUser(), page-1, subscription);
 
         List<Order> orders = pageOrders.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(
                 orderMapper.ordersToOrderSimpleResponseDtos(orders, itemMapper), pageOrders),HttpStatus.OK);
+    }
+
+    @GetMapping("/subs") // 정기 구독 목록 불러오기
+    public ResponseEntity getSubsciptions(@Positive @RequestParam(value = "page", defaultValue = "1") int page) {
+        Page<Order> orderPage = orderService.findSubs(userService.getLoginUser(), page-1);
+        List<Order> orders = orderPage.getContent();
+
+        return new ResponseEntity<>(new MultiResponseDto<>(
+                orderMapper.ordersToOrderSimpleResponseDtos(orders, itemMapper), orderPage), HttpStatus.OK);
+    }
+
+    @PatchMapping("/subs/{order-id}") // 정기 구독 아이템의 수량 변경
+    public ResponseEntity changeQuantity(@PathVariable("order-id") long orderId, @RequestParam(value = "upDown") int upDown) {
+
+        Order order = orderService.changeSubQuantity(orderId, upDown);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(
+                orderMapper.orderToOrderSimpleResponseDto(order, itemMapper)), HttpStatus.OK);
     }
 
     @GetMapping("/{order-id}") // 특정 주문의 상세 내역 확인
