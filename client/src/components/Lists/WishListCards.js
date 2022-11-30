@@ -1,45 +1,45 @@
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
 import WishlistBtn from '../Buttons/WishlistButton';
 import { ShortTextStar } from '../Stars/TextStar';
-// 나중에 이 CardList 컴포넌트들에 대한 전반적인 리팩터링이 필요하긴 할 듯..
 
 function WishListCards({ item }) {
-	console.log(item, 'item임/');
+	const navigate = useNavigate();
+	const handleItemClick = () => {
+		navigate(`/items/${item.itemId}`);
+	};
 	return (
-		<EntireContainer id="이거임">
+		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
 					<ContentContainer>
-						<WishlistBtn
-							isChecked
-							/* 이 부분은 나중에 api로 받아오는 정보에서 뽑아서 결정해야함..다만 지금같은 경우 무조건 표시되어 있어서 이렇게 작성함  */
-						/>
+						<WishlistBtn isChecked itemId={item.itemId} />
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
-					<ContentContainer buttom>
+					<ContentContainer buttom onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
 						<div className="title itemName">{item.title}</div>
 						<Price
-							nowPrice={8000}
-							// item.price
-							beforePrice={10000}
-							// item.discountPrice
-							discountRate="20%"
-							// item.discountRate
+							nowPrice={item.discountPrice || item.price}
+							beforePrice={item.discountPrice ? item.price : null}
+							discountRate={item.discountRate}
 							fontSize="16px"
 							font-weight="var(--regular)"
 						/>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
-			<DefaultContainer className="hover" hover>
+			<DefaultContainer onClick={handleItemClick} className="hover" hover>
 				<ContentBox>
 					<ContentContainer star>
-						<ShortTextStar />
+						<ShortTextStar
+							starAvg={item.starAvg}
+							reviewCount={item.reviewSize}
+						/>
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemDescription>{item.content}</ItemDescription>
@@ -56,8 +56,6 @@ const EntireContainer = styled.div`
 	position: relative;
 	margin-right: 20px;
 	margin-bottom: 30px;
-	/* background-color: white; */
-	/* border: 1px solid red; // 구분을 쉽게 하기 위한 선입니다. */
 	&:hover {
 		.hover {
 			opacity: 1;
