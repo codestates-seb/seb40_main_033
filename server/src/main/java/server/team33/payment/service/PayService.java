@@ -36,7 +36,7 @@ public class PayService {
         String item_name = get_item_name(itemQuantity, itemName);
         order_id = orderId;
 
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> parameters;
         parameters = getRequestParams(totalAmount, quantity, item_name, order_id);
         parameters = isSubscription(parameters, order);
 
@@ -124,8 +124,8 @@ public class PayService {
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(totalAmount));
         parameters.add("tax_free_amount", "0");
-        parameters.add("cancel_url", "http://localhost:8080/fail");
-        parameters.add("fail_url", "http://localhost:8080/cancel");
+        parameters.add("cancel_url", "http://localhost:9090/fail");
+        parameters.add("fail_url", "http://localhost:9090/cancel");
 
         return parameters;
     }
@@ -133,11 +133,11 @@ public class PayService {
     private MultiValueMap<String, String> isSubscription( MultiValueMap<String, String> parameters, Order order ){
         if(order.isSubscription()){
             parameters.add("cid", "TCSUBSCRIP");
-            parameters.add("approval_url", "http://localhost:8080/payments/kakao/subs/success");
+            parameters.add("approval_url", "http://localhost:9090/payments/kakao/subs/success");
             return parameters;
         }
         parameters.add("cid", "TC0ONETIME");
-        parameters.add("approval_url", "http://localhost:8080/payments/kakao/success");
+        parameters.add("approval_url", "http://localhost:9090/payments/kakao/success");
         return parameters;
     }
 

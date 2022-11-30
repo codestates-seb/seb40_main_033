@@ -48,7 +48,7 @@ public class UserController {
         log.error("컨트롤러 진입");
         User user = userService.updateUser(userDto);
         UserDto.Response userInfo = mapper.userToDto(user, HttpMethod.PATCH);
-        return new ResponseEntity(userInfo, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(userInfo, HttpStatus.ACCEPTED);
     }
     @GetMapping
     public ResponseEntity getUserInfo(){
@@ -72,10 +72,5 @@ public class UserController {
         logout.doLogout(request);
         return new ResponseEntity<>(user.getUserStatus().getStatus(), HttpStatus.ACCEPTED);
     }
-    //테스트 컨트롤러
-    //    @GetMapping("/test")
-    //    public String home(@RequestParam(name = "access_token") String accessToken){
-    //        return accessToken;
-    //    }
 
 }

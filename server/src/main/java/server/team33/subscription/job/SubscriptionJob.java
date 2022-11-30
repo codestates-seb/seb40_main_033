@@ -15,7 +15,8 @@ import server.team33.order.entity.ItemOrder;
 import server.team33.order.entity.Order;
 import server.team33.order.service.ItemOrderService;
 import server.team33.order.service.OrderService;
-import server.team33.subscription.trigger.TriggerService;
+import server.team33.subscription.service.SubscriptionService;
+import server.team33.user.entity.User;
 
 import java.net.URI;
 import java.time.ZoneId;
@@ -32,55 +33,49 @@ public class SubscriptionJob implements Job {
     private final OrderService orderService;
     private final Scheduler scheduler;
     private final JobDetailService jobDetail;
-    private final TriggerService trigger;
+    private final SubscriptionService subscriptionService;
+
     @Override
     public void execute( JobExecutionContext context ) throws JobExecutionException{
 
         JobDataMap mergedJobDataMap = context.getMergedJobDataMap();
 
-        ZonedDateTime paymentDay = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-        log.warn("payment = {}", paymentDay);
-
         ItemOrder itemOrder = (ItemOrder) mergedJobDataMap.get("itemOrder");
-        log.warn("start itemOrderId = {}", itemOrder.getItemOrderId());
-        log.error("이름 = {}", itemOrder.getItem().getTitle());
+        log.info("start itemOrderId = {}", itemOrder.getItemOrderId());
+        log.info("itemOrder title = {}", itemOrder.getItem().getTitle());
 
-        String nextDelivery = String.valueOf(paymentDay.plusDays(itemOrder.getPeriod()));
-        log.warn("Period = {}", itemOrder.getPeriod());
-        log.info("nextDelivery = {}", nextDelivery);
+        ZonedDateTime paymentDay = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        log.info("payment = {}", paymentDay);
 
         Long orderId = (Long) mergedJobDataMap.get("orderId");
-        log.warn("start orderId = {}", orderId);
+        log.info("start orderId = {}", orderId);
+        String nextDelivery = String.valueOf(paymentDay.plusDays(itemOrder.getPeriod()));
         itemOrderService.setDeliveryInfo(orderId, paymentDay, nextDelivery);
 
-        orderService.completeOrder(orderId);
-        Order order = orderService.findOrder(orderId);
-        Order newOrder = orderService.deepCopy(order);
-        ItemOrder newItemOrder  = itemOrderService.itemOrderCopy(orderId, newOrder);
+        Order newOrder = getNewOrder(orderId);
+        log.info("newOrder Id = {}", newOrder.getOrderId());
+        ItemOrder newItemOrder = itemOrderService.itemOrderCopy(orderId, newOrder);
 
+        JobDetail newJob = updateJob(itemOrder, orderId, newOrder, newItemOrder);
         try{
-            Thread.sleep(9000);
-        } catch(InterruptedException e){
-            throw new RuntimeException(e);
-        }
-
-        connectAutoPay(newOrder.getOrderId());
-
-        try{
-
-            scheduler.deleteJob(jobKey(String.valueOf(orderId) + itemOrder.getItemOrderId(), String.valueOf(orderId)));
-            JobKey jobkey = jobKey(String.valueOf(newOrder.getOrderId()) + newItemOrder.getItemOrderId(), String.valueOf(newOrder));
-            log.warn("새로운 아이템 오더 아이디 = {}",newItemOrder.getItemOrderId());
-            log.warn("새로운 오더 아이디 = {}",newOrder.getOrderId());
-            JobDetail payDay = jobDetail.buildJobDetail(jobkey, newOrder.getOrderId(), newItemOrder);
-            Trigger oldTrigger = trigger.buildTrigger(jobkey, newOrder.getOrderId(), newItemOrder);
-
-            scheduler.scheduleJob(payDay, oldTrigger);
-
+            scheduler.addJob(newJob, true);
         } catch(SchedulerException e){
             throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
         }
 
+        connectAutoPay(newOrder.getOrderId());
+    }
+
+    private Order getNewOrder( Long orderId ){
+        orderService.completeOrder(orderId);
+        Order order = orderService.findOrder(orderId);
+        return orderService.deepCopy(order);
+    }
+
+    private JobDetail updateJob( ItemOrder itemOrder, Long orderId, Order newOrder, ItemOrder newItemOrder ){
+        User user = subscriptionService.getUser(orderId);
+        JobKey jobkey = jobKey(user.getUserId() + itemOrder.getItem().getTitle(), String.valueOf(user.getUserId()));
+        return jobDetail.buildJobDetail(jobkey, newOrder.getOrderId(), newItemOrder);
     }
 
     private void connectAutoPay( Long orderId ){
@@ -89,7 +84,7 @@ public class SubscriptionJob implements Job {
 
         parameters.add("orderId", String.valueOf(orderId));
 
-        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080) // 호스트랑 포트는 나중에 변경해야한다.
+        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(9090) // 호스트랑 포트는 나중에 변경해야한다.
                 .path("/payments/subscription").queryParams(parameters).build().toUri();
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getForObject(uri, String.class);

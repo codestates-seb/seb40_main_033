@@ -10,6 +10,7 @@ import server.team33.order.service.ItemOrderService;
 import server.team33.order.service.OrderService;
 import server.team33.subscription.job.JobDetailService;
 import server.team33.subscription.trigger.TriggerService;
+import server.team33.user.entity.User;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -30,94 +31,88 @@ public class SubscriptionService {
 
 
     public void startSchedule( Long orderId, ItemOrder itemOrder ) throws SchedulerException{
-
-        JobKey jobkey = jobKey(String.valueOf(orderId) + itemOrder.getItemOrderId(), String.valueOf(orderId));
+        User user = getUser(orderId);
+        JobKey jobkey = jobKey(user.getUserId() + itemOrder.getItem().getTitle(), String.valueOf(user.getUserId()));
         JobDetail payDay = jobDetail.buildJobDetail(jobkey, orderId, itemOrder);
         Trigger lastTrigger = trigger.buildTrigger(jobkey, orderId, itemOrder);
         Date date = scheduler.scheduleJob(payDay, lastTrigger);
         log.warn("new scheduler = {}", date);
     }
 
+
     public void changePeriod( Long orderId, Integer period ) throws SchedulerException, InterruptedException{
 
         ItemOrder itemOrder = itemOrderService.setItemPeriod(orderId, period);
-        log.warn("주기변경후 반환된 itemOrder = {}", itemOrder.getPeriod());
+        log.info("changed period = {}", itemOrder.getPeriod());
 
-        payDirectly(orderId, period, itemOrder);
+        if(payDirectly(orderId, period, itemOrder)) return;
 
         ZonedDateTime paymentDay = itemOrder.getPaymentDay();
-        log.info("payment = {}", itemOrder.getPaymentDay());
-
         String nextDelivery = String.valueOf(paymentDay.plusDays(itemOrder.getPeriod()));
-
-        ItemOrder itemOrder1 = itemOrderService.setDeliveryInfo(orderId, paymentDay, nextDelivery);
         log.info("extend nextDelivery = {}", nextDelivery);
 
-        extendPeriod(orderId, itemOrder1);
+        ItemOrder updatedItemOrder = itemOrderService.setDeliveryInfo(orderId, paymentDay, nextDelivery);
+
+        extendPeriod(orderId, updatedItemOrder);
     }
 
-    private void payDirectly( Long orderId, Integer period, ItemOrder itemOrder ) throws SchedulerException{
-        boolean noMargin = itemOrder.getPaymentDay().plusDays(period).isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))); //바궈야진
-        log.warn("마진 = {}", noMargin);
+    private boolean payDirectly( Long orderId, Integer period, ItemOrder itemOrder ) throws SchedulerException{
+        boolean noMargin = itemOrder.getPaymentDay().plusSeconds(period).isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))); //바궈야진
+        log.info("margin = {}", noMargin);
 
         if(noMargin){
-            scheduler.deleteJob(jobKey(String.valueOf(orderId) + itemOrder.getItemOrderId(), String.valueOf(orderId)));
-            log.warn("스케쥴러 취소");
-            log.warn("스케쥴러 다시시작");
-            startSchedule(orderId, itemOrder);
+            log.info("directly pay");
+            resetSchedule(orderId, itemOrder);
+            return true;
         }
+        return false;
+    }
+
+    private void deleteSchedule( Long orderId, ItemOrder itemOrder ) throws SchedulerException{
+        log.info("delete schedule");
+        User user = getUser(orderId);
+        scheduler.deleteJob(jobKey(user.getUserId() + itemOrder.getItem().getTitle(), String.valueOf(user.getUserId())));
     }
 
     private void extendPeriod( Long orderId, ItemOrder itemOrder ) throws SchedulerException, InterruptedException{
-        log.warn("배달기한 늘릴 때 기한 = {}", itemOrder.getPeriod());
-
-        scheduler.deleteJob(jobKey(String.valueOf(orderId) + itemOrder.getItemOrderId(), String.valueOf(orderId)));
-
-        JobKey jobkey = jobKey(String.valueOf(orderId) + itemOrder.getItemOrderId(), String.valueOf(orderId));
-        JobDetail payDay = jobDetail.buildJobDetail(jobkey, orderId, itemOrder);
-        Trigger changeTrigger = trigger.changeTrigger(jobkey, orderId, itemOrder);
-
-        log.warn("구매시간 = {}", itemOrder.getPaymentDay());
-
-        Date date = scheduler.scheduleJob(payDay, changeTrigger);
-        log.warn(" extend scheduler = {}", date);
+        log.warn("extendPeriod = {}", itemOrder.getPeriod());
+        resetSchedule(orderId, itemOrder);
     }
+
 
     public void delayDelivery( Long orderId, Integer delay ) throws SchedulerException{
-
+        log.info("dealyDelivery");
         ItemOrder itemOrder = itemOrderService.delayDelivery(orderId, delay);
-        //실행일을 옮겨야됨.
-        scheduler.deleteJob(jobKey(String.valueOf(orderId) + itemOrder.getItemOrderId(), String.valueOf(orderId)));
-
-        JobKey jobkey = jobKey(String.valueOf(orderId) + itemOrder.getItemOrderId(), String.valueOf(orderId));
-        JobDetail payDay = jobDetail.buildJobDetail(jobkey, orderId, itemOrder);
-        Trigger changeTrigger = trigger.delayTrigger(jobkey, orderId, itemOrder);
-
-        Date date = scheduler.scheduleJob(payDay, changeTrigger);
-        log.warn(" extend scheduler = {}", date);
-
-        log.warn("구독 일단 정지 = {}", itemOrder.getItem().getTitle());
-//        connectUri(String.valueOf(itemOrder.getNextDelivery()));
+        resetSchedule(orderId, itemOrder);
     }
 
-    public void cancelScheduler( Long orderId, Long itemOrderId) throws SchedulerException{
-        ItemOrder itemOrder = getItemOrder(orderId, itemOrderId);
-        scheduler.deleteJob(jobKey(String.valueOf(orderId) + itemOrder.getItemOrderId(), String.valueOf(orderId)));
-        List<JobExecutionContext> currentlyExecutingJobs = scheduler.getCurrentlyExecutingJobs();
-        log.warn("잡 = {}",currentlyExecutingJobs.size());
+    public void cancelScheduler( Long orderId ) throws SchedulerException{
+        log.info("cancelScheduler");
+        ItemOrder itemOrder = getItemOrder(orderId);
+        deleteSchedule(orderId,itemOrder);
+
         orderService.cancelOrder(orderId);
-        log.warn("구독 취소 = {}", itemOrder.getItem().getTitle());
+        log.warn("canceled item title = {}", itemOrder.getItem().getTitle());
+    }
+    private void resetSchedule( Long orderId, ItemOrder itemOrder ) throws SchedulerException{
+        deleteSchedule(orderId, itemOrder);
+        startSchedule(orderId, itemOrder);
     }
 
     public List<ItemOrder> getItemOrders( Long orderId ){
         Order order = orderService.findOrder(orderId);
         return order.getItemOrders();
     }
-    public ItemOrder getItemOrder( Long orderId, Long itemOrderId ){
+
+    public ItemOrder getItemOrder( Long orderId ){
         Order order = orderService.findOrder(orderId);
         ItemOrder itemOrder = order.getItemOrders().get(0);
-        log.warn("아이템오더 아이진 = {}", itemOrder.getItemOrderId());
         return itemOrder;
+    }
+
+    public User getUser( Long orderId ){
+        Order order = orderService.findOrder(orderId);
+        return order.getUser();
     }
 
 }
