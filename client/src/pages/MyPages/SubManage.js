@@ -1,9 +1,22 @@
 // 정기구독관리
+import { useLocation, useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import SubManagementList from '../../components/Lists/MyPageLists/SubManagementList';
-import { usePost, useDelete, usePatch } from '../../hooks/useFetch';
+import { usePost, useDelete, usePatch, useGet } from '../../hooks/useFetch';
 
 function SubManage() {
+	const { pathname } = useLocation();
+
+	const { isLoading, isError, data, error } = useGet(
+		'https://jsonplaceholder.typicode.com/todos/1',
+		pathname,
+	);
+	console.log(data);
+
+	const { mutate, isError, data, error } = usePost(
+		'https://jsonplaceholder.typicode.com/todos/1',
+	);
+
 	const { mutate: patchMu, response: patchRes } = usePatch(
 		'https://jsonplaceholder.typicode.com/todos/1',
 	);
@@ -15,6 +28,12 @@ function SubManage() {
 
 	return (
 		<SubManageContainer>
+			<button
+				type="button"
+				onClick={() => mutate({ title: '테스트 하는데 뭐 문제 있는지?' })}
+			>
+				post
+			</button>
 			<button
 				type="button"
 				onClick={() => patchMu({ title: '테스트 하는데 뭐 문제 있는지?' })}
