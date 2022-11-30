@@ -29,15 +29,6 @@ export const fetchMoreInfo = async ({
 	전화번호,
 	이메일,
 }) => {
-	console.log('info', {
-		email: 이메일,
-		displayName: 닉네임,
-		realName: 이름,
-		address: 주소,
-		phone: 전화번호,
-		detailAddress: 상세주소,
-	});
-
 	const { data } = await axiosInstance.post('/users/more-info', {
 		email: 이메일,
 		displayName: 닉네임,
