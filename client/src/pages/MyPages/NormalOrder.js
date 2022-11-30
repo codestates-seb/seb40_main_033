@@ -31,7 +31,7 @@ function NormalOrder() {
 	);
 }
 
-const ListContainer = styled.div`
+const ListContainer = styled.main`
 	display: flex;
 	flex-direction: column;
 	align-items: center;

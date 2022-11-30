@@ -11,7 +11,7 @@ const customStyles = {
 		backgroundColor: 'rgba(172, 174, 187, 0.2)',
 	},
 	content: {
-		animation: 'modalFadeIn 0.4s ease-in-out',
+		animation: 'modalFadeIn 0.3s ease-in-out',
 		minWidth: '500px',
 		heigth: '384px',
 		display: 'flex',
@@ -46,16 +46,10 @@ function DefalutModal({
 	modalIsOpen,
 	setIsOpen,
 	path, // 모달 닫았을 때 이동할 경로
-	onClick, // 버튼에 넣고 싶은 onClick 함수
+	onClickPbtn, // 버튼에 넣고 싶은 onClick 함수
+	onClickLpbtn,
+	autoClose,
 }) {
-	// 모달 열었을 때 작동하는 함수 (필요 시 사용)
-	// const afterOpenModal = () => {
-	// 	// 예시: subtitle.style.color = 'red';
-	// 	Modal.style.transform = 'scale(1) rotateX(0deg)';
-	// 	// transform: scale(1) rotateX(0deg);
-	// 	Modal.style.transition = 'all 150ms ease-in';
-	// };
-
 	const navigate = useNavigate();
 
 	const closeModal = useCallback(() => {
@@ -65,10 +59,20 @@ function DefalutModal({
 		}
 	}, []);
 
+	// 모달 열었을 때 작동하는 함수 (필요 시 사용)
+	const afterOpenModal = () => {
+		if (autoClose) {
+			setTimeout(() => {
+				closeModal();
+			}, 1800);
+		}
+	};
+
 	return (
 		<Modal
 			isOpen={modalIsOpen}
-			// onAfterOpen={afterOpenModal}
+			closeTimeoutMS={500}
+			onAfterOpen={afterOpenModal}
 			onRequestClose={closeModal}
 			style={customStyles}
 			portalClassName="modal"
@@ -87,12 +91,15 @@ function DefalutModal({
 			{lpbtnTexts || pbtnTexts ? (
 				<BtnContainer>
 					{lpbtnTexts ? (
-						<LightPurpleButton fontSize="13px" onClick={onClick}>
+						<LightPurpleButton
+							fontSize="13px"
+							onClick={onClickLpbtn || closeModal}
+						>
 							{lpbtnTexts}
 						</LightPurpleButton>
 					) : null}
 					{pbtnTexts ? (
-						<PurpleButton fontSize="13px" onClick={closeModal}>
+						<PurpleButton fontSize="13px" onClick={onClickPbtn || closeModal}>
 							{pbtnTexts}
 						</PurpleButton>
 					) : null}

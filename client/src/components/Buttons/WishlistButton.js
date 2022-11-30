@@ -3,7 +3,7 @@ import { FaHeart } from 'react-icons/fa';
 import { useCallback, useState } from 'react';
 
 function WishlistButton({ isChecked }) {
-	const [isWanted, setIsWanted] = useState({ isChecked });
+	const [isWanted, setIsWanted] = useState(isChecked);
 	const handleClick = useCallback(() => {
 		setIsWanted(!isWanted);
 	}, [isWanted]);

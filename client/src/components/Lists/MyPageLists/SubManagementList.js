@@ -1,175 +1,193 @@
 import styled from 'styled-components';
 import { useCallback, useState } from 'react';
-import { TfiClose } from 'react-icons/tfi';
+import { IoMdClose } from 'react-icons/io';
+import { toast } from 'react-toastify';
 import CounterBtn from '../../Buttons/CounterButton';
 import { DayControlTab } from '../../Tabs/TabButtons';
 import Price from '../../Etc/Price';
+import { KrDate } from '../../Etc/ListDate';
+import CancelModal from '../../Modals/CancelModal';
 
 function SubManagementList() {
 	const price = 6000;
 	const [quantity, setQuantity] = useState(1);
+	const [openCancelModal, setOpenCancelModal] = useState(false);
 
 	const onPlusClick = useCallback(() => {
 		setQuantity(quantity + 1);
-	});
+		toast.success('수량이 변경되었습니다.'); // 실제 요청에 붙이셔야 할 것 같아요~ 아마도
+	}, [quantity]);
+
 	const onMinusClick = useCallback(() => {
 		setQuantity(quantity - 1);
-	});
+		toast.success('수량이 변경되었습니다.'); // 실제 요청에 붙이셔야 할 것 같아요~ 아마도
+	}, [quantity]);
+
+	const handleModalOpen = useCallback(() => {
+		setOpenCancelModal(true);
+	}, []);
+
+	// const handleCancel = useCallback(() => {
+	// 	console.log('취소를 요청하는 함수를 CancelModal에 전달해주세요');
+	// }, []);
 
 	return (
 		<Box>
-			<Wrap>
-				<SubBox>
-					<SubWrap>
-						<Text>구독 주기</Text>
-						<DayControlTab />
-					</SubWrap>
-				</SubBox>
-
-				<MainBox>
-					<Image> img </Image>
-					<InformationForm>
-						<Brand>California Gold Nutrition</Brand>
-						<Name>오메가3 프리미엄 피쉬 오일</Name>
+			<CancelModal
+				openCancelModal={openCancelModal}
+				setOpenCancelModal={setOpenCancelModal}
+				target="정기 구독"
+			/>
+			<SubContainer>
+				<Label>구독 주기</Label>
+				<DayControlTab />
+				<IoMdClose onClick={handleModalOpen} />
+			</SubContainer>
+			<ListContainer>
+				<Image
+					src="https://wiselycompany.cafe24.com/web/product/medium/202211/46763d93d5fd373356268c62b05f5560.jpg"
+					alt="상품 이미지"
+				/>
+				<RightContainer>
+					<InfoContainer>
+						<Info className="brand"> California Gold Nutrition</Info>
+						<Info className="name">오메가3 프리미엄 피쉬 오일</Info>
 						<Price nowPrice={price} />
-					</InformationForm>
-					<QuantityForm>
-						<Quantity>수량</Quantity>
-						<CounterBtn
-							quantity={quantity}
-							onPlusClick={onPlusClick}
-							onMinusClick={onMinusClick}
-						/>
+					</InfoContainer>
+					<BottomContainer>
+						<Info className="notice">
+							다음 배송일은 <KrDate date="2023-01-30T08:24:32.060555" /> 입니다.
+						</Info>
+						<QuantityContainer>
+							<Label>수량</Label>
+							<CounterBtn
+								quantity={quantity}
+								onPlusClick={onPlusClick}
+								onMinusClick={onMinusClick}
+							/>
+						</QuantityContainer>
 						<Price // 가격 * 수량
 							nowPrice={price}
 							quantity={quantity} // 수량!
 							fontSize="20px"
 							fontWeight="extraBold"
 						/>
-					</QuantityForm>
-				</MainBox>
-			</Wrap>
-			<DeleteBtn>
-				<TfiClose />
-			</DeleteBtn>
+					</BottomContainer>
+				</RightContainer>
+			</ListContainer>
 		</Box>
 	);
 }
 
 const Box = styled.div`
+	border-bottom: 1px solid #f1f1f1;
 	background-color: white;
 	width: 864px;
-	height: 274px;
+	padding: 30px 25px 35px 25px;
 	display: flex;
 	align-items: center;
-`;
-
-const CheckBox = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-`;
-
-const Check = styled.input`
-	border: 1px solid var(--gray-400);
-	margin: auto;
-	width: 13px;
-	height: 13px;
-`;
-
-const Wrap = styled.div`
-	width: 850px;
-	height: 230px;
 	flex-direction: column;
+`;
+
+const SubContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-`;
-
-const SubBox = styled.div`
-	width: 849px;
-	height: 90px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-
-const SubWrap = styled.div`
-	margin-top: 10px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 50px;
-`;
-
-const Text = styled.div`
-	font-size: 16px;
-	margin-right: 10px;
-	color: var(--gray-300);
-`;
-
-const MainBox = styled.div`
-	margin-left: 29px;
-	height: 163px;
-	display: flex;
-	align-items: center;
-	font-size: 16px;
-`;
-
-const Image = styled.div`
-	border: 1px solid green;
-	width: 163px;
-	height: 163px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-
-const InformationForm = styled.div`
-	width: 254px;
-	height: 163px;
-	flex-direction: column;
-	display: flex;
-	justify-content: space-between;
-	padding: 44px 26px;
-`;
-
-const Brand = styled.div`
-	color: var(--green-200);
-	font-weight: var(--bold);
-`;
-
-const Name = styled.div`
-	margin-bottom: 25px;
-	color: var(--gray-600);
-	font-weight: var(--bold);
-`;
-
-const QuantityForm = styled.div`
-	width: 402px;
-	height: 32px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0px 50px;
-	margin-top: 140px;
-`;
-
-const Quantity = styled.div`
-	margin-left: 15px;
-	color: var(--gray-500);
-	font-weight: var(--regular);
-`;
-
-const DeleteBtn = styled.button`
-	font-size: 11px;
-	border: none;
-	background-color: white;
-	color: var(--gray-400);
+	margin-bottom: 30px;
 	position: relative;
-	right: 35px;
-	bottom: 116px;
-	cursor: pointer;
+	width: 100%;
+
+	// X 아이콘
+	& > :last-child {
+		position: absolute;
+		top: -6px;
+		right: -4px;
+		font-size: 16px;
+		cursor: pointer;
+		* {
+			color: var(--gray-300);
+		}
+	}
+`;
+
+const Label = styled.label`
+	font-size: 16px;
+	margin-right: 22px;
+`;
+
+const Info = styled.div`
+	font-size: 16px;
+
+	&.brand {
+		color: var(--green-200);
+		font-weight: var(--bold);
+		margin-bottom: 10px;
+	}
+
+	&.name {
+		color: var(--gray-600);
+		font-weight: var(--bold);
+	}
+
+	&.notice {
+		color: var(--gray-400);
+		font-size: 13px;
+		font-weight: var(--regular);
+	}
+`;
+
+const ListContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	height: 160px; // 임시
+`;
+
+const Image = styled.img`
+	width: 160px;
+	height: 160px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const RightContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding-top: 10px;
+	margin-left: 30px;
+`;
+
+const InfoContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	& > :nth-child(3) {
+		margin: 20px 0 22px 0; // 가격 컴포넌트
+	}
+`;
+
+const BottomContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	position: relative;
+
+	& > :last-child {
+		margin-right: 10px;
+	}
+`;
+
+const QuantityContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: absolute;
+	right: 160px;
 `;
 
 export default SubManagementList;

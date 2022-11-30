@@ -1,5 +1,5 @@
 import DefalutModal from './DefalutModal';
-import PayList from '../Lists/MyPageLists/PayList';
+import PayList from '../Lists/PayList';
 import UpdateTalkForm from '../Forms/UpdateTalkForm';
 
 // 토크 수정 모달

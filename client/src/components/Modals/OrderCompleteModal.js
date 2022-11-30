@@ -13,7 +13,12 @@ import DefalutModal from './DefalutModal';
 	ex)) <LetterButton onClick={openModal}>버튼</LetterButton>
 */
 
-function OrderCompleteModal({ setIsOpen, modalIsOpen }) {
+function OrderCompleteModal({
+	setIsOpen,
+	modalIsOpen,
+	onClickPbtn,
+	onClickLpbtn,
+}) {
 	const data = {
 		title: 'Order Complete',
 		contents: '주문이 완료되었습니다!',
@@ -29,6 +34,8 @@ function OrderCompleteModal({ setIsOpen, modalIsOpen }) {
 			lpbtnTexts={data.lpbtnTexts}
 			setIsOpen={setIsOpen}
 			modalIsOpen={modalIsOpen}
+			onClickPbtn={onClickPbtn}
+			onClickLpbtn={onClickLpbtn}
 		/>
 	);
 }

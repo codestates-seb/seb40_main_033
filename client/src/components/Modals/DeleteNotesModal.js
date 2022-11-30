@@ -13,22 +13,30 @@ import DefalutModal from './DefalutModal';
 	ex)) <LetterButton onClick={openModal}>버튼</LetterButton>
 */
 
-function GoodbyeModal({ setIsOpen, modalIsOpen }) {
+function DeleteNotesModal({
+	openDeleteModal,
+	setOpenDeleteModal,
+	handleDelete,
+}) {
 	const data = {
-		title: 'Good bye',
-		contents: '그동안 감사했습니다.\n 더 나은 서비스로 찾아뵙겠습니다.',
+		title: '작성글 삭제',
+		contents: '정말 삭제하시겠습니까?',
+		lpbtnTexts: '예',
+		pbtnTexts: '아니오',
 	};
 
 	return (
 		<DefalutModal
 			title={data.title}
 			contents={data.contents}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
-			autoClose
-			path="/"
+			subContents={data.subContents}
+			lpbtnTexts={data.lpbtnTexts}
+			pbtnTexts={data.pbtnTexts}
+			setIsOpen={setOpenDeleteModal}
+			modalIsOpen={openDeleteModal}
+			onClickLpbtn={handleDelete}
 		/>
 	);
 }
 
-export default GoodbyeModal;
+export default DeleteNotesModal;

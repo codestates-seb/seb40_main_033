@@ -34,16 +34,18 @@ const MinusBtn = styled.button`
 	justify-content: center;
 	align-items: center;
 `;
+
 const NumDisplay = styled.div`
-	font-size: 20px;
+	font-size: 16px;
 	text-align: center;
 	width: 32px;
 	height: 32px;
 	line-height: 32px;
 	border-top: 0.5px solid var(--gray-200);
 	border-bottom: 0.5px solid var(--gray-200);
-	cursor: pointer;
+	cursor: default;
 `;
+
 const PlusBtn = styled.button`
 	background-color: #ffffff;
 	border: 0.5px solid var(--gray-200);

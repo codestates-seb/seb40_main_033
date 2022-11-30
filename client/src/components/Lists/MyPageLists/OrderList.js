@@ -3,7 +3,7 @@ import { IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
-import ListDate from '../../Etc/ListDate';
+import { DotDate } from '../../Etc/ListDate';
 import Price from '../../Etc/Price';
 
 function OrderList({ list }) {
@@ -17,17 +17,17 @@ function OrderList({ list }) {
 		<Box>
 			<Image src={list.itemOrders[0].item.thumbnail} alt="상품 이미지" />
 			<MainContainer>
-				<InformationForm>
+				<InfoContainer>
 					<ShoppingInfo>
 						<DeliveryStatus>{list.orderStatus}</DeliveryStatus>
-						<ListDate date={list.createdAt} />
+						<DotDate date={list.createdAt} />
 					</ShoppingInfo>
 					<Name>
 						{list.itemOrders[0].item.brand}, {list.itemOrders[0].item.title}{' '}
 						{list.itemOrders.length > 1 && `외 ${list.itemOrders.length - 1}개`}
 					</Name>
 					<Price nowPrice={list.itemOrders[0].item.price} isTotal />
-				</InformationForm>
+				</InfoContainer>
 				<BtnContainer>
 					<IconBtnContainer onClick={handleDetailBtnClick}>
 						<LetterButtonColor
@@ -64,7 +64,7 @@ function OrderList({ list }) {
 }
 
 const Box = styled.div`
-	border-bottom: 1px solid rgb(235, 235, 235);
+	border-bottom: 1px solid #f1f1f1;
 	background-color: white;
 	width: 864px;
 	height: 210px;
@@ -87,8 +87,7 @@ const Image = styled.img`
 	align-items: center;
 `;
 
-const InformationForm = styled.div`
-	width: 450px;
+const InfoContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
