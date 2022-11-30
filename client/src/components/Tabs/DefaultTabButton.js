@@ -30,10 +30,11 @@ function DefaultTabButton({
 	const handleBtnClick = useCallback((e) => {
 		const index = Number(e.target.id);
 		setCurrentTab(index);
+
 		// 선택된 Tab Menu에 따라 하이라이트가 이동
 		const left = menuEl.current.children[index].offsetLeft;
 		const width = menuEl.current.children[index].offsetWidth;
-		console.log(`left는 ${left}, width는 ${width}`);
+
 		switch (index) {
 			case 0:
 				setHighlight({
@@ -75,6 +76,11 @@ function DefaultTabButton({
 
 	return (
 		<TabContainer toggle={toggle}>
+			<Highlight
+				left={highlight.left}
+				width={highlight.width}
+				toggle={toggle}
+			/>
 			<TabMenu ref={menuEl} fontSize={fontSize}>
 				{menuArr.map(({ name, index }) => (
 					<li
@@ -97,11 +103,6 @@ function DefaultTabButton({
 					</li>
 				)}
 			</TabMenu>
-			<Highlight
-				left={highlight.left}
-				width={highlight.width}
-				toggle={toggle}
-			/>
 		</TabContainer>
 	);
 }
@@ -124,7 +125,6 @@ const TabMenu = styled.ul`
 	align-items: center;
 	list-style: none;
 	cursor: pointer;
-	z-index: 1;
 	position: relative;
 
 	.submenu {
@@ -161,7 +161,6 @@ const Highlight = styled.span`
 	bottom: 6px;
 	transition: 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 	left: ${(props) => props.left + 8}px;
-	/* transform: translateX(${({ left }) => left}px); */
 	border-radius: 50px;
 	box-shadow: ${({ toggle }) => (toggle ? 'inset' : '')} 0px 1px 8px
 		rgba(0, 0, 0, 0.07);
