@@ -21,10 +21,12 @@ import { UserInfo } from './pages/MyPages/UserInfo';
 import WishList from './pages/MyPages/WishList';
 import SubManage from './pages/MyPages/SubManage';
 import Cart from './pages/Cart';
+import ScrollToTop from './utils/ScrollToTop';
 
 function Router() {
 	return (
 		<BrowserRouter>
+			<ScrollToTop />
 			<Routes>
 				<Route element={<Layout />}>
 					<Route index element={<Home />} />

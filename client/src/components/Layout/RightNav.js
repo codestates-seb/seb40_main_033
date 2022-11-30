@@ -1,35 +1,58 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import {
 	AiOutlineUser,
 	AiOutlineSearch,
 	AiOutlineShoppingCart,
 } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function RightNav() {
-	const [click, setClick] = useState(false);
+	const [openSearch, setOpenSearch] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
+	const navigate = useNavigate();
 
-	const clickBtn = () => {
-		setClick(!click);
-	};
+	// 검색창 오픈
+	const handleSearchOpen = useCallback(() => {
+		setOpenSearch(!openSearch);
+	}, [openSearch]);
 
-	const handleBtnOpen = () => {
+	// 임시 페이지 이동 관련 함수
+	const handleBtnOpen = useCallback(() => {
 		setIsOpen(!isOpen);
-	};
+	}, [isOpen]);
+
+	const handleSearch = useCallback((e) => {
+		if (e.key === 'Enter') {
+			if (e.target.value === '') {
+				navigate('/search');
+			} else {
+				navigate(`/search?keyword=${e.target.value.replaceAll(' ', '_')}`);
+			}
+			setOpenSearch(false);
+		}
+	}, []);
 
 	return (
 		<Container>
 			<Nav>
 				<IconContainer>
-					<AiOutlineUser />
-					{click ? <SearchBar placeholder="검색어를 입력하세요" /> : null}
+					<Link to="/mypage">
+						<AiOutlineUser />
+					</Link>
 					<AiOutlineSearch
-						className={click ? 'search' : null}
-						onClick={clickBtn}
+						className={openSearch && 'search'}
+						onClick={handleSearchOpen}
 					/>
-					<AiOutlineShoppingCart />
+					{openSearch && (
+						<SearchBar
+							onKeyDown={handleSearch}
+							placeholder="검색어 입력 후 엔터를 눌러주세요."
+						/>
+					)}
+					<Link to="/cart/normal">
+						<AiOutlineShoppingCart />
+					</Link>
 				</IconContainer>
 				<button className="temp-btn" type="button" onClick={handleBtnOpen}>
 					🔵
@@ -105,9 +128,6 @@ function RightNav() {
 		</Container>
 	);
 }
-/* animation: ${listHover} 0.3s ease-in-out; */
-/* animation: ${turn} 0.3s ease-in-out; */
-/* animation: ${showSearchBar} 0.3s ease-in-out; */
 
 const Container = styled.div`
 	position: relative;
@@ -121,7 +141,6 @@ const Nav = styled.nav`
 	width: 100px;
 	display: flex;
 	flex-direction: column;
-	/* justify-content: flex-end; */
 	align-items: flex-end;
 
 	.temp-btn {
@@ -132,73 +151,41 @@ const Nav = styled.nav`
 	}
 `;
 
-// const showSearchBar = `
-// 	from{
-// 		opacity: 0;
-// 	}
-// 	to{
-// 		opacity: 100;
-// 	}
-// `;
-
-// const MyPageIcon = styled.div`
-// 	position: relative;
-// `;
-
-// const Box = styled.div`
-// 	/* margin-right: 230px; */
-// 	/* width: 248px; */
-// 	/* height: 47.5px; */
-
-// 	margin: 7px 0;
-// 	display: flex;
-// 	/* justify-content: flex-end; */
-// 	align-items: center;
-// 	/* stroke-width: 10;
-// 	color: var(--green-100);
-// 	font-size: 24px; */
-// 	position: absolute;
-// 	/* right: 270px; */
-// 	/* top: 54px; */
-// 	/* right: 5px; */
-// 	svg {
-// 		display: flex;
-// 		align-items: center;
-// 		position: absolute;
-// 		border: none;
-// 		background: none;
-// 		stroke-width: 10;
-// 		color: var(--green-100);
-// 		font-size: 24px;
-// 		cursor: pointer;
-// 		/* z-index: 4; */
-// 		left: 260px;
-// 		z-index: 999;
-// 	}
-// `;
+const showSearchBar = keyframes`
+	from{
+		opacity: 0;
+		width: 10px;
+	}
+	to{
+		width: 250px;
+	}
+`;
 
 const SearchBar = styled.input`
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	border: 1px solid var(--green-100);
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.7);
 	border-radius: 50px;
-	width: 284px;
-	padding: 0 2;
+	width: 250px;
+	font-size: 14px;
+	padding: 0 40px 0 20px;
 	height: 40px;
-	text-indent: 24px;
 	position: absolute;
-	right: -10px;
-	top: 61px;
+	right: -12px;
+	top: 66px;
+	animation: ${showSearchBar} 0.25s ease-in-out;
 
 	:focus {
-		outline: none;
+		outline: 0.8px solid var(--green-100);
+		background-color: white;
 	}
+
 	::placeholder {
 		color: var(--gray-300);
-		text-indent: 24px;
-		text-rendering: 24px;
+		text-align: center;
+		font-size: 12.5px;
 	}
 `;
 
@@ -208,12 +195,27 @@ const IconContainer = styled.li`
 	align-items: flex-end;
 	-webkit-user-select: none;
 	user-select: none;
+	position: relative;
 
+	// 유저, 카트 아이콘
+	& > * svg {
+		cursor: pointer;
+		margin: 16px 0;
+		font-size: 24px;
+
+		:hover {
+			* {
+				color: var(--green-100);
+			}
+		}
+	}
+
+	// 서치 아이콘
 	& > svg {
 		cursor: pointer;
 		margin: 15px 0;
-		position: relative;
 		font-size: 24px;
+		z-index: 1;
 
 		:hover {
 			* {
