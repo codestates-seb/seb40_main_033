@@ -17,7 +17,7 @@ function SubManage() {
 
 export default SubManage;
 
-const SubManageContainer = styled.div`
+const SubManageContainer = styled.main`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
