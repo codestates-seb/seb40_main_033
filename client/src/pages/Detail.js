@@ -1,17 +1,26 @@
-import { useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useQueryClient, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import Summary from '../components/ItemSummary/Summary';
 import DetailReviewList from '../components/Lists/DetailReviewList';
 import TalkForm from '../components/Forms/TalkForm';
-import ReviewForm from '../components/Forms/ReviewForm';
+import DetailTalkList from '../components/Lists/DetailTalkList';
 
 function Detail() {
-	const queryClient = useQueryClient();
+	const content1 = `요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이 덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!! 팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이
+	덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!!
+	팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이
+	새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이
+	덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!!
+	팀원들아 나만 믿어~~~! ^^`;
 
-	const deliveryInfo = `
-	배송 방법 : 택배 배송
+	const content2 = `
+	이 영양제 넘 맛 없어요 효과도 없어요!!`;
+
+	const content3 = `
+	내공냠냠`;
+
+	const deliveryInfo = `배송 방법 : 택배 배송
 	배송 지역 : 전국
 	배송 비용 : 무료
 	배송 예정일 : 평일 기준 출고 후 1~2일 소요 (관할 지역 택배사 사정에 따라 추가 소요될 수 있음)
@@ -22,8 +31,7 @@ function Detail() {
 	평일 낮 12시 이전 결제 시 : 당일 출고 (주말 및 공휴일 제외)
 	평일 낮 12시 이후 결제 시 : 다음날 출고 (주말 및 공휴일 제외)`;
 
-	const returnInfo = `
-	교환/반품 안내
+	const returnInfo = `교환/반품 안내
 	- 단순 변심에 의한 교환 / 반품은 제품 수량 후 7일까지 가능하며 왕복 배송비는 고객부담입니다.
 	- 상세주소 미입력, 주소지 오기재 등으로 인해 상품이 반송될 경우 왕복 배송비는 고객 부담입니다.
 	- 고객 사유로 인한 교환/반품/반송 시 왕복 배송비 5,000원이 발생하며 제주 및 도서산간 지역의 경우 실제 왕복 배송비가 부과됩니다.
@@ -57,6 +65,10 @@ function Detail() {
 						/>
 						<Image src={item.descriptionImage} alt="상품 상세사진" />
 						<InfoContainer>
+							<InfoTitle>상품정보</InfoTitle>
+							<InfoContent>복용방법이랑 보관방법</InfoContent>
+						</InfoContainer>
+						<InfoContainer>
 							<InfoTitle>배송정보</InfoTitle>
 							<InfoContent>{deliveryInfo}</InfoContent>
 						</InfoContainer>
@@ -64,23 +76,23 @@ function Detail() {
 							<InfoTitle>교환 및 반품정보</InfoTitle>
 							<InfoContent>{returnInfo}</InfoContent>
 						</InfoContainer>
-						<NoteContainer>
+						<Notes>
 							<InfoTitle>Review</InfoTitle>
 							<ListsContainer>
-								<DetailReviewList />
-								<DetailReviewList />
-								<DetailReviewList />
+								<DetailReviewList content={content2} />
+								<DetailReviewList content={content1} />
+								<DetailReviewList content={content3} />
 							</ListsContainer>
-						</NoteContainer>
-						<NoteContainer>
+						</Notes>
+						<Notes>
 							<InfoTitle>Talk</InfoTitle>
-							<ListsContainer>
-								<TalkForm />
-								<DetailReviewList />
-								<DetailReviewList />
-								<DetailReviewList />
+							<TalkForm />
+							<ListsContainer className="talk">
+								<DetailTalkList />
+								<DetailTalkList isReply />
+								<DetailTalkList />
 							</ListsContainer>
-						</NoteContainer>
+						</Notes>
 					</Contents>
 					<SummaryContainer>
 						<Summary
@@ -102,15 +114,12 @@ function Detail() {
 const DetailContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
-	/* flex-direction: column; */
-	/* align-items: center; */
 	width: 100%;
-	/* height: 2000px; */
 	position: relative;
 `;
 
 const SummaryContainer = styled.div`
-	width: 40%;
+	width: 45%;
 	display: flex;
 	justify-content: center;
 	position: relative;
@@ -118,9 +127,6 @@ const SummaryContainer = styled.div`
 
 const Image = styled.img`
 	width: 100%;
-	/* width: 572px; */
-	/* width: 50%px;
-	height: 510px; */
 	&.thumbnail {
 		width: 570px;
 		margin-bottom: 120px;
@@ -128,30 +134,16 @@ const Image = styled.img`
 `;
 
 const Contents = styled.div`
-	width: 60%;
+	width: 55%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin-bottom: 50px;
-	/* justify-content: center; */
 `;
-// const SummaryContainer = styled.div`
-// 	position: relative;
-// `;
-
-// const ItemContainer = styled.div`
-// 	display: flex;
-// 	flex-direction: column;
-// 	border-top: 1px solid #f1f1f1;
-// 	padding: 50px 0;
-// 	width: 100%;
-// `;
 
 const InfoContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	/* border-top: 1px solid #f1f1f1; */
-	/* padding-top: 100px; */
 	width: 100%;
 	margin-top: 150px;
 `;
@@ -160,23 +152,23 @@ const InfoTitle = styled.h2`
 	display: flex;
 	font-size: 20px;
 	padding-bottom: 20px;
+	margin-bottom: 30px;
 	border-bottom: 1px solid #f1f1f1;
-	/* color: var(--purple-300); */
+	width: 100%;
+	align-self: start;
 `;
 
 const InfoContent = styled.pre`
-	/* display: flex; */
-	/* width: 100%; */
 	white-space: pre-line;
 	font-size: 15px;
 	line-height: 1.5;
 	color: var(--gray-400);
 `;
 
-const NoteContainer = styled.div`
+const Notes = styled.div`
 	display: flex;
 	flex-direction: column;
-	/* border-top: 1px solid #f1f1f1; */
+	align-items: center;
 	padding-top: 70px;
 	width: 100%;
 	margin-top: 100px;
@@ -186,6 +178,15 @@ const ListsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	width: 100%;
+
+	&.talk {
+		> :nth-child(1) {
+			margin-top: 40px;
+		}
+	}
 `;
+
+const NoNote = styled.div``; // 작성글이 없을 경우
 
 export default Detail;
