@@ -1,14 +1,15 @@
 import styled, { keyframes } from 'styled-components';
 import { HiOutlineEye } from 'react-icons/hi';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { BiBone } from 'react-icons/bi';
 import { GrPowerCycle } from 'react-icons/gr';
 import { RiHeartAddLine } from 'react-icons/ri';
 import { AiOutlinePlusCircle, AiOutlineThunderbolt } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 import { Skin, Brain, Intestine, TempLogo, Liver } from '../../assets/Icons';
 
 function LeftNav() {
-	const [isClicked, setIsClicked] = useState(false);
+	const [openCategories, setOpenCategories] = useState(false);
 	const [hoverTarget, setHoverTarget] = useState('');
 	const categories = [
 		'눈 건강',
@@ -36,39 +37,50 @@ function LeftNav() {
 		<AiOutlinePlusCircle className="small bold-stroke" key="10-icons" />,
 	];
 
-	const handleBtnClick = () => {
-		setIsClicked(!isClicked);
-	};
+	const handleCategoriesOpen = useCallback(() => {
+		setOpenCategories(!openCategories);
+	}, [openCategories]);
 
-	const handleBtnHover = (e) => {
+	// 호버 시 아이콘이 나오도록
+	const handleBtnHover = useCallback((e) => {
 		setHoverTarget(e.target.innerText);
-	};
+	}, []);
+
+	// 마우스가 카테고리를 떠났을 때 hoverTarget 초기화
+	const handleBtnLeave = useCallback(() => {
+		setHoverTarget('');
+	}, []);
 
 	// TempLogo는 로고 자리 확인용 임시 아이콘
 	return (
 		<Container>
 			<Nav>
-				<TempLogo />
-				<Hamburger onClick={handleBtnClick}>
-					<div className={isClicked ? 'bar1' : null} />
-					<div className={isClicked ? 'bar2' : null} />
-					<div className={isClicked ? 'bar3' : null} />
+				<Link to="/">
+					<TempLogo />
+				</Link>
+				<Hamburger onClick={handleCategoriesOpen}>
+					<div className={openCategories ? 'bar1' : null} />
+					<div className={openCategories ? 'bar2' : null} />
+					<div className={openCategories ? 'bar3' : null} />
 				</Hamburger>
-				{isClicked ? (
+				{openCategories && (
 					<CategoryContainer>
 						{categories.map((el, i) => (
-							<ListContainer
+							<Link
+								to={`/list?categoryName=${categories[i].replaceAll(' ', '_')}`}
 								key={`${i.toString()}-${el}`}
-								onMouseEnter={handleBtnHover}
-								onMouseLeave={() => setHoverTarget('')}
-								className={`list-${i}`}
 							>
-								{hoverTarget === el ? icons[i] : null}
-								<Category>{el}</Category>
-							</ListContainer>
+								<ListContainer
+									onMouseEnter={handleBtnHover}
+									onMouseLeave={handleBtnLeave}
+								>
+									{hoverTarget === el && icons[i]}
+									<Category>{el}</Category>
+								</ListContainer>
+							</Link>
 						))}
 					</CategoryContainer>
-				) : null}
+				)}
 			</Nav>
 		</Container>
 	);
@@ -93,8 +105,8 @@ const openList = keyframes`
 		top: -20px;
 	}
 	100% {
-	top: 0;
-	opacity: 100%
+		top: 0;
+		opacity: 100%;
 	}
 `;
 
@@ -113,10 +125,12 @@ export const listHover = keyframes`
 	0% {
 		opacity: 0;
 		top: -10px;
+		pointer-events: none;
 	}
 	100% {
-	top: 0;
-	opacity: 100%
+		top: 0;
+		opacity: 100%;
+		pointer-events: none;
 	}
 `;
 
@@ -159,6 +173,7 @@ const ListContainer = styled.li`
 		margin: 10px 5px 10px 0;
 		font-size: 27px;
 		animation: ${turn} 0.3s ease-in-out;
+		pointer-events: none;
 	}
 
 	.small {
@@ -183,6 +198,8 @@ const Category = styled.div`
 	color: var(--purple-200);
 	margin: 20px 0;
 	font-weight: var(--extraBold);
+	font-size: 13.6px;
+	white-space: nowrap;
 `;
 
 const Hamburger = styled.div`
