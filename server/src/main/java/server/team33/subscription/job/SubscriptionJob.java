@@ -58,6 +58,12 @@ public class SubscriptionJob implements Job {
         Order newOrder = orderService.deepCopy(order);
         ItemOrder newItemOrder  = itemOrderService.itemOrderCopy(orderId, newOrder);
 
+        try{
+            Thread.sleep(9000);
+        } catch(InterruptedException e){
+            throw new RuntimeException(e);
+        }
+
         connectAutoPay(newOrder.getOrderId());
 
         try{

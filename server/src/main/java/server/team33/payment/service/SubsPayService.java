@@ -1,7 +1,5 @@
 package server.team33.payment.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -12,10 +10,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import server.team33.order.entity.Order;
 import server.team33.order.service.OrderService;
-import server.team33.payment.dto.BillingKeyDto;
 import server.team33.payment.dto.KakaoPayApproveDto;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -53,20 +48,6 @@ public class SubsPayService {
         return approveResponse;
     }
 
-    public BillingKeyDto.Response getBillingKey( String authKey, String customerKey ) throws IOException, InterruptedException, JsonProcessingException{
-
-        BillingKeyDto dto = BillingKeyDto.builder().customerKey(customerKey).auth(authKey).build();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String value = objectMapper.writeValueAsString(dto);
-
-        HttpEntity<String> request = new HttpEntity<>(value, getTossHeader());
-        RestTemplate restTemplate = new RestTemplate();
-        String uri = "https://api.tosspayments.com/v1/billing/authorizations/issue";
-        BillingKeyDto.Response response = restTemplate.postForObject(uri, request, BillingKeyDto.Response.class);
-        return response;
-    }
-
     private MultiValueMap<String, String> getRequestParams( int totalAmount, int quantity, String item_name, Long order_Id, String sid ){ //TODO: 파라미터 추가
 
         parameters.add("sid", sid);
@@ -93,10 +74,4 @@ public class SubsPayService {
         return httpHeaders;
     }
 
-    private HttpHeaders getTossHeader(){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Authorization", "Basic dGVzdF9za196WExrS0V5cE5BcldtbzUwblgzbG1lYXhZRzVSOg==");
-        httpHeaders.set("Content-type", "application/json");
-        return httpHeaders;
-    }
 }

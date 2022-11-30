@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class KakaoPayApproveDto {
+
     private String aid;
     private String tid;
     private String cid;

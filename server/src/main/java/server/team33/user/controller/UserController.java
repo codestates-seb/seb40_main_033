@@ -53,6 +53,9 @@ public class UserController {
     @GetMapping
     public ResponseEntity getUserInfo(){
         User loginUser = userService.getLoginUser();
+        if(loginUser.getProvider() != null){
+
+        }
         UserDto.Response userInfo = mapper.userToDto(loginUser, HttpMethod.GET);
         return new ResponseEntity<>(userInfo, HttpStatus.ACCEPTED);
     }

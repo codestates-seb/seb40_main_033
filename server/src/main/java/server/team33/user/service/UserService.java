@@ -7,9 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 import server.team33.cart.entity.Cart;
 import server.team33.cart.repository.CartRepository;
 import server.team33.exception.bussiness.BusinessLogicException;
@@ -23,7 +20,6 @@ import server.team33.user.repository.UserRepository;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -51,7 +47,6 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-
 
     public User deleteUser(){
         User loginUser = getLoginUser();
@@ -98,16 +93,10 @@ public class UserService {
         String accessToken = "Bearer " + s;
         String refreshToken = "Bearer " + r;
 
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("access_token",accessToken);
-        queryParams.add("refresh_token",refreshToken);
-        log.warn("dfdfdf = {}",queryParams);
+        response.setHeader("Authorization", accessToken);
+        response.setHeader("Refresh",refreshToken);
 
-
-        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(8080) //TODO 호스트랑 포트는 나중에 변경해야한다.
-                .path("/testsss").queryParams(queryParams).build().toUri();
-
-        response.sendRedirect(uri.toString());
+        response.getWriter().write("추가 정보 기입 완료");
     }
     private void createRole( User user ){
         List<String> roles = authUtils.createRoles();
