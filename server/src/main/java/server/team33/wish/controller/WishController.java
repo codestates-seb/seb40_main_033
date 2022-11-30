@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import server.team33.item.mapper.ItemMapper;
 import server.team33.response.MultiResponseDto;
 import server.team33.response.SingleResponseDto;
 import server.team33.user.service.UserService;
@@ -31,10 +32,12 @@ public class WishController {
     private final UserService userService;
     private final WishService wishService;
 
+    private final ItemMapper itemMapper;
+
 
     @PostMapping("/{item-id}") // 로그인한 유저의 찜하기 기능
     public ResponseEntity wishItem(@PathVariable("item-id") @Positive @NotNull long itemId,
-                                   @RequestParam(value = "wish", defaultValue = "0") int wish) {
+                                   @RequestParam(value = "wish", defaultValue = "1") int wish) {
 
         Wish wishItem = wishService.wishItem(itemId, wish);
 
@@ -50,7 +53,7 @@ public class WishController {
         Page<Wish> pageWishes = wishService.findWishes(userService.getLoginUser().getUserId(), page-1, size, sort);
         List<Wish> wishes = pageWishes.getContent();
 
-        return new ResponseEntity<>(new MultiResponseDto<>(wishMapper.wishesToWishItemResponse(wishes), pageWishes), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(wishMapper.wishesToWishItemResponse(wishes, itemMapper), pageWishes), HttpStatus.OK);
     }
 
 
