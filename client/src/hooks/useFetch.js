@@ -13,7 +13,7 @@ export const useGet = (url, keyValue) => {
 		axios.get(url),
 	);
 
-	return { isLoading, isError, data: data?.data, error };
+	return { isLoading, isError, data, error };
 };
 
 export const usePost = (url) => {
