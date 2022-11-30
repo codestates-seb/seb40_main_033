@@ -7,7 +7,14 @@ import Router from './Router';
 import store from './redux/store/store';
 import 'react-toastify/dist/ReactToastify.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+			cacheTime: Infinity,
+		},
+	},
+});
 
 function App() {
 	return (

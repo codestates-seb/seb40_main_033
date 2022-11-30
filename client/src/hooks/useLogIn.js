@@ -20,11 +20,11 @@ export default function useLogIn() {
 		// () => ({ accessToken: 'asdasd', refreshToken: 'sdfsdf' }),
 		(form) => fetchLogIn(form),
 		{
-			onSuccess: async (data, { email }) => {
+			onSuccess: async ({ accessToken, refreshToken }, { email }) => {
 				// dispatch(login({ accessToken: data, email }));
-				// dispatch(login({ accessToken: data.split(' ')[1], email }));
+				dispatch(login({ accessToken, refreshToken, email }));
 				toast.success('로그인 되었습니다 !');
-				// navigate('/', { replace: true });
+				navigate('/', { replace: true });
 			},
 			onError: async (data) => {
 				const { response } = data;

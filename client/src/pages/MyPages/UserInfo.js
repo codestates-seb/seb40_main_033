@@ -15,12 +15,6 @@ import AddressModal from '../../components/Modals/AddressModal';
 import GoodbyeModal from '../../components/Modals/GoodbyeModal';
 
 export function UserInfo() {
-	// const {
-	// 	isLoading,
-	// 	isError,
-	// 	data: test,
-	// } = useFetch('https://koreanjson.com/posts/1', 'dada');
-	// console.log(isLoading, test, isError);
 	const user = {
 		displayName: 'loopy',
 		email: 'loopy@gmail.com',
