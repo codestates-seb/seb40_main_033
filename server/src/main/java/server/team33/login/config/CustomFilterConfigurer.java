@@ -12,19 +12,17 @@ import server.team33.login.handler.UserAuthFailureHandler;
 import server.team33.login.handler.UserAuthSuccessHandler;
 import server.team33.login.jwt.JwtToken;
 import server.team33.user.redis.RedisConfig;
-import server.team33.user.repository.UserRepository;
 
 @Component
 @RequiredArgsConstructor
 public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
     private final JwtToken jwtToken;
     private final RedisConfig redisConfig;
-    private final UserRepository userRepository;
 
     @Override
     public void configure( HttpSecurity builder ) throws Exception{
         AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
-        JwtLoginFilter jwtLoginFilter = new JwtLoginFilter(authenticationManager, userRepository);//필터 실행
+        JwtLoginFilter jwtLoginFilter = new JwtLoginFilter(authenticationManager,jwtToken);//필터 실행
         jwtLoginFilter.setFilterProcessesUrl("/users/login"); //로그인 디폴트 url
 
         jwtLoginFilter.setAuthenticationFailureHandler(new UserAuthFailureHandler());//로그인 실패시 핸들러 설정

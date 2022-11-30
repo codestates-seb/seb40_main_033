@@ -29,7 +29,6 @@ public class SecurityConfig {
     }
     private final JwtToken jwtToken;
     private final RedisConfig redisConfig;
-    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain filterChain( HttpSecurity http ) throws Exception{
@@ -45,7 +44,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(new UserAccessDeniedHandler())
                 .authenticationEntryPoint(new UserAuthenticationEntryPoint())
                 .and()
-                .apply(new CustomFilterConfigurer(jwtToken, redisConfig,userRepository))
+                .apply(new CustomFilterConfigurer(jwtToken, redisConfig))
                 .and()
                 .oauth2Login(oauth2 -> oauth2.successHandler(new UserAuthSuccessHandler(jwtToken)));
 //                .authorizeHttpRequests(authorize -> authorize.antMatchers(HttpMethod.POST, "/users").permitAll()
