@@ -21,7 +21,7 @@ import { UserInfo } from './pages/MyPages/UserInfo';
 import WishList from './pages/MyPages/WishList';
 import SubManage from './pages/MyPages/SubManage';
 import Cart from './pages/Cart';
-import ScrollToTop from './components/Etc/ScrollToTop';
+import ScrollToTop from './utils/ScrollToTop';
 
 function Router() {
 	return (
