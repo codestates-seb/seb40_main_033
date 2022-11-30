@@ -18,18 +18,36 @@ export const fetchSignUp = async ({
 		email: 이메일,
 		password: 비밀번호,
 	});
+	return data;
+};
 
+export const fetchMoreInfo = async ({
+	닉네임,
+	주소,
+	상세주소,
+	이름,
+	전화번호,
+	이메일,
+}) => {
+	const { data } = await axiosInstance.post('/users/more-info', {
+		email: 이메일,
+		displayName: 닉네임,
+		realName: 이름,
+		address: 주소,
+		phone: 전화번호,
+		detailAddress: 상세주소,
+	});
 	return data;
 };
 
 export const fetchLogIn = async ({ email, password }) => {
-	const { data } = await axiosInstance.post('/users/login', {
+	const { headers } = await axiosInstance.post('/users/login', {
 		username: email,
 		password,
 	});
-	// const { authorization: accessToken, refresh: refreshToken } = headers;
-	// return { accessToken, refreshToken };
-	return data;
+	const { authorization: accessToken, refresh: refreshToken } = headers;
+	return { accessToken, refreshToken };
+	// return data;
 };
 
 export const fetchUserInfos = async () => {

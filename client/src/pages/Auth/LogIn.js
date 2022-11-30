@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import useLogIn from '../../hooks/useLogIn';
 import AuthTitle from '../../components/Etc/AuthTitle';
 import { AuthForm } from '../../components/Inputs/AuthForm';
@@ -29,18 +28,13 @@ function LogIn() {
 		accessToken,
 	);
 
-	const url = new URL(window.location.href);
-	console.log('🚀 ~ file: SignUp.js ~ url', url);
-	const token = url.searchParams.get('accessToken');
-	console.log('🚀 ~ file: SignUp.js ~ token', token);
-
 	const handleLogIn = (data) => {
 		mutate({ email: data.이메일, password: data.비밀번호 });
 	};
 
 	const LoginData = {
 		username: 'tkfka156@gmail.com',
-		password: 'sdfkemdff',
+		password: 'asdfg',
 	};
 	const URI =
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080';
@@ -62,9 +56,6 @@ function LogIn() {
 				<SocialLogIn />
 				<LinkContainer>
 					아직 회원이 아니신가요? <Link to="/signup">회원가입</Link>
-					{/* <text onClick={() => navigate('/signup', { replace: true })}>
-						회원가입
-					</text> */}
 				</LinkContainer>
 				<button type="button" onClick={logIn}>
 					로그인

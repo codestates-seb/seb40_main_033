@@ -15,6 +15,7 @@ export default function AuthInput({
 	},
 	errors,
 	onFocus,
+	readonly,
 }) {
 	const [showError, setShowError] = useState(false);
 
@@ -40,6 +41,7 @@ export default function AuthInput({
 				}}
 				className={showError ? 'showError' : null}
 				onFocus={onFocus}
+				readOnly={readonly}
 			/>
 			<label htmlFor={label} className="placeholder">
 				{label}
@@ -75,6 +77,10 @@ const InputBox = styled.div`
 		border-bottom: 1px solid var(--gray-200);
 		/* font-size: 18px; */
 		transition: 0.2s ease-in-out;
+
+		&:read-only {
+			color: var(--gray-300);
+		}
 	}
 
 	// 자동완성 파란색 배경 삭제
@@ -101,6 +107,10 @@ const InputBox = styled.div`
 		&.showError {
 			border-bottom: 1px solid var(--red-100);
 			caret-color: var(--red-100);
+		}
+
+		&:read-only {
+			border-bottom: 1px solid var(--gray-200);
 		}
 	}
 	${({ isFilled }) =>

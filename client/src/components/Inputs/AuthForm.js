@@ -3,11 +3,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useForm } from 'react-hook-form';
 import Postcode from '@actbase/react-daum-postcode';
+import { toast } from 'react-toastify';
 import AuthInput from './AuthInput';
 import { PurpleButton } from '../Buttons/PurpleButton';
 import AddressModal from '../Modals/AddressModal';
 
-export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
+export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 	const [current, setCurrent] = useState(1);
 	const [currentChange, setCurrentChange] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,12 +51,12 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 		},
 	});
 	const { ref: ref2, ...rest2 } = register('비밀번호', {
-		required: '비밀번호를 입력해주세요.',
+		required: !email && '비밀번호를 입력해주세요.',
 		minLength: {
 			value: 5,
 			message: '비밀번호가 너무 짧습니다.',
 		},
-		validate: {
+		validate: !email && {
 			no1234: (value) =>
 				value.includes('1234') ? '1234는 포함할 수 없습니다.' : true,
 			no0000: (value) =>
@@ -63,13 +64,14 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 		},
 	});
 	const { ref: ref3, ...rest3 } = register('비밀번호확인', {
-		required: signUp && '비밀번호를 다시 입력해주세요.',
-		validate: signUp && {
-			matchPreviousPassword: (value) => {
-				const { 비밀번호 } = watch();
-				return 비밀번호 === value || '비밀번호가 일치하지 않습니다.';
+		required: !email && signUp && '비밀번호를 다시 입력해주세요.',
+		validate: !email &&
+			signUp && {
+				matchPreviousPassword: (value) => {
+					const { 비밀번호 } = watch();
+					return 비밀번호 === value || '비밀번호가 일치하지 않습니다.';
+				},
 			},
-		},
 	});
 	const { ref: ref4, ...rest4 } = register('닉네임', {
 		required: signUp && '작성해주세요.',
@@ -100,6 +102,7 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 	});
 
 	// current가 바뀔 때마다 input에 포커스를 준다.
+	const ifEmail = email ? '2' : '';
 	const handleInput = (event, setShowError) => {
 		if (event.key === 'Enter') {
 			setShowError(true);
@@ -122,28 +125,28 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 				event.target === fourthRef.current &&
 				errors.닉네임 === undefined
 			) {
-				setCurrent(5);
+				setCurrent(5 - ifEmail);
 				setShowError(false);
 			} else if (
 				event.target === fifthRef.current &&
 				errors.이름 === undefined
 			) {
-				setCurrent(6);
+				setCurrent(6 - ifEmail);
 				setShowError(false);
 			} else if (
 				event.target === sixthRef.current &&
 				errors.전화번호 === undefined
 			) {
-				setCurrent(7);
+				setCurrent(7 - ifEmail);
 				setShowError(false);
 			} else if (
 				event.target === seventhRef.current &&
 				errors.주소 === undefined
 			) {
 				setShowError(false);
-				setCurrent(8);
+				setCurrent(8 - ifEmail);
 			} else if (
-				event.target === sixthRef.current &&
+				event.target === eighthRef.current &&
 				errors.상세주소 === undefined
 			) {
 				setShowError(false);
@@ -153,7 +156,7 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 
 	// current가 변하면 onChange를 true로 바꾸고 0.5초 후에 false로 바꿔주는 함수.
 	const onChangeHandler = () => {
-		if (current !== 7) {
+		if (email ? current !== 5 : current !== 7) {
 			setCurrentChange(true);
 			setTimeout(() => {
 				setCurrentChange(false);
@@ -171,6 +174,12 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 	// 렌더링 되면 첫번째 input에 포커스를 준다.
 	useEffect(() => {
 		setFocus('이메일');
+		if (email) {
+			toast('추가 정보를 입력해주세요.');
+			setValue('이메일', email);
+			setCurrent(2);
+			setFocus('닉네임');
+		}
 	}, []);
 
 	// submit 되면 실행되는 함수.
@@ -179,7 +188,7 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 			console.log('signUp', data);
 			handleSignUp(data);
 		} else {
-			console.log('signIn', data);
+			console.log('LogIn', data);
 			handleLogIn(data);
 		}
 	};
@@ -238,26 +247,30 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 						watch={watch()}
 						errors={errors?.닉네임?.message}
 					/>
-					<AuthInput
-						refAddress={thirdRef}
-						onKeyDown={handleInput}
-						label="비밀번호확인"
-						register={rest3}
-						refHook={ref3}
-						watch={watch()}
-						errors={errors?.비밀번호확인?.message}
-					/>
+					{!email && (
+						<AuthInput
+							refAddress={thirdRef}
+							onKeyDown={handleInput}
+							label="비밀번호확인"
+							register={rest3}
+							refHook={ref3}
+							watch={watch()}
+							errors={errors?.비밀번호확인?.message}
+						/>
+					)}
 				</>
 			)}
-			<AuthInput
-				refAddress={secondRef}
-				onKeyDown={handleInput}
-				label="비밀번호"
-				register={rest2}
-				refHook={ref2}
-				watch={watch()}
-				errors={errors?.비밀번호?.message}
-			/>
+			{!email && (
+				<AuthInput
+					refAddress={secondRef}
+					onKeyDown={handleInput}
+					label="비밀번호"
+					register={rest2}
+					refHook={ref2}
+					watch={watch()}
+					errors={errors?.비밀번호?.message}
+				/>
+			)}
 			<AuthInput
 				refAddress={firstRef}
 				onKeyDown={handleInput}
@@ -266,6 +279,7 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn }) {
 				refHook={ref1}
 				watch={watch()}
 				errors={errors?.이메일?.message}
+				readonly={!!email}
 			/>
 			<PurpleButton
 				width={signUp ? '110px' : '134px'}
