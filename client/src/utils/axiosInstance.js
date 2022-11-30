@@ -6,3 +6,10 @@ const axiosInstance = axios.create({
 });
 
 export default axiosInstance;
+
+// axios.interceptors.request.use(function (config) {
+// 	const { token } = store.getState().session;
+// 	config.headers.Authorization = token;
+
+// 	return config;
+// });
