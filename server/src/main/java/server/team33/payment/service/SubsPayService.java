@@ -17,7 +17,7 @@ import server.team33.payment.dto.KakaoPayApproveDto;
 @Slf4j
 public class SubsPayService {
     private final OrderService orderService;
-    private MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+
     private final String PARTNER_USER_ID = "pillivery";
     private Long order_id;
 
@@ -29,7 +29,7 @@ public class SubsPayService {
         String itemName = order.getItemOrders().get(0).getItem().getTitle();
         String item_name = get_item_name(itemQuantity, itemName);
         order_id = orderId;
-
+        MultiValueMap<String, String> parameters;
         parameters = getRequestParams(totalAmount, quantity, item_name, order_id, sid);
 
         log.info("parameters request = {}", parameters);
@@ -49,6 +49,7 @@ public class SubsPayService {
     }
 
     private MultiValueMap<String, String> getRequestParams( int totalAmount, int quantity, String item_name, Long order_Id, String sid ){ //TODO: 파라미터 추가
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 
         parameters.add("sid", sid);
         parameters.add("cid", "TCSUBSCRIP");
@@ -62,6 +63,20 @@ public class SubsPayService {
         return parameters;
     }
 
+
+//    public BillingKeyDto.Response getBillingKey( String authKey, String customerKey ){
+//        BillingKeyDto dto = BillingKeyDto.builder().authKey(authKey).customerKey(customerKey).build();
+//
+//        Gson gson = new Gson();
+//        String requestDto = gson.toJson(dto);
+//        HttpEntity<String> request = new HttpEntity<>(requestDto,getTossHeader());
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        String url = "https://api.tosspayments.com/v1/billing/authorizations/issue";
+//        BillingKeyDto.Response response = restTemplate.postForObject(url, request, BillingKeyDto.Response.class);
+//
+//        return response;
+//    }
     private String get_item_name( Integer itemQuantity, String itemName ){
         if(itemQuantity == 1) return itemName;
         return itemName + " 그 외 " + ( itemQuantity - 1 );
@@ -73,5 +88,25 @@ public class SubsPayService {
         httpHeaders.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         return httpHeaders;
     }
+//    private HttpHeaders getTossHeader(){
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.set("Authorization", "Basic dGVzdF9za196WExrS0V5cE5BcldtbzUwblgzbG1lYXhZRzVSOg==");
+//        httpHeaders.set("Content-type", "application/json");
+//        return httpHeaders;
+//    }
 
+//    public void subsApprove( long orderId ){
+//
+//        Order order = orderService.findOrder(orderId);
+//        User user = order.getUser();
+//
+//        GeneralPayDto.Subscription dto = GeneralPayDto.Subscription.builder().customerEmail(user.getEmail()).orderName(order.getItemOrders().get(0).getItem().getTitle()).amount(order.getExpectPrice()).customerName(user.getRealName()).taxFreeAmount(0).orderId(orderId + "abcdef").customerKey(orderId + "a").build();
+//
+//        Gson gson = new Gson();
+//        String requestDto = gson.toJson(dto);
+//        HttpEntity<String> request = new HttpEntity<>(requestDto,getTossHeader());
+//        RestTemplate restTemplate = new RestTemplate();
+//        String url = "https://api.tosspayments.com/v1/billing/"+ user.getBillingKey();
+//        restTemplate.postForObject(url, request, String.class);
+//    }
 }

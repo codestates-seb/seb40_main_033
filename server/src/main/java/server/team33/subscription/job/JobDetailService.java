@@ -16,13 +16,13 @@ import static org.quartz.JobBuilder.newJob;
 public class JobDetailService {
     public JobDetail buildJobDetail( JobKey jobKey, Long orderId, ItemOrder itemOrder ){
 
-        log.warn("오더아이디 = {}", orderId);
-        log.warn("아이템오더아이디 = {}", itemOrder.getItemOrderId());
+        log.warn("job detail orderId= {}", orderId);
+        log.warn("job datail itemOrderId = {}", itemOrder.getItemOrderId());
 
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("orderId", orderId);
         jobDataMap.put("itemOrder", itemOrder);
 
-        return newJob(SubscriptionJob.class).withIdentity(jobKey).usingJobData(jobDataMap).build();
+        return newJob(KaKaoSubscriptionJob.class).withIdentity(jobKey).storeDurably(true).usingJobData(jobDataMap).build();
     }
 }

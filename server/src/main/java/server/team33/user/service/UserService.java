@@ -12,6 +12,7 @@ import server.team33.cart.repository.CartRepository;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.login.jwt.JwtToken;
+import server.team33.order.service.OrderService;
 import server.team33.user.dto.UserDto;
 import server.team33.user.entity.AuthUtils;
 import server.team33.user.entity.User;
@@ -37,6 +38,7 @@ public class UserService {
     private final JwtToken jwtToken;
     private final UserInfoFilter userInfoFilter;
     private final CartRepository cartRepository;
+    private final OrderService orderService;
 
     public User joinUser( User user ){
         userInfoFilter.filterUserInfo(user);
@@ -125,6 +127,5 @@ public class UserService {
         if(user.isPresent()) return user.get().getUserId();
         throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
     }
-
 
 }

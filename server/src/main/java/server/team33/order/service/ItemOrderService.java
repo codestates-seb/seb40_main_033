@@ -129,8 +129,8 @@ public class ItemOrderService {
             ItemOrder itemOrder = order.get().getItemOrders().get(0);
             itemOrder.setNextDelivery(ZonedDateTime.parse(nextDelivery));
             itemOrder.setPaymentDay(paymentDay);
-            log.info("딜리버리정보 결제일 = {}", itemOrder.getPaymentDay());
-            log.info("딜리버리정보 다음 배송일= {}", itemOrder.getNextDelivery());
+            log.info("setDeliveryInfo payday = {}", itemOrder.getPaymentDay());
+            log.info("setDeliveryInfo nextDeliverday= {}", itemOrder.getNextDelivery());
             return itemOrder;
         }
         throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);

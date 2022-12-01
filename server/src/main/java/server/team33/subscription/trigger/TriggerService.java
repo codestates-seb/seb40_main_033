@@ -6,8 +6,7 @@ import org.quartz.Trigger;
 import org.springframework.stereotype.Component;
 import server.team33.order.entity.ItemOrder;
 
-import java.util.Date;
-
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 @Slf4j
@@ -18,43 +17,13 @@ public class TriggerService {
 
         return  newTrigger()
                  .forJob(jobKey)
-                 .withIdentity("trigger" + orderId +itemOrder.getItemOrderId(), String.valueOf(orderId))
-//                 .withSchedule(simpleSchedule()
-//                                  .withIntervalInSeconds(itemOrder.getPeriod())
-//                                  .repeatForever()
-//            )
-//                .startNow()
-                .startAt(Date.from(itemOrder.getNextDelivery().toInstant())) //TODO 나중에 바꿔야
+                 .withSchedule(simpleSchedule()
+                                  .withIntervalInSeconds(itemOrder.getPeriod())
+                                  .repeatForever()
+            )
+                .startNow()
+//                .startAt(Date.from(itemOrder.getNextDelivery().toInstant())) //TODO 정석
                 .build();
-    }
-
-    public Trigger changeTrigger( JobKey jobKey, Long orderId, ItemOrder itemOrder ){
-        log.warn("트리거안에서 주기 = {}", itemOrder.getPeriod());
-        log.warn("구매일 = {}",itemOrder.getPaymentDay());
-        return  newTrigger()
-                 .forJob(jobKey)
-                 .withIdentity("trigger" + orderId +itemOrder.getItemOrderId(), String.valueOf(orderId))
-//                 .withSchedule(simpleSchedule()
-//                                  .withIntervalInSeconds(itemOrder.getPeriod())
-//                                  .repeatForever()
-//            )
-                 .startAt(Date.from(itemOrder.getNextDelivery().toInstant())) //TODO 나중에 바꿔야
-//                .startNow()
-                .build();
-    }
-
-    public Trigger delayTrigger( JobKey jobKey, Long orderId, ItemOrder itemOrder ){
-        log.warn("트리거안에서 주기 = {}", itemOrder.getPeriod());
-        log.warn("다음 주문일 = {}", itemOrder.getNextDelivery());
-
-        return  newTrigger()
-                 .forJob(jobKey)
-                 .withIdentity("trigger" + orderId +itemOrder.getItemOrderId(), String.valueOf(orderId))
-//                 .withSchedule(simpleSchedule()
-//                                        .withIntervalInSeconds(itemOrder.getPeriod())
-//                                        .repeatForever()
-//            )
-                .startAt(Date.from(itemOrder.getNextDelivery().toInstant())).build();
     }
 
 }

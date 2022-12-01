@@ -28,7 +28,7 @@ import static org.quartz.JobKey.jobKey;
 @RequiredArgsConstructor
 @Component
 
-public class SubscriptionJob implements Job {
+public class KaKaoSubscriptionJob implements Job {
     private final ItemOrderService itemOrderService;
     private final OrderService orderService;
     private final Scheduler scheduler;
@@ -63,7 +63,8 @@ public class SubscriptionJob implements Job {
             throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
         }
 
-        connectAutoPay(newOrder.getOrderId());
+        connectKaKaoPay(newOrder.getOrderId());
+
     }
 
     private Order getNewOrder( Long orderId ){
@@ -78,17 +79,16 @@ public class SubscriptionJob implements Job {
         return jobDetail.buildJobDetail(jobkey, newOrder.getOrderId(), newItemOrder);
     }
 
-    private void connectAutoPay( Long orderId ){
+    private void connectKaKaoPay( Long orderId ){
 
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 
         parameters.add("orderId", String.valueOf(orderId));
 
         URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(9090) // 호스트랑 포트는 나중에 변경해야한다.
-                .path("/payments/subscription").queryParams(parameters).build().toUri();
+                .path("/payments/kakao/subscription").queryParams(parameters).build().toUri();
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getForObject(uri, String.class);
     }
-
 
 }

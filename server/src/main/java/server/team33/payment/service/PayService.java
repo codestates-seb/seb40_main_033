@@ -22,7 +22,6 @@ import server.team33.payment.dto.KakaoPayRequestDto;
 public class PayService {
 
     private final OrderService orderService;
-    private MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
     private final String PARTNER_USER_ID = "pillivery";
     private final String KAKAO_APPROVE_URL = "https://kapi.kakao.com/v1/payment/approve";
     private Long order_id;
@@ -36,7 +35,7 @@ public class PayService {
         String item_name = get_item_name(itemQuantity, itemName);
         order_id = orderId;
 
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> parameters;
         parameters = getRequestParams(totalAmount, quantity, item_name, order_id);
         parameters = isSubscription(parameters, order);
 
@@ -53,6 +52,7 @@ public class PayService {
     }
 
     public KakaoPayApproveDto kakaoPayApprove( String tid, String pgToken ){
+        MultiValueMap<String, String> parameters;
 
         parameters = getApproveParams(tid, pgToken, order_id);
 
@@ -63,16 +63,16 @@ public class PayService {
 
     public KakaoPayApproveDto kakaoSubsPayApprove( String tid, String pgToken ){
 
+        MultiValueMap<String, String> parameters;
         parameters = getSubsApproveParams(tid, pgToken, order_id);
-
         KakaoPayApproveDto kakaoPayApproveDto = getKakaoPayApproveDto(parameters);
 
         return kakaoPayApproveDto;
     }
 
     private KakaoPayApproveDto getKakaoPayApproveDto( MultiValueMap<String, String> parameters ){
-        HttpEntity<MultiValueMap<String, String>> kakaoRequestEntity = new HttpEntity<>(parameters, getKakaoHeader());
 
+        HttpEntity<MultiValueMap<String, String>> kakaoRequestEntity = new HttpEntity<>(parameters, getKakaoHeader());
         RestTemplate restTemplate = new RestTemplate();
         KakaoPayApproveDto kakaoPayApproveDto = restTemplate.postForObject(KAKAO_APPROVE_URL, kakaoRequestEntity, KakaoPayApproveDto.class);
         log.info("결제 승인 응답 객체" + kakaoPayApproveDto);
@@ -96,6 +96,8 @@ public class PayService {
 
     private MultiValueMap<String, String> getApproveParams( String tid, String pgToken, Long order_id ){ //TODO : 파라미터 추가
 
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+
         parameters.add("cid", "TC0ONETIME");
         parameters.add("tid", tid);
         parameters.add("partner_order_id", String.valueOf(order_id));
@@ -106,6 +108,7 @@ public class PayService {
     }
 
     private MultiValueMap<String, String> getSubsApproveParams( String tid, String pgToken, Long order_id ){ //TODO : 파라미터 추가
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 
         parameters.add("cid", "TCSUBSCRIP");
         parameters.add("tid", tid);
@@ -117,6 +120,7 @@ public class PayService {
     }
 
     private MultiValueMap<String, String> getRequestParams( int totalAmount, int quantity, String item_name, Long order_Id ){ //TODO: 파라미터 추가
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 
         parameters.add("partner_order_id", String.valueOf(order_Id));
         parameters.add("partner_user_id", PARTNER_USER_ID);
@@ -124,8 +128,8 @@ public class PayService {
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(totalAmount));
         parameters.add("tax_free_amount", "0");
-        parameters.add("cancel_url", "http://localhost:8080/fail");
-        parameters.add("fail_url", "http://localhost:8080/cancel");
+        parameters.add("cancel_url", "http://localhost:9090/fail");
+        parameters.add("fail_url", "http://localhost:9090/cancel");
 
         return parameters;
     }
@@ -133,11 +137,11 @@ public class PayService {
     private MultiValueMap<String, String> isSubscription( MultiValueMap<String, String> parameters, Order order ){
         if(order.isSubscription()){
             parameters.add("cid", "TCSUBSCRIP");
-            parameters.add("approval_url", "http://localhost:8080/payments/kakao/subs/success");
+            parameters.add("approval_url", "http://localhost:9090/payments/kakao/subs/success");
             return parameters;
         }
         parameters.add("cid", "TC0ONETIME");
-        parameters.add("approval_url", "http://localhost:8080/payments/kakao/success");
+        parameters.add("approval_url", "http://localhost:9090/payments/kakao/success");
         return parameters;
     }
 
