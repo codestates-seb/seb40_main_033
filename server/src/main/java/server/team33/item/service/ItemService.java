@@ -74,6 +74,10 @@ public class ItemService {
         return itemRepository.findOrderBySaleItem();
     }
 
+    public List<Item> findTop9MdPickItems() {
+        return itemRepository.findOrderByMdPickItem();
+    }
+
     public Page<Item> searchItems(String keyword, int page, int size, String sort) {
         Page<Item> searchItems = itemRepository.findByTitleContaining(
                 PageRequest.of(page, size, Sort.by(sort).descending()), keyword);

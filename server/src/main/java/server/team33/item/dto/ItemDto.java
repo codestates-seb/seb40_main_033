@@ -84,5 +84,6 @@ public class ItemDto {
     public static class ItemMainTop9Response {
         private MultiResponseDto<ItemCategoryResponse> bestItem;
         private MultiResponseDto<ItemCategoryResponse> saleItem;
+        private MultiResponseDto<ItemCategoryResponse> MdPickItem;
     }
 }
