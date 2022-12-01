@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
-import server.team33.subscription.service.dto.UserDto;
+import server.team33.user.dto.UserDto;
 import server.team33.user.entity.User;
 import server.team33.user.repository.UserRepository;
 

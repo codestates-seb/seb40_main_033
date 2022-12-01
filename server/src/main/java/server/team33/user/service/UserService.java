@@ -11,8 +11,8 @@ import server.team33.cart.entity.Cart;
 import server.team33.cart.repository.CartRepository;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
-import server.team33.login.config.jwt.JwtToken;
-import server.team33.subscription.service.dto.UserDto;
+import server.team33.login.jwt.JwtToken;
+import server.team33.user.dto.UserDto;
 import server.team33.user.entity.AuthUtils;
 import server.team33.user.entity.User;
 import server.team33.user.entity.UserStatus;
@@ -57,14 +57,16 @@ public class UserService {
     public User updateUser( UserDto.Post userDto ){
 
         userInfoFilter.filterUpdateUser(userDto);
-
         User loginUser = getLoginUser();
-        encodePassword(loginUser);
         loginUser.setAddress(userDto.getAddress());
         loginUser.setPhone(userDto.getPhone());
         loginUser.setRealName(userDto.getRealName());
         loginUser.setDisplayName(userDto.getDisplayName());
         loginUser.setDetailAddress(userDto.getDetailAddress());
+
+        String encodedPwd = passwordEncoder.encode(userDto.getPassword());
+        loginUser.setPassword(encodedPwd);
+
         return loginUser;
     }
 
@@ -96,10 +98,11 @@ public class UserService {
         String refreshToken = "Bearer " + r;
 
         response.setHeader("Authorization", accessToken);
-        response.setHeader("Refresh",refreshToken);
+        response.setHeader("Refresh", refreshToken);
 
         response.getWriter().write("추가 정보 기입 완료");
     }
+
     private void createRole( User user ){
         List<String> roles = authUtils.createRoles();
         user.setRoles(roles);

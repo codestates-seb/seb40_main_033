@@ -21,7 +21,7 @@ import server.team33.payment.dto.KakaoPayRequestDto;
 import server.team33.payment.service.PayService;
 import server.team33.payment.service.SubsPayService;
 import server.team33.user.entity.User;
-import server.team33.user.redis.RedisConfig;
+import server.team33.redis.RedisConfig;
 import server.team33.user.service.UserService;
 
 import java.io.IOException;

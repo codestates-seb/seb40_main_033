@@ -1,4 +1,4 @@
-package server.team33.user.redis;
+package server.team33.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

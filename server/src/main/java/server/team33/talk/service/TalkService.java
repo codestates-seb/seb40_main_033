@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.item.entity.Item;
-import server.team33.item.repository.ItemRepository;
-import server.team33.item.service.ItemService;
 import server.team33.talk.entity.Talk;
 import server.team33.talk.repository.TalkRepository;
 import server.team33.user.entity.User;
