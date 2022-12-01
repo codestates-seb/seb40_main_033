@@ -23,12 +23,9 @@ function Price({
 		>
 			{isTotal && <Label>총</Label>}
 			{minus && <Label>-</Label>}
-			<div>
-				{Number(quantity ? nowPrice * quantity : nowPrice).toLocaleString(
-					'ko-KR',
-				)}
-			</div>
-			<div className="won">원</div>
+			<div>{`${Number(quantity ? nowPrice * quantity : nowPrice).toLocaleString(
+				'ko-KR',
+			)}원`}</div>
 			{beforePrice && (
 				<>
 					<IoIosArrowBack />
@@ -42,9 +39,36 @@ function Price({
 	);
 }
 
+export function SummaryPrice({
+	nowPrice,
+	beforePrice,
+	discountRate, // 할인율이 ~%로 문자열로 들어와야 합니다.
+	fontSize,
+	fontWeight,
+}) {
+	return (
+		<PriceContainer
+			className="summary"
+			fontSize={fontSize}
+			fontWeight={fontWeight}
+		>
+			{beforePrice && (
+				<BeforeContainer>
+					<BeforePrice className="beforeDiscounted summary">
+						{`${Number(beforePrice).toLocaleString('ko-KR')}원`}
+					</BeforePrice>
+					<Percent className="summary">{discountRate}</Percent>
+				</BeforeContainer>
+			)}
+			<div>{`${Number(nowPrice).toLocaleString('ko-KR')}원`}</div>
+		</PriceContainer>
+	);
+}
+
 const PriceContainer = styled.div`
 	display: flex;
 	align-items: center;
+	position: relative;
 
 	svg {
 		path {
@@ -66,8 +90,26 @@ const PriceContainer = styled.div`
 			color: var(--purple-300);
 		}
 	}
+
 	.won {
 		margin-left: 2px;
+	}
+
+	&.summary {
+		flex-direction: column;
+	}
+`;
+
+const BeforeContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	position: absolute;
+	top: -24px;
+	width: 100%;
+	.summary {
+		font-size: 16px;
+		margin-bottom: 8px;
 	}
 `;
 
@@ -81,7 +123,7 @@ const BeforePrice = styled.del`
 
 const Percent = styled.div`
 	color: var(--red-100);
-	margin-left: 5px;
+	margin-left: 6px;
 	font-weight: var(--bold);
 `;
 
