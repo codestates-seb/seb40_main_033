@@ -54,7 +54,7 @@ public class ItemController {
 
 
 
-    @GetMapping("/main") // 메인화면에서 best 제품 9개 , 할인제품 9개 조회하기
+    @GetMapping("/main") // 메인화면에서 best 제품 9개 , 할인제품 9개 조회하기, MD pick(최신순) 9개 조회하기
     public ResponseEntity getMainItem() {
         return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemMainTop9ResponseDto(itemService)), HttpStatus.OK);
     }

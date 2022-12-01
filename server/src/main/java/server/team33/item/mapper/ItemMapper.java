@@ -210,6 +210,7 @@ public interface ItemMapper {
 
         itemMainTop9Response.setBestItem(new MultiResponseDto<>(itemsToItemCategoryResponseDto(itemService.findTop9BestItems())));
         itemMainTop9Response.setSaleItem(new MultiResponseDto<>(itemsToItemCategoryResponseDto(itemService.findTop9SaleItems())));
+        itemMainTop9Response.setMdPickItem(new MultiResponseDto<>(itemsToItemCategoryResponseDto(itemService.findTop9MdPickItems())));
         return itemMainTop9Response;
     }
 }
