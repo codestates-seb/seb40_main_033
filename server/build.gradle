@@ -47,9 +47,8 @@ dependencies {
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	//quartz 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
 }
-
-
 
 tasks.named('test') {
 	useJUnitPlatform()
