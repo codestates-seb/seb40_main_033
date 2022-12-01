@@ -1,19 +1,36 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
+import { setKeyword } from '../../redux/slice/filterSlice';
 
 function Search() {
 	const [click, setClick] = useState(false);
+	const [search, setSearch] = useState('');
+	const dispatch = useDispatch();
+
+	const handleSearch = useCallback((e) => {
+		if (e.key === 'Enter') {
+			dispatch(setKeyword(e.target.value));
+		}
+	});
+
+	console.log(search);
 
 	const clickBtn = () => {
 		setClick(!click);
 	};
+
+	const { key } = useSelector((store) => store.filter);
+	console.log('key', key);
+
 	return (
 		<Box>
 			<Input
 				placeholder="검색어를 입력하세요"
 				className={click ? 'search' : null}
 				onClick={clickBtn}
+				onKeyDown={handleSearch}
 			/>
 			<Icon>
 				<AiOutlineSearch />
@@ -48,25 +65,28 @@ const Input = styled.input`
 
 const Icon = styled.button`
 	display: flex;
-	align-items: center;
-	position: relative;
-	background-color: white;
+	align-items: flex-end;
+	background: none;
 	border: none;
-	left: 110px;
 
 	& > svg {
+		cursor: pointer;
+		margin: 15px 0;
 		position: relative;
 		font-size: 24px;
+		color: var(--purple-200);
+		left: 110px;
 	}
 	.search {
 		path {
 			color: var(--green-100);
 		}
 	}
-
 	path {
 		/* cursor: pointer; */
 		color: var(--purple-200);
+		stroke-width: 10;
+		transition: color 0.1s;
 	}
 `;
 

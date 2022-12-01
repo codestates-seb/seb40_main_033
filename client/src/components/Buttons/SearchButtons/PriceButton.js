@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { BsDash } from 'react-icons/bs';
 import { LightPurpleButton } from '../PurpleButton';
+import { setPrice } from '../../../redux/slice/filterSlice';
 
 export default function PriceButton({ min, max, isOpen }) {
 	const [minVal, setMinVal] = useState(min);
@@ -9,6 +11,7 @@ export default function PriceButton({ min, max, isOpen }) {
 	const minValRef = useRef(min);
 	const maxValRef = useRef(max);
 	const range = useRef(null);
+	const dispatch = useDispatch();
 
 	// Convert to percentage
 	const getPercent = useCallback(
@@ -39,6 +42,16 @@ export default function PriceButton({ min, max, isOpen }) {
 
 	// Get min and max values when their state changes
 
+	const { price } = useSelector((store) => store.filter);
+	console.log('price', price);
+
+	const lowPrice = [minValRef.current];
+	const highPrice = [maxValRef.current];
+
+	const changePrice = () => {
+		dispatch(setPrice(`low=${lowPrice}&high=${highPrice}`));
+	};
+
 	return (
 		<EntireContainer isOpen={isOpen}>
 			<SliderContainer>
@@ -68,7 +81,6 @@ export default function PriceButton({ min, max, isOpen }) {
 					}}
 					className="thumb"
 				/>
-
 				<Slider>
 					<SliderTrack />
 					<SliderRange ref={range} />
@@ -91,6 +103,7 @@ export default function PriceButton({ min, max, isOpen }) {
 					fontWeight="bold"
 					fontSize="12px"
 					width="65px"
+					onClick={changePrice}
 				>
 					적용하기
 				</LightPurpleButton>

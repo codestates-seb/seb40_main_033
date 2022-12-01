@@ -3,13 +3,11 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import CartList from '../../components/Lists/MyPageLists/CartList';
-import {
-	PurpleButton,
-	LightPurpleButton,
-} from '../../components/Buttons/PurpleButton';
+import { PurpleButton } from '../../components/Buttons/PurpleButton';
+import Price from '../../components/Etc/Price';
 
 // 일반 장바구니
-function NormalCart() {
+function SubCart() {
 	const [cartItem, setCartItem] = useState([]);
 
 	useEffect(() => {
@@ -33,16 +31,13 @@ function NormalCart() {
 			<Bottom>
 				<Display>
 					<Text>합계</Text>
-					<Number>totalPrice</Number>
+					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" />
 					<Text>할인 금액</Text>
-					<Number>totalDiscountPrice</Number>
+					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" />
 					<Text>결제 예정 금액</Text>
-					<TotalNumber>totalPrice - totalDiscountPrice</TotalNumber>
+					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" purple />
 				</Display>
 				<Button>
-					<LightPurpleButton width="143px" height="50px">
-						계속 쇼핑하기
-					</LightPurpleButton>
 					<PurpleButton width="143px" height="50px">
 						구매하기
 					</PurpleButton>
@@ -61,30 +56,12 @@ const Box = styled.div`
 	flex-direction: column;
 `;
 
-const Top = styled.div`
-	border-bottom: 1px solid var(--gray-200);
-	width: 1115px;
-	height: 100px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-`;
-
-const Title = styled.div`
-	font-weight: var(--extraBold);
-	font-size: 36px;
-`;
-
-const TabButton = styled.div`
-	width: 196px;
-	height: 54px;
-`;
-
 const List = styled.div`
 	padding-top: 44px;
 	background-color: white;
-	border-radius: 10;
-	border: 1px solid #f1f1f1;
+	border-radius: 10px;
+	/* border: 1px solid #f1f1f1; */
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	margin-top: 30px;
 	width: 983px;
 	height: 1094px;
@@ -118,23 +95,12 @@ const Text = styled.div`
 	color: var(--gray-400);
 `;
 
-const Number = styled.div`
-	font-size: 24px;
-	font-weight: var(--bold);
-`;
-
-const TotalNumber = styled.div`
-	font-size: 24px;
-	font-weight: var(--bold);
-	color: var(--purple-200);
-`;
 const Button = styled.div`
 	margin-top: 36px;
-	width: 296px;
 	height: 50px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 `;
 
-export default NormalCart;
+export default SubCart;

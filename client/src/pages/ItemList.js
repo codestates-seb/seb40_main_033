@@ -1,47 +1,47 @@
 import styled, { css } from 'styled-components';
+import { useLocation } from 'react-router-dom';
 import { useCallback, useState, useEffect } from 'react';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
 import Categories from '../components/Categories/Categories';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
+import { useGet } from '../hooks/useFetch';
 
 // 목록 페이지
 function ItemList() {
 	const [category, setCategory] = useState('all');
 	const [isItem, setIsItem] = useState(null);
-	const [loding, setLoding] = useState(false);
+	// const [loding, setLoding] = useState(false);
+	const { sort } = useSelector((state) => state.filter);
+	const { price } = useSelector((state) => state.filter);
+
+	console.log('itemListSort', sort);
+	console.log('itemListprice', price);
 
 	const onSelect = useCallback((ctg) => {
 		setCategory(ctg);
 		// console.log('category', category);
 	}, []);
 
-	useEffect(() => {
-		const itemData = async () => {
-			setLoding(true);
-			try {
-				// const query = category === 'all' ? '' : `&category=${category}`;
-				const response = await axios.get(`http://localhost:3002/item`);
-				setIsItem(response.data); // [{id:1 ~~}, {id:2 ~~}]
-				console.log(response);
-				// console.log('response.data.item', response.itemData);
-				console.log('isItem', isItem);
-			} catch (e) {
-				console.log(e);
-			}
-			setLoding(false);
-		};
-		itemData();
-	}, [category]);
+	const { pathname } = useLocation();
 
-	// 대기 중 일때
-	if (loding) {
+	const {
+		isLoading,
+		isError,
+		data: items,
+		error,
+	} = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/category?categoryName=기타',
+		pathname,
+	);
+
+	// console.log(items);
+
+	if (isLoading) {
 		return <ItemListBox> 대기중 ..</ItemListBox>;
 	}
-
-	// 값이 설정되지 않았을 때
-	if (!isItem) {
-		return null;
+	if (isError) {
+		return <ItemListBox> {error.message} </ItemListBox>;
 	}
 
 	return (
@@ -51,8 +51,8 @@ function ItemList() {
 				<Categories category={category} onSelect={onSelect} />
 			</Brand>
 			<ItemListBox>
-				{isItem.map((item) => (
-					<SmallListCards key={item.id} item={item} />
+				{items.data.data.map((item) => (
+					<SmallListCards key={item.itemId} item={item} />
 				))}
 			</ItemListBox>
 		</Box>
@@ -78,7 +78,9 @@ const Brand = styled.div`
 `;
 
 const ItemListBox = styled.div`
-	width: 1040px;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	justify-content: center;
 	margin-top: 100px;
 `;
 

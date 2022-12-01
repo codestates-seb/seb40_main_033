@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BsToggles } from 'react-icons/bs';
@@ -6,20 +7,35 @@ import { FiFilter } from 'react-icons/fi';
 import PriceButton from './PriceButton';
 import { LetterButtonColor } from '../LetterButton';
 import { LightPurpleButton } from '../PurpleButton';
+import { setSort } from '../../../redux/slice/filterSlice';
 
 export function SortButton({ children }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const dispatch = useDispatch();
+
+	const { sort } = useSelector((store) => store.filter);
+	console.log('sort', sort);
+
 	const handleOpenClick = () => {
 		setIsOpen(!isOpen);
 		// console.log(isOpen);
 	};
-	const menus = ['찜 많은순', '높은가격순', '낮은가격순', '인기순'];
+	const menus = ['최신순', '찜 많은순', '높은가격순', '낮은가격순', '인기순'];
+	const path = ['1', 'totalWishes', '3', '4', 'view'];
+
+	const clickMenus = (e) => {
+		const target = e.target.innerText;
+		const index = menus.indexOf(target);
+		// console.log(index);
+		dispatch(setSort(path[index]));
+	};
+
 	return (
 		<ButtonContainer isOpen={isOpen}>
 			{isOpen && (
 				<MenuBox isOpen={isOpen}>
 					{menus.map((menu, idx) => (
-						<MenuLi key={`${idx.toString()}-${menu}`}>
+						<MenuLi onClick={clickMenus} key={`${idx.toString()}-${menu}`}>
 							<LetterButtonColor
 								color="gray"
 								colorCode="300"
@@ -49,10 +65,12 @@ export function SortButton({ children }) {
 
 export function PriceSortButton({ children }) {
 	const [isOpen, setIsOpen] = useState(false);
+
 	const handleOpenClick = () => {
 		setIsOpen(!isOpen);
 		// console.log(isOpen);
 	};
+
 	return (
 		<ButtonContainer className="price-container" isOpen={isOpen} price>
 			{isOpen && <PriceButton min={0} max={100000} />}

@@ -1,14 +1,22 @@
 import styled from 'styled-components';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import SmallListCards from '../components/Lists/SmallListCards';
-import Search from '../components/Search/Search';
-import SortAndSearchButtons from '../components/Buttons/SearchButtons/SortAndSearchButtons';
 import PageTitle from '../components/Etc/PageTitle';
 // 목록 페이지
 function SearchList() {
 	const [isItem, setIsItem] = useState(null);
 	const [loding, setLoding] = useState(false);
+
+	// const location = useLocation();
+
+	// console.log('location', location);
+
+	const [searchParams, setSearchParams] = useSearchParams();
+	const keywordQuery = searchParams.get('keyword'); // url속 검색어 가져오기
+
+	console.log('keywordQuery', keywordQuery);
 
 	useEffect(() => {
 		const itemData = async () => {
@@ -78,8 +86,10 @@ const Text = styled.div`
 `;
 
 const ItemListBox = styled.div`
-	width: 1040px;
-	margin-top: 33px;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	justify-content: center;
+	margin-top: 100px;
 `;
 
 export default SearchList;
