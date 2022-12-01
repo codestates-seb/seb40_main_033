@@ -27,7 +27,7 @@ const ListContainer = styled.main`
 	border-radius: 10px;
 	background-color: white;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
-	max-width: 872px;
+	width: 872px;
 
 	& > {
 		:last-child {

@@ -7,7 +7,7 @@ import OrderDetailList from './OrderDetailList';
 import ReviewModal from '../../Modals/ReviewModal';
 import DeleteNotesModal from '../../Modals/DeleteNotesModal';
 
-function MyPageReviewList({ content }) {
+function MyPageReviewList({ review }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -27,15 +27,12 @@ function MyPageReviewList({ content }) {
 
 	return (
 		<Box>
-			<Image
-				src="https://wiselycompany.cafe24.com/web/product/medium/202211/46763d93d5fd373356268c62b05f5560.jpg"
-				alt="상품 이미지"
-			/>
+			<Image src={review.item.thumbnail} alt="상품 이미지" />
 			<ListContainer>
 				<TopContainer>
 					<NameContainer>
-						<Info className="brand"> California Gold Nutrition</Info>
-						<Info className="name">오메가3 프리미엄 피쉬 오일</Info>
+						<Info className="brand">{review.item.brand}</Info>
+						<Info className="name">{review.item.title}</Info>
 					</NameContainer>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
@@ -49,13 +46,14 @@ function MyPageReviewList({ content }) {
 				</TopContainer>
 				<InfoContainer>
 					<LongTextStar noText />
-					<DotDate date="2022/11/23T11:33:33" />
+					<DotDate date={review.updatedAt} />
 				</InfoContainer>
-				<Review>{content}</Review>
+				<Review>{review.content}</Review>
 				<ReviewModal
 					setIsOpen={setOpenForm}
 					modalIsOpen={openForm}
 					OrderDetailList={OrderDetailList}
+					review={review}
 				/>
 				<DeleteNotesModal
 					openDeleteModal={openDeleteModal}

@@ -1,10 +1,14 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import styled from 'styled-components';
 
-function BtnStar() {
+function BtnStar({ star, handleStar }) {
 	const [clickedStar, setClickedStar] = useState('');
 	const [hoveredStar, setHoveredStar] = useState('');
+
+	useEffect(() => {
+		setClickedStar(star);
+	}, []);
 
 	const handleStarClick = useCallback((e) => {
 		if (e.target.localName === 'path') {
@@ -16,6 +20,7 @@ function BtnStar() {
 		} else {
 			setClickedStar(e.target.id);
 		}
+		handleStar(clickedStar);
 	}, []);
 
 	const handleStarHover = useCallback((e) => {
