@@ -18,6 +18,7 @@ public class UserAuthFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure( HttpServletRequest request, HttpServletResponse response, AuthenticationException exception ) throws IOException, ServletException{
         log.error("로그인 실패");
+
         UserAuthenticationEntryPoint.errorToJson(response, HttpStatus.UNAUTHORIZED);
     }
 }

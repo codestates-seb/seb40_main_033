@@ -42,12 +42,13 @@ public class SubscriptionService {
     }
 
 
-    public void changePeriod( Long orderId, Integer period ) throws SchedulerException, InterruptedException{
+    public ZonedDateTime  changePeriod( Long orderId, Integer period ) throws SchedulerException, InterruptedException{
 
         ItemOrder itemOrder = itemOrderService.setItemPeriod(orderId, period);
         log.info("changed period = {}", itemOrder.getPeriod());
 
-        if(payDirectly(orderId, period, itemOrder)) return;
+        if(payDirectly(orderId, period, itemOrder))
+            return itemOrder.getPaymentDay().plusDays(itemOrder.getPeriod());
 
         ZonedDateTime paymentDay = itemOrder.getPaymentDay();
         String nextDelivery = String.valueOf(paymentDay.plusDays(itemOrder.getPeriod()));
@@ -56,6 +57,8 @@ public class SubscriptionService {
         ItemOrder updatedItemOrder = itemOrderService.setDeliveryInfo(orderId, paymentDay, nextDelivery);
 
         extendPeriod(orderId, updatedItemOrder);
+
+        return paymentDay.plusDays(itemOrder.getPeriod());
     }
 
     private boolean payDirectly( Long orderId, Integer period, ItemOrder itemOrder ) throws SchedulerException{
@@ -82,10 +85,11 @@ public class SubscriptionService {
     }
 
 
-    public void delayDelivery( Long orderId, Integer delay ) throws SchedulerException{
+    public ZonedDateTime delayDelivery( Long orderId, Integer delay ) throws SchedulerException{
         log.info("dealyDelivery");
         ItemOrder itemOrder = itemOrderService.delayDelivery(orderId, delay);
         resetSchedule(orderId, itemOrder);
+        return itemOrder.getNextDelivery();
     }
 
     public void cancelScheduler( Long orderId ) throws SchedulerException{

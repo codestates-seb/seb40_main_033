@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import server.team33.order.entity.ItemOrder;
 import server.team33.subscription.service.SubscriptionService;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -39,22 +40,20 @@ public class ScheduleController {
 //    }
 
     @PatchMapping("/change")
-    public String changePeriod(
+    public ZonedDateTime changePeriod(
             @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "period") Integer period ) throws SchedulerException, InterruptedException{
-        subscriptionService.changePeriod(orderId, period);
-        return "change";
+        return subscriptionService.changePeriod(orderId, period);
     }
 
     @PatchMapping("/delay")
-    public String delay( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "delay") Integer delay ) throws SchedulerException{
-        subscriptionService.delayDelivery(orderId, delay);
-        return "delay";
+    public ZonedDateTime delay( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "delay") Integer delay ) throws SchedulerException{
+        return subscriptionService.delayDelivery(orderId, delay);
     }
 
     @DeleteMapping("/cancel")
-    public String delete( @RequestParam(name = "orderId") Long orderId ) throws SchedulerException{
+    public ZonedDateTime delete( @RequestParam(name = "orderId") Long orderId ) throws SchedulerException{
         subscriptionService.cancelScheduler(orderId);
-        return "delete";
+        return ZonedDateTime.now();
     }
 
 }

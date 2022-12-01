@@ -128,8 +128,8 @@ public class PayService {
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(totalAmount));
         parameters.add("tax_free_amount", "0");
-        parameters.add("cancel_url", "http://localhost:9090/fail");
-        parameters.add("fail_url", "http://localhost:9090/cancel");
+        parameters.add("cancel_url", "http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/cancel");
+        parameters.add("fail_url", "http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/fail");
 
         return parameters;
     }
@@ -137,11 +137,11 @@ public class PayService {
     private MultiValueMap<String, String> isSubscription( MultiValueMap<String, String> parameters, Order order ){
         if(order.isSubscription()){
             parameters.add("cid", "TCSUBSCRIP");
-            parameters.add("approval_url", "http://localhost:9090/payments/kakao/subs/success");
+            parameters.add("approval_url", "http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/kakao/subs/success");
             return parameters;
         }
         parameters.add("cid", "TC0ONETIME");
-        parameters.add("approval_url", "http://localhost:9090/payments/kakao/success");
+        parameters.add("approval_url", "http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/kakao/success");
         return parameters;
     }
 
