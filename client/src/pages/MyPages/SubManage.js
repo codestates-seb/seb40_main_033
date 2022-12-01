@@ -4,6 +4,8 @@ import styled, { css } from 'styled-components';
 import SubManagementList from '../../components/Lists/MyPageLists/SubManagementList';
 
 function SubManage() {
+	const { pathname } = useLocation();
+	// 페이지네이션으로 할건지? 무한 스크롤로 할 건지?
 	return (
 		<SubManageContainer>
 			<SubManagementList />

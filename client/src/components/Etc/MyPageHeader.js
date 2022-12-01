@@ -1,15 +1,39 @@
+import axios from 'axios';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { TempLogo } from '../../assets/Icons';
+import { useGet } from '../../hooks/useFetch';
 import { GrayLetterButton } from '../Buttons/LetterButton';
+import { logout } from '../../redux/slice/userSlice';
 
-function MyPageHeader({ nickname }) {
+function MyPageHeader() {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const nickName = localStorage.getItem('displayName');
+	const handleLogout = useCallback(async () => {
+		const response = await axios
+			.get(
+				'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users/logout',
+			)
+			.catch(() => {
+				console.log('error in fetching posts');
+			});
+		if (response) {
+			dispatch(logout());
+			navigate('/', { replace: true });
+		}
+	}, []);
 	return (
 		<Container>
 			<TempLogo />
 			<TextContainer>
-				<Nickname>{nickname || '타락파워전사'}</Nickname>
+				<Nickname>{nickName || '-'}</Nickname>
 				<Nim>님</Nim>
-				<GrayLetterButton fontSize="13px">로그아웃</GrayLetterButton>
+				<GrayLetterButton onClick={handleLogout} fontSize="13px">
+					로그아웃
+				</GrayLetterButton>
 			</TextContainer>
 		</Container>
 	);

@@ -23,14 +23,14 @@ export function LongTextStar({ noText }) {
 }
 
 // 별 하나
-export function ShortTextStar() {
+export function ShortTextStar({ starAvg, reviewCount }) {
 	return (
 		<StarContainer>
 			<Icon>
 				<FaStar />
 			</Icon>
-			<Score>4.8</Score>
-			<Count>(150)</Count>
+			<Score>{starAvg}</Score>
+			<Count>({reviewCount})</Count>
 		</StarContainer>
 	);
 }

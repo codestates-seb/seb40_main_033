@@ -23,9 +23,9 @@ function Price({
 		>
 			{isTotal && <Label>총</Label>}
 			{minus && <Label>-</Label>}
-			<div className="white">{`${Number(quantity ? nowPrice * quantity : nowPrice).toLocaleString(
-				'ko-KR',
-			)}원`}</div>
+			<div className="white">{`${Number(
+				quantity ? nowPrice * quantity : nowPrice,
+			).toLocaleString('ko-KR')}원`}</div>
 			{beforePrice && (
 				<>
 					<IoIosArrowBack className="white" />

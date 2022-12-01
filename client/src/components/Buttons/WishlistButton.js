@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
+import { usePost } from '../../hooks/useFetch';
 
-function WishlistButton({ isChecked }) {
+function WishlistButton({ isChecked, itemId }) {
+	const { mutate: deleteMutate } = usePost(
+		`http://localhost:3001/wishes/${itemId}?wish=0`,
+	);
 	const [isWanted, setIsWanted] = useState(isChecked);
-	const handleClick = useCallback(() => {
-		setIsWanted(!isWanted);
-	}, [isWanted]);
 	return (
 		<WishBox>
 			<FaHeart
-				onClick={handleClick}
-				className={isWanted ? 'red-heart' : null}
+				onClick={() => deleteMutate()}
+				className={isWanted && 'red-heart'}
 			/>
 		</WishBox>
 	);
@@ -19,7 +20,7 @@ function WishlistButton({ isChecked }) {
 
 const WishBox = styled.div`
 	display: inline-flex;
-	z-index: 1;
+	z-index: 99;
 	.red-heart {
 		path {
 			color: #ff555f; //var(--red-100);

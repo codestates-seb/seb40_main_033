@@ -13,7 +13,7 @@ const PayItemInfoContainer = styled.section`
 	width: 539px;
 	background-color: white;
 	border-radius: 10px;
-	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	margin-bottom: 24px;
 	${(props) =>
 		props.payment

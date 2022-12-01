@@ -1,31 +1,37 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 import Pagination from '../../components/Etc/Pagination';
 import WishListCards from '../../components/Lists/WishListCards';
+import { useGet } from '../../hooks/useFetch';
 
 function WishList() {
-	const [products, setProducts] = useState([]);
-
-	useEffect(() => {
-		axios.get('http://localhost:3001/items').then((response) => {
-			console.log(response.data);
-			setProducts(response.data);
-		});
-	}, []); // 이 부분의 주소에는 api에 적혀있는 위시리스트를 받아오는 주소가 적혀있어야 함.
-	console.log(products, 'products');
+	const { pathname } = useLocation();
+	const {
+		isLoading,
+		isError,
+		data: wishListItems,
+		error,
+	} = useGet('http://localhost:3001/wishes', pathname);
+	if (isLoading) return <PendingBox>아이템을 불러오는 중입니다...</PendingBox>;
+	if (isError)
+		return <PendingBox className="error">{error.message}</PendingBox>;
 	return (
 		<EntireContainer>
 			<WishBox>
-				{products.map((product, idx) => (
-					<WishListCards item={product} key={`${idx.toString()}-${product}`} />
+				{wishListItems.data.map((wishItem, idx) => (
+					<WishListCards
+						item={wishItem}
+						key={`${idx.toString()}-${wishItem}`}
+					/>
 				))}
 			</WishBox>
-			{products.length !== 0 ? (
-				<Pagination total={products.length} limit={16} />
+			{/* {wishListItems.data.length !== 0 ? (
+				<Pagination total={wishListItems.data.length} limit={16} />
 			) : (
 				<h1>상품이 없어연!!!</h1>
-			)}
+			)} */}
 		</EntireContainer>
 	);
 }
@@ -35,14 +41,20 @@ const EntireContainer = styled.div`
 `;
 const WishBox = styled.main`
 	width: 100%;
-	/* border: 1px solid; // 구분을 쉽게 하기 위한 선입니다. */
-	/* display: flex;
-	flex-direction: row;
-	align-items: flex-start;
-	align-content: flex-start; // 카드들의 구역이 꽉 차는걸 막는 속성..
-	flex-wrap: wrap; */
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 `;
 
+const PendingBox = styled.div`
+	width: 100%;
+	height: 100;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 24px;
+	color: var(--purple-300);
+	&.error {
+		color: var(--red-100);
+	}
+`;
 export default WishList;
