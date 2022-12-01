@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import Postcode from '@actbase/react-daum-postcode';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import {
 	LetterButton,
 	LetterButtonColor,
@@ -33,16 +32,12 @@ export function UserInfo() {
 	const { mutate: userPatch } = usePatch(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
 	);
-	// const { mutate: userPost } = usePost(
-	// 	'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users/more-info',
-	// );
 	const {
 		register,
 		handleSubmit,
 		setValue,
-		watch, // 온 체인지 할  때마다 객체에  담아줌
+		watch,
 		formState: { errors },
-		// setError,
 	} = useForm({
 		mode: 'onBlur',
 	});
@@ -73,9 +68,7 @@ export function UserInfo() {
 		setIsOpen(false);
 		setOpenGoodbye(true);
 	});
-	// console.log(watch(), 'watch');
 	const nicknameReg = register('닉네임', {
-		// ref1 자체는 일단 함수임
 		required: '닉네임을 입력해주세요.', // 빈 칸일때
 		pattern: {
 			value: /^[A-Za-z0-9가-힣]{2,9}$/, // 한글 및 숫자 영문자
@@ -86,7 +79,6 @@ export function UserInfo() {
 		// required: false,
 		required: true,
 	});
-	// 이메일은 어차피 못바꾸는 값이기 떄문에 사실상 필요가 없음..
 	const pwReg = register('비밀번호', {
 		required: '비밀번호를 입력해주세요.',
 		pattern: {
@@ -101,7 +93,7 @@ export function UserInfo() {
 		},
 	});
 	const rePwReg = register('비밀번호재확인', {
-		required: '비밀번호를 다시 한번 입력해주세요.', // 미확인임 어케할지 알아봐야 하무ㅠㅜㅠㅜ
+		required: '비밀번호를 다시 한번 입력해주세요.',
 		validate: {
 			matchPreviousPassword: (value) => {
 				const { 비밀번호 } = watch();
@@ -124,7 +116,6 @@ export function UserInfo() {
 		},
 	});
 	const adressReg = register('주소', {
-		// required: false,
 		required: '주소를 입력해주세요.',
 	});
 	const detailAddressReg = register('상세주소', {
@@ -139,13 +130,8 @@ export function UserInfo() {
 		setModal(true);
 	};
 
-	const handleOpenGoodbye = () => {
-		setIsOpen(false);
-		setOpenGoodbye(true);
-	};
 
 	const onValid = (data) => {
-		// 이 안에 다 담겨있다. 이걸 가공을 해서 여기서 api요청을 하면 될 듯.
 		const value = {
 			// 밑의 방식으로 꺼낸 다음, 바디에 넣어서 보내기.
 			displayName: data.닉네임,
@@ -159,21 +145,6 @@ export function UserInfo() {
 		console.log(value);
 		userPatch(value);
 	};
-	// const onValid2 = (data) => {
-	// 	// 소셜로그인하고 처음 들어오는 사람(Post용)
-	// 	const value = {
-	// 		// 밑의 방식으로 꺼낸 다음, 바디에 넣어서 보내기.
-	// 		displayName: data.닉네임,
-	// 		email: data.이메일,
-	// 		password: data.비밀번호,
-	// 		realName: data.이름,
-	// 		phone: data.전화번호,
-	// 		address: data.주소,
-	// 		detailAddress: data.상세주소,
-	// 	};
-	// 	console.log(value);
-	// 	userPost({ data: value });
-	// };
 
 	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
 	if (isError) return <div>{error.message}</div>;
@@ -186,22 +157,22 @@ export function UserInfo() {
 						<Information
 							label="닉네임"
 							register={nicknameReg}
-							// errors={errors?.닉네임?.message}
+							errors={errors?.닉네임?.message}
 						/>
 						<Information
 							label="이메일"
 							register={mailReg}
-							// errors={errors?.이메일?.message}
+							errors={errors?.이메일?.message}
 						/>
 						<Information
 							label="비밀번호"
 							register={pwReg}
-							// errors={errors?.비밀번호?.message}
+							errors={errors?.비밀번호?.message}
 						/>
 						<Information
 							label="비밀번호재확인"
 							register={rePwReg}
-							// errors={errors?.비밀번호재확인?.message}
+							errors={errors?.비밀번호재확인?.message}
 						/>
 					</InputBox>
 				</InfoBox>
@@ -211,23 +182,23 @@ export function UserInfo() {
 						<Information
 							label="이름"
 							register={nameReg}
-							// errors={errors?.이름?.message}
+							errors={errors?.이름?.message}
 						/>
 						<Information
 							label="전화번호"
 							register={telReg}
-							// errors={errors?.전화번호?.message}
+							errors={errors?.전화번호?.message}
 						/>
 						<Information
 							label="주소"
 							handleOpenAddress={handleOpenAddress}
 							register={adressReg}
-							// errors={errors?.주소?.message}
+							errors={errors?.주소?.message}
 						/>
 						<Information
 							label="상세주소"
 							register={detailAddressReg}
-							// errors={errors?.상세주소?.message}
+							errors={errors?.상세주소?.message}
 						/>
 					</InputBox>
 				</InfoBox>
