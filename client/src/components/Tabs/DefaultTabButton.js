@@ -11,6 +11,8 @@ function DefaultTabButton({
 	fontSize = '16px',
 	currentIdx,
 	highlightLeftValue,
+	order,
+	note,
 }) {
 	const { pathname } = useLocation();
 	const [currentTab, setCurrentTab] = useState(currentIdx || 0);
@@ -65,11 +67,20 @@ function DefaultTabButton({
 		}
 
 		// 일반/정기 토글 클릭 시 해당 페이지의 일반/정기 페이지로 이동
-		if (toggle) {
+		if (order) {
 			if (index === 1) {
 				navigate(`${joinPath}/subscription`);
 			} else if (index === 0) {
 				navigate(`${joinPath}/normal`);
+			}
+		}
+
+		// 리뷰/토크 토글 클릭 시 해당 페이지의 리뷰/토크 페이지로 이동
+		if (note) {
+			if (index === 1) {
+				navigate(`${joinPath}/talk`);
+			} else if (index === 0) {
+				navigate(`${joinPath}/review`);
 			}
 		}
 	}, []);

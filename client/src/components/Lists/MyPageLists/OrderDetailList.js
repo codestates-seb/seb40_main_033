@@ -1,3 +1,5 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
 import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useCallback, useState } from 'react';
@@ -5,8 +7,7 @@ import { LetterButtonColor } from '../../Buttons/LetterButton';
 import Price from '../../Etc/Price';
 import ReviewModal from '../../Modals/ReviewModal';
 
-function OrderDetailList({ inModal }) {
-	const price = 7000;
+function OrderDetailList({ inModal, brand, thumbnail, title, price }) {
 	const quantity = 5;
 	const PillsNum = 60;
 
@@ -20,12 +21,14 @@ function OrderDetailList({ inModal }) {
 	return (
 		<Box className={inModal && 'in-modal'}>
 			<ImageContainer>
-				<Image> img </Image>
+				<Image src={thumbnail} alt="상품 이미지" />
 			</ImageContainer>
 			<Wrap>
 				<InformationForm>
-					<Brand>California Gold Nutrition</Brand>
-					<Name>오메가3 프리미엄 피쉬 오일, {PillsNum}정</Name>
+					<Brand>{brand}</Brand>
+					<Name>
+						{title}, {PillsNum}정
+					</Name>
 					<Price fontSize="13px" nowPrice={price} />
 				</InformationForm>
 				<BottomContainer>
@@ -89,8 +92,7 @@ const ImageContainer = styled.div`
 	display: flex;
 `;
 
-const Image = styled.div`
-	border: 1px solid green;
+const Image = styled.img`
 	width: 120px;
 	height: 120px;
 	display: flex;

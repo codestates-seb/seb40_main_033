@@ -3,16 +3,24 @@ import styled, { css } from 'styled-components';
 import { LetterButton } from '../Buttons/LetterButton';
 import { PurpleButton } from '../Buttons/PurpleButton';
 // height: input 높이   target: 상품에 대한 {target}를 20자 이상 적어주세요
-function DefalutForm({ placeholder, maxLength, height, target }) {
+function DefalutForm({
+	placeholder,
+	maxLength,
+	height,
+	target,
+	content,
+	handleContent,
+	handleSubmit,
+}) {
 	const [contents, setContents] = useState('');
 
-	// textarea에 입력 시 한 글자씩 씹히는 현상 방지용
 	useEffect(() => {
-		console.log(contents);
-	}, [contents]);
+		setContents(content);
+	}, []);
 
 	const handleInputChange = useCallback((e) => {
 		setContents(e.target.value);
+		handleContent(e);
 	}, []);
 
 	// contents가 20자가 넘지 않은 상태에서 제출할 경우에, InfoMessage 강조해주세요~!
@@ -41,7 +49,12 @@ function DefalutForm({ placeholder, maxLength, height, target }) {
 						<LetterButton className="talk-submit">작성완료</LetterButton>
 					</TalkSubmitBtn>
 				) : (
-					<PurpleButton width="76px" height="32px" fontSize="13px">
+					<PurpleButton
+						width="76px"
+						height="32px"
+						fontSize="13px"
+						onClick={handleSubmit}
+					>
 						작성완료
 					</PurpleButton>
 				)}

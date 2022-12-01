@@ -22,30 +22,23 @@ import { ShortTextStar } from '../Stars/TextStar';
 		}
 	]]
 배열의 구성은 이러하며, 실제 api에 어떻게 오느냐에 따라 내용물을 변경하셔도 됩니다. */
-function DefaultList({ item }) {
+function MainListCard({ item }) {
 	return (
 		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
 					<ContentContainer />
 					<ContentContainer middle>
-						<ItemImg
-							src="https://cdn.pillyze.io/products/v1/12k/9445bfe9-12669/500"
-							alt="상품 이미지"
-						/>
+						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
 					<ContentContainer bottom>
-						<div className="title brandName">{/* {item.brand} */} 뭐든</div>
-						<div className="title itemName">{/* {item.title} */} 나오시고</div>
+						<div className="title brandName">{item.brand}</div>
+						<div className="title itemName">{item.title}</div>
 						<Price
-							nowPrice={8000}
-							// item.price
-							beforePrice={10000}
-							// item.discountPrice
-							discountRate="20%"
-							// item.discountRate
-							fontSize="20px"
-							font-weight="var(--regular)"
+							nowPrice={item.price}
+							beforePrice={item.discountPrice}
+							discountRate={item.discountRate}
+							fontSize="16px"
 						/>
 					</ContentContainer>
 				</ContentBox>
@@ -53,13 +46,13 @@ function DefaultList({ item }) {
 			<DefaultContainer className="hover" hover>
 				<ContentBox>
 					<ContentContainer star>
-						<ShortTextStar />
+						<ShortTextStar
+							starAvg={item.starAvg}
+							reviewCount={item.reviewSize}
+						/>
 					</ContentContainer>
 					<ContentContainer middle>
-						<ItemDescription>
-							{/* {item.content} */}
-							상품설명이 들어갈 자리입니다. 아껴주세요.
-						</ItemDescription>
+						<ItemDescription>{item.content}</ItemDescription>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
@@ -83,6 +76,12 @@ const EntireContainer = styled.div`
 		}
 		.beforeDiscounted {
 			color: var(--gray-200);
+		}
+		.white {
+			color: white;
+			> path {
+				color: var(--gray-200);
+			}
 		}
 	}
 `;
@@ -122,7 +121,7 @@ const ContentContainer = styled.div`
 			? css`
 					padding-top: 58px;
 					justify-content: center;
-					padding-bottom: 93px;
+					padding-bottom: 82px;
 			  `
 			: props.bottom
 			? css`
@@ -163,4 +162,4 @@ const ItemDescription = styled.p`
 	line-height: 25px;
 	letter-spacing: -0.04em;
 `;
-export default DefaultList;
+export default MainListCard;

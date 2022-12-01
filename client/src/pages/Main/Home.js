@@ -1,8 +1,16 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import MainCaroucel from '../../components/Caroucel/MainCaroucel';
 import { login } from '../../redux/slice/userSlice';
 import MainSection from './MainSection';
+import { useGet } from '../../hooks/useFetch';
+
+const sectionTitle = [
+	['Best', '인기 많은 상품만 모았어요!'],
+	['On Sale', '할인 중인 상품만 모았어요!'],
+	['MD Pick!', 'MD가 직접 선택한 제품들!'],
+];
 
 function Home() {
 	const dispatch = useDispatch();
@@ -17,12 +25,32 @@ function Home() {
 		}
 	}, []);
 
+	const { pathname } = useLocation();
+	const { isLoading, isError, data, error } = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/main',
+		// 'http://localhost:3001/main',
+		pathname,
+	);
+	const list = !isLoading && data.data;
+
 	return (
 		<div>
 			<MainCaroucel />
-			<MainSection />
-			<MainSection />
-			<MainSection />
+			{isLoading ? (
+				<div>Loading</div>
+			) : (
+				<>
+					<MainSection
+						items={list.data.bestItem.data}
+						sectionTitle={sectionTitle[0]}
+					/>
+					<MainSection
+						items={list.data.saleItem.data}
+						sectionTitle={sectionTitle[1]}
+					/>
+					{/* <MainSection /> */}
+				</>
+			)}
 		</div>
 	);
 }

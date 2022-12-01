@@ -42,7 +42,7 @@ const Container = styled.div`
 				`;
 			case 'mypage':
 				return `
-				background-image: linear-gradient(to bottom, white 278px, var(--gray-100) 0)
+				background-image: linear-gradient(to bottom, white 283px, var(--gray-100) 0)
 				`;
 			case '':
 				return `

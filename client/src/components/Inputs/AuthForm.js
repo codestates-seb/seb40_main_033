@@ -25,7 +25,6 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 		handleSubmit,
 		watch,
 		formState: { errors },
-		setError,
 		setValue,
 		setFocus,
 	} = useForm({

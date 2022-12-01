@@ -57,9 +57,6 @@ function LogIn() {
 				<LinkContainer>
 					아직 회원이 아니신가요? <Link to="/signup">회원가입</Link>
 				</LinkContainer>
-				<button type="button" onClick={logIn}>
-					로그인
-				</button>
 			</FormContainer>
 			<Background>
 				<Text>With Pillivery Ready For Life</Text>
