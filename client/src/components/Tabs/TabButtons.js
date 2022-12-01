@@ -23,6 +23,24 @@ export function ToggleTab({ currentIdx, highlightLeftValue }) {
 			highlightLeftValue={highlightLeftValue}
 			menuArr={menuArr}
 			toggle
+			order
+		/>
+	);
+}
+
+export function NoteToggleTab({ currentIdx, highlightLeftValue }) {
+	const menuArr = [
+		{ name: '리뷰', index: 0 },
+		{ name: '토크', index: 1 },
+	];
+
+	return (
+		<DefaultTabButton
+			currentIdx={currentIdx}
+			highlightLeftValue={highlightLeftValue}
+			menuArr={menuArr}
+			toggle
+			note
 		/>
 	);
 }

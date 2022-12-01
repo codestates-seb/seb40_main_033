@@ -2,7 +2,6 @@
 import { useLocation, useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import SubManagementList from '../../components/Lists/MyPageLists/SubManagementList';
-import { usePost, useDelete, usePatch, useGet } from '../../hooks/useFetch';
 
 function SubManage() {
 	const { pathname } = useLocation();

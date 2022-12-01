@@ -1,12 +1,41 @@
 import styled from 'styled-components';
-import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useLocation, useParams } from 'react-router-dom';
 import Summary from '../components/ItemSummary/Summary';
 import DetailReviewList from '../components/Lists/DetailReviewList';
-import TalkForm from '../components/Forms/TalkForm';
 import DetailTalkList from '../components/Lists/DetailTalkList';
+import TalkForm from '../components/Forms/TalkForm';
+import { useGet } from '../hooks/useFetch';
 
 function Detail() {
+	const { pathname } = useLocation();
+
+	const { id } = useParams();
+	const { isLoading, isError, data, error } = useGet(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/items/${id}`,
+		pathname,
+	);
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (isError) {
+		return <div>Error: {error.message}</div>;
+	}
+
+	console.log('데이터님 와주세여!!', data);
+
+	/*
+		영양 정보
+	- 용량 : ${item.capacity}정 (${item.capacity / item.servingSize}일)
+	- 영양성분 : ${item.nutritionFacts.map(
+		(fact) => `${fact.ingredient}: ${fact.volume}`,
+	)}
+	   1일 섭취량: 1회 ${item.servingSize}정
+	*/
+	// const item = data.data.data; // 실제 데이터
+	// const item = data.data;
+
 	const content1 = `요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이 덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!! 팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이
 	덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!!
 	팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이
@@ -41,72 +70,92 @@ function Detail() {
 	- 고객의 사용, 시간경과, 제품 소비에 의해 제품의 가치가 현저히 감소한 경우
 	- 구성품의 분실, 누락, 파손 혹은 포장이 훼손되어 제품의 가치가 현저히 감소한 경우`;
 
-	const { isLoading, isError, data, error } = useQuery('item', () =>
-		axios.get('http://localhost:3001/item'),
-	);
+	const ProductInfo = `상품 유형
+	건강기능식품
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
+	유통기한
+	제조일로부터 24개월
 
-	if (isError) {
-		return <div>Error: {error.message}</div>;
-	}
+	영양 정보
+	- 용량 : ${data.data.data.capacity}정 (${
+		data.data.data.capacity / data.data.data.servingSize
+	}일)
+	- 영양성분 : ${data.data.data.nutritionFacts.map(
+		(fact) => `${fact.ingredient}: ${fact.volume}`,
+	)}
+	   1일 섭취량: 1회 ${data.data.data.servingSize}정
+
+	섭취 방법
+	1일 1회, 1회 1캡슐을 충분한 물과 함께 섭취하십시오.
+
+	섭취 시 주의사항
+	- 질환이 있거나 의약품 복용 시 전문가와 상담하십시오.
+	- 알레르기 체질 등은 개인에 따라 과민반응을 나타낼 수 있습니다.
+	- 이상사례 발생 시 섭취를 중단하고 전문가와 상담하십시오.
+	- 어린이가 함부로 섭취하지 않도록 일일섭취량 방법을 지도하십시오.
+	- 강력방습제(실리카겔)는 섭취하지 마십시오.
+
+	보관 방법
+	- 수분 및 열에 의해 품질에 영향을 받을 수 있으므로 직사광선을 피해 서늘한 곳에 보관하시고, 어린이 손에 닿지 않는 곳에 보관하십시오.
+- 충격에 제품이 깨질 수 있으니 주의하십시오.
+
+	`;
 
 	return (
 		<DetailContainer>
-			{data.data.map((item) => (
-				<>
-					<Contents key={item.itemId}>
-						<Image
-							src={item.thumbnail}
-							alt="상품 대표사진"
-							className="thumbnail"
-						/>
-						<Image src={item.descriptionImage} alt="상품 상세사진" />
-						<InfoContainer>
-							<InfoTitle>상품정보</InfoTitle>
-							<InfoContent>복용방법이랑 보관방법</InfoContent>
-						</InfoContainer>
-						<InfoContainer>
-							<InfoTitle>배송정보</InfoTitle>
-							<InfoContent>{deliveryInfo}</InfoContent>
-						</InfoContainer>
-						<InfoContainer>
-							<InfoTitle>교환 및 반품정보</InfoTitle>
-							<InfoContent>{returnInfo}</InfoContent>
-						</InfoContainer>
-						<Notes>
-							<InfoTitle>Review</InfoTitle>
-							<ListsContainer>
-								<DetailReviewList content={content2} />
-								<DetailReviewList content={content1} />
-								<DetailReviewList content={content3} />
-							</ListsContainer>
-						</Notes>
-						<Notes>
-							<InfoTitle>Talk</InfoTitle>
-							<TalkForm />
-							<ListsContainer className="talk">
-								<DetailTalkList />
-								<DetailTalkList isReply />
-								<DetailTalkList />
-							</ListsContainer>
-						</Notes>
-					</Contents>
-					<SummaryContainer>
-						<Summary
-							name={item.title}
-							brand={item.brand}
-							categories={item.categories.map((el) => el.categoryName)}
-							content={item.content}
-							nowPrice={item.discountPrice}
-							discountRate={item.discountRate}
-							beforePrice={item.price}
-						/>
-					</SummaryContainer>
-				</>
-			))}
+			<>
+				<Contents key={data.data.data.itemId}>
+					<Image
+						src={data.data.data.thumbnail}
+						alt="상품 대표사진"
+						className="thumbnail"
+					/>
+					<Image src={data.data.data.descriptionImage} alt="상품 상세사진" />
+					<InfoContainer>
+						<InfoTitle>상품정보</InfoTitle>
+						<InfoContent>{ProductInfo}</InfoContent>
+					</InfoContainer>
+					<InfoContainer>
+						<InfoTitle>배송정보</InfoTitle>
+						<InfoContent>{deliveryInfo}</InfoContent>
+					</InfoContainer>
+					<InfoContainer>
+						<InfoTitle>교환 및 반품정보</InfoTitle>
+						<InfoContent>{returnInfo}</InfoContent>
+					</InfoContainer>
+					<Notes>
+						<InfoTitle>Review</InfoTitle>
+						<ListsContainer>
+							<DetailReviewList content={content2} />
+							<DetailReviewList content={content1} />
+							<DetailReviewList content={content3} />
+						</ListsContainer>
+					</Notes>
+					<Notes>
+						<InfoTitle>Talk</InfoTitle>
+						<TalkForm />
+						<ListsContainer className="talk">
+							<DetailTalkList />
+							<DetailTalkList isReply />
+							<DetailTalkList />
+						</ListsContainer>
+					</Notes>
+				</Contents>
+				<SummaryContainer>
+					<Summary
+						id={data.data.data.itemId}
+						name={data.data.data.title}
+						brand={data.data.data.brand}
+						categories={data.data.data.categories}
+						content={data.data.data.content}
+						nowPrice={data.data.data.discountPrice || data.data.data.price}
+						discountRate={data.data.data.discountRate}
+						beforePrice={
+							data.data.data.discountPrice ? data.data.data.price : null
+						}
+					/>
+				</SummaryContainer>
+			</>
 		</DetailContainer>
 	);
 }

@@ -5,7 +5,55 @@ import styled from 'styled-components';
 import './slick.css';
 import './slick-theme.css';
 import { IoIosArrowBack } from 'react-icons/io';
-import { MainList } from '../Lists/ListCards';
+import MainListCard from '../Lists/MainListCard';
+
+function CardCaroucel({ items }) {
+	console.log(items);
+
+	const settings = {
+		// dots: true,
+		infinite: false,
+		speed: 500,
+		slidesToShow: 3,
+		slidesToScroll: 1,
+		nextArrow: (
+			<ArrowButton right>
+				<IoIosArrowBack />
+			</ArrowButton>
+		),
+		prevArrow: (
+			<ArrowButton left>
+				<IoIosArrowBack />
+			</ArrowButton>
+		),
+	};
+
+	return (
+		<SlideContainer>
+			<Slider {...settings}>
+				{items.map((item) => (
+					<SlidePage key={item.itemId}>
+						<MainListCard item={item} />
+					</SlidePage>
+				))}
+			</Slider>
+		</SlideContainer>
+	);
+}
+
+export default CardCaroucel;
+
+// * 캐러셀 스타일
+export const SlideContainer = styled.div`
+	/* width 옵션으로 전체 width 값을 지정할 수 있음 */
+	width: 1000px;
+	padding-left: 16px;
+`;
+
+export const SlidePage = styled.div`
+	width: 297px;
+	padding: 8px;
+`;
 
 const ArrowButton = styled.button`
 	width: 40px;
@@ -34,50 +82,4 @@ const ArrowButton = styled.button`
 			left: 28%;
 		`}
 	}
-`;
-
-function CardCaroucel() {
-	const settings = {
-		// dots: true,
-		infinite: false,
-		speed: 500,
-		slidesToShow: 3,
-		slidesToScroll: 1,
-		nextArrow: (
-			<ArrowButton right>
-				<IoIosArrowBack />
-			</ArrowButton>
-		),
-		prevArrow: (
-			<ArrowButton left>
-				<IoIosArrowBack />
-			</ArrowButton>
-		),
-	};
-
-	return (
-		<SlideContainer>
-			<Slider {...settings}>
-				{[1, 2, 3, 4, 5, 6].map((el, i) => (
-					<SlidePage key={`${i.toString()}-${el}`}>
-						<MainList />
-					</SlidePage>
-				))}
-			</Slider>
-		</SlideContainer>
-	);
-}
-
-export default CardCaroucel;
-
-// * 캐러셀 스타일
-export const SlideContainer = styled.div`
-	/* width 옵션으로 전체 width 값을 지정할 수 있음 */
-	width: 1000px;
-	padding-left: 16px;
-`;
-
-export const SlidePage = styled.div`
-	width: 297px;
-	padding: 8px;
 `;

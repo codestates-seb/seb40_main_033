@@ -61,7 +61,6 @@ export function UserInfo() {
 			setValue('전화번호', userData.data.phone);
 			setValue('주소', userData.data.address);
 			setValue('상세주소', userData.data.detailAddress);
-			localStorage.setItem('displayName', userData.data.displayName);
 		}
 	}, [userData]);
 

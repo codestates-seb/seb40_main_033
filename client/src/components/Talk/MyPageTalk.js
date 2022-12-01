@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { useState, useCallback } from 'react';
-import { LetterButtonColor } from '../../Buttons/LetterButton';
-import { DotDate } from '../../Etc/ListDate';
-import { LongTextStar } from '../../Stars/TextStar';
-import OrderDetailList from './OrderDetailList';
-import ReviewModal from '../../Modals/ReviewModal';
-import DeleteNotesModal from '../../Modals/DeleteNotesModal';
+import { MdSubdirectoryArrowRight } from 'react-icons/md';
+import { LetterButtonColor } from '../Buttons/LetterButton';
+import { DotDate } from '../Etc/ListDate';
+import OrderDetailList from '../Lists/MyPageLists/OrderDetailList';
+import DeleteNotesModal from '../Modals/DeleteNotesModal';
+import TalkModal from '../Modals/TalkModal';
 
-function MyPageReviewList({ review }) {
+function MyPageTalk({ content, isReply }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -27,12 +27,15 @@ function MyPageReviewList({ review }) {
 
 	return (
 		<Box>
-			<Image src={review.item.thumbnail} alt="상품 이미지" />
+			<Image
+				src="https://wiselycompany.cafe24.com/web/product/medium/202211/46763d93d5fd373356268c62b05f5560.jpg"
+				alt="상품 이미지"
+			/>
 			<ListContainer>
 				<TopContainer>
 					<NameContainer>
-						<Info className="brand">{review.item.brand}</Info>
-						<Info className="name">{review.item.title}</Info>
+						<Info className="brand"> California Gold Nutrition</Info>
+						<Info className="name">오메가3 프리미엄 피쉬 오일</Info>
 					</NameContainer>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
@@ -44,16 +47,15 @@ function MyPageReviewList({ review }) {
 						</LetterButtonColor>
 					</ButtonContainer>
 				</TopContainer>
-				<InfoContainer>
-					<LongTextStar noText />
-					<DotDate date={review.updatedAt} />
-				</InfoContainer>
-				<Review>{review.content}</Review>
-				<ReviewModal
+				<BottomContainer>
+					{isReply && <MdSubdirectoryArrowRight />}
+					<Content>{content}</Content>
+				</BottomContainer>
+				<DotDate date="2022/11/23T11:33:33" />
+				<TalkModal
 					setIsOpen={setOpenForm}
 					modalIsOpen={openForm}
 					OrderDetailList={OrderDetailList}
-					review={review}
 				/>
 				<DeleteNotesModal
 					openDeleteModal={openDeleteModal}
@@ -69,7 +71,6 @@ const Box = styled.li`
 	background-color: white;
 	width: 100%;
 	display: flex;
-	/* flex-direction: column; */
 	align-items: center;
 	padding: 30px;
 	border-bottom: 1px solid #f1f1f1;
@@ -86,8 +87,8 @@ const Image = styled.img`
 const ListContainer = styled.div`
 	display: flex;
 	flex-direction: column;
+	align-items: flex-end;
 	width: 100%;
-	/* height: 160px; // 임시 */
 	margin-left: 30px;
 `;
 
@@ -118,21 +119,25 @@ const TopContainer = styled.div`
 	width: 100%;
 `;
 
-const InfoContainer = styled.div`
+const BottomContainer = styled.div`
 	display: flex;
 	align-self: flex-start;
 	margin-top: 15px;
+	flex-grow: 1;
 	// 사이 간격 조절
-	& > div:nth-child(1) {
-		margin-right: 5px;
+	svg {
+		margin-right: 10px;
+		margin-bottom: 10px;
+		font-size: 18px;
+		* {
+			color: var(--purple-200);
+		}
 	}
 `;
 
-const Review = styled.div`
+const Content = styled.div`
 	width: 100%;
 	height: 100%;
-	align-self: start;
-	padding-top: 20px;
 	color: var(--gray-400);
 	font-size: 14px;
 	line-height: 1.5;
@@ -150,4 +155,4 @@ const ButtonContainer = styled.div`
 	}
 `;
 
-export default MyPageReviewList;
+export default MyPageTalk;
