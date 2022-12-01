@@ -1,11 +1,12 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-param-reassign */
 // 회원정보
-import { useCallback, useState } from 'react';
-
+import { useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Postcode from '@actbase/react-daum-postcode';
 import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
 	LetterButton,
 	LetterButtonColor,
@@ -13,51 +14,67 @@ import {
 import DeleteAccountModal from '../../components/Modals/DeleteAccountModal';
 import AddressModal from '../../components/Modals/AddressModal';
 import GoodbyeModal from '../../components/Modals/GoodbyeModal';
+import { useGet, useDelete, usePatch, usePost } from '../../hooks/useFetch';
 
 export function UserInfo() {
-	const user = {
-		displayName: 'loopy',
-		email: 'loopy@gmail.com',
-		realName: '최민석',
-		address: '(16355)서울특별시 부평구 사직동 광명아파트',
-		detailAddress: '303동 1403호',
-		phone: '010-2222-2222',
-		createdAt: '2022-11-10T15:13:44.815603',
-	}; // 테스트를 위한 임시 정보입니다.
-	const [isModal, setModal] = useState(false);
-	const [modalIsOpen, setIsOpen] = useState(false);
-	const [openGoodbye, setOpenGoodbye] = useState(false);
-	const [inputValue, setInputValue] = useState({
-		닉네임: `${user.displayName}`,
-		이메일: `${user.email}`,
-		이름: `${user.realName}`,
-		전화번호: `${user.phone}`,
-		주소: `${user.address}`,
-		상세주소: `${user.detailAddress}`,
-	});
-	const onTextChange = useCallback(
-		(e) => {
-			const { value, name } = e.target;
-			setInputValue({ ...inputValue, [name]: value });
-		},
-		[inputValue],
+	const { mutate: accountDelete } = useDelete(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
 	);
-	const onAddressChange = useCallback((data) => {
-		setInputValue({
-			...inputValue,
-			주소: `(${data.zonecode})${data.address}`,
-		});
-		setModal(false);
-	});
+	const { pathname } = useLocation();
+	const {
+		isLoading,
+		isError,
+		data: userData,
+		error,
+	} = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
+		pathname,
+	);
+	const { mutate: userPatch } = usePatch(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
+	);
+	// const { mutate: userPost } = usePost(
+	// 	'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users/more-info',
+	// );
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		watch, // 온 체인지 할  때마다 객체에  담아줌
 		formState: { errors },
 		// setError,
 	} = useForm({
 		mode: 'onBlur',
 	});
+
+	const [isModal, setModal] = useState(false);
+	const [modalIsOpen, setIsOpen] = useState(false);
+	const [openGoodbye, setOpenGoodbye] = useState(false);
+
+	useEffect(() => {
+		console.log('userData', userData);
+		if (userData) {
+			setValue('이메일', userData.data.email);
+			setValue('닉네임', userData.data.displayName);
+			setValue('비밀번호', userData.data.password);
+			setValue('이름', userData.data.realName);
+			setValue('전화번호', userData.data.phone);
+			setValue('주소', userData.data.address);
+			setValue('상세주소', userData.data.detailAddress);
+			localStorage.setItem('displayName', userData.data.displayName);
+		}
+	}, [userData]);
+
+	const onAddressChange = useCallback((data) => {
+		setValue('주소', `(${data.zonecode})${data.address}`);
+		setModal(false);
+	});
+	const handleDeleteButton = useCallback(() => {
+		accountDelete();
+		setIsOpen(false);
+		setOpenGoodbye(true);
+	});
+	// console.log(watch(), 'watch');
 	const nicknameReg = register('닉네임', {
 		// ref1 자체는 일단 함수임
 		required: '닉네임을 입력해주세요.', // 빈 칸일때
@@ -130,38 +147,62 @@ export function UserInfo() {
 
 	const onValid = (data) => {
 		// 이 안에 다 담겨있다. 이걸 가공을 해서 여기서 api요청을 하면 될 듯.
-		console.log('data', data);
+		const value = {
+			// 밑의 방식으로 꺼낸 다음, 바디에 넣어서 보내기.
+			displayName: data.닉네임,
+			email: data.이메일,
+			password: data.비밀번호,
+			realName: data.이름,
+			phone: data.전화번호,
+			address: data.주소,
+			detailAddress: data.상세주소,
+		};
+		console.log(value);
+		userPatch(value);
 	};
+	// const onValid2 = (data) => {
+	// 	// 소셜로그인하고 처음 들어오는 사람(Post용)
+	// 	const value = {
+	// 		// 밑의 방식으로 꺼낸 다음, 바디에 넣어서 보내기.
+	// 		displayName: data.닉네임,
+	// 		email: data.이메일,
+	// 		password: data.비밀번호,
+	// 		realName: data.이름,
+	// 		phone: data.전화번호,
+	// 		address: data.주소,
+	// 		detailAddress: data.상세주소,
+	// 	};
+	// 	console.log(value);
+	// 	userPost({ data: value });
+	// };
+
+	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
+	if (isError) return <div>{error.message}</div>;
 	return (
 		<MainContainer>
-			<Box onSubmit={handleSubmit(onValid)}>
+			<Box>
 				<InfoBox>
 					<InfoHeading>기본 정보</InfoHeading>
 					<InputBox>
 						<Information
 							label="닉네임"
 							register={nicknameReg}
-							errors={errors?.닉네임?.message}
-							value={inputValue.닉네임}
-							onTextChange={onTextChange}
+							// errors={errors?.닉네임?.message}
 						/>
 						<Information
 							label="이메일"
-							value={inputValue.이메일}
 							register={mailReg}
-							errors={errors?.이메일?.message}
+							// errors={errors?.이메일?.message}
 						/>
 						<Information
 							label="비밀번호"
 							register={pwReg}
-							onTextChange={onTextChange}
-							errors={errors?.비밀번호?.message}
+							// errors={errors?.비밀번호?.message}
 						/>
 						<Information
 							label="비밀번호재확인"
 							register={rePwReg}
-							onTextChange={onTextChange}
-							errors={errors?.비밀번호재확인?.message}
+							// errors={errors?.비밀번호재확인?.message}
 						/>
 					</InputBox>
 				</InfoBox>
@@ -171,37 +212,30 @@ export function UserInfo() {
 						<Information
 							label="이름"
 							register={nameReg}
-							onTextChange={onTextChange}
-							errors={errors?.이름?.message}
-							value={inputValue.이름}
+							// errors={errors?.이름?.message}
 						/>
 						<Information
 							label="전화번호"
 							register={telReg}
-							onTextChange={onTextChange}
-							errors={errors?.전화번호?.message}
-							value={inputValue.전화번호}
+							// errors={errors?.전화번호?.message}
 						/>
 						<Information
 							label="주소"
 							handleOpenAddress={handleOpenAddress}
 							register={adressReg}
-							errors={errors?.주소?.message}
-							value={inputValue.주소}
+							// errors={errors?.주소?.message}
 						/>
 						<Information
 							label="상세주소"
 							register={detailAddressReg}
-							onTextChange={onTextChange}
-							errors={errors?.상세주소?.message}
-							value={inputValue.상세주소}
+							// errors={errors?.상세주소?.message}
 						/>
 					</InputBox>
 				</InfoBox>
-				<LetterButton>정보 수정</LetterButton>
+				<LetterButton onClick={handleSubmit(onValid)}>정보 수정</LetterButton>
 			</Box>
 			<LetterButtonColor
-				onClick={handleOpenDelete}
+				onClick={() => handleOpenDelete()}
 				color="red"
 				colorCode="100"
 				fontSize="12px"
@@ -211,7 +245,7 @@ export function UserInfo() {
 			<DeleteAccountModal
 				setIsOpen={setIsOpen}
 				modalIsOpen={modalIsOpen}
-				handleOpenGoodbye={handleOpenGoodbye}
+				handleOpenGoodbye={handleDeleteButton}
 			/>
 			<GoodbyeModal setIsOpen={setOpenGoodbye} modalIsOpen={openGoodbye} />
 			{isModal && (
@@ -227,14 +261,7 @@ export function UserInfo() {
 	);
 }
 
-export function Information({
-	label,
-	handleOpenAddress,
-	register,
-	errors,
-	value,
-	onTextChange,
-}) {
+export function Information({ label, handleOpenAddress, register, errors }) {
 	return (
 		<UserInfoBox>
 			{label === '비밀번호재확인' ||
@@ -261,8 +288,6 @@ export function Information({
 					placeholder={label}
 					{...register}
 					name={label}
-					value={value}
-					onChange={onTextChange}
 					className={errors && 'error'}
 				/>
 				<ErrorDiv className={errors && 'error'}>{errors}</ErrorDiv>

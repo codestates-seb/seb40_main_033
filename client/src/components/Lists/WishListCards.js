@@ -27,7 +27,7 @@ function WishListCards({ item }) {
 							nowPrice={item.discountPrice || item.price}
 							beforePrice={item.discountPrice ? item.price : null}
 							discountRate={item.discountRate}
-							fontSize="16px"
+							fontSize="13px"
 							font-weight="var(--regular)"
 						/>
 					</ContentContainer>
@@ -69,6 +69,12 @@ const EntireContainer = styled.div`
 		.beforeDiscounted {
 			color: var(--gray-200);
 		}
+		.white {
+			color: white;
+			> path {
+				color: var(--gray-200);
+			}
+		}
 	}
 `;
 
@@ -76,7 +82,7 @@ const DefaultContainer = styled.div`
 	width: 245px;
 	height: 387px;
 	border-radius: 10px;
-	box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	transition: 0.25s;
 	background-color: white;
 	${(props) =>

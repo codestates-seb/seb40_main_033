@@ -6,8 +6,11 @@ import {
 	AiOutlineShoppingCart,
 } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function RightNav() {
+	// const { accessToken } = store.getState().user;
+	const { loginStatus } = useSelector((store) => store.user);
 	const [openSearch, setOpenSearch] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const navigate = useNavigate();
@@ -37,7 +40,7 @@ function RightNav() {
 		<Container>
 			<Nav>
 				<IconContainer>
-					<Link to="/mypage">
+					<Link to={loginStatus ? '/mypage' : '/login'}>
 						<AiOutlineUser />
 					</Link>
 					<AiOutlineSearch

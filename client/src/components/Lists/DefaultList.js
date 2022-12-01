@@ -46,6 +46,7 @@ function DefaultList({ item }) {
 							// item.discountRate
 							fontSize="20px"
 							font-weight="var(--regular)"
+							className="price"
 						/>
 					</ContentContainer>
 				</ContentBox>
@@ -83,6 +84,12 @@ const EntireContainer = styled.div`
 		}
 		.beforeDiscounted {
 			color: var(--gray-200);
+		}
+		.white {
+			color: white;
+			> path {
+				color: var(--gray-200);
+			}
 		}
 	}
 `;
