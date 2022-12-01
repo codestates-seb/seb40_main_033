@@ -36,7 +36,7 @@ export function ShortTextStar() {
 }
 
 const Count = styled.div`
-	color: var(--gray-400);
+	color: var(--gray-200);
 `;
 
 const Score = styled.div`
