@@ -1,13 +1,15 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useMatch } from 'react-router-dom';
+import { useCallback, useState } from 'react';
 import { TfiClose } from 'react-icons/tfi';
 import CounterBtn from '../../Buttons/CounterButton';
 import { DayShowTab } from '../../Tabs/TabButtons';
 
-function CartList() {
+function CartList({ item }) {
 	const price = 6000;
-	const [isSubscription, setIsSubscription] = useState(false);
 	const [quantity, setQuantity] = useState(1);
+
+	const isSubscription = useMatch('/cart/subscription');
 
 	const onPlusClick = () => {
 		setQuantity(quantity + 1);
