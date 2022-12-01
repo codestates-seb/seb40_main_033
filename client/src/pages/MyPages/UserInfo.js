@@ -130,7 +130,6 @@ export function UserInfo() {
 		setModal(true);
 	};
 
-
 	const onValid = (data) => {
 		const value = {
 			// 밑의 방식으로 꺼낸 다음, 바디에 넣어서 보내기.

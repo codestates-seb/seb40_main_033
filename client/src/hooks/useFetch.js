@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -9,11 +9,12 @@ import { useState } from 'react';
 // };
 
 export const useGet = (url, keyValue) => {
-	const { isLoading, isError, data, error } = useQuery([keyValue], () =>
-		axios.get(url),
+	const { isLoading, isError, data, error, refetch } = useQuery(
+		[keyValue],
+		() => axios.get(url),
 	);
 
-	return { isLoading, isError, data, error };
+	return { isLoading, isError, data, error, refetch };
 };
 
 export const usePost = (url) => {
@@ -48,12 +49,14 @@ export const useDelete = (url) => {
 
 export const usePatch = (url) => {
 	const [response, setResponse] = useState(null);
+	const queryClient = useQueryClient();
 
 	const { mutate, isLoading, isError, error } = useMutation(
 		(data) => axios.patch(url, data),
 		{
-			onSuccess: async (res) => {
+			onSuccess: (res) => {
 				setResponse(res);
+				queryClient.invalidateQueries();
 			},
 		},
 	);

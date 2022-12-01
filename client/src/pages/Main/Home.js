@@ -31,6 +31,7 @@ function Home() {
 		// 'http://localhost:3001/main',
 		pathname,
 	);
+
 	const list = !isLoading && data.data;
 
 	return (
@@ -48,7 +49,10 @@ function Home() {
 						items={list.data.saleItem.data}
 						sectionTitle={sectionTitle[1]}
 					/>
-					{/* <MainSection /> */}
+					{/* <MainSection
+						items={list.data.saleItem.data}
+						sectionTitle={sectionTitle[2]}
+					/> */}
 				</>
 			)}
 		</div>
