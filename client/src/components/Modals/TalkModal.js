@@ -1,5 +1,5 @@
 import DefalutModal from './DefalutModal';
-import PayList from '../Lists/PayList';
+import PayLists from '../Lists/PayLists';
 import UpdateTalkForm from '../Forms/UpdateTalkForm';
 
 // 토크 수정 모달
@@ -11,7 +11,7 @@ function TalkModal({ setIsOpen, modalIsOpen }) {
 	return (
 		<DefalutModal
 			title={data.title}
-			list={<PayList />}
+			list={<PayLists talk />}
 			form={<UpdateTalkForm />}
 			setIsOpen={setIsOpen}
 			modalIsOpen={modalIsOpen}

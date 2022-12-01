@@ -89,7 +89,7 @@ const ListContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	height: 160px; // 임시
+	/* height: 160px; // 임시 */
 	margin-left: 30px;
 `;
 
@@ -134,7 +134,7 @@ const Review = styled.div`
 	width: 100%;
 	height: 100%;
 	align-self: start;
-	padding: 20px 0;
+	padding-top: 20px;
 	color: var(--gray-400);
 	font-size: 14px;
 	line-height: 1.5;

@@ -4,8 +4,8 @@ import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import { LetterButtonColor } from '../Buttons/LetterButton';
 import { DotDate } from '../Etc/ListDate';
 import OrderDetailList from '../Lists/MyPageLists/OrderDetailList';
-import ReviewModal from '../Modals/ReviewModal';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
+import TalkModal from '../Modals/TalkModal';
 
 function MyPageTalk({ content, isReply }) {
 	const [openForm, setOpenForm] = useState(false);
@@ -52,7 +52,7 @@ function MyPageTalk({ content, isReply }) {
 					<Content>{content}</Content>
 				</BottomContainer>
 				<DotDate date="2022/11/23T11:33:33" />
-				<ReviewModal
+				<TalkModal
 					setIsOpen={setOpenForm}
 					modalIsOpen={openForm}
 					OrderDetailList={OrderDetailList}
@@ -71,7 +71,6 @@ const Box = styled.li`
 	background-color: white;
 	width: 100%;
 	display: flex;
-	/* flex-direction: column; */
 	align-items: center;
 	padding: 30px;
 	border-bottom: 1px solid #f1f1f1;
@@ -90,7 +89,6 @@ const ListContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-end;
 	width: 100%;
-	height: 160px; // 임시
 	margin-left: 30px;
 `;
 
