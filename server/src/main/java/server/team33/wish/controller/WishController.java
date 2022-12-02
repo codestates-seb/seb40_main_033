@@ -56,6 +56,12 @@ public class WishController {
         return new ResponseEntity<>(new MultiResponseDto<>(wishMapper.wishesToWishItemResponse(wishes, itemMapper), pageWishes), HttpStatus.OK);
     }
 
+    @GetMapping("/item") // 로그인한 유저의 찜한 상품(itemId) 불러오기
+    public ResponseEntity getWishItemIdList() {
+        Long[] itemId = wishService.findItemId(userService.getLoginUser().getUserId());
+        return new ResponseEntity<>(new SingleResponseDto<>(itemId), HttpStatus.OK);
+    }
+
 
 
 

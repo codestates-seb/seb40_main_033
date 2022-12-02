@@ -12,6 +12,7 @@ import server.team33.user.entity.User;
 import server.team33.user.service.UserService;
 import server.team33.wish.entity.Wish;
 import server.team33.wish.repository.WishRepository;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,5 +61,14 @@ public class WishService {
 
     public Page<Wish> findWishes(long userId, int page, int size, String sort) {
         return wishRepository.findAllByUser(PageRequest.of(page, size, Sort.by(sort).descending()), userId);
+    }
+
+    public Long[] findItemId(long userId) {
+        List<Long> itemIdByUser = wishRepository.findItemIdByUser(userId);
+        Long[] itemIdList = new Long[itemIdByUser.size()];
+        for (int i = 0; i < itemIdByUser.size(); i++) {
+            itemIdList[i] = itemIdByUser.get(i);
+        }
+        return itemIdList;
     }
 }
