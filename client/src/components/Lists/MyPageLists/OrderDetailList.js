@@ -18,8 +18,6 @@ function OrderDetailList({
 	orderId,
 	quantity,
 }) {
-	const PillsNum = 60;
-
 	const [modalIsOpen, setIsOpen] = useState(false);
 
 	const openModal = useCallback(() => {
@@ -46,9 +44,7 @@ function OrderDetailList({
 			<Wrap>
 				<InformationForm>
 					<Brand>{brand}</Brand>
-					<Name>
-						{title}, {PillsNum}정
-					</Name>
+					<Name>{title}</Name>
 					<Price fontSize="13px" nowPrice={nowPrice} />
 				</InformationForm>
 				<BottomContainer>
