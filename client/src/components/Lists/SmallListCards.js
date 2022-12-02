@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
-import WishlistBtn from '../Buttons/WishlistButton';
 import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
 // 세연님이 별점 만들면 가져다가 쓰자.

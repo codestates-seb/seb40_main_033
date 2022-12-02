@@ -4,9 +4,9 @@ import { useCallback, useState } from 'react';
 import { TfiClose } from 'react-icons/tfi';
 import CounterBtn from '../../Buttons/CounterButton';
 import { DayShowTab } from '../../Tabs/TabButtons';
+import { usePatch } from '../../../hooks/useFetch';
 
 function CartList({ item }) {
-	const price = 6000;
 	const [quantity, setQuantity] = useState(1);
 
 	const isSubscription = useMatch('/cart/subscription');
@@ -17,6 +17,17 @@ function CartList({ item }) {
 	const onMinusClick = () => {
 		setQuantity(quantity - 1);
 	};
+
+	// const { mutate: patchMu, response: patchRes } = usePatch(
+	// 	'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/exclude/itemcart - id?buynow=false',
+	// );
+
+	// <button
+	// 	type="button"
+	// 	onClick={() => mutate({ title: '테스트 하는데 뭐 문제 있는지?' })}
+	// >
+	// 	patch
+	// </button>
 
 	return (
 		<Box isSub={isSubscription}>
@@ -33,11 +44,11 @@ function CartList({ item }) {
 					</SubBox>
 				) : null}
 				<MainBox>
-					<Image> img </Image>
+					<Image src={item.thumbnail} />
 					<InformationForm>
-						<Brand>California Gold Nutrition</Brand>
-						<Name>오메가3 프리미엄 피쉬 오일</Name>
-						<Price>{price} 원</Price>
+						<Brand>{item.brand}</Brand>
+						<Name>{item.title}</Name>
+						<Price>{item.price} 원</Price>
 					</InformationForm>
 					<QuantityForm>
 						<Quantity>수량</Quantity>
@@ -46,7 +57,7 @@ function CartList({ item }) {
 							onPlusClick={onPlusClick}
 							onMinusClick={onMinusClick}
 						/>
-						<PriceBold>{price * quantity}원</PriceBold>
+						<PriceBold>{item.price * quantity}원</PriceBold>
 					</QuantityForm>
 				</MainBox>
 			</Wrap>
@@ -118,8 +129,7 @@ const MainBox = styled.div`
 	font-size: 16px;
 `;
 
-const Image = styled.div`
-	border: 1px solid green;
+const Image = styled.img`
 	width: 163px;
 	height: 163px;
 	display: flex;
