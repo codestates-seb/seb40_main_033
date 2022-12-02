@@ -1,29 +1,33 @@
 import styled from 'styled-components';
 import Price from '../Etc/Price';
 
-export default function PayLists({ isSub, talk }) {
+export default function PayLists({ orderedItem, isSub, talk }) {
 	// isSub="isSub" 이런식으로 줘야 함
 	const price = 7000;
 	const quantity = 5;
 	const PillsNum = 60;
-
+	console.log(orderedItem, 'orderedItem');
 	return (
 		<Box>
 			<ImageContainer>
-				<Image> img </Image>
+				<Image src={orderedItem.item.thumbnail} />
 			</ImageContainer>
 			<Wrap>
-				<Brand>California Gold Nutrition</Brand>
-				<Name>오메가3 프리미엄 피쉬 오일, {PillsNum}정</Name>
-				<Price fontSize="13px" nowPrice={price} />
+				<Brand>{orderedItem.item.brand}</Brand>
+				<Name>
+					{orderedItem.item.title}, {orderedItem.item.capacity}정
+				</Name>
+				<Price fontSize="13px" nowPrice={orderedItem.item.disCountPrice} />
 				<BottomContainer>
-					<SubInfo className={isSub}>2주마다</SubInfo>
+					<SubInfo className={isSub}>{orderedItem.period}일 마다</SubInfo>
 					{!talk && (
 						<Total>
-							<Quantity>{quantity}개 / </Quantity>
+							<Quantity>{orderedItem.quantity}개 / </Quantity>
 							<Price // 가격 * 수량
-								nowPrice={price}
-								quantity="5" // 수량!
+								beforePrice={orderedItem.item.price}
+								discountRate={orderedItem.item.discountRate}
+								nowPrice={orderedItem.item.disCountPrice}
+								quantity={orderedItem.quantity} // 수량!
 								fontSize="16px"
 								fontWeight="Bold"
 							/>
@@ -59,8 +63,7 @@ const ImageContainer = styled.div`
 	display: flex;
 `;
 
-const Image = styled.div`
-	border: 1px solid green;
+const Image = styled.img`
 	width: 120px;
 	height: 120px;
 	display: flex;

@@ -2,31 +2,25 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import PayPageContainer from './PayPageContainer';
 
-export default function PayDestination() {
-	const [destInputValue, setDestInputValue] = useState({
-		realName: '도현수',
-		phone: '010-99369-9771',
-		address: '(12321) 경기도 수원시 장안구 이;ㅏ런ㅁ아',
-		detailAddress: '201 동 703호',
-	});
+export default function PayDestination({ payData }) {
 	return (
 		<PayPageContainer Info="배송지 정보">
 			<DestInputContainer>
 				<DestInputBox>
 					<DestInputLabel>이름</DestInputLabel>
-					<Destination>{destInputValue.realName}</Destination>
+					<Destination>{payData.name}</Destination>
 				</DestInputBox>
 				<DestInputBox>
 					<DestInputLabel>전화번호</DestInputLabel>
-					<Destination>{destInputValue.phone}</Destination>
+					<Destination>{payData.phone}</Destination>
 				</DestInputBox>
 				<DestInputBox>
 					<DestInputLabel>주소</DestInputLabel>
-					<Destination>{destInputValue.address}</Destination>
+					<Destination>{payData.address}</Destination>
 				</DestInputBox>
 				<DestInputBox className="last">
 					<DestInputLabel />
-					<Destination>{destInputValue.detailAddress}</Destination>
+					<Destination>{payData.detailAddress}</Destination>
 				</DestInputBox>
 			</DestInputContainer>
 		</PayPageContainer>

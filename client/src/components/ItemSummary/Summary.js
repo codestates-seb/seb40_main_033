@@ -98,7 +98,7 @@ function Summary({
 		},
 		[orderList],
 	);
-
+	console.log(orderList);
 	// * 일반/정기 선택
 	const handleTypeClick = useCallback(
 		(e) => {
@@ -142,7 +142,7 @@ function Summary({
 		// 		navigate('/pay/normal', { state: response.data.data });
 		// 	}
 		// }
-	}, [path]);
+	}, [orderList]);
 
 	/*
 		! 장바구니에 담기 (정기)

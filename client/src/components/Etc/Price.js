@@ -32,7 +32,7 @@ function Price({
 					<BeforePrice className="beforeDiscounted">
 						{Number(beforePrice).toLocaleString('ko-KR')} 원
 					</BeforePrice>
-					<Percent>{discountRate}</Percent>
+					<Percent>{discountRate}%</Percent>
 				</>
 			)}
 		</PriceContainer>

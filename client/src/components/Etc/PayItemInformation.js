@@ -2,14 +2,19 @@ import styled from 'styled-components';
 import PayLists from '../Lists/PayLists';
 import PayPageContainer from './PayPageContainer';
 
-export default function PayItemInformation({ isSub }) {
+export default function PayItemInformation({ payData, isSub }) {
+	const orderedItems = payData.itemOrders.data;
+	console.log(orderedItems, 'orderedItems');
 	return (
 		<PayPageContainer Info="상품 정보">
 			<ListContainer>
-				<PayLists {...(isSub && { isSub: 'isSub' })} />
-				<PayLists {...(isSub && { isSub: 'isSub' })} />
-				<PayLists {...(isSub && { isSub: 'isSub' })} />
-				<PayLists {...(isSub && { isSub: 'isSub' })} />
+				{orderedItems.map((orderedItem, idx) => (
+					<PayLists
+						key={`${orderedItem.itemOrderId}`}
+						orderedItem={orderedItem}
+						{...(isSub && { isSub: 'isSub' })}
+					/>
+				))}
 			</ListContainer>
 		</PayPageContainer>
 	);
