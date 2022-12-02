@@ -32,7 +32,7 @@ function Price({
 					<BeforePrice className="beforeDiscounted">
 						{Number(beforePrice).toLocaleString('ko-KR')} 원
 					</BeforePrice>
-					<Percent>{discountRate}</Percent>
+					<Percent>{`${discountRate}%`}</Percent>
 				</>
 			)}
 		</PriceContainer>
@@ -114,11 +114,11 @@ const Label = styled.label`
 `;
 
 const BeforePrice = styled.del`
-	color: var(--gray-300);
+	color: var(--gray-300) !important;
 `;
 
 const Percent = styled.div`
-	color: var(--red-100);
+	color: var(--red-100) !important;
 	margin-left: 6px;
 	font-weight: var(--bold);
 `;
