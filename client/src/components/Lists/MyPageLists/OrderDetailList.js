@@ -7,8 +7,17 @@ import { LetterButtonColor } from '../../Buttons/LetterButton';
 import Price from '../../Etc/Price';
 import ReviewModal from '../../Modals/ReviewModal';
 
-function OrderDetailList({ inModal, brand, thumbnail, title, price, orderId }) {
-	const quantity = 5;
+function OrderDetailList({
+	inModal,
+	brand,
+	thumbnail,
+	title,
+	nowPrice,
+	beforePrice,
+	discountRate,
+	orderId,
+	quantity,
+}) {
 	const PillsNum = 60;
 
 	const [modalIsOpen, setIsOpen] = useState(false);
@@ -18,11 +27,15 @@ function OrderDetailList({ inModal, brand, thumbnail, title, price, orderId }) {
 	}, []);
 
 	const review = {
-		orderId,
-		brand,
-		thumbnail,
-		title,
-		price,
+		item: {
+			orderId,
+			brand,
+			thumbnail,
+			title,
+			nowPrice,
+			beforePrice,
+			discountRate,
+		},
 	};
 
 	return (
@@ -36,38 +49,40 @@ function OrderDetailList({ inModal, brand, thumbnail, title, price, orderId }) {
 					<Name>
 						{title}, {PillsNum}정
 					</Name>
-					<Price fontSize="13px" nowPrice={price} />
+					<Price fontSize="13px" nowPrice={nowPrice} />
 				</InformationForm>
 				<BottomContainer>
 					<Total>
-						<Quantity>{quantity}개 / </Quantity>
+						{quantity && <Quantity>{quantity}개 / </Quantity>}
 						<Price // 가격 * 수량
-							nowPrice={price}
-							quantity="5" // 수량!
-							fontSize="16px"
+							nowPrice={nowPrice}
+							beforePrice={beforePrice}
+							discountRate={discountRate}
+							fontSize="14px"
 							fontWeight="Bold"
+							quantity={quantity}
 						/>
 					</Total>
-					{!inModal && (
-						<ReviewContainer>
-							<LetterButtonColor
-								onClick={openModal}
-								color="gray"
-								colorcode="500"
-								fontSize="13px"
-							>
-								리뷰 쓰기
-							</LetterButtonColor>
-							<IoIosArrowForward />
-						</ReviewContainer>
-					)}
-					<ReviewModal
-						modalIsOpen={modalIsOpen}
-						setIsOpen={setIsOpen}
-						OrderDetailList={OrderDetailList}
-						review={review}
-					/>
 				</BottomContainer>
+				{!inModal && (
+					<ReviewContainer>
+						<LetterButtonColor
+							onClick={openModal}
+							color="gray"
+							colorcode="500"
+							fontSize="13px"
+						>
+							리뷰 쓰기
+						</LetterButtonColor>
+						<IoIosArrowForward />
+					</ReviewContainer>
+				)}
+				<ReviewModal
+					modalIsOpen={modalIsOpen}
+					setIsOpen={setIsOpen}
+					OrderDetailList={OrderDetailList}
+					review={review}
+				/>
 			</Wrap>
 		</Box>
 	);
@@ -132,9 +147,6 @@ const BottomContainer = styled.div`
 const Total = styled.div`
 	display: flex;
 	font-weight: var(--bold);
-	* {
-		font-size: 16px;
-	}
 `;
 
 const Quantity = styled.div`
@@ -145,6 +157,8 @@ const ReviewContainer = styled.div`
 	display: flex;
 	align-items: center;
 	cursor: pointer;
+	align-self: end;
+	margin-top: 16px;
 	* {
 		color: var(--gray-500);
 	}

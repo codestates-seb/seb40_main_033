@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Price from './Price';
 
 // 배송지 정보
-export function DestinationInfo() {
+export function DestinationInfo({ name, phone, address, detailAddress }) {
 	return (
 		<InfoContainer className="top">
 			<Title>배송지 정보</Title>
@@ -10,18 +10,15 @@ export function DestinationInfo() {
 				<LabelContainer />
 				<Destination>
 					<Label>이름</Label>
-					<div>김코딩</div>
+					<div>{name}</div>
 				</Destination>
 				<Destination>
 					<Label>전화번호</Label>
-					<div>010-1234-5678</div>
+					<div>{phone}</div>
 				</Destination>
 				<Destination>
 					<Label>주소</Label>
-					<div className="address">
-						서울특별시 서초구 서초대로 396, 강남빌딩 20층(스파크플러스 강남
-						2호점), 코드스테이츠
-					</div>
+					<div className="address">{`${address}, ${detailAddress}`}</div>
 				</Destination>
 			</Contents>
 		</InfoContainer>
@@ -30,22 +27,36 @@ export function DestinationInfo() {
 
 // 결제 정보
 // 결제수단까지 표시하고자 하면 options 필요
-export function PaymentInfo({ options }) {
+export function PaymentInfo({
+	totalPrice,
+	totalDiscountPrice,
+	expectPrice,
+	options,
+}) {
 	return (
 		<InfoContainer className="bottom">
 			<Title>최종 결제 정보</Title>
 			<Contents>
 				<Payment>
 					<Label className="price-label">상품합계</Label>
-					<Price nowPrice={120000} fontSize="18px" fontWeight="bold" />
+					<Price nowPrice={totalPrice} fontSize="18px" fontWeight="bold" />
 				</Payment>
 				<Payment>
 					<Label className="price-label">할인합계</Label>
-					<Price nowPrice={45600} minus fontSize="18px" fontWeight="bold" />
+					<Price
+						nowPrice={totalDiscountPrice}
+						minus
+						fontSize="18px"
+						fontWeight="bold"
+					/>
 				</Payment>
 				<Payment>
 					<Label className="price-label">최종결제금액</Label>
-					<Price nowPrice={74400} fontSize="18px" fontWeight="extraBold" />
+					<Price
+						nowPrice={expectPrice}
+						fontSize="18px"
+						fontWeight="extraBold"
+					/>
 				</Payment>
 				{options && (
 					<Payment className="payment-options">
