@@ -35,14 +35,17 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${id}`,
 	);
 
-	const handleStar = useCallback((e) => {
-		setStar(e);
+	// console.log('response', response);
+
+	const handleStar = useCallback((clickedStar) => {
+		setStar(clickedStar);
+		console.log(clickedStar);
 	}, []);
 
 	const handleContent = useCallback((e) => {
 		setContent(e.target.value);
 	}, []);
-
+	console.log({ star, content });
 	const handleSubmit = useCallback((e) => {
 		e.preventDefault();
 		// 상세페이지의 리뷰 작성 요청
@@ -55,18 +58,18 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 		setIsOpen(false);
 		console.log('리뷰 작성 및 수정 요청');
 	}, []);
-	console.log(review);
+	// console.log(review);
 	return (
 		<DefalutModal
 			title={data.title}
 			list={
 				<OrderDetailList
 					inModal
-					brand={review?.item.brand}
-					thumbnail={review?.item.thumbnail}
-					title={review?.item.title}
-					price={review?.item.price}
-					capacity={review?.item.capacity}
+					brand={review?.item?.brand}
+					thumbnail={review?.item?.thumbnail}
+					title={review?.item?.title}
+					price={review?.item?.price}
+					capacity={review?.item?.capacity}
 					quantity={review?.quantity}
 				/>
 			}

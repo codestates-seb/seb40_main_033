@@ -32,6 +32,8 @@ function Home() {
 
 	const list = !isLoading && data.data;
 
+	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
+	if (isError) return <div>{error.message}</div>;
 	return (
 		<div>
 			<MainCaroucel />
