@@ -20,8 +20,6 @@ function NormalCart() {
 		pathname,
 	);
 
-	console.log(items);
-
 	if (isLoading) {
 		return <List> 대기중 ..</List>;
 	}
@@ -32,9 +30,9 @@ function NormalCart() {
 	return (
 		<Box>
 			<List>
-				{items.data.data.map((item) => (
-					<CartList key={item.cartId} item={item} />
-				))}
+				{items.data.data.itemCarts.data.map((item) => (
+					<CartList key={item.item.itemId} item={item.item} />
+				))}{' '}
 			</List>
 			<Bottom>
 				<Display>
