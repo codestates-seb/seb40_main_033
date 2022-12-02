@@ -67,15 +67,15 @@ public class ItemService {
     }
 
     public List<Item> findTop9BestItems() {
-        return itemRepository.findOrderByBestItem();
+        return itemRepository.findTop9ByOrderBySalesDesc();
     }
 
     public List<Item> findTop9SaleItems() {
-        return itemRepository.findOrderBySaleItem();
+        return itemRepository.findTop9ByOrderByDiscountRateDesc();
     }
 
     public List<Item> findTop9MdPickItems() {
-        return itemRepository.findOrderByMdPickItem();
+        return itemRepository.findTop9ByOrderByItemIdDesc();
     }
 
     public Page<Item> searchItems(String keyword, int page, int size, String sort) {

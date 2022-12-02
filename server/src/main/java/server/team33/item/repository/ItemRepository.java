@@ -31,15 +31,12 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Page<Item> findAllCategoryNameAndDiscountRateAndBrand(Pageable pageable, @Param("categoryName") String categoryName, @Param("brand") Brand brand);
 
 
-    @Query(value = "SELECT * FROM ITEM Order by sales desc limit 9", nativeQuery = true)
-    List<Item> findOrderByBestItem();
+    List<Item> findTop9ByOrderBySalesDesc();
 
+    List<Item> findTop9ByOrderByDiscountRateDesc();
 
-    @Query(value = "SELECT * FROM ITEM where item.discount_rate > 0 order by discount_rate desc limit 9", nativeQuery = true)
-    List<Item> findOrderBySaleItem();
+    List<Item> findTop9ByOrderByItemIdDesc();
 
-    @Query(value = "SELECT * FROM ITEM Order by item.item_Id desc limit 9",nativeQuery = true)
-    List<Item> findOrderByMdPickItem();
 
     Page<Item> findByTitleContaining(Pageable pageable, String keyword);
 
