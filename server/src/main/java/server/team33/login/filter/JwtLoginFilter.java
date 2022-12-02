@@ -53,6 +53,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         response.setHeader("Authorization", "Bearer " + accessToken); // 응답 헤더에 토큰을 담는다.
         response.setHeader("Refresh", refreshToken); //응답 헤더에 리프레시 토큰을 담는다.
+        response.setHeader("userId", String.valueOf(user.getUserId()));
 
         if(user.getDisplayName() != null){
             response.getWriter().write("로그인완료");
