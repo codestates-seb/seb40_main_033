@@ -2,7 +2,8 @@ import axios from 'axios';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { TempLogo } from '../../assets/Icons';
 import { useGet } from '../../hooks/useFetch';
 import { GrayLetterButton } from '../Buttons/LetterButton';
@@ -11,7 +12,8 @@ import { logout } from '../../redux/slice/userSlice';
 function MyPageHeader() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const nickName = localStorage.getItem('displayName');
+	const { nickName } = useSelector((store) => store.nickName);
+	console.log(nickName);
 	const handleLogout = useCallback(async () => {
 		const response = await axios
 			.get(
@@ -23,6 +25,7 @@ function MyPageHeader() {
 		if (response) {
 			dispatch(logout());
 			navigate('/', { replace: true });
+			toast.success('로그아웃 되었습니다!');
 		}
 	}, []);
 	return (
