@@ -68,7 +68,7 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 					brand={review?.item?.brand}
 					thumbnail={review?.item?.thumbnail}
 					title={review?.item?.title}
-					price={review?.item?.price}
+					nowPrice={review?.item?.price}
 					capacity={review?.item?.capacity}
 					quantity={review?.quantity}
 				/>

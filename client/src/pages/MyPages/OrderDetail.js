@@ -1,3 +1,5 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
 import styled from 'styled-components';
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';

@@ -48,7 +48,7 @@ function OrderDetailList({
 					<Name>
 						{title}, {capacity}정
 					</Name>
-					<Price fontSize="13px" nowPrice={price} />
+					<Price fontSize="13px" nowPrice={nowPrice} />
 				</InformationForm>
 				<BottomContainer>
 					<Total>
