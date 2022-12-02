@@ -22,27 +22,49 @@ function OrderDetail() {
 	if (isError) {
 		return <div>Error: {error.message}</div>;
 	}
+	console.log('data', data.data.data); // 여기서 배송지정보, 결제정보
+	console.log('list?', data.data.data.itemOrders.data); // 여기서 배송지정보, 결제정보
 
-	const lists = !isLoading && data.data.data;
+	const lists = !isLoading && data.data.data.itemOrders.data;
+	const info = !isLoading && data.data.data;
+	console.log('info', info);
 
+	// console.log(info.name);
 	return (
 		<Box>
 			<LeftContainer>
-				<DestinationInfo />
+				<DestinationInfo
+					name={info.name}
+					phone={info.phone}
+					address={info.address}
+					detailAddress={info.detailAddress}
+				/>
 				<span />
-				<PaymentInfo options />
+				<PaymentInfo
+					options
+					totalPrice={info.totalPrice}
+					totalDiscountPrice={info.totalDiscountPrice}
+					expectPrice={info.expectPrice}
+				/>
 			</LeftContainer>
 			<RightContainer>
 				<Title>주문 상세 내역</Title>
 				{data &&
 					lists.map((list) => (
 						<OrderDetailList
-							key={list.orderId}
-							orderId={list.orderId}
-							brand={list.brand}
-							thumbnail={list.thumbnail}
-							title={list.title}
-							price={list.price}
+							key={list.itemOrderId}
+							orderId={list.itemOrderId} // 이게 맞나 나중에 확인
+							itemId={list.item.itemId}
+							brand={list.item.brand}
+							thumbnail={list.item.thumbnail}
+							title={list.item.title}
+							// price={list.item.discountPrice || list.item.price}
+							quantity={list.quantity}
+							nowPrice={list.item.disCountPrice || list.item.price}
+							discountRate={
+								list.item.discountRate === 0 ? '' : list.item.discountRate
+							}
+							beforePrice={list.item.disCountPrice ? list.item.price : null}
 						/>
 					))}
 			</RightContainer>
@@ -76,6 +98,8 @@ const LeftContainer = styled.section`
 
 const RightContainer = styled(LeftContainer)`
 	align-items: center;
+	display: flex;
+	justify-content: flex-start;
 `;
 
 const Title = styled.h1`

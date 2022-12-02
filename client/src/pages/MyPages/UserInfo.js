@@ -5,7 +5,8 @@ import { useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Postcode from '@actbase/react-daum-postcode';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
 	LetterButton,
 	LetterButtonColor,
@@ -13,10 +14,12 @@ import {
 import DeleteAccountModal from '../../components/Modals/DeleteAccountModal';
 import AddressModal from '../../components/Modals/AddressModal';
 import GoodbyeModal from '../../components/Modals/GoodbyeModal';
-import { useGet, useDelete, usePatch, usePost } from '../../hooks/useFetch';
+import { useGet, useDelete, usePatch } from '../../hooks/useFetch';
+import { change } from '../../redux/slice/nickNameSlice';
+import { logout } from '../../redux/slice/userSlice';
 
 export function UserInfo() {
-	const { mutate: accountDelete } = useDelete(
+	const { mutate: accountDelete, isError: deleteError } = useDelete(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
 	);
 	const { pathname } = useLocation();
@@ -41,7 +44,7 @@ export function UserInfo() {
 	} = useForm({
 		mode: 'onBlur',
 	});
-
+	const dispatch = useDispatch();
 	const [isModal, setModal] = useState(false);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const [openGoodbye, setOpenGoodbye] = useState(false);
@@ -51,11 +54,11 @@ export function UserInfo() {
 		if (userData) {
 			setValue('이메일', userData.data.email);
 			setValue('닉네임', userData.data.displayName);
-			setValue('비밀번호', userData.data.password);
 			setValue('이름', userData.data.realName);
 			setValue('전화번호', userData.data.phone);
 			setValue('주소', userData.data.address);
 			setValue('상세주소', userData.data.detailAddress);
+			dispatch(change(userData.data.displayName));
 		}
 	}, [userData]);
 
@@ -65,8 +68,11 @@ export function UserInfo() {
 	});
 	const handleDeleteButton = useCallback(() => {
 		accountDelete();
-		setIsOpen(false);
-		setOpenGoodbye(true);
+		if (!deleteError) {
+			dispatch(logout());
+			setIsOpen(false);
+			setOpenGoodbye(true);
+		}
 	});
 	const nicknameReg = register('닉네임', {
 		required: '닉네임을 입력해주세요.', // 빈 칸일때
@@ -144,7 +150,6 @@ export function UserInfo() {
 		console.log(value);
 		userPatch(value);
 	};
-
 	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
 	if (isError) return <div>{error.message}</div>;
 	return (
@@ -156,22 +161,22 @@ export function UserInfo() {
 						<Information
 							label="닉네임"
 							register={nicknameReg}
-							errors={errors?.닉네임?.message}
+							// errors={errors?.닉네임?.message}
 						/>
 						<Information
 							label="이메일"
 							register={mailReg}
-							errors={errors?.이메일?.message}
+							// errors={errors?.이메일?.message}
 						/>
 						<Information
 							label="비밀번호"
 							register={pwReg}
-							errors={errors?.비밀번호?.message}
+							// errors={errors?.비밀번호?.message}
 						/>
 						<Information
 							label="비밀번호재확인"
 							register={rePwReg}
-							errors={errors?.비밀번호재확인?.message}
+							// errors={errors?.비밀번호재확인?.message}
 						/>
 					</InputBox>
 				</InfoBox>
@@ -181,23 +186,23 @@ export function UserInfo() {
 						<Information
 							label="이름"
 							register={nameReg}
-							errors={errors?.이름?.message}
+							// errors={errors?.이름?.message}
 						/>
 						<Information
 							label="전화번호"
 							register={telReg}
-							errors={errors?.전화번호?.message}
+							// errors={errors?.전화번호?.message}
 						/>
 						<Information
 							label="주소"
 							handleOpenAddress={handleOpenAddress}
 							register={adressReg}
-							errors={errors?.주소?.message}
+							// errors={errors?.주소?.message}
 						/>
 						<Information
 							label="상세주소"
 							register={detailAddressReg}
-							errors={errors?.상세주소?.message}
+							// errors={errors?.상세주소?.message}
 						/>
 					</InputBox>
 				</InfoBox>

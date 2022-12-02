@@ -1,37 +1,45 @@
-// 정기 장바구니
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
+import { useGet } from '../../hooks/useFetch';
 
-// 일반 장바구니
+// 정기 장바구니
 function SubCart() {
-	const [cartItem, setCartItem] = useState([]);
+	const { pathname } = useLocation();
 
-	useEffect(() => {
-		axios
-			.get('http://localhost:3001/cartProducts')
-			.then((response) => {
-				setCartItem(response.data);
-			})
-			.catch((err) => {
-				throw new Error(err);
-			});
-	}, []);
+	const {
+		isLoading,
+		isError,
+		data: items,
+		error,
+	} = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts?subscription=true',
+		pathname,
+	);
+
+	// console.log('items', items);
+
+	if (isLoading) {
+		return <List> 대기중 ..</List>;
+	}
+	if (isError) {
+		return <List> {error.message} </List>;
+	}
 
 	return (
 		<Box>
 			<List>
-				{cartItem.map((item) => (
-					<CartList key={item.cartId} item={item} />
+				{items.data.data.itemCarts.data.map((item) => (
+					<CartList key={item.itemId} item={item.item} />
 				))}
 			</List>
 			<Bottom>
 				<Display>
 					<Text>합계</Text>
-					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" />
+					<Price nowPrice="1000" fontSize="24px" fontWeight="bold" />
 					<Text>할인 금액</Text>
 					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" />
 					<Text>결제 예정 금액</Text>

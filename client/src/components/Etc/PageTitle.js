@@ -8,7 +8,7 @@ import Search from '../Search/Search';
 const togglePath = ['/cart/normal', '/cart/subscription'];
 const leftValueArr = [0, 68];
 
-function PageTitle({ title }) {
+function PageTitle({ title, handleSearch }) {
 	const { pathname } = useLocation();
 	const currentIdx = togglePath.indexOf(pathname);
 	const highlightLeftValue = leftValueArr[currentIdx];
@@ -24,7 +24,7 @@ function PageTitle({ title }) {
 		<Container>
 			<TitleContainer>
 				{showSearchBar ? (
-					<Search />
+					<Search handleSearch={handleSearch} />
 				) : (
 					<>
 						<TempLogo />

@@ -10,6 +10,9 @@ export default function PayLists({
 	price,
 	capacity,
 	quantity,
+	discountRate,
+	beforePrice,
+	period,
 }) {
 	// isSub="isSub" 이런식으로 줘야 함
 	return (
@@ -24,13 +27,15 @@ export default function PayLists({
 				</Name>
 				<Price fontSize="13px" nowPrice={price} />
 				<BottomContainer>
-					<SubInfo className={isSub}>2주마다</SubInfo>
+					<SubInfo className={isSub}>{period}일 마다</SubInfo>
 					{!talk && (
 						<Total>
 							<Quantity>{quantity}개 / </Quantity>
 							<Price // 가격 * 수량
+								beforePrice={beforePrice}
+								discountRate={discountRate}
 								nowPrice={price}
-								quantity="5" // 수량!
+								quantity={quantity} // 수량!
 								fontSize="16px"
 								fontWeight="Bold"
 							/>
