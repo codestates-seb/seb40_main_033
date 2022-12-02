@@ -1,33 +1,42 @@
 import styled from 'styled-components';
 import Price from '../Etc/Price';
 
-export default function PayLists({ orderedItem, isSub, talk }) {
+export default function PayLists({
+	isSub,
+	talk,
+	brand,
+	thumbnail,
+	title,
+	price,
+	capacity,
+	quantity,
+	discountRate,
+	beforePrice,
+	period,
+}) {
 	// isSub="isSub" 이런식으로 줘야 함
-	const price = 7000;
-	const quantity = 5;
-	const PillsNum = 60;
-	console.log(orderedItem, 'orderedItem');
+	console.log(thumbnail);
 	return (
 		<Box>
 			<ImageContainer>
-				<Image src={orderedItem.item.thumbnail} />
+				<Image src={thumbnail} />
 			</ImageContainer>
 			<Wrap>
-				<Brand>{orderedItem.item.brand}</Brand>
+				<Brand>{brand}</Brand>
 				<Name>
-					{orderedItem.item.title}, {orderedItem.item.capacity}정
+					{title}, {capacity}정
 				</Name>
-				<Price fontSize="13px" nowPrice={orderedItem.item.disCountPrice} />
+				<Price fontSize="13px" nowPrice={price} />
 				<BottomContainer>
-					<SubInfo className={isSub}>{orderedItem.period}일 마다</SubInfo>
+					<SubInfo className={isSub}>{period}일 마다</SubInfo>
 					{!talk && (
 						<Total>
-							<Quantity>{orderedItem.quantity}개 / </Quantity>
+							<Quantity>{quantity}개 / </Quantity>
 							<Price // 가격 * 수량
-								beforePrice={orderedItem.item.price}
-								discountRate={orderedItem.item.discountRate}
-								nowPrice={orderedItem.item.disCountPrice}
-								quantity={orderedItem.quantity} // 수량!
+								beforePrice={beforePrice}
+								discountRate={discountRate}
+								nowPrice={price}
+								quantity={quantity} // 수량!
 								fontSize="16px"
 								fontWeight="Bold"
 							/>

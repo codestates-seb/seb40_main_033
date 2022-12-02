@@ -11,7 +11,15 @@ export default function PayItemInformation({ payData, isSub }) {
 				{orderedItems.map((orderedItem, idx) => (
 					<PayLists
 						key={`${orderedItem.itemOrderId}`}
-						orderedItem={orderedItem}
+						brand={orderedItem.item.brand}
+						thumbnail={orderedItem.item.thumbnail}
+						title={orderedItem.item.title}
+						price={orderedItem.item.disCountPrice}
+						capacity={orderedItem.item.capacity}
+						quantity={orderedItem.quantity}
+						beforePrice={orderedItem.item.price}
+						discountRate={orderedItem.item.discountRate}
+						period={orderedItem.period}
 						{...(isSub && { isSub: 'isSub' })}
 					/>
 				))}
