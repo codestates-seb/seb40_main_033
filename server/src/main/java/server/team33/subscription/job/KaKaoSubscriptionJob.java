@@ -62,9 +62,7 @@ public class KaKaoSubscriptionJob implements Job {
         } catch(SchedulerException e){
             throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
         }
-
         connectKaKaoPay(newOrder.getOrderId());
-
     }
 
     private Order getNewOrder( Long orderId ){
@@ -85,7 +83,7 @@ public class KaKaoSubscriptionJob implements Job {
 
         parameters.add("orderId", String.valueOf(orderId));
 
-        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(9090) // 호스트랑 포트는 나중에 변경해야한다.
+        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com").port(8080) // 호스트랑 포트는 나중에 변경해야한다.
                 .path("/payments/kakao/subscription").queryParams(parameters).build().toUri();
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getForObject(uri, String.class);

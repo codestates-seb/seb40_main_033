@@ -14,8 +14,7 @@ import server.team33.login.handler.UserAccessDeniedHandler;
 import server.team33.login.handler.UserAuthSuccessHandler;
 import server.team33.login.handler.UserAuthenticationEntryPoint;
 import server.team33.login.jwt.JwtToken;
-import server.team33.user.redis.RedisConfig;
-import server.team33.user.repository.UserRepository;
+import server.team33.redis.RedisConfig;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

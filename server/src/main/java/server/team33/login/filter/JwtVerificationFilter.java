@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import server.team33.login.jwt.JwtToken;
 import server.team33.logout.Logout;
-import server.team33.user.redis.RedisConfig;
+import server.team33.redis.RedisConfig;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -92,7 +92,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             log.error(ExpiredJwtException.class.getSimpleName());
             return true;
         }
-
         return false;
     }
 

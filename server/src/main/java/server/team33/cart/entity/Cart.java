@@ -1,7 +1,6 @@
 package server.team33.cart.entity;
 
 import lombok.*;
-import server.team33.audit.Auditable;
 import server.team33.user.entity.User;
 
 import javax.persistence.*;

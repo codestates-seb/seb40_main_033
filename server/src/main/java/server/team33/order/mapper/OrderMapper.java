@@ -3,13 +3,10 @@ package server.team33.order.mapper;
 import org.mapstruct.Mapper;
 import server.team33.item.entity.Item;
 import server.team33.item.mapper.ItemMapper;
-import server.team33.item.service.ItemService;
 import server.team33.order.dto.OrderDto;
 import server.team33.order.entity.ItemOrder;
 import server.team33.order.entity.Order;
 import server.team33.response.MultiResponseDto;
-import server.team33.user.entity.User;
-import server.team33.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;

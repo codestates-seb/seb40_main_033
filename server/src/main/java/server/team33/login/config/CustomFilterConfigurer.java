@@ -11,7 +11,7 @@ import server.team33.login.filter.JwtVerificationFilter;
 import server.team33.login.handler.UserAuthFailureHandler;
 import server.team33.login.handler.UserAuthSuccessHandler;
 import server.team33.login.jwt.JwtToken;
-import server.team33.user.redis.RedisConfig;
+import server.team33.redis.RedisConfig;
 
 @Component
 @RequiredArgsConstructor

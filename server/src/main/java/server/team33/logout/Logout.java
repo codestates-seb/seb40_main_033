@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import server.team33.login.jwt.JwtToken;
 import server.team33.login.jwt.SecretKey;
-import server.team33.user.redis.RedisConfig;
+import server.team33.redis.RedisConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;

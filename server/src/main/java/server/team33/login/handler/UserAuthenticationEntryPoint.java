@@ -26,6 +26,7 @@ public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public static void errorToJson( HttpServletResponse response, HttpStatus status ) throws IOException{
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(status.value());
         ErrorResponse exceptions = ErrorResponse.builder() //errorresponse객체에 상태코드와 메시지 주입
                 .status(status.value()).message(status.getReasonPhrase()).build();
 

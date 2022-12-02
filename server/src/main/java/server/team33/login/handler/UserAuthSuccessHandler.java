@@ -76,7 +76,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
  
         queryParams.add("refresh_token", refreshToken);
         log.info("query = {}", queryParams);
-        return UriComponentsBuilder.newInstance().scheme("http").host("kihyeon.s3-website.ap-northeast-2.amazonaws.com") // 호스트랑 포트는 나중에 변경해야한다.
+        return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(3000) // 호스트랑 포트는 나중에 변경해야한다.
                 .queryParams(queryParams).build().toUri();
     }
 
@@ -84,7 +84,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("email", principalDetails.getUsername());
         log.error("{}", queryParams);
-        return UriComponentsBuilder.newInstance().scheme("http").host("kihyeon.s3-website.ap-northeast-2.amazonaws.com") // TODO 호스트랑 포트는 나중에 변경해야한다.
+        return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(3000) // TODO 호스트랑 포트는 나중에 변경해야한다.
                 .path("/signup").queryParams(queryParams).build().toUri();
     }
 

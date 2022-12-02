@@ -21,7 +21,7 @@ import server.team33.payment.dto.KakaoPayRequestDto;
 import server.team33.payment.service.PayService;
 import server.team33.payment.service.SubsPayService;
 import server.team33.user.entity.User;
-import server.team33.user.redis.RedisConfig;
+import server.team33.redis.RedisConfig;
 import server.team33.user.service.UserService;
 
 import java.io.IOException;
@@ -42,12 +42,12 @@ public class PaymentController {
 
     //    @PreAuthorize("isAuthenticated()")
     @GetMapping("/kakao-pay")
-    public KakaoPayRequestDto payRequest( @RequestParam(name = "total_amount") int totalAmount, @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "quantity") int quantity ){
-        log.warn("totalAmount = {}", totalAmount);
-        log.warn("quantity = {}", quantity);
+    public KakaoPayRequestDto payRequest(  @RequestParam(name = "orderId") Long orderId ){
 
+
+        Order order = orderService.findOrder(orderId);
         userId = userService.getUserId();
-        KakaoPayRequestDto requestResponse = payService.kakaoPayRequest(totalAmount, quantity, orderId);
+        KakaoPayRequestDto requestResponse = payService.kakaoPayRequest(order.getExpectPrice(), order.getTotalQuantity(), orderId);
 
         redis.redisTemplate().opsForValue().set(String.valueOf(userId), requestResponse.getTid(), 1000 * 60 * 15, TimeUnit.MILLISECONDS);
 
@@ -167,7 +167,7 @@ public class PaymentController {
         queryParam.add("orderId", String.valueOf(orderId));
         log.info("query = {}", queryParam);
 
-        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(9090).path("/schedule/kakao")//TODO: 나중에 URL 전체변경
+        URI uri = UriComponentsBuilder.newInstance().scheme("http").host("ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com").port(8080).path("/schedule/kakao")//TODO: 나중에 URL 전체변경
                 .queryParams(queryParam).build().toUri();
         log.info("uri = {}", uri);
 
