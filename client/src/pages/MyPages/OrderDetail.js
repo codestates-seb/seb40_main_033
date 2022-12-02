@@ -29,6 +29,12 @@ function OrderDetail() {
 	const info = !isLoading && data.data.data;
 	console.log('info', info);
 
+	const payData = {
+		totalPrice: info.totalPrice,
+		totalDiscountPrice: info.totalDiscountPrice,
+		expectPrice: info.expectPrice,
+	};
+
 	// console.log(info.name);
 	return (
 		<Box>
@@ -40,12 +46,7 @@ function OrderDetail() {
 					detailAddress={info.detailAddress}
 				/>
 				<span />
-				<PaymentInfo
-					options
-					totalPrice={info.totalPrice}
-					totalDiscountPrice={info.totalDiscountPrice}
-					expectPrice={info.expectPrice}
-				/>
+				<PaymentInfo options payData={payData} />
 			</LeftContainer>
 			<RightContainer>
 				<Title>주문 상세 내역</Title>
