@@ -1,25 +1,24 @@
 import styled, { css } from 'styled-components';
 import PageTitle from './PageTitle';
-import FinalPaymentInformation from './FinalPaymentInfomation';
 import PayItemInformation from './PayItemInformation';
 import PayDestination from './PayDestination';
 import PayMethod from './PayMethod';
 import { PaymentInfo } from './PayInfo';
 import PayPageContainer from './PayPageContainer';
 
-function DefaultPayment({ titleName, isSub }) {
+function DefaultPayment({ payData, titleName, isSub }) {
 	return (
 		<>
 			<PageTitle title={titleName} />
 			<PaymentContainer>
 				<PayInfoBox left>
-					<PayDestination />
-					<PayMethod />
+					<PayDestination payData={payData} />
+					<PayMethod payData={payData} />
 				</PayInfoBox>
 				<PayInfoBox right>
-					<PayItemInformation isSub={isSub} />
+					<PayItemInformation payData={payData} isSub={isSub} />
 					<PayPageContainer payment>
-						<PaymentInfo />
+						<PaymentInfo payData={payData} />
 					</PayPageContainer>
 				</PayInfoBox>
 			</PaymentContainer>

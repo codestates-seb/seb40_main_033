@@ -30,22 +30,35 @@ export function DestinationInfo() {
 
 // 결제 정보
 // 결제수단까지 표시하고자 하면 options 필요
-export function PaymentInfo({ options }) {
+export function PaymentInfo({ options, payData }) {
 	return (
 		<InfoContainer className="bottom">
 			<Title>최종 결제 정보</Title>
 			<Contents>
 				<Payment>
 					<Label className="price-label">상품합계</Label>
-					<Price nowPrice={120000} fontSize="18px" fontWeight="bold" />
+					<Price
+						nowPrice={Number(payData.totalPrice)}
+						fontSize="18px"
+						fontWeight="bold"
+					/>
 				</Payment>
 				<Payment>
 					<Label className="price-label">할인합계</Label>
-					<Price nowPrice={45600} minus fontSize="18px" fontWeight="bold" />
+					<Price
+						nowPrice={Number(payData.totalDiscountPrice)}
+						minus
+						fontSize="18px"
+						fontWeight="bold"
+					/>
 				</Payment>
 				<Payment>
 					<Label className="price-label">최종결제금액</Label>
-					<Price nowPrice={74400} fontSize="18px" fontWeight="extraBold" />
+					<Price
+						nowPrice={Number(payData.expectPrice)}
+						fontSize="18px"
+						fontWeight="extraBold"
+					/>
 				</Payment>
 				{options && (
 					<Payment className="payment-options">
