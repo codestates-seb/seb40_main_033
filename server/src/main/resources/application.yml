@@ -70,12 +70,12 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id # 회원정보를 json으로 받는데 response라는 키값으로 네이버가 리턴해줌,.
-  h2:
-    console:
-      enabled: true
-      path: /h2
-  datasource:
-    url: jdbc:h2:mem:test
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    url: jdbc:h2:mem:test
 
   jpa:
     hibernate:
@@ -86,11 +86,11 @@ spring:
         format_sql: true
     defer-datasource-initialization: true
 
-#
-#  datasource:
-#    url: jdbc:mysql://pillivery-db.c3eo37fghscz.ap-northeast-2.rds.amazonaws.com:3306/test?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-#    username: admin
-#    password: pillivery33
+
+  datasource:
+    url: jdbc:mysql://pillivery-db.c3eo37fghscz.ap-northeast-2.rds.amazonaws.com:3306/test?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: admin
+    password: pillivery33
 
 logging:
   level:
