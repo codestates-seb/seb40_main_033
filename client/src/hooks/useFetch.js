@@ -9,12 +9,12 @@ import { useState } from 'react';
 // };
 
 export const useGet = (url, keyValue) => {
-	const { isLoading, isError, data, error, refetch } = useQuery(
+	const { isLoading, isError, isSuccess, data, error, refetch } = useQuery(
 		[keyValue],
 		() => axios.get(url),
 	);
 
-	return { isLoading, isError, data, error, refetch };
+	return { isLoading, isError, isSuccess, data, error, refetch };
 };
 
 export const usePost = (url) => {
