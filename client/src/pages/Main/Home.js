@@ -20,8 +20,6 @@ function Home() {
 		const refreshToken = url.searchParams.get('refresh_token');
 		if (accessToken) {
 			dispatch(login({ accessToken, refreshToken, isSocial: true }));
-			localStorage.setItem('accessToken', accessToken);
-			localStorage.setItem('refreshToken', refreshToken);
 		}
 	}, []);
 
@@ -31,6 +29,7 @@ function Home() {
 		// 'http://localhost:3001/main',
 		pathname,
 	);
+
 	const list = !isLoading && data.data;
 
 	return (
@@ -48,7 +47,10 @@ function Home() {
 						items={list.data.saleItem.data}
 						sectionTitle={sectionTitle[1]}
 					/>
-					{/* <MainSection /> */}
+					{/* <MainSection
+						items={list.data.saleItem.data}
+						sectionTitle={sectionTitle[2]}
+					/> */}
 				</>
 			)}
 		</div>

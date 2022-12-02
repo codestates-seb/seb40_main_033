@@ -1,3 +1,5 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
 import styled from 'styled-components';
 import { useState, useCallback } from 'react';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
@@ -20,8 +22,7 @@ function MyPageReviewList({ review }) {
 	}, []);
 
 	// review 삭제 요청!
-	const handleDeleteTalk = useCallback(() => {
-		console.log('삭제 요청');
+	const handleDelete = useCallback(() => {
 		setOpenDeleteModal(false);
 	}, []);
 
@@ -58,7 +59,7 @@ function MyPageReviewList({ review }) {
 				<DeleteNotesModal
 					openDeleteModal={openDeleteModal}
 					setOpenDeleteModal={setOpenDeleteModal}
-					handleDelete={handleDeleteTalk}
+					handleDelete={handleDelete}
 				/>
 			</ListContainer>
 		</Box>

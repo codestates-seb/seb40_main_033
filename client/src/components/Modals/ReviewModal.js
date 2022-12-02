@@ -52,6 +52,7 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 		} else {
 			patchMu({ star, content });
 		}
+		setIsOpen(false);
 		console.log('리뷰 작성 및 수정 요청');
 	}, []);
 

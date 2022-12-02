@@ -1,8 +1,9 @@
+import { useMutation, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Pagination from '../../components/Etc/Pagination';
 import MyPageReviewList from '../../components/Lists/MyPageLists/MyPageReviewList';
-import { useGet } from '../../hooks/useFetch';
+import { useGet, usePatch } from '../../hooks/useFetch';
 
 // 작성글 관리 - 리뷰
 function NoteReview() {
@@ -12,21 +13,39 @@ function NoteReview() {
 		'http://localhost:3001/reviews',
 		pathname,
 	);
-	const reviews = !isLoading && data.data.data;
+	const reviews = data?.data?.data;
 
-	console.log(reviews);
+	const {
+		data: dada,
+		isLoading: Loading,
+		refetch,
+	} = useGet(
+		// 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
+		'http://localhost:3001/test',
+		'dada',
+	);
+	const { mutate } = usePatch('http://localhost:3001/test');
+
+	const handle = () => {
+		mutate({ data: '456' });
+	};
 
 	return (
 		<>
-			{isLoading ? (
+			{isLoading || isError ? (
 				<div>Loading</div>
 			) : (
 				<ListContainer>
+					<div>{dada?.data?.data}</div>
+					<button type="button" onClick={handle}>
+						mutate
+					</button>
 					{reviews.map((review) => (
 						<MyPageReviewList key={review.reviewId} review={review} />
 					))}
 				</ListContainer>
 			)}
+			{isError && <div>{error.message}</div>}
 			<Pagination total="10" limit="8" />
 		</>
 	);
