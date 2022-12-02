@@ -1,20 +1,27 @@
 import styled from 'styled-components';
 import Price from '../Etc/Price';
 
-export default function PayLists({ isSub, talk }) {
+export default function PayLists({
+	isSub,
+	talk,
+	brand,
+	thumbnail,
+	title,
+	price,
+	capacity,
+	quantity,
+}) {
 	// isSub="isSub" 이런식으로 줘야 함
-	const price = 7000;
-	const quantity = 5;
-	const PillsNum = 60;
-
 	return (
 		<Box>
 			<ImageContainer>
-				<Image> img </Image>
+				<Image src={thumbnail} />
 			</ImageContainer>
 			<Wrap>
-				<Brand>California Gold Nutrition</Brand>
-				<Name>오메가3 프리미엄 피쉬 오일, {PillsNum}정</Name>
+				<Brand>{brand}</Brand>
+				<Name>
+					{title}, {capacity}정
+				</Name>
 				<Price fontSize="13px" nowPrice={price} />
 				<BottomContainer>
 					<SubInfo className={isSub}>2주마다</SubInfo>
@@ -59,8 +66,7 @@ const ImageContainer = styled.div`
 	display: flex;
 `;
 
-const Image = styled.div`
-	border: 1px solid green;
+const Image = styled.img`
 	width: 120px;
 	height: 120px;
 	display: flex;

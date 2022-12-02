@@ -14,7 +14,7 @@ function MyPageReviewList({ review }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-	const { mutate, isLoading, isError, error, response } = useDelete(
+	const { mutate } = useDelete(
 		// 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
 		'http://localhost:3001/reviews',
 	);
@@ -29,6 +29,7 @@ function MyPageReviewList({ review }) {
 
 	// review 삭제 요청!
 	const handleDelete = useCallback(() => {
+		mutate();
 		setOpenDeleteModal(false);
 	}, []);
 
@@ -53,7 +54,7 @@ function MyPageReviewList({ review }) {
 				</TopContainer>
 				<InfoContainer>
 					<LongTextStar noText star={review.star} />
-					<DotDate date={review.updatedAt} />
+					<DotDate date={review.createdAt} />
 				</InfoContainer>
 				<Review>{review.content}</Review>
 				<ReviewModal
@@ -83,7 +84,7 @@ const Box = styled.li`
 `;
 
 const Image = styled.img`
-	width: 160px;
+	min-width: 160px;
 	height: 160px;
 	display: flex;
 	justify-content: center;

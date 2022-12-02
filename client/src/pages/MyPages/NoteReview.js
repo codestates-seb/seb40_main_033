@@ -17,8 +17,8 @@ function NoteReview() {
 
 	return (
 		<>
-			{isLoading || isError ? (
-				<div>Loading</div>
+			{isLoading ? (
+				!isError && <div>Loading</div>
 			) : (
 				<ListContainer>
 					{reviews.map((review) => (

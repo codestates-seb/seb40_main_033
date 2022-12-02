@@ -3,14 +3,15 @@ import { FaStar } from 'react-icons/fa';
 
 // 별 다섯개
 export function LongTextStar({ noText, star, average, count }) {
-	console.log(new Array(star));
+	const starData = star || 5;
+
 	return (
 		<StarContainer>
 			<Icon>
-				{new Array(star).fill(0).map((el, i) => (
+				{new Array(starData).fill(0).map((el, i) => (
 					<FaStar key={`${i.toString()}`} id={el} className="yellow-star" />
 				))}
-				{new Array(5 - star).fill(0).map((el, i) => (
+				{new Array(5 - starData).fill(0).map((el, i) => (
 					<FaStar key={`${i.toString()}`} id={el} />
 				))}
 			</Icon>
@@ -26,13 +27,16 @@ export function LongTextStar({ noText, star, average, count }) {
 
 // 별 하나
 export function ShortTextStar({ starAvg, reviewCount }) {
+	const starData = starAvg || 0;
+	const reviewCountData = reviewCount || 0;
+
 	return (
 		<StarContainer>
 			<Icon>
-				<FaStar />
+				<FaStar className="yellow-star" />
 			</Icon>
-			<Score>{starAvg}</Score>
-			<Count>({reviewCount})</Count>
+			<Score>{starData}</Score>
+			<Count>({reviewCountData})</Count>
 		</StarContainer>
 	);
 }
