@@ -57,6 +57,7 @@ public class UserService {
     public User updateUser( UserDto.Post userDto ){
 
         userInfoFilter.filterUpdateUser(userDto);
+
         User loginUser = getLoginUser();
         loginUser.setAddress(userDto.getAddress());
         loginUser.setPhone(userDto.getPhone());
@@ -99,6 +100,7 @@ public class UserService {
 
         response.setHeader("Authorization", accessToken);
         response.setHeader("Refresh", refreshToken);
+        response.setHeader("userId", String.valueOf(user.getUserId()));
 
         response.getWriter().write("추가 정보 기입 완료");
     }
