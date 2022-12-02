@@ -1,21 +1,39 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import DefalutModal from './DefalutModal';
 import ReviewForm from '../Forms/ReviewForm';
 import BtnStar from '../Stars/BtnStar';
-import { usePatch } from '../../hooks/useFetch';
+import { usePatch, usePost } from '../../hooks/useFetch';
 
 function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 	const data = {
 		title: 'Review',
 	};
+	const { id } = useParams();
+	const { pathname } = useLocation();
 
 	const [star, setStar] = useState(review?.star);
 	const [content, setContent] = useState(review?.content);
 
-	const { mutate, isLoading, isError, error, response } =
-		usePatch(`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review?.reviewId}
+	const {
+		mutate: patchMu,
+		isLoading: patchIsLoad,
+		isError: patchIsErr,
+		error: patchErr,
+		response: patchRes,
+	} = usePatch(`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review?.reviewId}
 	`);
-	// console.log(review.reviewId);
+
+	// 상세페이지 - 리뷰 작성
+	const {
+		mutate: postMu,
+		isLoading: postIsLoad,
+		isError: postIsErr,
+		error: postErr,
+		response: postRes,
+	} = usePost(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${id}`,
+	);
 
 	const handleStar = useCallback((e) => {
 		setStar(e);
@@ -27,8 +45,14 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 
 	const handleSubmit = useCallback((e) => {
 		e.preventDefault();
-		console.log('리뷰 수정 요청');
-		mutate({ star, content });
+		// 상세페이지의 리뷰 작성 요청
+		if (pathname.includes('detail')) {
+			postMu({ star, content });
+			// 리뷰 수정 요청
+		} else {
+			patchMu({ star, content });
+		}
+		console.log('리뷰 작성 및 수정 요청');
 	}, []);
 
 	return (
