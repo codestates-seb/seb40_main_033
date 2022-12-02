@@ -26,7 +26,7 @@ function Price({
 			<div className="white">{`${Number(
 				quantity ? nowPrice * quantity : nowPrice,
 			).toLocaleString('ko-KR')}원`}</div>
-			{beforePrice && (
+			{beforePrice && discountRate !== 0 && (
 				<>
 					<IoIosArrowBack className="white" />
 					<BeforePrice className="beforeDiscounted">

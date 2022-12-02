@@ -1,21 +1,25 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
+import axios from 'axios';
 import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
 import AddressModal from '../Modals/AddressModal';
 
-export default function PayMethod() {
+export default function PayMethod({ payData }) {
+	const [url, setUrl] = useState('');
+	console.log(payData, '결제수단의 payData');
+	const { expectPrice, orderId, itemOrders, subscription } = payData;
 	const clientKey = process.env.REACT_APP_CLIENT_API_KEY;
 	const [isPayModal, setPayModal] = useState(false);
 	const tossPay = () =>
 		loadTossPayments(clientKey).then((tossPayments) => {
 			// 카드 결제 메서드 실행
 			tossPayments.requestPayment('카드', {
-				amount: 123223, // 총가격
-				orderId: `9abcdef`, // 주문 id
-				orderName: '영양제', // 결제상품 이름
+				amount: `${expectPrice}`, // 총가격
+				orderId: `${orderId}abcdef`, // 주문 id
+				orderName: `${itemOrders.data[0].item.title}, ${itemOrders.data.length} 건`, // 결제상품 이름
 				customerName: `Pillivery`, // 판매자, 판매처 이름
 				successUrl: 'http://localhost:3000', // 성공시 리다이렉트 주소
 				failUrl: 'http://localhost:3000', // 실패시 리다이렉트 주소
@@ -25,22 +29,29 @@ export default function PayMethod() {
 				},
 			});
 		});
-	const kakaoClick = () => {
+
+	const kakaoClick = async () => {
+		const response = await axios.get(
+			`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/kakao-pay?orderId=${orderId}`,
+		);
+		setUrl(response.data.next_redirect_pc_url);
 		setPayModal(true);
 	};
 	return (
 		<PayPageContainer Info="결제 수단">
-			<ButtonBox>
-				<LightPurpleButton
-					width="220px"
-					height="50px"
-					onClick={tossPay}
-					borderRadius="6px"
-					fontSize="16px"
-					fontWeight="regular"
-				>
-					카드 결제
-				</LightPurpleButton>
+			<ButtonBox className={subscription ? 'sub' : null}>
+				{!subscription && (
+					<LightPurpleButton
+						width="220px"
+						height="50px"
+						onClick={tossPay}
+						borderRadius="6px"
+						fontSize="16px"
+						fontWeight="regular"
+					>
+						카드 결제
+					</LightPurpleButton>
+				)}
 				<KakaoPayButton onClick={kakaoClick}>
 					<KakaoPayImg />
 					카카오페이
@@ -57,10 +68,7 @@ export default function PayMethod() {
 			</ClauseContainer>
 			{isPayModal && (
 				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
-					<PayFrame
-						src="https://online-pay.kakao.com/mockup/v1/bad1d7ce8cefc82bfdf741fa7bdba051d553038913acf6daf6ea46b5a3d3187b/info"
-						title="결제창"
-					/>
+					<PayFrame src={url} title="결제창" />
 				</AddressModal>
 			)}
 		</PayPageContainer>
@@ -73,6 +81,9 @@ const ButtonBox = styled.div`
 	width: 100%;
 	justify-content: space-between;
 	margin-bottom: 44px;
+	&.sub {
+		justify-content: center;
+	}
 `;
 
 const KakaoPayButton = styled.button`
