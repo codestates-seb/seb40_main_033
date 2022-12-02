@@ -3,6 +3,7 @@ package server.team33.login.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -45,17 +46,22 @@ public class SecurityConfig {
                 .and()
                 .apply(new CustomFilterConfigurer(jwtToken, redisConfig))
                 .and()
-                .oauth2Login(oauth2 -> oauth2.successHandler(new UserAuthSuccessHandler(jwtToken)));
-//                .authorizeHttpRequests(authorize -> authorize.antMatchers(HttpMethod.POST, "/users").permitAll()
-//                .antMatchers(HttpMethod.POST, "/answers").hasRole("USER")
-//                .antMatchers(HttpMethod.PATCH, "/answers/**").hasRole("USER")
-//                .antMatchers(HttpMethod.DELETE, "/answers/**").hasRole("USER")
-//                .antMatchers(HttpMethod.POST, "/questions").hasRole("USER") //질문 포스트
-//                .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER")
-//                .antMatchers(HttpMethod.DELETE, "/questions/**").hasRole("USER")
-//                .anyRequest().permitAll());
-
-
+                .oauth2Login(oauth2 -> oauth2.successHandler(new UserAuthSuccessHandler(jwtToken)))
+                .authorizeHttpRequests(authorize -> authorize
+                .antMatchers(HttpMethod.GET, "/users/**").hasRole("USER")
+                .antMatchers(HttpMethod.PATCH, "/users/**").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/carts").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/carts/**").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/carts/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/payments/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/payments/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/wishes/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/wishes/**").hasRole("USER")
+                .antMatchers( "/wishes/**").hasRole("USER")
+                .antMatchers( "/orders/**").hasRole("USER")
+                .antMatchers( "/reviews/**").hasRole("USER")
+                .anyRequest().permitAll());
 
         return http.build();
     }
