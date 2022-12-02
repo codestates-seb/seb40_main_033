@@ -15,8 +15,8 @@ function MyPageReviewList({ review }) {
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
 	const { mutate } = useDelete(
-		// 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
-		'http://localhost:3001/reviews',
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.reviewId}`,
+		// 'http://localhost:3001/reviews',
 	);
 
 	const handleFormOpen = () => {

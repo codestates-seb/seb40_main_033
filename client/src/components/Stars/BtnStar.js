@@ -15,12 +15,13 @@ function BtnStar({ star, handleStar }) {
 			return;
 		}
 		// e.stopPropagation();
-		if (e.target.id === clickedStar) {
-			setClickedStar('');
-		} else {
-			setClickedStar(e.target.id);
-		}
+		// if (e.target.id === clickedStar) {
+		// 	setClickedStar('');
+		// } else {
+		setClickedStar(e.target.id);
+		// }
 		handleStar(clickedStar);
+		// console.log(e.target.id);
 	}, []);
 
 	const handleStarHover = useCallback((e) => {

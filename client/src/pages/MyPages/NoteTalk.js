@@ -8,24 +8,22 @@ import { useGet } from '../../hooks/useFetch';
 function NoteTalk() {
 	const { pathname } = useLocation();
 	const { isLoading, isError, data, error } = useGet(
-		// 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/mypage',
-		'http://localhost:3001/talk',
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/mypage',
+		// 'http://localhost:3001/talk',
 		pathname,
 	);
 	const talks = data?.data?.data;
 	console.log(talks);
 
+	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
+	if (isError) return <div>{error.message}</div>;
 	return (
 		<>
-			{isLoading || isError ? (
-				<div>Loading</div>
-			) : (
-				<ListContainer>
-					{talks.map((talk) => (
-						<MypageTalk key={talk.talkId} talk={talk} isReply={talk.reply} />
-					))}
-				</ListContainer>
-			)}
+			<ListContainer>
+				{talks.map((talk) => (
+					<MypageTalk key={talk.talkId} talk={talk} isReply={talk.reply} />
+				))}
+			</ListContainer>
 			<Pagination total="10" limit="8" />
 		</>
 	);

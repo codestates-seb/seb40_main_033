@@ -32,8 +32,6 @@ function Home() {
 
 	const list = !isLoading && data.data;
 
-	console.log(list);
-
 	return (
 		<div>
 			<MainCaroucel />
