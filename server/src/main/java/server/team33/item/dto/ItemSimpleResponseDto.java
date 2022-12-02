@@ -16,7 +16,7 @@ public class ItemSimpleResponseDto {
     private Brand brand;
     private String thumbnail;
     private String title;
-    private int servingSize;
+    private int capacity;
     private int price;
     private int discountRate;
     private int disCountPrice;
