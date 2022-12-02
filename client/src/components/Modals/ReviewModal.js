@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import DefalutModal from './DefalutModal';
 import ReviewForm from '../Forms/ReviewForm';
 import BtnStar from '../Stars/BtnStar';
@@ -12,9 +12,10 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 	const [star, setStar] = useState(review?.star);
 	const [content, setContent] = useState(review?.content);
 
-	const { mutate, isLoading, isError, error, response } =
-		usePatch(`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review?.reviewId}
-	`);
+	const { mutate, isLoading, isError, error, response } = usePatch(
+		// `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review?.reviewId}`,
+		'http://localhost:3001/reviews',
+	);
 	// console.log(review.reviewId);
 
 	const handleStar = useCallback((e) => {
@@ -29,6 +30,7 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 		e.preventDefault();
 		console.log('리뷰 수정 요청');
 		mutate({ star, content });
+		setIsOpen(false);
 	}, []);
 
 	return (
