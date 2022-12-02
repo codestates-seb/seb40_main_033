@@ -15,8 +15,6 @@ export default function useLogIn() {
 		{
 			onSuccess: async ({ accessToken, refreshToken }, { email }) => {
 				dispatch(login({ accessToken, refreshToken, email }));
-				localStorage.setItem('accessToken', accessToken);
-				localStorage.setItem('refreshToken', refreshToken);
 				toast.success('로그인 되었습니다 !');
 				navigate('/', { replace: true });
 			},

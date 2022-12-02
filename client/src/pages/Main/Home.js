@@ -20,8 +20,6 @@ function Home() {
 		const refreshToken = url.searchParams.get('refresh_token');
 		if (accessToken) {
 			dispatch(login({ accessToken, refreshToken, isSocial: true }));
-			localStorage.setItem('accessToken', accessToken);
-			localStorage.setItem('refreshToken', refreshToken);
 		}
 	}, []);
 
