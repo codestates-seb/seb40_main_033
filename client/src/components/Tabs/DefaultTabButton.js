@@ -67,7 +67,9 @@ function DefaultTabButton({
 				break;
 		}
 
-		onClick(e);
+		if (onClick) {
+			onClick(e);
+		}
 
 		/*
 		! 위에 onClick 이거 뭐지? 싶으신 분들 ~~!!
