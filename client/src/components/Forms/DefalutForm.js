@@ -37,7 +37,7 @@ function DefalutForm({
 			<Count>{contents && `${contents.length}/${maxLength}`}</Count>
 			{/* {letterButton} */}
 			<BottomContainer>
-				{contents.length >= maxLength ? (
+				{contents?.length >= maxLength ? (
 					<ErrMessage>{maxLength}자 이상 입력하실 수 없습니다.</ErrMessage>
 				) : (
 					<InfoMessage>
