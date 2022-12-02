@@ -2,20 +2,22 @@ import styled from 'styled-components';
 import { FaStar } from 'react-icons/fa';
 
 // 별 다섯개
-export function LongTextStar({ noText }) {
+export function LongTextStar({ noText, star, average, count }) {
+	console.log(new Array(star));
 	return (
 		<StarContainer>
 			<Icon>
-				<FaStar />
-				<FaStar />
-				<FaStar />
-				<FaStar />
-				<FaStar />
+				{new Array(star).fill(0).map((el, i) => (
+					<FaStar key={`${i.toString()}`} id={el} className="yellow-star" />
+				))}
+				{new Array(5 - star).fill(0).map((el, i) => (
+					<FaStar key={`${i.toString()}`} id={el} />
+				))}
 			</Icon>
 			{!noText && (
 				<>
-					<Score>4.8</Score>
-					<Count>(150)</Count>
+					<Score>{average}</Score>
+					<Count>{`(${count})`}</Count>
 				</>
 			)}
 		</StarContainer>
@@ -51,10 +53,16 @@ const StarContainer = styled.div`
 
 const Icon = styled.div`
 	& > svg {
-		padding-top: 1px;
-		font-size: 11px;
+		&.yellow-star {
+			path {
+				color: var(--orange-100);
+				pointer-events: none; // 이벤트 버블링 방지
+			}
+		}
+
 		path {
-			color: var(--orange-100);
+			color: var(--gray-200);
+			pointer-events: none; // 이벤트 버블링 방지
 		}
 	}
 `;

@@ -7,10 +7,15 @@ import { LetterButtonColor } from '../../Buttons/LetterButton';
 import Price from '../../Etc/Price';
 import ReviewModal from '../../Modals/ReviewModal';
 
-function OrderDetailList({ inModal, brand, thumbnail, title, price }) {
-	const quantity = 5;
-	const PillsNum = 60;
-
+function OrderDetailList({
+	inModal,
+	brand,
+	thumbnail,
+	title,
+	price,
+	capacity,
+	quantity,
+}) {
 	const [modalIsOpen, setIsOpen] = useState(false);
 
 	const openModal = useCallback(() => {
@@ -27,7 +32,7 @@ function OrderDetailList({ inModal, brand, thumbnail, title, price }) {
 				<InformationForm>
 					<Brand>{brand}</Brand>
 					<Name>
-						{title}, {PillsNum}정
+						{title}, {capacity}정
 					</Name>
 					<Price fontSize="13px" nowPrice={price} />
 				</InformationForm>
@@ -36,7 +41,7 @@ function OrderDetailList({ inModal, brand, thumbnail, title, price }) {
 						<Quantity>{quantity}개 / </Quantity>
 						<Price // 가격 * 수량
 							nowPrice={price}
-							quantity="5" // 수량!
+							quantity={quantity} // 수량!
 							fontSize="16px"
 							fontWeight="Bold"
 						/>

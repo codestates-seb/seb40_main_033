@@ -13,10 +13,9 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 	const [content, setContent] = useState(review?.content);
 
 	const { mutate, isLoading, isError, error, response } = usePatch(
-		// `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review?.reviewId}`,
-		'http://localhost:3001/reviews',
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review?.reviewId}`,
+		// 'http://localhost:3001/reviews',
 	);
-	// console.log(review.reviewId);
 
 	const handleStar = useCallback((e) => {
 		setStar(e);
@@ -28,11 +27,10 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 
 	const handleSubmit = useCallback((e) => {
 		e.preventDefault();
-		console.log('리뷰 수정 요청');
 		mutate({ star, content });
 		setIsOpen(false);
 	}, []);
-
+	console.log(review);
 	return (
 		<DefalutModal
 			title={data.title}
@@ -43,6 +41,8 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 					thumbnail={review?.item.thumbnail}
 					title={review?.item.title}
 					price={review?.item.price}
+					capacity={review?.item.capacity}
+					quantity={review?.quantity}
 				/>
 			}
 			form={

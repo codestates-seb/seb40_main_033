@@ -8,10 +8,16 @@ import { LongTextStar } from '../../Stars/TextStar';
 import OrderDetailList from './OrderDetailList';
 import ReviewModal from '../../Modals/ReviewModal';
 import DeleteNotesModal from '../../Modals/DeleteNotesModal';
+import { useDelete } from '../../../hooks/useFetch';
 
 function MyPageReviewList({ review }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+	const { mutate, isLoading, isError, error, response } = useDelete(
+		// 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
+		'http://localhost:3001/reviews',
+	);
 
 	const handleFormOpen = () => {
 		setOpenForm(!openForm);
@@ -46,7 +52,7 @@ function MyPageReviewList({ review }) {
 					</ButtonContainer>
 				</TopContainer>
 				<InfoContainer>
-					<LongTextStar noText />
+					<LongTextStar noText star={review.star} />
 					<DotDate date={review.updatedAt} />
 				</InfoContainer>
 				<Review>{review.content}</Review>

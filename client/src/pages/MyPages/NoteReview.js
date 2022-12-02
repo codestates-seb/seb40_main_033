@@ -15,31 +15,12 @@ function NoteReview() {
 	);
 	const reviews = data?.data?.data;
 
-	const {
-		data: dada,
-		isLoading: Loading,
-		refetch,
-	} = useGet(
-		// 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
-		'http://localhost:3001/test',
-		'dada',
-	);
-	const { mutate } = usePatch('http://localhost:3001/test');
-
-	const handle = () => {
-		mutate({ data: '456' });
-	};
-
 	return (
 		<>
 			{isLoading || isError ? (
 				<div>Loading</div>
 			) : (
 				<ListContainer>
-					<div>{dada?.data?.data}</div>
-					<button type="button" onClick={handle}>
-						mutate
-					</button>
 					{reviews.map((review) => (
 						<MyPageReviewList key={review.reviewId} review={review} />
 					))}
