@@ -13,6 +13,7 @@ function OrderDetailList({
 	thumbnail,
 	title,
 	price,
+	orderId,
 	capacity,
 	quantity,
 }) {
@@ -21,7 +22,14 @@ function OrderDetailList({
 	const openModal = useCallback(() => {
 		setIsOpen(true);
 	}, []);
-	console.log('modalIsOpen', modalIsOpen);
+
+	const review = {
+		orderId,
+		brand,
+		thumbnail,
+		title,
+		price,
+	};
 
 	return (
 		<Box className={inModal && 'in-modal'}>
@@ -63,6 +71,7 @@ function OrderDetailList({
 						modalIsOpen={modalIsOpen}
 						setIsOpen={setIsOpen}
 						OrderDetailList={OrderDetailList}
+						review={review}
 					/>
 				</BottomContainer>
 			</Wrap>

@@ -45,7 +45,7 @@ export function NoteToggleTab({ currentIdx, highlightLeftValue }) {
 	);
 }
 
-export function DayShowTab({ fonSize }) {
+export function DayShowTab({ fonSize, onClick }) {
 	const menuArr = [
 		{ name: '30일', index: 0 },
 		{ name: '60일', index: 1 },
@@ -53,5 +53,7 @@ export function DayShowTab({ fonSize }) {
 		{ name: '120일', index: 3 },
 	];
 
-	return <DefaultTabButton menuArr={menuArr} fontSize={fonSize} />;
+	return (
+		<DefaultTabButton menuArr={menuArr} fontSize={fonSize} onClick={onClick} />
+	);
 }

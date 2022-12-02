@@ -1,47 +1,51 @@
 import styled from 'styled-components';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import CartList from '../../components/Lists/MyPageLists/CartList';
-import {
-	PurpleButton,
-	LightPurpleButton,
-} from '../../components/Buttons/PurpleButton';
+import { PurpleButton } from '../../components/Buttons/PurpleButton';
+import Price from '../../components/Etc/Price';
+import { useGet } from '../../hooks/useFetch';
 
 // 일반 장바구니
 function NormalCart() {
-	const [cartItem, setCartItem] = useState([]);
+	const { pathname } = useLocation();
 
-	useEffect(() => {
-		axios
-			.get('http://localhost:3001/cartProducts')
-			.then((response) => {
-				setCartItem(response.data);
-			})
-			.catch((err) => {
-				throw new Error(err);
-			});
-	}, []);
+	const {
+		isLoading,
+		isError,
+		data: items,
+		error,
+	} = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts?subscription=false',
+		pathname,
+	);
+
+	console.log(items);
+
+	if (isLoading) {
+		return <List> 대기중 ..</List>;
+	}
+	if (isError) {
+		return <List> {error.message} </List>;
+	}
 
 	return (
 		<Box>
 			<List>
-				{cartItem.map((item) => (
+				{items.data.data.map((item) => (
 					<CartList key={item.cartId} item={item} />
 				))}
 			</List>
 			<Bottom>
 				<Display>
 					<Text>합계</Text>
-					<Number>totalPrice</Number>
+					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" />
 					<Text>할인 금액</Text>
-					<Number>totalDiscountPrice</Number>
+					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" />
 					<Text>결제 예정 금액</Text>
-					<TotalNumber>totalPrice - totalDiscountPrice</TotalNumber>
+					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" purple />
 				</Display>
 				<Button>
-					<LightPurpleButton width="143px" height="50px">
-						계속 쇼핑하기
-					</LightPurpleButton>
 					<PurpleButton width="143px" height="50px">
 						구매하기
 					</PurpleButton>
@@ -63,8 +67,9 @@ const Box = styled.div`
 const List = styled.div`
 	padding-top: 44px;
 	background-color: white;
-	border-radius: 10;
-	border: 1px solid #f1f1f1;
+	border-radius: 10px;
+	/* border: 1px solid #f1f1f1; */
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	margin-top: 30px;
 	width: 983px;
 	height: 1094px;
@@ -98,19 +103,8 @@ const Text = styled.div`
 	color: var(--gray-400);
 `;
 
-const Number = styled.div`
-	font-size: 24px;
-	font-weight: var(--bold);
-`;
-
-const TotalNumber = styled.div`
-	font-size: 24px;
-	font-weight: var(--bold);
-	color: var(--purple-200);
-`;
 const Button = styled.div`
 	margin-top: 36px;
-	width: 296px;
 	height: 50px;
 	display: flex;
 	justify-content: space-between;

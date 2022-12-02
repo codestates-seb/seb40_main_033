@@ -5,7 +5,9 @@ function Tag({ funcArr }) {
 		<TagContainer>
 			{funcArr.map((func, index) => (
 				<TagName key={`${index.toString()}-${func}`}>
-					{func.replaceAll('_', ' ')}
+					{func === '관절_뼈_건강'
+						? func.replaceAll('_', ' ').replace('절 뼈', '절/뼈')
+						: func.replaceAll('_', ' ')}
 				</TagName>
 			))}
 		</TagContainer>

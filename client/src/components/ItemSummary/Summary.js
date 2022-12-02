@@ -1,14 +1,16 @@
 import styled, { keyframes } from 'styled-components';
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import WishlistButton from '../Buttons/WishlistButton';
 import Tag from '../Etc/Tag';
 import { BlackButton, WhiteButton } from '../Buttons/BlackButton';
 import CounterBtn from '../Buttons/CounterButton';
 import { DayShowTab } from '../Tabs/TabButtons';
 import { LongTextStar } from '../Stars/TextStar';
-import Price from '../Etc/Price';
+import Price, { SummaryPrice } from '../Etc/Price';
 import CartModal from '../Modals/CartModal';
+import { usePost, useGet } from '../../hooks/useFetch';
+import usePurchase from '../../hooks/usePurchase';
 
 function Summary({
 	name,
@@ -18,54 +20,168 @@ function Summary({
 	nowPrice,
 	beforePrice,
 	discountRate,
+	itemId,
 }) {
-	const [quantity, setQuantity] = useState(1);
+	const navigate = useNavigate();
+	const [path, setPath] = useState(''); // 바로결제하기 클릭 시, 이동할 페이지
 	const [showOptions, setShowOptions] = useState(false);
-	const [isSub, setIsSub] = useState(false);
+	const [wish, setWish] = useState(
+		'유저가 찜누른 아이템id 리스트 조회해서 대조',
+	);
 	const [openModal, setOpenModal] = useState(false);
 	const [modalContents, setModalContents] =
 		useState('장바구니에 상품이 담겼습니다.'); // 장바구니에 이미 담겼을 때 변경
-	const navigate = useNavigate();
+	const [orderList, setOrdertList] = useState({
+		quantity: 1,
+		period: 30,
+		subscription: false,
+	});
+	/*
+	! 바로 구매하기
+	{
+    "itemId": 1,
+    "quantity": 3,
+    "period": 30,
+    "subscription": false
+	}
+	! 장바구니에 담기 (정기)
+	{
+    "quantity":3,
+    "period":30,
+    "subscription":true
+	}
+	! 장바구니에 담기 (일반)
+	{
+    "quantity":3,
+    "subscription":false
+	}
+	
+	*/
+	const {
+		mutate: cartMu,
+		response: cartRes,
+		isLoading: cartLoading,
+		isError: cartIsErr,
+		error: cartErr,
+	} = usePost(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/${itemId}`,
+	);
 
+	const {
+		mutate: purMu,
+		isLoading: purLoading,
+		isSuccess: purSuccess,
+		isError: purIsErr,
+	} = usePurchase(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/single',
+		path,
+	);
+
+	// * 수량 +
 	const handlePlusClick = useCallback(() => {
-		setQuantity(quantity + 1);
-	}, [quantity]);
+		setOrdertList({ ...orderList, quantity: orderList.quantity + 1 });
+	}, [orderList]);
 
+	// * 수량 -
 	const handleMinusClick = useCallback(() => {
-		setQuantity(quantity - 1);
-	}, [quantity]);
+		setOrdertList({ ...orderList, quantity: orderList.quantity - 1 });
+	}, [orderList]);
 
+	// * 주기 선택
+	const handlePeriodClick = useCallback(
+		(e) => {
+			setOrdertList({
+				...orderList,
+				period: Number(e.target.innerText.replace('일', '')),
+				subscription: true,
+			});
+		},
+		[orderList],
+	);
+
+	// * 일반/정기 선택
 	const handleTypeClick = useCallback(
 		(e) => {
 			setShowOptions(!showOptions);
-			if (e.target.innerText === '정기구독') {
-				setIsSub(true);
-			} else if (e.target.innerText === '일반구매') {
-				setIsSub(false);
+			if (!showOptions && e.target.innerText === '정기구독') {
+				setOrdertList({ ...orderList, period: 30, subscription: true });
+				setPath('subscription');
+			} else if (!showOptions && e.target.innerText === '일반구매') {
+				setOrdertList({ ...orderList, subscription: false });
+				setPath('normal');
 			}
 		},
-		[showOptions],
+		[showOptions, orderList],
 	);
 
-	// 결제 페이지로 가는 함수
-	const handlePayClick = useCallback(() => {
-		if (isSub) {
-			navigate('/pay/subscription');
-		} else {
-			navigate('/pay/normal');
-		}
-	}, [isSub]);
+	// * path 변경
+	// const handleParamsChange = useCallback(
+	// 	(e) => {
+	// 		if (e.target.innerText === '바로 구매하기') {
+	// 			setPath('/pay/normal');
+	// 		} else if (e.target.innerText === '장바구니 담기') {
+	// 			setPath('/pay/subscription');
+	// 		}
+	// 	},
+	// 	[path],
+	// );
 
-	// 장바구니 모달을 띄우는 함수
+	console.log('path', path);
+
+	// * 결제 요청 후, 결제 페이지로 가는 함수
+	const handlePayClick = useCallback(() => {
+		console.log('📌 결제 요청 보낼 데이터!!', { ...orderList, itemId });
+		console.log('결제되면 이리로 가세요', path);
+		purMu({ ...orderList, itemId });
+		// console.log('response', response);
+
+		// if (response) {
+		// 	if (orderList.subscription) {
+		// 		navigate('/pay/subscription', { state: response.data.data });
+		// 	} else {
+		// 		navigate('/pay/normal', { state: response.data.data });
+		// 	}
+		// }
+	}, [path]);
+
+	/*
+		! 장바구니에 담기 (정기)
+	{
+    "quantity":3,
+    "period":30,
+    "subscription":true
+	}
+	! 장바구니에 담기 (일반)
+	{
+    "quantity":3,
+    "subscription":false
+	}
+	*/
+	// * 장바구니 요청 후, 모달을 띄우는 함수
 	const handleOpenModalClick = useCallback(() => {
+		console.log('📌 장바구니로 보낼 데이터!', orderList);
+		cartMu({ ...orderList });
+		console.log('장바구니 요청 응답!', cartRes);
 		setOpenModal(true);
 	}, []);
 
-	// 장바구니 페이지로 가는 함수
+	// * 장바구니 페이지로 가는 함수
 	const handleCartClick = useCallback(() => {
-		if (isSub) navigate('/cart/subscription');
-		else navigate('/cart/normal');
-	}, [isSub]);
+		if (orderList.subscription) {
+			// http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/{item-id}
+			navigate('/cart/subscription');
+		} else {
+			navigate('/cart/normal');
+		}
+	}, [orderList.subscription]);
+
+	// if (isLoading) {
+	// 	return <div>Loading...</div>;
+	// }
+
+	// if (isError) {
+	// 	return <div>Error: {error.message}</div>;
+	// }
 
 	return (
 		<Container>
@@ -90,10 +206,10 @@ function Summary({
 						</TagsBox>
 						<RateBox>
 							<LongTextStar />
-							<Price
+							<SummaryPrice
 								nowPrice={nowPrice}
-								// beforePrice={beforePrice}
-								// discountRate={`${discountRate}%`}
+								beforePrice={beforePrice !== nowPrice && beforePrice}
+								discountRate={discountRate !== 0 && `${discountRate}%`}
 								percent
 								fontSize="32px"
 								fontWeight="extraBold"
@@ -107,11 +223,13 @@ function Summary({
 				</MainContainer>
 				{showOptions && (
 					<HiddenContainer>
-						{isSub && <DayShowTab fonSize="14px" />}
+						{orderList.subscription && (
+							<DayShowTab onClick={handlePeriodClick} fonSize="14px" />
+						)}
 						<CountBox>
 							<QuantityTextBox>수량</QuantityTextBox>
 							<CounterBtn
-								quantity={quantity}
+								quantity={orderList.quantity}
 								onPlusClick={handlePlusClick}
 								onMinusClick={handleMinusClick}
 							/>
@@ -119,7 +237,7 @@ function Summary({
 						<TotalBox>
 							<Price
 								nowPrice={nowPrice}
-								quantity={quantity}
+								quantity={orderList.quantity}
 								isTotal
 								fontSize="30px"
 								fontWeight="extraBold"
@@ -152,7 +270,7 @@ const EntireContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	position: sticky;
-	top: ${({ showOptions }) => (showOptions ? '3%' : '16%')};
+	top: ${({ showOptions }) => (showOptions ? '2%' : '16%')};
 	transition: 0.4s;
 	width: 370px;
 	padding: 34px;
@@ -166,6 +284,7 @@ const MainContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	background-color: white;
+	width: 100%;
 `;
 
 const HeadBox = styled.div`
@@ -188,15 +307,17 @@ const MiddleBox = styled.div`
 `;
 
 const NameBox = styled.div`
+	word-break: keep-all;
 	font-size: 36px;
 	font-weight: var(--extraBold);
 	margin-bottom: 22px; // DescBox와의 간격
+	line-height: 1.2;
 `;
 
 const DescBox = styled.div`
-	font-size: 18px;
+	font-size: 16px;
 	color: var(--gray-300);
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 	line-height: 1.4;
 `;
 
@@ -207,7 +328,7 @@ const TagsBox = styled.div`
 const RateBox = styled.div`
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
+	/* align-items: center; */
 	width: 100%;
 	margin-bottom: 10px;
 `;
@@ -215,6 +336,7 @@ const RateBox = styled.div`
 const ButtonBox = styled.div`
 	display: flex;
 	justify-content: space-between;
+	/* width: 100%; */
 `;
 
 const slide = keyframes`

@@ -23,18 +23,7 @@ function Detail() {
 		return <div>Error: {error.message}</div>;
 	}
 
-	console.log('데이터님 와주세여!!', data);
-
-	/*
-		영양 정보
-	- 용량 : ${item.capacity}정 (${item.capacity / item.servingSize}일)
-	- 영양성분 : ${item.nutritionFacts.map(
-		(fact) => `${fact.ingredient}: ${fact.volume}`,
-	)}
-	   1일 섭취량: 1회 ${item.servingSize}정
-	*/
-	// const item = data.data.data; // 실제 데이터
-	// const item = data.data;
+	const lists = !isLoading && data.data.data;
 
 	const content1 = `요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이 덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!! 팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이
 	덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!!
@@ -77,13 +66,11 @@ function Detail() {
 	제조일로부터 24개월
 
 	영양 정보
-	- 용량 : ${data.data.data.capacity}정 (${
-		data.data.data.capacity / data.data.data.servingSize
-	}일)
-	- 영양성분 : ${data.data.data.nutritionFacts.map(
+	- 용량 : ${lists.capacity}정 (${lists.capacity / lists.servingSize}일)
+	- 영양성분 : ${lists.nutritionFacts.map(
 		(fact) => `${fact.ingredient}: ${fact.volume}`,
 	)}
-	   1일 섭취량: 1회 ${data.data.data.servingSize}정
+	   1일 섭취량: 1회 ${lists.servingSize}정
 
 	섭취 방법
 	1일 1회, 1회 1캡슐을 충분한 물과 함께 섭취하십시오.
@@ -104,13 +91,13 @@ function Detail() {
 	return (
 		<DetailContainer>
 			<>
-				<Contents key={data.data.data.itemId}>
+				<Contents key={lists.itemId}>
 					<Image
-						src={data.data.data.thumbnail}
+						src={lists.thumbnail}
 						alt="상품 대표사진"
 						className="thumbnail"
 					/>
-					<Image src={data.data.data.descriptionImage} alt="상품 상세사진" />
+					<Image src={lists.descriptionImage} alt="상품 상세사진" />
 					<InfoContainer>
 						<InfoTitle>상품정보</InfoTitle>
 						<InfoContent>{ProductInfo}</InfoContent>
@@ -143,16 +130,14 @@ function Detail() {
 				</Contents>
 				<SummaryContainer>
 					<Summary
-						id={data.data.data.itemId}
-						name={data.data.data.title}
-						brand={data.data.data.brand}
-						categories={data.data.data.categories}
-						content={data.data.data.content}
-						nowPrice={data.data.data.discountPrice || data.data.data.price}
-						discountRate={data.data.data.discountRate}
-						beforePrice={
-							data.data.data.discountPrice ? data.data.data.price : null
-						}
+						itemId={lists.itemId}
+						name={lists.title}
+						brand={lists.brand}
+						categories={lists.categories}
+						content={lists.content}
+						nowPrice={lists.discountPrice || lists.price}
+						discountRate={lists.discountRate === 0 ? '' : lists.discountRate}
+						beforePrice={lists.discountPrice ? lists.price : null}
 					/>
 				</SummaryContainer>
 			</>

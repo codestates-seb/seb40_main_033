@@ -1,27 +1,32 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 import OrderList from '../../components/Lists/MyPageLists/OrderList';
 import Pagination from '../../components/Etc/Pagination';
+import { useGet } from '../../hooks/useFetch';
 
 function NormalOrder() {
-	const [lists, setLists] = useState([]);
+	const { pathname } = useLocation();
 
-	useEffect(() => {
-		axios
-			.get('http://localhost:3001/normalOrders')
-			.then((res) => {
-				setLists(res.data);
-			})
-			.catch((err) => {
-				throw new Error(err);
-			});
-	}, []);
+	const { isLoading, isError, data, error } = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders?subscription=false',
+		pathname,
+	);
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (isError) {
+		return <div>Error: {error.message}</div>;
+	}
+
+	const lists = !isLoading && data.data.data;
 
 	return (
 		<>
 			<ListContainer>
-				{lists &&
+				{data &&
 					lists.map((list) => (
 						<OrderList key={list.orderId} list={list} totalPrice />
 					))}

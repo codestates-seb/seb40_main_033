@@ -13,6 +13,7 @@ function DefaultTabButton({
 	highlightLeftValue,
 	order,
 	note,
+	onClick,
 }) {
 	const { pathname } = useLocation();
 	const [currentTab, setCurrentTab] = useState(currentIdx || 0);
@@ -65,6 +66,25 @@ function DefaultTabButton({
 			default:
 				break;
 		}
+
+		onClick(e);
+
+		/*
+		! 위에 onClick 이거 뭐지? 싶으신 분들 ~~!!
+	  * 토글을 눌렀을 때 실행되었으면 하는 함수를 onClick으로 넘겨주시면 됩니다 (없으면 X)
+		<DayShowTab onClick={handlePeriodClick}>
+
+		! 만약 유저가 클릭한 기간이 필요하시다면 e.target.innerText로 꺼내다 쓰시면 됩니다!
+		* 사용예시 * 제 경우에는 이렇게 사용하는데 그냥 참고만 하세요!
+		const handlePeriodClick = useCallback((e) => {
+			setOrdertList({
+				...orderList,
+				period: e.target.innerText.replace('일', ''),      ==> 30, 60, 90 ...
+			});
+		},
+		[orderList.period],
+	);
+		*/
 
 		// 일반/정기 토글 클릭 시 해당 페이지의 일반/정기 페이지로 이동
 		if (order) {
