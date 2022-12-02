@@ -1,10 +1,30 @@
 import styled from 'styled-components';
 import React from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import OrderDetailList from '../../components/Lists/MyPageLists/OrderDetailList';
 import { PaymentInfo, DestinationInfo } from '../../components/Etc/PayInfo';
+import { useGet } from '../../hooks/useFetch';
 
 // 주문내역 상세조회
 function OrderDetail() {
+	const { pathname } = useLocation();
+	const { id } = useParams();
+
+	const { isLoading, isError, data, error } = useGet(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/${id}`,
+		pathname,
+	);
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (isError) {
+		return <div>Error: {error.message}</div>;
+	}
+
+	const lists = !isLoading && data.data.data;
+
 	return (
 		<Box>
 			<LeftContainer>
@@ -14,9 +34,17 @@ function OrderDetail() {
 			</LeftContainer>
 			<RightContainer>
 				<Title>주문 상세 내역</Title>
-				<OrderDetailList />
-				<OrderDetailList />
-				<OrderDetailList />
+				{data &&
+					lists.map((list) => (
+						<OrderDetailList
+							key={list.orderId}
+							orderId={list.orderId}
+							brand={list.brand}
+							thumbnail={list.thumbnail}
+							title={list.title}
+							price={list.price}
+						/>
+					))}
 			</RightContainer>
 		</Box>
 	);
