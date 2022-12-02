@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import server.team33.item.mapper.ItemMapper;
 import server.team33.item.service.ItemService;
+import server.team33.order.service.ItemOrderService;
 import server.team33.order.service.OrderService;
 import server.team33.response.MultiResponseDto;
 import server.team33.response.SingleResponseDto;
@@ -36,13 +37,14 @@ public class ReviewController {
     private final ItemService itemService;
     private final ItemMapper itemMapper;
     private final OrderService orderService;
+    private final ItemOrderService itemOrderService;
 
-    @PostMapping("/{item-id}") // 주문 상세 내역에서 작성
-    public ResponseEntity postReview(@PathVariable("item-id") @Positive long itemId,
+    @PostMapping("/{itemOrder-id}") // 주문 상세 내역에서 작성
+    public ResponseEntity postReview(@PathVariable("itemOrder-id") @Positive long itemOrderId,
                                      @RequestBody ReviewDto reviewDto) {
 
         Review review = reviewService.createReview(
-                reviewMapper.reviewDtoToReview(itemId, userService, orderService, itemService, reviewDto));
+                reviewMapper.reviewDtoToReview(itemOrderId, itemOrderService, userService, orderService, itemService, reviewDto));
 
         return  new ResponseEntity<>(
                 new SingleResponseDto<>(reviewMapper.reviewToReviewResponseDto(review)), HttpStatus.CREATED);

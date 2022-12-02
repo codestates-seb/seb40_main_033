@@ -35,6 +35,14 @@ public class ItemOrderService {
         return itemOrders;
     }
 
+    public ItemOrder findItemOrder(long itemOrderId) {
+        Optional<ItemOrder> optionalItemOrder = itemOrderRepository.findById(itemOrderId);
+        ItemOrder itemOrder = optionalItemOrder.orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
+
+        return itemOrder;
+    }
+
     public int countTotalPrice( List<ItemOrder> itemOrders ){
 
         if(itemOrders == null) return 0;

@@ -196,7 +196,7 @@ public interface ItemMapper {
         itemSimpleResponseDto.setBrand(item.getBrand());
         itemSimpleResponseDto.setThumbnail(item.getThumbnail());
         itemSimpleResponseDto.setTitle(item.getTitle());
-        itemSimpleResponseDto.setServingSize(item.getServingSize());
+        itemSimpleResponseDto.setCapacity(item.getCapacity());
         itemSimpleResponseDto.setPrice(item.getPrice());
         itemSimpleResponseDto.setDiscountRate(item.getDiscountRate());
         itemSimpleResponseDto.setDisCountPrice(item.getDiscountPrice());

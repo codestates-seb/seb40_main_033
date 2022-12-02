@@ -30,6 +30,8 @@ public class Review extends Auditable {
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    private int quantity; // 리뷰를 작성하는 주문의 아이템 구매 수량
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 

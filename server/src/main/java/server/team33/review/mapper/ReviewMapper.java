@@ -5,6 +5,8 @@ import server.team33.exception.bussiness.BusinessLogicException;
 import server.team33.exception.bussiness.ExceptionCode;
 import server.team33.item.mapper.ItemMapper;
 import server.team33.item.service.ItemService;
+import server.team33.order.entity.ItemOrder;
+import server.team33.order.service.ItemOrderService;
 import server.team33.order.service.OrderService;
 import server.team33.review.dto.ReviewDetailResponseDto;
 import server.team33.review.dto.ReviewDto;
@@ -20,17 +22,21 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
 
-    default Review reviewDtoToReview(long itemId, UserService userService, OrderService orderService,
+    default Review reviewDtoToReview(long itemOrderId, ItemOrderService itemOrderService,
+                                     UserService userService, OrderService orderService,
                                      ItemService itemService, ReviewDto reviewDto) { // 등록
 
         Review review = new Review();
         review.setUser(userService.getLoginUser());
 
-        if (!orderService.isShopper(itemId, review.getUser().getUserId())) {
+        ItemOrder itemOrder = itemOrderService.findItemOrder(itemOrderId);
+
+        if (!orderService.isShopper(itemOrder.getItem().getItemId(), review.getUser().getUserId())) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_DENIED_USER);
         } // 아이템 구매자만 리뷰를 작성할 수 있음
 
-        review.setItem(itemService.findVerifiedItem(itemId));
+        review.setQuantity(itemOrder.getQuantity());
+        review.setItem(itemService.findVerifiedItem(itemOrder.getItem().getItemId()));
         review.setContent(reviewDto.getContent());
         review.setStar(reviewDto.getStar());
 
@@ -88,6 +94,7 @@ public interface ReviewMapper {
         ReviewDetailResponseDto reviewResponseDto = new ReviewDetailResponseDto();
         reviewResponseDto.setReviewId(review.getReviewId());
         reviewResponseDto.setItem(itemMapper.itemToItemSimpleResponseDto(review.getItem()));
+        reviewResponseDto.setQuantity(review.getQuantity());
         reviewResponseDto.setUserId(review.getUser().getUserId());
         reviewResponseDto.setContent(review.getContent());
         reviewResponseDto.setStar(review.getStar());
