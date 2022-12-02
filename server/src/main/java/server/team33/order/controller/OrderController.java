@@ -56,7 +56,7 @@ public class OrderController {
                 orderMapper.orderToOrderDetailResponseDto(order, itemMapper, itemOrderMapper)), HttpStatus.OK);
     }
 
-    @PostMapping// 장바구니에서 주문하기
+    @PostMapping// 장바구니에서 주문요청을 하는 경우
     public ResponseEntity postOrder(@RequestParam(value="subscription", defaultValue="false") boolean subscription) {
 
         User user = userService.getLoginUser();

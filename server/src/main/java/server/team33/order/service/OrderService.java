@@ -30,7 +30,7 @@ public class OrderService {
     public Order callOrder(List<ItemOrder> itemOrders, User user) {
         Order order = new Order();
         order.setItemOrders(itemOrders);
-        order.setName(user.getName());
+        order.setName(user.getRealName());
         order.setAddress(user.getAddress());
         order.setDetailAddress(user.getDetailAddress());
         order.setPhone(user.getPhone());
