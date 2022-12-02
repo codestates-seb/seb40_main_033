@@ -18,6 +18,7 @@ export const useGet = (url, keyValue) => {
 };
 
 export const usePost = (url) => {
+	const queryClient = useQueryClient();
 	const [response, setResponse] = useState(null);
 
 	const { mutate, isLoading, isError, error } = useMutation(
@@ -25,6 +26,7 @@ export const usePost = (url) => {
 		{
 			onSuccess: async (res) => {
 				setResponse(res);
+				queryClient.invalidateQueries();
 			},
 		},
 	);
@@ -33,6 +35,7 @@ export const usePost = (url) => {
 };
 
 export const useDelete = (url) => {
+	const queryClient = useQueryClient();
 	const [response, setResponse] = useState(null);
 
 	const { mutate, isLoading, isError, error } = useMutation(
@@ -40,6 +43,7 @@ export const useDelete = (url) => {
 		{
 			onSuccess: async (res) => {
 				setResponse(res);
+				queryClient.invalidateQueries();
 			},
 		},
 	);
@@ -48,8 +52,8 @@ export const useDelete = (url) => {
 };
 
 export const usePatch = (url) => {
-	const [response, setResponse] = useState(null);
 	const queryClient = useQueryClient();
+	const [response, setResponse] = useState(null);
 
 	const { mutate, isLoading, isError, error } = useMutation(
 		(data) => axios.patch(url, data),
