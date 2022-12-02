@@ -27,24 +27,23 @@ export function DestinationInfo({ name, phone, address, detailAddress }) {
 
 // 결제 정보
 // 결제수단까지 표시하고자 하면 options 필요
-export function PaymentInfo({
-	totalPrice,
-	totalDiscountPrice,
-	expectPrice,
-	options,
-}) {
+export function PaymentInfo({ payData }) {
 	return (
 		<InfoContainer className="bottom">
 			<Title>최종 결제 정보</Title>
 			<Contents>
 				<Payment>
 					<Label className="price-label">상품합계</Label>
-					<Price nowPrice={totalPrice} fontSize="18px" fontWeight="bold" />
+					<Price
+						nowPrice={payData.totalPrice}
+						fontSize="18px"
+						fontWeight="bold"
+					/>
 				</Payment>
 				<Payment>
 					<Label className="price-label">할인합계</Label>
 					<Price
-						nowPrice={totalDiscountPrice}
+						nowPrice={payData.totalDiscountPrice}
 						minus
 						fontSize="18px"
 						fontWeight="bold"
@@ -53,17 +52,11 @@ export function PaymentInfo({
 				<Payment>
 					<Label className="price-label">최종결제금액</Label>
 					<Price
-						nowPrice={expectPrice}
+						nowPrice={payData.expectPrice}
 						fontSize="18px"
 						fontWeight="extraBold"
 					/>
 				</Payment>
-				{options && (
-					<Payment className="payment-options">
-						<Label className="price-label">결제수단</Label>
-						<div>카카오페이</div>
-					</Payment>
-				)}
 			</Contents>
 		</InfoContainer>
 	);
