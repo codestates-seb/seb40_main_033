@@ -2,6 +2,7 @@ package server.team33.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -120,7 +121,7 @@ public class UserService {
         String name = authentication.getName();
         log.info("회원 이메일 = {}", name);
         Optional<User> user = userRepository.findByEmail(name);
-        return user.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        return user.orElseThrow(() -> new AuthenticationServiceException("Authentication exception"));
     }
 
     public Long getUserId(){
@@ -128,7 +129,7 @@ public class UserService {
         String name = authentication.getName();
         Optional<User> user = userRepository.findByEmail(name);
         if(user.isPresent()) return user.get().getUserId();
-        throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
+        throw new AuthenticationServiceException("Authentication exception");
     }
 
 }
