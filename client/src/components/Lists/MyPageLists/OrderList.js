@@ -15,7 +15,7 @@ function OrderList({ list }) {
 
 	return (
 		<Box>
-			<Image src={list.itemOrders[0].item.thumbnail} alt="상품 이미지" />
+			<Image src={list.item.thumbnail} alt="상품 이미지" />
 			<MainContainer>
 				<InfoContainer>
 					<ShoppingInfo>
@@ -23,10 +23,17 @@ function OrderList({ list }) {
 						<DotDate date={list.createdAt} />
 					</ShoppingInfo>
 					<Name>
-						{list.itemOrders[0].item.brand}, {list.itemOrders[0].item.title}{' '}
-						{list.itemOrders.length > 1 && `외 ${list.itemOrders.length - 1}개`}
+						{`${list.item.brand}, ${list.item.title} 
+						${list.item.length > 1 && `외 ${list.item.totalItems - 1}개`}`}
 					</Name>
-					<Price nowPrice={list.itemOrders[0].item.price} isTotal />
+					<Price
+						nowPrice={list.item.discountPrice || list.item.price}
+						discountRate={
+							list.item.discountRate === 0 ? '' : list.item.discountRate
+						}
+						beforePrice={list.item.discountPrice ? list.item.price : null}
+						isTotal
+					/>
 				</InfoContainer>
 				<BtnContainer>
 					<IconBtnContainer onClick={handleDetailBtnClick}>
