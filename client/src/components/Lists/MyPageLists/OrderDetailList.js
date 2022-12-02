@@ -7,7 +7,7 @@ import { LetterButtonColor } from '../../Buttons/LetterButton';
 import Price from '../../Etc/Price';
 import ReviewModal from '../../Modals/ReviewModal';
 
-function OrderDetailList({ inModal, brand, thumbnail, title, price }) {
+function OrderDetailList({ inModal, brand, thumbnail, title, price, orderId }) {
 	const quantity = 5;
 	const PillsNum = 60;
 
@@ -16,7 +16,14 @@ function OrderDetailList({ inModal, brand, thumbnail, title, price }) {
 	const openModal = useCallback(() => {
 		setIsOpen(true);
 	}, []);
-	console.log('modalIsOpen', modalIsOpen);
+
+	const review = {
+		orderId,
+		brand,
+		thumbnail,
+		title,
+		price,
+	};
 
 	return (
 		<Box className={inModal && 'in-modal'}>
@@ -58,6 +65,7 @@ function OrderDetailList({ inModal, brand, thumbnail, title, price }) {
 						modalIsOpen={modalIsOpen}
 						setIsOpen={setIsOpen}
 						OrderDetailList={OrderDetailList}
+						review={review}
 					/>
 				</BottomContainer>
 			</Wrap>
