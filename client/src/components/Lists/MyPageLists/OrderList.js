@@ -13,18 +13,23 @@ function OrderList({ list }) {
 		navigate(`/mypage/order/${list.orderId}`);
 	}, []);
 
+	const statusEng = ['ORDER_COMPLETE', 'ORDER_CANCEL', 'ORDER_SUBSCRIBE'];
+	const statusKr = ['주문완료', '주문취소', '구독 중'];
+	const idx = statusEng.indexOf(list.orderStatus);
+	const status = statusKr[idx];
+
 	return (
 		<Box>
 			<Image src={list.item.thumbnail} alt="상품 이미지" />
 			<MainContainer>
 				<InfoContainer>
 					<ShoppingInfo>
-						<DeliveryStatus>{list.orderStatus}</DeliveryStatus>
+						<DeliveryStatus>{status}</DeliveryStatus>
 						<DotDate date={list.createdAt} />
 					</ShoppingInfo>
 					<Name>
 						{`${list.item.brand}, ${list.item.title} 
-						${list.item.length > 1 && `외 ${list.item.totalItems - 1}개`}`}
+						${list.item.length > 1 ? `외 ${list.item.totalItems - 1}개` : ''}`}
 					</Name>
 					<Price
 						nowPrice={list.item.discountPrice || list.item.price}
