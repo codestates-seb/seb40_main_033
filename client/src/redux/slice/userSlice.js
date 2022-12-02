@@ -36,6 +36,7 @@ const userSlice = createSlice({
 			state.isSocial = isSocial;
 		},
 		logout: () => {
+			localStorage.clear();
 			return initialState;
 		},
 	},
