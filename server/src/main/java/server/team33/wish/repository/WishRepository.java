@@ -26,4 +26,8 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
 
     @Query("SELECT w FROM Wish w JOIN Item i ON w.item.itemId = i.itemId where w.user.userId = :userId and w.isWish = 1")
     Page<Wish> findAllByUser(Pageable pageable, @Param("userId") long userId);
+
+    @Query("SELECT i.itemId FROM Wish w JOIN Item i ON w.item.itemId = i.itemId where w.user.userId = :userId and w.isWish = 1")
+    List<Long> findItemIdByUser(@Param("userId") long userId);
+
 }
