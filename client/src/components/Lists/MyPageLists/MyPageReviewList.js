@@ -33,7 +33,7 @@ function MyPageReviewList({
 	);
 
 	const handleItemClick = () => {
-		navigate(`/detail/${review.item.itemId}`);
+		navigate(`/detail/${itemId}`);
 	};
 
 	const handleFormOpen = () => {
@@ -129,13 +129,13 @@ const Image = styled.img`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const ListContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	/* height: 160px; // 임시 */
 	margin-left: 30px;
 `;
 
@@ -156,6 +156,7 @@ const Info = styled.div`
 	&.name {
 		color: var(--gray-600);
 		font-weight: var(--bold);
+		cursor: pointer;
 	}
 `;
 
