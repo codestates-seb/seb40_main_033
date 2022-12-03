@@ -24,7 +24,9 @@ function CartList({ data, item, sub }) {
 	);
 
 	const { mutate: deleteCart } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/${data.itemCartId}`,
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/${
+			data.itemCartId
+		}?subscription=${sub ? 'true' : 'false'}`,
 	);
 
 	const { mutate: patchCheck } = usePatch(
