@@ -1,16 +1,20 @@
 import styled from 'styled-components';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { LetterButtonColor, LetterButton } from '../Buttons/LetterButton';
 import { DotDate } from '../Etc/ListDate';
 import TalkForm from '../Forms/TalkForm';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
+import { usePost, usePatch, useDelete } from '../../hooks/useFetch';
 
 function DetailTalkList({
 	isReply,
 	itemId,
 	createdAt,
 	content,
+	talkId,
 	userId,
 	shopper,
 	talkComments,
@@ -18,9 +22,89 @@ function DetailTalkList({
 	const [writable, setWritable] = useState(false);
 	const [writeReply, setWriteReply] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [newContent, setNewContent] = useState(content); // 업데이트할 토크 컨텐츠
+	const [reContent, setReContent] = useState(''); // 새로 작성한 리토크
+	const [NewReContent, setNewReContent] = useState(talkComments && content); // 업데이트할 리토크
+	const { loginStatus } = useSelector((store) => store.user);
+	// 토크 수정
+	const { mutate: talkUpdateMu, response: talkUpdateRes } = usePatch(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talkId}`,
+	);
+
+	// 토크 삭제
+	const { mutate: talkDeleteMu, response: talkDeleteRes } = useDelete(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talkId}`,
+	);
+
+	// // 리토크 작성
+	const { mutate: reTalkCreateMu, response: reTalkCreateRes } = usePost(
+		`	http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkId}?itemId=${itemId}`,
+	);
+
+	// // 리토크 수정
+	// const { mutate: reTalkUpdateMu, response: reTalkUpdateRes } = usePatch(
+	// 	`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/{talkcomment-id}`,
+	// );
+
+	console.log('토크의 토크', talkComments);
+
+	// 토크 수정!
+	const handleTalkUpdate = useCallback(
+		(e) => {
+			// e.preventDefault();
+			console.log('제출', newContent);
+			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
+			if (newContent.length < 20) {
+				toast.error('20자 이상 작성해주세요.');
+				return;
+			}
+
+			talkUpdateMu({ content: newContent });
+			console.log('response', talkUpdateRes);
+		},
+		[newContent],
+	);
+
+	// 토크 수정 컨텐츠 상태
+	const handleNewContent = useCallback(
+		(e) => {
+			setNewContent(e.target.value);
+			console.log('내용:', e.target.value);
+		},
+		[newContent],
+	);
+
+	// 리토크 작성!
+	const handleReTalkCreate = useCallback(
+		(e) => {
+			e.preventDefault();
+			console.log('제출', newContent);
+			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
+			if (newContent.length < 20) {
+				toast.error('20자 이상 작성해주세요.');
+				return;
+			}
+			reTalkCreateMu({ newContent });
+			console.log('response', reTalkCreateRes);
+		},
+		[newContent],
+	);
+
+	// 리톡 컨텐츠 상태 변경
+	const handleReContent = useCallback(
+		(e) => {
+			setReContent(e.target.value);
+			console.log('내용:', e.target.value);
+		},
+		[newContent],
+	);
 
 	const handleFormOpen = useCallback(
 		(e) => {
+			if (!loginStatus) {
+				toast.error('로그인이 필요한 서비스입니다.');
+				return;
+			}
 			if (e.target.innerText === '수정') {
 				setWritable(!writable);
 			} else {
@@ -34,9 +118,10 @@ function DetailTalkList({
 		setOpenDeleteModal(true);
 	}, []);
 
-	// talk 삭제 요청!
+	// talk 삭제 요청! ===> 이거 target이 뭐냐에 따라 좀 달라야할듯
 	const handleDeleteTalk = useCallback(() => {
 		console.log('삭제 요청');
+		talkDeleteMu();
 		setOpenDeleteModal(false);
 	}, []);
 
@@ -58,7 +143,15 @@ function DetailTalkList({
 						</LetterButtonColor>
 					</ButtonContainer>
 				</TopContainer>
-				{writable ? <TalkForm /> : <Talk>{content}</Talk>}
+				{writable ? (
+					<TalkForm
+						content={newContent}
+						handleContent={handleNewContent}
+						handleSubmit={handleTalkUpdate}
+					/>
+				) : (
+					<Talk>{newContent}</Talk>
+				)}
 				<InfoContainer className={isReply && 'reply'}>
 					{!isReply && !writable && (
 						<LetterButton onClick={handleFormOpen}>답변 작성</LetterButton>
@@ -66,7 +159,12 @@ function DetailTalkList({
 					<DotDate date={createdAt} />
 				</InfoContainer>
 				{writeReply && (
-					<TalkForm placeholder="토크에 대한 답글을 남겨주세요." />
+					<TalkForm
+						content={reContent}
+						handleContent={handleReContent}
+						handleSubmit={handleReTalkCreate}
+						placeholder="토크에 대한 답글을 남겨주세요."
+					/>
 				)}
 			</Box>
 			<DeleteNotesModal

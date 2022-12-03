@@ -11,7 +11,7 @@ import { useGet, usePost } from '../hooks/useFetch';
 
 function Detail() {
 	// state 초기값 토크 조회값일 수도!
-	const [content, setContent] = useState('');
+
 	const { pathname } = useLocation();
 	const { id } = useParams();
 	const { isLoading, isError, data, error } = useGet(
@@ -25,6 +25,9 @@ function Detail() {
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${id}`,
 	);
 
+	const [content, setContent] = useState(''); // 토크 컨텐츠!
+
+	// 토크 작성 요청
 	const handleSubmit = useCallback(
 		(e) => {
 			// e.preventDefault();
@@ -40,6 +43,7 @@ function Detail() {
 		[content],
 	);
 
+	// 토크 컨텐츠 상태
 	const handleContent = useCallback(
 		(e) => {
 			setContent(e.target.value);
@@ -49,19 +53,7 @@ function Detail() {
 	);
 	const lists = !isLoading && data.data.data;
 
-	console.log('lists.talks', lists.talks);
-	const content1 = `요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이 덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!! 팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이
-	덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!!
-	팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이
-	새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이
-	덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!!
-	팀원들아 나만 믿어~~~! ^^`;
-
-	const content2 = `
-	이 영양제 넘 맛 없어요 효과도 없어요!!`;
-
-	const content3 = `
-	내공냠냠`;
+	console.log('lists', lists);
 
 	const deliveryInfo = `배송 방법 : 택배 배송
 	배송 지역 : 전국
@@ -178,6 +170,7 @@ function Detail() {
 									createdAt={talk.createdAt}
 									content={talk.content}
 									userId={talk.userId}
+									talkId={talk.talkId}
 									shopper={talk.shopper}
 									talkComments={talk.talkComments}
 								/>
