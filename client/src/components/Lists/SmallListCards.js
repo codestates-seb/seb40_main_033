@@ -22,13 +22,16 @@ function SmallListCards({ item }) {
 					</ContentContainer>
 					<ContentContainer buttom onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
-						<div className="title itemName">{item.title}</div>
-						<Price
-							nowPrice={item.discountPrice}
-							beforePrice={item.price}
-							discountRate={item.discountRate}
-							fontSize="13px"
-						/>
+						<NamePriceBox>
+							<div className="title itemName">{item.title}</div>
+							<Price
+								className="itemPrice"
+								nowPrice={item.discountPrice}
+								beforePrice={item.price}
+								discountRate={item.discountRate}
+								fontSize="14px"
+							/>
+						</NamePriceBox>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
@@ -137,13 +140,20 @@ const ContentContainer = styled.div`
 	.itemName {
 		font-weight: var(--extraBold);
 		font-size: 16px;
-		padding-bottom: 27.5px;
+		/* padding-bottom: 27.5px; */
 		word-break: keep-all;
 	}
 	.itemPrice {
 		font-size: 16px;
 		font-weight: var(--regular);
 	}
+`;
+
+const NamePriceBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 60px;
 `;
 
 const ItemImg = styled.img`

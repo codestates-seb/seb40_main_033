@@ -21,13 +21,15 @@ function MainListCard({ item }) {
 					</ContentContainer>
 					<ContentContainer bottom>
 						<div className="title brandName">{item.brand}</div>
-						<div className="title itemName">{item.title}</div>
-						<Price
-							nowPrice={item.discountPrice}
-							beforePrice={item.price}
-							discountRate={item.discountRate}
-							fontSize="16px"
-						/>
+						<NamePriceBox>
+							<div className="title itemName">{item.title}</div>
+							<Price
+								nowPrice={item.discountPrice}
+								beforePrice={item.price}
+								discountRate={item.discountRate}
+								fontSize="16px"
+							/>
+						</NamePriceBox>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
@@ -131,13 +133,20 @@ const ContentContainer = styled.div`
 	.itemName {
 		font-weight: var(--extraBold);
 		font-size: 20px;
-		padding-bottom: 27.5px;
+		/* padding-bottom: 27.5px; */
 		word-break: keep-all;
 	}
 	.itemPrice {
 		font-size: 20px;
 		font-weight: var(--regular);
 	}
+`;
+
+const NamePriceBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 70px;
 `;
 
 const ItemImg = styled.img`
