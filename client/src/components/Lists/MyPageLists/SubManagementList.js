@@ -43,6 +43,7 @@ function SubManagementList({ subManageData }) {
 			await setSubPeriod(e.target.innerText.replace('일', ''));
 			// console.log(e.target.innerText, '왜됨???');
 			await modifyPeriod();
+			toast.success('주기를 변경했습니다!');
 		},
 		[subPeriod],
 	);
@@ -91,14 +92,14 @@ function SubManagementList({ subManageData }) {
 						<QuantityContainer>
 							<Label>수량</Label>
 							<CounterBtn
-								quantity={quantity}
+								quantity={subManageData.quantity}
 								onPlusClick={onPlusClick}
 								onMinusClick={onMinusClick}
 							/>
 						</QuantityContainer>
 						<Price // 가격 * 수량
 							nowPrice={subManageData.item.disCountPrice}
-							quantity={quantity} // 수량!
+							quantity={subManageData.quantity} // 수량!
 							fontSize="20px"
 							fontWeight="extraBold"
 						/>
