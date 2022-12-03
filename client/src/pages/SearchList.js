@@ -1,60 +1,47 @@
 import styled from 'styled-components';
-import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
-import { useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
+import { useGet } from '../hooks/useFetch';
+
 // 목록 페이지
 function SearchList() {
-	const [isItem, setIsItem] = useState(null);
-	const [loding, setLoding] = useState(false);
+	const { pathname } = useLocation();
 
-	// const location = useLocation();
+	const { key } = useSelector((store) => store.filter);
+	const { sort } = useSelector((store) => store.filter);
+	const { price } = useSelector((store) => store.filter);
 
-	// console.log('location', location);
+	const {
+		isLoading,
+		isError,
+		data: items,
+		error,
+		refetch,
+	} = useGet(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/search?sort=${sort}&keyword=${key}`,
+		pathname,
+	);
 
-	const [searchParams, setSearchParams] = useSearchParams();
-	const keywordQuery = searchParams.get('keyword'); // url속 검색어 가져오기
+	console.log('items', items);
 
-	console.log('keywordQuery', keywordQuery);
-
-	useEffect(() => {
-		const itemData = async () => {
-			setLoding(true);
-			try {
-				// const query = category === 'all' ? '' : `&category=${category}`;
-				const response = await axios.get(`http://localhost:3002/item`);
-				setIsItem(response.data); // [{id:1 ~~}, {id:2 ~~}]
-				console.log(response);
-				// console.log('response.data.item', response.itemData);
-				console.log('isItem', isItem);
-			} catch (e) {
-				console.log(e);
-			}
-			setLoding(false);
-		};
-		itemData();
-	}, []);
-
-	// 대기 중 일때
-	if (loding) {
+	if (isLoading) {
 		return <ItemListBox> 대기중 ..</ItemListBox>;
 	}
-
-	// 값이 설정되지 않았을 때
-	if (!isItem) {
-		return null;
+	if (isError) {
+		return <ItemListBox> {error.message} </ItemListBox>;
 	}
 
 	return (
 		<Box>
-			<PageTitle />
+			<PageTitle refetch={refetch} />
 			<Mesage>
-				<Text>에 대한 검색 결과입니다</Text>
+				<Text>{key}에 대한 검색 결과입니다</Text>
 			</Mesage>
 			<ItemListBox>
-				{isItem.map((item) => (
-					<SmallListCards key={item.id} item={item} />
+				{items.data.data.map((item) => (
+					<SmallListCards key={item.itemId} item={item} />
 				))}
 			</ItemListBox>
 		</Box>

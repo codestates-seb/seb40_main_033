@@ -1,14 +1,24 @@
 import DefaultTabButton from './DefaultTabButton';
 
-export function DayControlTab() {
+export function DayControlTab(onClick, currentIdx) {
 	const menuArr = [
 		{ name: '30일', index: 0 },
 		{ name: '60일', index: 1 },
 		{ name: '90일', index: 2 },
 		{ name: '120일', index: 3 },
 	];
+	// highlightValue ==> 지금 선택한 탭의 left 위치 (0번째: 0, 1번째: 68, 2번째: 136 ... => 68씩 증가!)
+	const highlightValue = 73 * currentIdx;
 
-	return <DefaultTabButton menuArr={menuArr} delayButton />;
+	return (
+		<DefaultTabButton
+			delayButton
+			menuArr={menuArr}
+			onClick={onClick}
+			currentIdx={currentIdx}
+			highlightLeftValue={highlightValue}
+		/>
+	);
 }
 
 export function ToggleTab({ currentIdx, highlightLeftValue }) {
@@ -45,7 +55,7 @@ export function NoteToggleTab({ currentIdx, highlightLeftValue }) {
 	);
 }
 
-export function DayShowTab({ fonSize, onClick }) {
+export function DayShowTab({ fonSize, onClick, currentIdx }) {
 	const menuArr = [
 		{ name: '30일', index: 0 },
 		{ name: '60일', index: 1 },
@@ -53,7 +63,16 @@ export function DayShowTab({ fonSize, onClick }) {
 		{ name: '120일', index: 3 },
 	];
 
+	// highlightValue ==> 지금 선택한 탭의 left 위치 (0번째: 0, 1번째: 68, 2번째: 136 ... => 68씩 증가!)
+	const highlightValue = 73 * currentIdx;
+
 	return (
-		<DefaultTabButton menuArr={menuArr} fontSize={fonSize} onClick={onClick} />
+		<DefaultTabButton
+			menuArr={menuArr}
+			fontSize={fonSize}
+			onClick={onClick}
+			currentIdx={currentIdx}
+			highlightLeftValue={highlightValue}
+		/>
 	);
 }
