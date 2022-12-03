@@ -68,6 +68,7 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 			}
 			setIsOpen(false);
 			console.log('리뷰 작성 및 수정 요청');
+			toast.success('리뷰 수정이 완료되었습니다!');
 		},
 		[star, content],
 	);

@@ -39,6 +39,7 @@ function Detail() {
 			}
 			talkMu({ content });
 			console.log('response', response);
+			setContent('');
 		},
 		[content],
 	);
@@ -80,18 +81,18 @@ function Detail() {
 	건강기능식품
 
 	유통기한
-	제조일로부터 24개월
+	${lists.expiration} 까지
 
 	영양 정보
 	- 용량 : ${lists.capacity}정 (${lists.capacity / lists.servingSize}일)
 	- 영양성분 : ${
 		lists &&
-		lists?.nutritionFacts.map((fact) => `${fact.ingredient}: ${fact.volume}`)
+		lists?.nutritionFacts.map((fact) => ` ${fact.ingredient} (${fact.volume})`)
 	}
-	   1일 섭취량: 1회 ${lists.servingSize}정
+	- 1일 섭취량: 1회 ${lists.servingSize}정
 
 	섭취 방법
-	1일 1회, 1회 1캡슐을 충분한 물과 함께 섭취하십시오.
+	1일 1회, 1회 ${lists.servingSize}캡슐을 충분한 물과 함께 섭취하십시오.
 
 	섭취 시 주의사항
 	- 질환이 있거나 의약품 복용 시 전문가와 상담하십시오.
@@ -149,11 +150,39 @@ function Detail() {
 										createdAt={review.createdAt}
 										content={review.content}
 										userId={review.userId}
+										review={{
+											item: {
+												reviewId: review.reviewId,
+												userId: review.userId,
+												itemId: review.itemId,
+												content: review.content,
+												brand: lists.brand,
+												thumbnail: lists.thumbnail,
+												title: lists.title,
+												nowPrice: lists.discountPrice || lists.price,
+												discountRate:
+													lists.discountRate === 0 ? '' : lists.discountRate,
+												beforePrice: lists.discountPrice ? lists.price : null,
+												star: review.star,
+											},
+										}}
+										// reviewId,
+										// content,
+										// brand,
+										// thumbnail,
+										// title,
+										// nowPrice,
+										// beforePrice,
+										// discountRate,
+										// quantity,
+										// star,
+										// userId,
+										// itemId,
 									/>
 								))}
 						</ListsContainer>
 					</Notes>
-					<Notes>
+					<Notes className="talk">
 						<InfoTitle>Talk</InfoTitle>
 						{loginStatus && (
 							<TalkForm
@@ -173,15 +202,16 @@ function Detail() {
 										userId={talk.userId}
 										talkId={talk.talkId}
 										shopper={talk.shopper}
-										talkComments={talk.talkComments}
+										// talkComments={talk.talkComments}
 										displayName={talk.displayName}
 									/>
 									{talk.talkComments &&
 										talk.talkComments.map((retalk) => {
 											return (
 												<DetailTalkList
-													key={retalk.talkCommentId}
-													content={retalk.content}
+													key={`${retalk.talkCommentId.toString()}-retalk`}
+													talkCommentId={retalk.talkCommentId}
+													reTalkContent={retalk.content}
 													createdAt={retalk.createdAt}
 													shopper={retalk.shopper}
 													displayName={retalk.displayName}
@@ -207,6 +237,8 @@ function Detail() {
 						nowPrice={lists.discountPrice || lists.price}
 						discountRate={lists.discountRate === 0 ? '' : lists.discountRate}
 						beforePrice={lists.discountPrice ? lists.price : null}
+						starAvg={lists.starAvg}
+						reviewCount={lists.reviews.data.length}
 					/>
 				</SummaryContainer>
 			</>
@@ -275,6 +307,12 @@ const Notes = styled.div`
 	padding-top: 70px;
 	width: 100%;
 	margin-top: 100px;
+	&.talk {
+		> :nth-child(2) {
+			margin-bottom: 44px;
+		}
+		/* margin-bottom: 20px; */
+	}
 `;
 
 const ListsContainer = styled.div`
