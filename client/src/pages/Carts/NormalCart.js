@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import { useEffect, useState, useCallback, useMemo } from 'react';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
@@ -27,7 +26,7 @@ function NormalCart() {
 	console.log(items);
 
 	if (isLoading) {
-		return <List> 대기중 ..</List>;
+		return <List>대기중...</List>;
 	}
 	if (isError) {
 		return <List> {error.message} </List>;
@@ -37,7 +36,7 @@ function NormalCart() {
 		<Box>
 			<List>
 				{items.data.data.itemCarts.data.map((item) => (
-					<CartList key={item.item.itemId} item={item.item} data={item} />
+					<CartList key={item.item.itemId} data={item} item={item.item} />
 				))}
 			</List>
 			<Bottom>

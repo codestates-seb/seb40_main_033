@@ -9,7 +9,7 @@ import Price from '../../Etc/Price';
 import CancelModal from '../../Modals/CancelModal';
 import { useDelete, usePatch } from '../../../hooks/useFetch';
 
-function CartList({ item, sub, data }) {
+function CartList({ data, item, sub }) {
 	const [quantity, setQuantity] = useState(data.quantity);
 	const [openCancelModal, setOpenCancelModal] = useState(false);
 	const [isChecked, setChecked] = useState(data.buyNow);
@@ -63,7 +63,16 @@ function CartList({ item, sub, data }) {
 	// 	patchCheck();
 	// }, [isChecked]);
 
-	console.log(isChecked);
+	const handleCheck = async () => {
+		await setChecked(!isChecked);
+		await patchCheck();
+	};
+	// const handleCheck = useCallback(() => {
+	// 	console.log(isChecked);
+	// 	setChecked(!isChecked);
+	// 	// patchCheck();
+	// 	console.log(isChecked);
+	// }, [isChecked]);
 
 	return (
 		<Box>
@@ -83,19 +92,15 @@ function CartList({ item, sub, data }) {
 				<IoMdClose onClick={handleModalOpen} />
 			</SubContainer>
 			<ListContainer>
-				<input
-					type="checkbox"
-					checked={isChecked}
-					onClick={() => setChecked(!isChecked)}
-				/>
+				<input type="checkbox" checked={isChecked} onChange={handleCheck} />
 				<Image src={item.thumbnail} alt="상품 이미지" />
 				<RightContainer>
 					<InfoContainer>
 						<Info className="brand">{item.brand}</Info>
 						<Info className="name">{item.title}</Info>
 						<Price
-							nowPrice={item.price}
-							beforePrice={item.disCountPrice}
+							nowPrice={item.disCountPrice}
+							beforePrice={item.price}
 							discountRate={item.discountRate}
 						/>
 					</InfoContainer>
@@ -109,7 +114,8 @@ function CartList({ item, sub, data }) {
 							/>
 						</QuantityContainer>
 						<Price // 가격 * 수량
-							nowPrice={item.price}
+							nowPrice={item.disCountPrice}
+							quantity={data.quantity}
 							fontSize="20px"
 							fontWeight="extraBold"
 						/>
