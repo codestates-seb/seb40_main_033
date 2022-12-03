@@ -2,7 +2,7 @@
 /* eslint-disable import/no-named-as-default */
 import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import Price from '../../Etc/Price';
 import ReviewModal from '../../Modals/ReviewModal';
@@ -15,19 +15,21 @@ function OrderDetailList({
 	nowPrice,
 	beforePrice,
 	discountRate,
-	orderId,
+	itemOrderId, // 주문내역 속 개별아이템 주문id!
 	capacity,
 	quantity,
+	period,
+	subscription,
+	orderStatus,
 }) {
 	const [modalIsOpen, setIsOpen] = useState(false);
-
 	const openModal = useCallback(() => {
 		setIsOpen(true);
 	}, []);
 
 	const review = {
 		item: {
-			orderId,
+			itemOrderId,
 			brand,
 			thumbnail,
 			title,
@@ -43,13 +45,14 @@ function OrderDetailList({
 				<Image src={thumbnail} alt="상품 이미지" />
 			</ImageContainer>
 			<Wrap>
-				<InformationForm>
+				<InformationForm className={subscription && 'subscription'}>
 					<Brand>{brand}</Brand>
 					<Name>
-						{title}, {capacity}정
+						{title} {capacity && `, ${capacity}정`}
 					</Name>
 					<Price fontSize="13px" nowPrice={nowPrice} />
 				</InformationForm>
+				{subscription && <Period>{`${period}일 마다`}</Period>}
 				<BottomContainer>
 					<Total>
 						{quantity && <Quantity>{quantity}개 / </Quantity>}
@@ -63,7 +66,7 @@ function OrderDetailList({
 						/>
 					</Total>
 				</BottomContainer>
-				{!inModal && (
+				{!inModal && orderStatus !== 'ORDER_CANCEL' && (
 					<ReviewContainer>
 						<LetterButtonColor
 							onClick={openModal}
@@ -108,6 +111,7 @@ const Wrap = styled.div`
 	flex-direction: column;
 	margin-left: 20px;
 	width: 100%;
+	position: relative;
 `;
 
 const ImageContainer = styled.div`
@@ -124,6 +128,9 @@ const Image = styled.img`
 
 const InformationForm = styled.div`
 	margin-bottom: 23px;
+	&.subscription {
+		margin-bottom: 12px;
+	}
 `;
 
 const Brand = styled.div`
@@ -148,6 +155,15 @@ const Total = styled.div`
 	font-weight: var(--bold);
 `;
 
+const Period = styled.div`
+	color: var(--purple-200);
+	/* position: relative; */
+	margin-bottom: 4px;
+	/* top: -15px; */
+	/* right: 0; */
+	font-size: 12px;
+`;
+
 const Quantity = styled.div`
 	margin-right: 3px;
 `;
@@ -157,10 +173,12 @@ const ReviewContainer = styled.div`
 	align-items: center;
 	cursor: pointer;
 	align-self: end;
-	margin-top: 16px;
+	position: absolute;
+	bottom: -29px;
+	right: -12px;
 	* {
 		color: var(--gray-500);
 	}
 `;
 
-export default OrderDetailList;
+export default React.memo(OrderDetailList);
