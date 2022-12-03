@@ -7,8 +7,8 @@ function CancelModal({
 	target,
 }) {
 	const data = {
-		title: `${target} 취소`,
-		contents: '정말 취소하시겠습니까?',
+		title: `${target}${target === '장바구니' ? '에서 삭제' : ' 취소'}`,
+		contents: `정말 ${target === '장바구니' ? '삭제' : '취소'}하시겠습니까?`,
 		lpbtnTexts: '예',
 		pbtnTexts: '아니오',
 	};

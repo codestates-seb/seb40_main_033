@@ -9,43 +9,22 @@ import { useGet, usePatch } from '../../hooks/useFetch';
 function NoteReview() {
 	const { pathname } = useLocation();
 	const { isLoading, isError, data, error } = useGet(
-		// 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
-		'http://localhost:3001/reviews',
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
+		// 'http://localhost:3001/reviews',
 		pathname,
 	);
 	const reviews = data?.data?.data;
+	// console.log('🚀 ~ file: NoteReview.js:17 ~ NoteReview ~ reviews', reviews);
 
-	const {
-		data: dada,
-		isLoading: Loading,
-		refetch,
-	} = useGet(
-		// 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
-		'http://localhost:3001/test',
-		'dada',
-	);
-	const { mutate } = usePatch('http://localhost:3001/test');
-
-	const handle = () => {
-		mutate({ data: '456' });
-	};
-
+	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
+	if (isError) return <div>{error.message}</div>;
 	return (
 		<>
-			{isLoading || isError ? (
-				<div>Loading</div>
-			) : (
-				<ListContainer>
-					<div>{dada?.data?.data}</div>
-					<button type="button" onClick={handle}>
-						mutate
-					</button>
-					{reviews.map((review) => (
-						<MyPageReviewList key={review.reviewId} review={review} />
-					))}
-				</ListContainer>
-			)}
-			{isError && <div>{error.message}</div>}
+			<ListContainer>
+				{reviews?.map((review) => (
+					<MyPageReviewList key={review.reviewId} review={review} />
+				))}
+			</ListContainer>
 			<Pagination total="10" limit="8" />
 		</>
 	);

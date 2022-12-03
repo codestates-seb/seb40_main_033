@@ -8,10 +8,16 @@ import { LongTextStar } from '../../Stars/TextStar';
 import OrderDetailList from './OrderDetailList';
 import ReviewModal from '../../Modals/ReviewModal';
 import DeleteNotesModal from '../../Modals/DeleteNotesModal';
+import { useDelete } from '../../../hooks/useFetch';
 
 function MyPageReviewList({ review }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+	const { mutate } = useDelete(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.reviewId}`,
+		// 'http://localhost:3001/reviews',
+	);
 
 	const handleFormOpen = () => {
 		setOpenForm(!openForm);
@@ -23,6 +29,7 @@ function MyPageReviewList({ review }) {
 
 	// review 삭제 요청!
 	const handleDelete = useCallback(() => {
+		mutate();
 		setOpenDeleteModal(false);
 	}, []);
 
@@ -46,8 +53,8 @@ function MyPageReviewList({ review }) {
 					</ButtonContainer>
 				</TopContainer>
 				<InfoContainer>
-					<LongTextStar noText />
-					<DotDate date={review.updatedAt} />
+					<LongTextStar noText star={review.star} />
+					<DotDate date={review.createdAt} />
 				</InfoContainer>
 				<Review>{review.content}</Review>
 				<ReviewModal
@@ -77,7 +84,7 @@ const Box = styled.li`
 `;
 
 const Image = styled.img`
-	width: 160px;
+	min-width: 160px;
 	height: 160px;
 	display: flex;
 	justify-content: center;

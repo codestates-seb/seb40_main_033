@@ -16,6 +16,7 @@ function OrderDetailList({
 	beforePrice,
 	discountRate,
 	orderId,
+	capacity,
 	quantity,
 }) {
 	const [modalIsOpen, setIsOpen] = useState(false);
@@ -44,7 +45,9 @@ function OrderDetailList({
 			<Wrap>
 				<InformationForm>
 					<Brand>{brand}</Brand>
-					<Name>{title}</Name>
+					<Name>
+						{title}, {capacity}정
+					</Name>
 					<Price fontSize="13px" nowPrice={nowPrice} />
 				</InformationForm>
 				<BottomContainer>

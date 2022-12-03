@@ -9,7 +9,7 @@ import { useGet } from '../../hooks/useFetch';
 const sectionTitle = [
 	['Best', '인기 많은 상품만 모았어요!'],
 	['On Sale', '할인 중인 상품만 모았어요!'],
-	['MD Pick!', 'MD가 직접 선택한 제품들!'],
+	['신상품', '새로 나온 제품들!'],
 ];
 
 function Home() {
@@ -32,6 +32,8 @@ function Home() {
 
 	const list = !isLoading && data.data;
 
+	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
+	if (isError) return <div>{error.message}</div>;
 	return (
 		<div>
 			<MainCaroucel />
@@ -47,10 +49,10 @@ function Home() {
 						items={list.data.saleItem.data}
 						sectionTitle={sectionTitle[1]}
 					/>
-					{/* <MainSection
-						items={list.data.saleItem.data}
+					<MainSection
+						items={list.data.mdPickItem.data}
 						sectionTitle={sectionTitle[2]}
-					/> */}
+					/>
 				</>
 			)}
 		</div>

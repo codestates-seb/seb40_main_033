@@ -32,7 +32,7 @@ function MyPage() {
 
 	useEffect(() => {
 		if (isMypage) {
-			navigate('/mypage/user-info');
+			navigate('/mypage/user-info', { replace: true });
 		}
 	}, []);
 

@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import { useEffect, useState, useCallback, useMemo } from 'react';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
-import { useGet } from '../../hooks/useFetch';
+import { useGet, usePost } from '../../hooks/useFetch';
 
 // 일반 장바구니
 function NormalCart() {
@@ -20,8 +19,14 @@ function NormalCart() {
 		pathname,
 	);
 
+	const { mutate } = usePost(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders?subscription=false',
+	);
+
+	console.log(items);
+
 	if (isLoading) {
-		return <List> 대기중 ..</List>;
+		return <List>대기중...</List>;
 	}
 	if (isError) {
 		return <List> {error.message} </List>;
@@ -31,20 +36,33 @@ function NormalCart() {
 		<Box>
 			<List>
 				{items.data.data.itemCarts.data.map((item) => (
-					<CartList key={item.item.itemId} item={item.item} />
-				))}{' '}
+					<CartList key={item.item.itemId} data={item} item={item.item} />
+				))}
 			</List>
 			<Bottom>
 				<Display>
 					<Text>합계</Text>
-					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" />
+					<Price
+						nowPrice={items.data.data.totalPrice}
+						fontSize="24px"
+						fontWeight="bold"
+					/>
 					<Text>할인 금액</Text>
-					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" />
+					<Price
+						nowPrice={items.data.data.totalDiscountPrice}
+						fontSize="24px"
+						fontWeight="bold"
+					/>
 					<Text>결제 예정 금액</Text>
-					<Price nowPrice="10000" fontSize="24px" fontWeight="bold" purple />
+					<Price
+						nowPrice={items.data.data.expectPrice}
+						fontSize="24px"
+						fontWeight="bold"
+						purple
+					/>
 				</Display>
 				<Button>
-					<PurpleButton width="143px" height="50px">
+					<PurpleButton width="143px" height="50px" onClick={() => mutate()}>
 						구매하기
 					</PurpleButton>
 				</Button>
@@ -63,17 +81,20 @@ const Box = styled.div`
 `;
 
 const List = styled.div`
-	padding-top: 44px;
 	background-color: white;
 	border-radius: 10px;
-	/* border: 1px solid #f1f1f1; */
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
-	margin-top: 30px;
+	margin-top: 20px;
 	width: 983px;
-	height: 1094px;
 	flex-direction: column;
 	display: flex;
 	align-items: center;
+
+	& > {
+		:last-child {
+			border: none;
+		}
+	}
 `;
 
 const Bottom = styled.div`
