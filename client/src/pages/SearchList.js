@@ -1,14 +1,19 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
 import { useGet } from '../hooks/useFetch';
 import paramsMaker from '../utils/paramsMaker';
+import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
+import Pagination from '../components/Etc/Pagination';
 
 // 목록 페이지
 function SearchList() {
+	// 페이지네이션
+	const [currentPage, setCurrentPage] = useState(1);
+
 	const { sort, price, brand, onSale } = useSelector((state) => state.filter);
 
 	// uri에 붙일 파람스 생성
@@ -26,17 +31,22 @@ function SearchList() {
 		error,
 		refetch,
 	} = useGet(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/search${path}?keyword=${keyword}${query}`,
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/search${path}?keyword=${keyword}${query}&page=${currentPage}&size=12`,
 		pathname,
 	);
-	console.log(items);
+
+	const pageInfo = items?.data?.pageInfo;
 
 	useEffect(() => {
 		refetch();
-	}, [keyword, price, sort, brand]);
+		window.scroll({
+			top: 0,
+			behavior: 'auto',
+		});
+	}, [keyword, price, sort, brand, onSale, currentPage]);
 
 	if (isLoading) {
-		return <ItemListBox> 대기중 ..</ItemListBox>;
+		return <LoadingSpinner />;
 	}
 	if (isError) {
 		return <ItemListBox> {error.message} </ItemListBox>;
@@ -53,6 +63,12 @@ function SearchList() {
 					<SmallListCards key={item.itemId} item={item} />
 				))}
 			</ItemListBox>
+			<Pagination
+				total={pageInfo.totalElements}
+				size={pageInfo.size}
+				page={currentPage}
+				setPage={setCurrentPage}
+			/>
 		</Box>
 	);
 }

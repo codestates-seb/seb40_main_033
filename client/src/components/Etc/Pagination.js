@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-function Pagination({ total, limit }) {
+function Pagination({ total, size, page, setPage }) {
 	// total은 총 게시물의 개수
-	// limit 페이지 당 보여줄 게시물 수
+	// size 페이지 당 보여줄 게시물 수
 	// page = 현재 페이지 번호
-	const numPages = Math.ceil(total / limit); // 페이지의 갯수..근데 아마 이마저도 서버쪽에서 넘겨줄 듯?
+	const numPages = Math.ceil(total / size);
 	const numbers = [];
-	const [page, setPage] = useState(1);
+
 	for (let i = 1; i <= numPages; i += 1) {
 		numbers.push(i);
 	}
@@ -46,6 +46,7 @@ function Pagination({ total, limit }) {
 		</Nav>
 	);
 }
+
 const Nav = styled.nav`
 	display: flex;
 	justify-content: center;
@@ -60,7 +61,7 @@ const Button = styled.button`
 	padding: 8px;
 	margin: 0;
 	background-color: transparent;
-	color: var(--gray-300);
+	color: var(--gray-200);
 	font-size: 20px;
 	&:hover {
 		cursor: pointer;
@@ -72,8 +73,8 @@ const Button = styled.button`
 		${(props) =>
 			props.arrow
 				? css`
+						opacity: 0;
 						transform: none;
-						color: var(--gray-300);
 				  `
 				: null}
 	}
