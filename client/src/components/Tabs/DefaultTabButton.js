@@ -38,7 +38,6 @@ function DefaultTabButton({
 		// 선택된 Tab Menu에 따라 하이라이트가 이동
 		const left = menuEl.current.children[index].offsetLeft;
 		const width = menuEl.current.children[index].offsetWidth;
-		console.log(left, width);
 
 		switch (index) {
 			case 0:

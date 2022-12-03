@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const Container = styled.div`
 	display: inline-block;
 	position: absolute;
-	left: 50%;
+	left: 48%;
+	top: 50%;
 	width: 54px;
 	height: 54px;
 
