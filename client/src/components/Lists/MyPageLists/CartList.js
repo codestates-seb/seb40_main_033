@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import CounterBtn from '../../Buttons/CounterButton';
-import { DayControlTab } from '../../Tabs/TabButtons';
+import { DayShowTab } from '../../Tabs/TabButtons';
 import Price from '../../Etc/Price';
 import CancelModal from '../../Modals/CancelModal';
 import { useDelete, usePatch } from '../../../hooks/useFetch';
@@ -13,6 +13,7 @@ function CartList({ data, item, sub }) {
 	const [quantity, setQuantity] = useState(data.quantity);
 	const [openCancelModal, setOpenCancelModal] = useState(false);
 	const [isChecked, setChecked] = useState(data.buyNow);
+	const [period, setPeriod] = useState(data.period);
 
 	const { mutate: quantityPlus } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/${data.itemCartId}?upDown=+1`,
@@ -26,16 +27,12 @@ function CartList({ data, item, sub }) {
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/${data.itemCartId}`,
 	);
 
-	// const { mutate: patchCheckTrue } = usePatch(
-	// 	`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/exclude/${data.itemCartId}?buynow=true`,
-	// );
-
-	// const { mutate: patchCheckFalse } = usePatch(
-	// 	`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/exclude/${data.itemCartId}?buynow=false`,
-	// );
-
 	const { mutate: patchCheck } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/exclude/${data.itemCartId}?buynow=${isChecked}`,
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/exclude/${data.itemCartId}?buyNow=${isChecked}`,
+	);
+
+	const { mutate: patchPeriod } = usePatch(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/period/${data.itemCartId}?period=${period}`,
 	);
 
 	const onPlusClick = useCallback(() => {
@@ -65,6 +62,14 @@ function CartList({ data, item, sub }) {
 		await patchCheck();
 	};
 
+	const handlePeriodClick = useCallback(
+		async (e) => {
+			await setPeriod(e.target.innerText.replace('일', ''));
+			await patchPeriod();
+		},
+		[period],
+	);
+
 	return (
 		<Box>
 			<CancelModal
@@ -77,7 +82,10 @@ function CartList({ data, item, sub }) {
 				{sub && (
 					<>
 						<Label>구독 주기</Label>
-						<DayControlTab />
+						<DayShowTab
+							onClick={handlePeriodClick}
+							currentIdx={data.period / 30 - 1}
+						/>
 					</>
 				)}
 				<IoMdClose onClick={handleModalOpen} />
