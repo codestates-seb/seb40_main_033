@@ -20,8 +20,8 @@ export function SortButton({ children }) {
 		setIsOpen(!isOpen);
 		// console.log(isOpen);
 	};
-	const menus = ['최신순', '찜 많은순', '높은가격순', '낮은가격순', '조회순'];
-	const path = ['', 'totalWishes', 'priceH', 'priceL', 'view'];
+	const menus = ['최신순', '조회순', '판매순', '높은가격순', '낮은가격순'];
+	const path = ['', 'view', 'sales', 'priceH', 'priceL'];
 
 	const clickMenus = (e) => {
 		const target = e.target.innerText;

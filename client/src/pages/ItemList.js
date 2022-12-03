@@ -1,16 +1,22 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import styled from 'styled-components';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
 import { useGet } from '../hooks/useFetch';
 import paramsMaker from '../utils/paramsMaker';
 import BrandsWindow from '../components/Etc/BrandsWindow';
+import Pagination from '../components/Etc/Pagination';
+import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 
 // 목록 페이지
 function ItemList() {
-	// const [isItem, setIsItem] = useState(null);
+	// 페이지네이션
+	const [currentPage, setCurrentPage] = useState(1);
+
+	// uri에 사용할 정보들을 리덕스에서 가지고옴
 	const { sort, price, brand, onSale } = useSelector((state) => state.filter);
 
 	// uri에 붙일 파람스 생성
@@ -20,6 +26,7 @@ function ItemList() {
 	const [searchParams] = useSearchParams();
 	const category = searchParams.get('categoryName') || 'all';
 
+	// API 요청
 	const { pathname } = useLocation();
 	const {
 		isLoading,
@@ -28,16 +35,23 @@ function ItemList() {
 		error,
 		refetch,
 	} = useGet(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/category${path}?categoryName=${category}${query}`,
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/category${path}?categoryName=${category}${query}&page=${currentPage}&size=12`,
 		pathname,
 	);
 
+	const pageInfo = items?.data?.pageInfo;
+
+	// 상태들이 바뀔때마다 새로운 아이템 목록을 불러옴
 	useEffect(() => {
 		refetch();
-	}, [category, price, sort, brand]);
+		window.scroll({
+			top: 0,
+			behavior: 'auto',
+		});
+	}, [category, price, sort, brand, onSale, currentPage]);
 
 	if (isLoading) {
-		return <ItemListBox> 대기중 ..</ItemListBox>;
+		return <LoadingSpinner />;
 	}
 	if (isError) {
 		return <ItemListBox> {error.message} </ItemListBox>;
@@ -54,6 +68,12 @@ function ItemList() {
 					<SmallListCards key={item.itemId} item={item} />
 				))}
 			</ItemListBox>
+			<Pagination
+				total={pageInfo.totalElements}
+				size={pageInfo.size}
+				page={currentPage}
+				setPage={setCurrentPage}
+			/>
 		</Box>
 	);
 }

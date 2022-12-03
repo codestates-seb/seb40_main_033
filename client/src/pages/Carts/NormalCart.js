@@ -4,6 +4,7 @@ import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
 import { useGet, usePost } from '../../hooks/useFetch';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 // 일반 장바구니
 function NormalCart() {
@@ -23,10 +24,10 @@ function NormalCart() {
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders?subscription=false',
 	);
 
-	console.log(items);
+	console.log('items', items);
 
 	if (isLoading) {
-		return <List>대기중...</List>;
+		return <LoadingSpinner />;
 	}
 	if (isError) {
 		return <List> {error.message} </List>;
