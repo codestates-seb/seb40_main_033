@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useCallback, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import CounterBtn from '../../Buttons/CounterButton';
 import { DayShowTab } from '../../Tabs/TabButtons';
 import Price from '../../Etc/Price';
@@ -14,6 +15,7 @@ function CartList({ data, item, sub }) {
 	const [openCancelModal, setOpenCancelModal] = useState(false);
 	const [isChecked, setChecked] = useState(data.buyNow);
 	const [period, setPeriod] = useState(data.period);
+	const navigate = useNavigate();
 
 	const { mutate: quantityPlus } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/${data.itemCartId}?upDown=+1`,
@@ -36,6 +38,10 @@ function CartList({ data, item, sub }) {
 	const { mutate: patchPeriod } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/period/${data.itemCartId}?period=${period}`,
 	);
+
+	const handleItemClick = () => {
+		navigate(`/detail/${item.itemId}`);
+	};
 
 	const onPlusClick = useCallback(() => {
 		setQuantity(quantity + 1);
@@ -94,11 +100,17 @@ function CartList({ data, item, sub }) {
 			</SubContainer>
 			<ListContainer>
 				<input type="checkbox" checked={isChecked} onChange={handleCheck} />
-				<Image src={item.thumbnail} alt="상품 이미지" />
+				<Image
+					src={item.thumbnail}
+					alt="상품 이미지"
+					onClick={handleItemClick}
+				/>
 				<RightContainer>
 					<InfoContainer>
 						<Info className="brand">{item.brand}</Info>
-						<Info className="name">{item.title}</Info>
+						<Info className="name" onClick={handleItemClick}>
+							{item.title}
+						</Info>
 						<Price
 							nowPrice={item.disCountPrice}
 							beforePrice={item.price}
@@ -198,6 +210,7 @@ const Image = styled.img`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const RightContainer = styled.div`
@@ -212,7 +225,11 @@ const InfoContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-
+	// 1,2번째 자식 요소 호버시 커서 변경
+	& > :nth-child(1),
+	& > :nth-child(2) {
+		cursor: pointer;
+	}
 	& > :nth-child(3) {
 		margin: 20px 0 22px 0; // 가격 컴포넌트
 	}
