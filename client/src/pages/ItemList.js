@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import Categories from '../components/Categories/Categories';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
 import { useGet } from '../hooks/useFetch';
 import paramsMaker from '../utils/paramsMaker';
+import BrandsWindow from '../components/Etc/BrandsWindow';
 
 // 목록 페이지
 function ItemList() {
@@ -21,7 +21,6 @@ function ItemList() {
 	const category = searchParams.get('categoryName') || 'all';
 
 	const { pathname } = useLocation();
-
 	const {
 		isLoading,
 		isError,
@@ -35,7 +34,7 @@ function ItemList() {
 
 	useEffect(() => {
 		refetch();
-	}, [category, price, sort]);
+	}, [category, price, sort, brand]);
 
 	if (isLoading) {
 		return <ItemListBox> 대기중 ..</ItemListBox>;
@@ -48,7 +47,7 @@ function ItemList() {
 		<Box>
 			<PageTitle title={category.split('_').join(' ')} refetch={refetch} />
 			<Brand>
-				{/* <Categories category={category} onSelect={onSelect} /> */}
+				<BrandsWindow />
 			</Brand>
 			<ItemListBox>
 				{items.data.data.map((item) => (
