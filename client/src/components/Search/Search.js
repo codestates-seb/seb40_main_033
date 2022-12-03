@@ -1,26 +1,21 @@
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { setKeyword } from '../../redux/slice/filterSlice';
+import { useNavigate } from 'react-router-dom';
 
-function Search({ refetch }) {
+function Search() {
 	const [click, setClick] = useState(false);
-	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const handleSearch = useCallback(async (e) => {
 		if (e.key === 'Enter') {
-			await dispatch(setKeyword(e.target.value));
-			refetch();
+			navigate(`/search?keyword=${e.target.value.replaceAll(' ', '_')}`);
 		}
 	}, []);
 
 	const clickBtn = () => {
 		setClick(!click);
 	};
-
-	const { key } = useSelector((store) => store.filter);
-	console.log('key', key);
 
 	return (
 		<Box>
@@ -30,7 +25,7 @@ function Search({ refetch }) {
 				onClick={clickBtn}
 				onKeyDown={handleSearch}
 			/>
-			<Icon>
+			<Icon onClick={handleSearch}>
 				<AiOutlineSearch />
 			</Icon>
 		</Box>
