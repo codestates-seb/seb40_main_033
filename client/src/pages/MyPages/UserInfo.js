@@ -161,22 +161,22 @@ export function UserInfo() {
 						<Information
 							label="닉네임"
 							register={nicknameReg}
-							// errors={errors?.닉네임?.message}
+							errors={errors?.닉네임?.message}
 						/>
 						<Information
 							label="이메일"
 							register={mailReg}
-							// errors={errors?.이메일?.message}
+							errors={errors?.이메일?.message}
 						/>
 						<Information
 							label="비밀번호"
 							register={pwReg}
-							// errors={errors?.비밀번호?.message}
+							errors={errors?.비밀번호?.message}
 						/>
 						<Information
 							label="비밀번호재확인"
 							register={rePwReg}
-							// errors={errors?.비밀번호재확인?.message}
+							errors={errors?.비밀번호재확인?.message}
 						/>
 					</InputBox>
 				</InfoBox>
@@ -186,23 +186,23 @@ export function UserInfo() {
 						<Information
 							label="이름"
 							register={nameReg}
-							// errors={errors?.이름?.message}
+							errors={errors?.이름?.message}
 						/>
 						<Information
 							label="전화번호"
 							register={telReg}
-							// errors={errors?.전화번호?.message}
+							errors={errors?.전화번호?.message}
 						/>
 						<Information
 							label="주소"
 							handleOpenAddress={handleOpenAddress}
 							register={adressReg}
-							// errors={errors?.주소?.message}
+							errors={errors?.주소?.message}
 						/>
 						<Information
 							label="상세주소"
 							register={detailAddressReg}
-							// errors={errors?.상세주소?.message}
+							errors={errors?.상세주소?.message}
 						/>
 					</InputBox>
 				</InfoBox>

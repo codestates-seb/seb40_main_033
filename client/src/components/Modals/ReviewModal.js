@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import DefalutModal from './DefalutModal';
 import ReviewForm from '../Forms/ReviewForm';
 import BtnStar from '../Stars/BtnStar';
@@ -9,11 +10,10 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 	const data = {
 		title: 'Review',
 	};
-	const { id } = useParams();
-	const { pathname } = useLocation();
 
-	const [star, setStar] = useState(review?.star);
-	const [content, setContent] = useState(review?.content);
+	const { pathname } = useLocation();
+	const [star, setStar] = useState(review.item.star || '');
+	const [content, setContent] = useState(review.item.content || ''); // 내용
 
 	const {
 		mutate: patchMu,
@@ -21,10 +21,10 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 		isError: patchIsErr,
 		error: patchErr,
 		response: patchRes,
-	} = usePatch(`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review?.reviewId}
+	} = usePatch(`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.item.reviewId}
 	`);
 
-	// 상세페이지 - 리뷰 작성
+	// 주문내역 상세페이지 - 리뷰 작성
 	const {
 		mutate: postMu,
 		isLoading: postIsLoad,
@@ -32,43 +32,60 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 		error: postErr,
 		response: postRes,
 	} = usePost(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${id}`,
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.item.itemOrderId}`,
+	);
+	console.log('review', review);
+
+	const handleStar = useCallback((e) => {
+		setStar(e.target.id); // 누른 별만큼 별점 설정
+		console.log('별점:', e.target.id);
+	}, []);
+
+	const handleContent = useCallback(
+		(e) => {
+			setContent(e.target.value);
+			console.log('내용:', e.target.value);
+		},
+		[content],
 	);
 
-	// console.log('response', response);
+	const handleSubmit = useCallback(
+		(e) => {
+			e.preventDefault();
+			console.log('제출', { content, star });
+			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
+			if (content.length < 20) {
+				toast.error('20자 이상 작성해주세요.');
+				return;
+			}
+			if (pathname.includes('order')) {
+				postMu({ star, content });
+				console.log(postRes);
+				// 리뷰 수정 요청
+			} else {
+				patchMu({ star, content });
+				console.log(patchRes);
+			}
+			setIsOpen(false);
+			console.log('리뷰 작성 및 수정 요청');
+			toast.success('리뷰 수정이 완료되었습니다!');
+		},
+		[star, content],
+	);
 
-	const handleStar = useCallback((clickedStar) => {
-		setStar(clickedStar);
-		console.log(clickedStar);
-	}, []);
-
-	const handleContent = useCallback((e) => {
-		setContent(e.target.value);
-	}, []);
-	console.log({ star, content });
-	const handleSubmit = useCallback((e) => {
-		e.preventDefault();
-		// 상세페이지의 리뷰 작성 요청
-		if (pathname.includes('detail')) {
-			postMu({ star, content });
-			// 리뷰 수정 요청
-		} else {
-			patchMu({ star, content });
-		}
-		setIsOpen(false);
-		console.log('리뷰 작성 및 수정 요청');
-	}, []);
-	// console.log(review);
 	return (
 		<DefalutModal
 			title={data.title}
 			list={
 				<OrderDetailList
 					inModal
-					brand={review?.item?.brand}
-					thumbnail={review?.item?.thumbnail}
-					title={review?.item?.title}
-					nowPrice={review?.item?.price}
+					brand={review?.item.brand}
+					thumbnail={review?.item.thumbnail}
+					title={review?.item.title}
+					nowPrice={review?.item.nowPrice}
+					beforePrice={review?.item.beforePrice}
+					discountRate={review?.item.discountRate}
+					itemOrderId={review?.item.itemOrderId}
 					capacity={review?.item?.capacity}
 					quantity={review?.quantity}
 				/>
