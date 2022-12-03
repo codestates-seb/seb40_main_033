@@ -1,27 +1,24 @@
-import styled, { css } from 'styled-components';
-import { useLocation } from 'react-router-dom';
-import { useCallback, useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useLocation, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Categories from '../components/Categories/Categories';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
 import { useGet } from '../hooks/useFetch';
+import paramsMaker from '../utils/paramsMaker';
 
 // 목록 페이지
 function ItemList() {
-	const [category, setCategory] = useState('all');
-	const [isItem, setIsItem] = useState(null);
-	// const [loding, setLoding] = useState(false);
-	const { sort } = useSelector((state) => state.filter);
-	const { price } = useSelector((state) => state.filter);
+	// const [isItem, setIsItem] = useState(null);
+	const { sort, price, brand, onSale } = useSelector((state) => state.filter);
 
-	console.log('itemListSort', sort);
-	console.log('itemListprice', price);
+	// uri에 붙일 파람스 생성
+	const { path, query } = paramsMaker(sort, price, brand, onSale);
 
-	const onSelect = useCallback((ctg) => {
-		setCategory(ctg);
-		// console.log('category', category);
-	}, []);
+	// 카테고리에 따라서 아이템 목록 불러오기
+	const [searchParams] = useSearchParams();
+	const category = searchParams.get('categoryName') || 'all';
 
 	const { pathname } = useLocation();
 
@@ -30,12 +27,15 @@ function ItemList() {
 		isError,
 		data: items,
 		error,
+		refetch,
 	} = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/category?categoryName=기타',
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/category${path}?categoryName=${category}${query}`,
 		pathname,
 	);
 
-	// console.log(items);
+	useEffect(() => {
+		refetch();
+	}, [category, price, sort]);
 
 	if (isLoading) {
 		return <ItemListBox> 대기중 ..</ItemListBox>;
@@ -46,9 +46,9 @@ function ItemList() {
 
 	return (
 		<Box>
-			<PageTitle title="눈 건강" />
+			<PageTitle title={category.split('_').join(' ')} refetch={refetch} />
 			<Brand>
-				<Categories category={category} onSelect={onSelect} />
+				{/* <Categories category={category} onSelect={onSelect} /> */}
 			</Brand>
 			<ItemListBox>
 				{items.data.data.map((item) => (
