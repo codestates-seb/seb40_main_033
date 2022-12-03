@@ -33,7 +33,7 @@ function MyPageHeader() {
 		<Container>
 			<TempLogo />
 			<TextContainer>
-				<Nickname>{localNick}</Nickname>
+				<Nickname>{localNick || nickName}</Nickname>
 				<Nim>님</Nim>
 				<GrayLetterButton onClick={handleLogout} fontSize="13px">
 					로그아웃
