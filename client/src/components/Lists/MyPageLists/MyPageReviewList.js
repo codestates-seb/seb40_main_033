@@ -10,13 +10,26 @@ import ReviewModal from '../../Modals/ReviewModal';
 import DeleteNotesModal from '../../Modals/DeleteNotesModal';
 import { useDelete } from '../../../hooks/useFetch';
 
-function MyPageReviewList({ review }) {
+function MyPageReviewList({
+	createdAt,
+	content,
+	quantity,
+	reviewId,
+	star,
+	userId,
+	itemId,
+	brand,
+	thumbnail,
+	title,
+	nowPrice,
+	discountRate,
+	beforePrice,
+}) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
 	const { mutate } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.reviewId}`,
-		// 'http://localhost:3001/reviews',
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${reviewId}`,
 	);
 
 	const handleFormOpen = () => {
@@ -33,14 +46,31 @@ function MyPageReviewList({ review }) {
 		setOpenDeleteModal(false);
 	}, []);
 
+	const review = {
+		item: {
+			reviewId,
+			content,
+			brand,
+			thumbnail,
+			title,
+			nowPrice,
+			beforePrice,
+			discountRate,
+			quantity,
+			star,
+			userId,
+			itemId,
+		},
+	};
+
 	return (
 		<Box>
-			<Image src={review.item.thumbnail} alt="상품 이미지" />
+			<Image src={thumbnail} alt="상품 이미지" />
 			<ListContainer>
 				<TopContainer>
 					<NameContainer>
-						<Info className="brand">{review.item.brand}</Info>
-						<Info className="name">{review.item.title}</Info>
+						<Info className="brand">{brand}</Info>
+						<Info className="name">{title}</Info>
 					</NameContainer>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
@@ -53,10 +83,10 @@ function MyPageReviewList({ review }) {
 					</ButtonContainer>
 				</TopContainer>
 				<InfoContainer>
-					<LongTextStar noText star={review.star} />
-					<DotDate date={review.createdAt} />
+					<LongTextStar noText star={star} />
+					<DotDate date={createdAt} />
 				</InfoContainer>
-				<Review>{review.content}</Review>
+				<Review>{content}</Review>
 				<ReviewModal
 					setIsOpen={setOpenForm}
 					modalIsOpen={openForm}
