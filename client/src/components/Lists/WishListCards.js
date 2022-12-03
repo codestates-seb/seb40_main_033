@@ -2,20 +2,20 @@
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
-import WishlistBtn from '../Buttons/WishlistButton';
 import { ShortTextStar } from '../Stars/TextStar';
+import WishlistButton from '../Buttons/WishlistButton';
 
 function WishListCards({ item }) {
 	const navigate = useNavigate();
 	const handleItemClick = () => {
-		navigate(`/items/${item.itemId}`);
+		navigate(`/detail/${item.itemId}`);
 	};
 	return (
 		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
 					<ContentContainer>
-						<WishlistBtn isChecked itemId={item.itemId} />
+						<WishlistButton isChecked itemId={item.itemId} />
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
