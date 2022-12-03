@@ -65,7 +65,7 @@ function ItemList() {
 			</Brand>
 			<ItemListBox>
 				{items.data.data.map((item) => (
-					<SmallListCards key={item.itemId} item={item} />
+					<SmallListCards key={item.itemId} item={item} refetch={refetch} />
 				))}
 			</ItemListBox>
 			<Pagination
