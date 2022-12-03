@@ -9,7 +9,6 @@ function NoteTalk() {
 	const { pathname } = useLocation();
 	const { isLoading, isError, data, error } = useGet(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/mypage',
-		// 'http://localhost:3001/talk',
 		pathname,
 	);
 	const talks = data?.data?.data;
@@ -21,10 +20,14 @@ function NoteTalk() {
 		<>
 			<ListContainer>
 				{talks.map((talk) => (
-					<MypageTalk key={talk.talkId} talk={talk} isReply={talk.reply} />
+					<MypageTalk
+						key={talk.talkId || `${talk.talkCommentId.toString()}-${talk}`}
+						talk={talk}
+						isReply={talk.reply}
+					/>
 				))}
 			</ListContainer>
-			<Pagination total="10" limit="8" />
+			{/* <Pagination total="10" limit="8" /> */}
 		</>
 	);
 }
