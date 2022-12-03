@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import MypageTalk from '../../components/Talk/MyPageTalk';
+import MypageTalk from '../../components/Lists/MyPageLists/Talk/MyPageTalk';
 import Pagination from '../../components/Etc/Pagination';
 import { useGet } from '../../hooks/useFetch';
 
