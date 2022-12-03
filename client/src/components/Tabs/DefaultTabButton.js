@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { usePatch } from '../../hooks/useFetch';
 
 // currentIdx ==> 지금 선택한 탭의 index
@@ -117,6 +118,7 @@ function DefaultTabButton({
 	const delayButtonClick = useCallback(() => {
 		postponeSub();
 		setDelayOpen((prev) => !prev);
+		toast.success('주기를 미뤘습니다!');
 	});
 
 	return (
