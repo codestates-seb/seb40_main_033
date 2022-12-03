@@ -22,6 +22,8 @@ function Summary({
 	discountRate,
 	itemId,
 	wishlist,
+	starAvg,
+	reviewCount,
 }) {
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
@@ -196,7 +198,11 @@ function Summary({
 							<Tag funcArr={categories} />
 						</TagsBox>
 						<RateBox>
-							<LongTextStar />
+							<LongTextStar
+								star={Math.floor(starAvg)}
+								average={starAvg}
+								count={reviewCount}
+							/>
 							<SummaryPrice
 								nowPrice={nowPrice}
 								beforePrice={beforePrice !== nowPrice && beforePrice}
