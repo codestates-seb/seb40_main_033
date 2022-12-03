@@ -2,34 +2,38 @@
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
-import WishlistBtn from '../Buttons/WishlistButton';
 import { ShortTextStar } from '../Stars/TextStar';
+import WishlistButton from '../Buttons/WishlistButton';
 
 function WishListCards({ item }) {
 	const navigate = useNavigate();
 	const handleItemClick = () => {
-		navigate(`/items/${item.itemId}`);
+		navigate(`/detail/${item.itemId}`);
 	};
+	console.log(item, '아이템이다');
 	return (
 		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
 					<ContentContainer>
-						<WishlistBtn isChecked itemId={item.itemId} />
+						<WishlistButton isChecked itemId={item.itemId} />
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
 					<ContentContainer buttom onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
-						<div className="title itemName">{item.title}</div>
-						<Price
-							nowPrice={item.discountPrice || item.price}
-							beforePrice={item.discountPrice ? item.price : null}
-							discountRate={item.discountRate}
-							fontSize="13px"
-							font-weight="var(--regular)"
-						/>
+						<NamePriceBox>
+							<div className="title itemName">{item.title}</div>
+							<Price
+								nowPrice={item.discountPrice || item.price}
+								beforePrice={item.price}
+								discountRate={item.discountRate}
+								quantity={1}
+								fontSize="13px"
+								font-weight="var(--regular)"
+							/>
+						</NamePriceBox>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
@@ -40,6 +44,9 @@ function WishListCards({ item }) {
 							starAvg={item.starAvg}
 							reviewCount={item.reviewSize}
 						/>
+						<Ingredient>
+							{item.nutritionFacts.map((fact) => `${fact.ingredient} `)}
+						</Ingredient>
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemDescription>{item.content}</ItemDescription>
@@ -124,7 +131,7 @@ const ContentContainer = styled.div`
 			  `
 			: props.star
 			? css`
-					flex-direction: row;
+					flex-direction: column;
 					margin-top: 5px;
 			  `
 			: null}
@@ -138,6 +145,7 @@ const ContentContainer = styled.div`
 		font-weight: var(--extraBold);
 		font-size: 16px;
 		padding-bottom: 27.5px;
+		word-break: keep-all;
 	}
 	.itemPrice {
 		font-size: 16px;
@@ -150,11 +158,25 @@ const ItemImg = styled.img`
 	height: 125px;
 `;
 
+const NamePriceBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 70px;
+`;
+
 const ItemDescription = styled.p`
+	width: 100%;
 	color: white;
 	font-size: 20px;
 	line-height: 25px;
 	letter-spacing: -0.04em;
+`;
+const Ingredient = styled.p`
+	display: flex;
+	color: white;
+	margin-top: 12px;
+	word-break: keep-all;
 `;
 
 export default WishListCards;

@@ -1,42 +1,60 @@
 import styled from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useCallback, useState } from 'react';
+import { toast } from 'react-toastify';
 import Summary from '../components/ItemSummary/Summary';
 import DetailReviewList from '../components/Lists/DetailReviewList';
 import DetailTalkList from '../components/Lists/DetailTalkList';
 import TalkForm from '../components/Forms/TalkForm';
-import { useGet } from '../hooks/useFetch';
+import { useGet, usePost } from '../hooks/useFetch';
 
 function Detail() {
-	const { pathname } = useLocation();
+	// state 초기값 토크 조회값일 수도!
 
+	const { pathname } = useLocation();
 	const { id } = useParams();
 	const { isLoading, isError, data, error } = useGet(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/items/${id}`,
 		pathname,
 	);
+	const { loginStatus } = useSelector((store) => store.user);
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
+	// 토크 작성
+	const { mutate: talkMu, response } = usePost(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${id}`,
+	);
 
-	if (isError) {
-		return <div>Error: {error.message}</div>;
-	}
+	const [content, setContent] = useState(''); // 토크 컨텐츠!
 
+	// 토크 작성 요청
+	const handleSubmit = useCallback(
+		(e) => {
+			// e.preventDefault();
+			console.log('제출', content);
+			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
+			if (content.length < 20) {
+				toast.error('20자 이상 작성해주세요.');
+				return;
+			}
+			talkMu({ content });
+			console.log('response', response);
+			setContent('');
+		},
+		[content],
+	);
+
+	// 토크 컨텐츠 상태
+	const handleContent = useCallback(
+		(e) => {
+			setContent(e.target.value);
+			console.log('내용:', e.target.value);
+		},
+		[content],
+	);
 	const lists = !isLoading && data.data.data;
 
-	const content1 = `요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이 덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!! 팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이
-	덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!!
-	팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이
-	새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이
-	덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!!
-	팀원들아 나만 믿어~~~! ^^`;
-
-	const content2 = `
-	이 영양제 넘 맛 없어요 효과도 없어요!!`;
-
-	const content3 = `
-	내공냠냠`;
+	console.log('lists', lists);
 
 	const deliveryInfo = `배송 방법 : 택배 배송
 	배송 지역 : 전국
@@ -63,17 +81,18 @@ function Detail() {
 	건강기능식품
 
 	유통기한
-	제조일로부터 24개월
+	${lists.expiration} 까지
 
 	영양 정보
 	- 용량 : ${lists.capacity}정 (${lists.capacity / lists.servingSize}일)
-	- 영양성분 : ${lists.nutritionFacts.map(
-		(fact) => `${fact.ingredient}: ${fact.volume}`,
-	)}
-	   1일 섭취량: 1회 ${lists.servingSize}정
+	- 영양성분 : ${
+		lists &&
+		lists?.nutritionFacts.map((fact) => ` ${fact.ingredient} (${fact.volume})`)
+	}
+	- 1일 섭취량: 1회 ${lists.servingSize}정
 
 	섭취 방법
-	1일 1회, 1회 1캡슐을 충분한 물과 함께 섭취하십시오.
+	1일 1회, 1회 ${lists.servingSize}캡슐을 충분한 물과 함께 섭취하십시오.
 
 	섭취 시 주의사항
 	- 질환이 있거나 의약품 복용 시 전문가와 상담하십시오.
@@ -87,6 +106,14 @@ function Detail() {
 - 충격에 제품이 깨질 수 있으니 주의하십시오.
 
 	`;
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (isError) {
+		return <div>Error: {error.message}</div>;
+	}
 
 	return (
 		<DetailContainer>
@@ -113,19 +140,91 @@ function Detail() {
 					<Notes>
 						<InfoTitle>Review</InfoTitle>
 						<ListsContainer>
-							<DetailReviewList content={content2} />
-							<DetailReviewList content={content1} />
-							<DetailReviewList content={content3} />
+							{lists.reviews.data &&
+								lists.reviews.data.map((review) => (
+									<DetailReviewList
+										key={review.reviewId}
+										itemId={review.itemId}
+										star={review.star}
+										displayName={review.displayName}
+										createdAt={review.createdAt}
+										content={review.content}
+										userId={review.userId}
+										review={{
+											item: {
+												reviewId: review.reviewId,
+												userId: review.userId,
+												itemId: review.itemId,
+												content: review.content,
+												brand: lists.brand,
+												thumbnail: lists.thumbnail,
+												title: lists.title,
+												nowPrice: lists.discountPrice || lists.price,
+												discountRate:
+													lists.discountRate === 0 ? '' : lists.discountRate,
+												beforePrice: lists.discountPrice ? lists.price : null,
+												star: review.star,
+											},
+										}}
+										// reviewId,
+										// content,
+										// brand,
+										// thumbnail,
+										// title,
+										// nowPrice,
+										// beforePrice,
+										// discountRate,
+										// quantity,
+										// star,
+										// userId,
+										// itemId,
+									/>
+								))}
 						</ListsContainer>
 					</Notes>
-					<Notes>
+					<Notes className="talk">
 						<InfoTitle>Talk</InfoTitle>
-						<TalkForm />
-						<ListsContainer className="talk">
-							<DetailTalkList />
-							<DetailTalkList isReply />
-							<DetailTalkList />
-						</ListsContainer>
+						{loginStatus && (
+							<TalkForm
+								content={content}
+								handleContent={handleContent}
+								handleSubmit={handleSubmit}
+							/>
+						)}
+						{lists.talks.data &&
+							lists.talks.data.map((talk) => (
+								<>
+									<DetailTalkList
+										key={talk.talkId}
+										itemId={talk.itemId}
+										createdAt={talk.createdAt}
+										content={talk.content}
+										userId={talk.userId}
+										talkId={talk.talkId}
+										shopper={talk.shopper}
+										// talkComments={talk.talkComments}
+										displayName={talk.displayName}
+									/>
+									{talk.talkComments &&
+										talk.talkComments.map((retalk) => {
+											return (
+												<DetailTalkList
+													key={`${retalk.talkCommentId.toString()}-retalk`}
+													talkCommentId={retalk.talkCommentId}
+													reTalkContent={retalk.content}
+													createdAt={retalk.createdAt}
+													shopper={retalk.shopper}
+													displayName={retalk.displayName}
+													userId={retalk.userId}
+													isReply
+												/>
+											);
+										})}
+									{/* <DetailTalkList {...talk.talkComments.map(retalk => content={retalk.content}
+										)} /> */}
+								</>
+							))}
+						<ListsContainer className="talk" />
 					</Notes>
 				</Contents>
 				<SummaryContainer>
@@ -138,6 +237,8 @@ function Detail() {
 						nowPrice={lists.discountPrice || lists.price}
 						discountRate={lists.discountRate === 0 ? '' : lists.discountRate}
 						beforePrice={lists.discountPrice ? lists.price : null}
+						starAvg={lists.starAvg}
+						reviewCount={lists.reviews.data.length}
 					/>
 				</SummaryContainer>
 			</>
@@ -206,6 +307,12 @@ const Notes = styled.div`
 	padding-top: 70px;
 	width: 100%;
 	margin-top: 100px;
+	&.talk {
+		> :nth-child(2) {
+			margin-bottom: 44px;
+		}
+		/* margin-bottom: 20px; */
+	}
 `;
 
 const ListsContainer = styled.div`

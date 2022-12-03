@@ -69,6 +69,9 @@ export default function PayMethod({ payData }) {
 			{isPayModal && (
 				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
 					<PayFrame src={url} title="결제창" />
+					<GobackButton onClick={() => window.history.back()}>
+						전 페이지로 돌아가기
+					</GobackButton>
 				</AddressModal>
 			)}
 		</PayPageContainer>
@@ -130,4 +133,21 @@ const Clauses = styled.p`
 const PayFrame = styled.iframe`
 	width: 300px;
 	height: 500px;
+`;
+
+const GobackButton = styled.button`
+	margin-top: 20px;
+	width: 150px;
+	height: 50px;
+	border: 0.5px solid var(--gray-300);
+	border-radius: 10px;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
+	background-color: white;
+	text-align: center;
+	cursor: pointer;
+	transition: 0.5s ease;
+	&:hover {
+		border: 0.5px solid var(--gray-200);
+		background-color: var(--gray-100);
+	}
 `;

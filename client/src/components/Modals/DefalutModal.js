@@ -27,7 +27,7 @@ const customStyles = {
 		padding: '60px 75px',
 		border: 'none',
 		borderRadius: '10px',
-		boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.07)',
+		boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.05)',
 	},
 };
 

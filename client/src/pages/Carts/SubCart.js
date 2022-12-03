@@ -5,6 +5,7 @@ import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
 import { useGet, usePost } from '../../hooks/useFetch';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 // 정기 장바구니
 function SubCart() {
@@ -26,7 +27,7 @@ function SubCart() {
 	);
 
 	if (isLoading) {
-		return <List>대기중 ..</List>;
+		return <LoadingSpinner />;
 	}
 	if (isError) {
 		return <List> {error.message} </List>;

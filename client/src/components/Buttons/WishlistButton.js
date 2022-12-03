@@ -21,7 +21,9 @@ function WishlistButton({ isChecked, itemId, setIsChecked }) {
 	);
 	const handleHeartClick = useCallback(() => {
 		mutate();
-		setIsChecked(!isChecked);
+		if (setIsChecked) {
+			setIsChecked(!isChecked);
+		}
 		console.log('response', response);
 	}, [isChecked]);
 

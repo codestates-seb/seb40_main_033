@@ -27,8 +27,8 @@ export default function MypageTab() {
 		pathIdx = link.indexOf(splitedPathname[1]);
 	}
 
-	const [seletedTab, setSeletedTab] = useState(pathIdx);
-
+	const [seletedTab, setSeletedTab] = useState(pathIdx === -1 ? 0 : pathIdx);
+	console.log(seletedTab);
 	const handleTabClick = useCallback((e) => {
 		setSeletedTab(Number(e.target.id));
 	}, []);

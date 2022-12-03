@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { BsArrowReturnRight } from 'react-icons/bs';
-import { LetterButtonColor } from '../Buttons/LetterButton';
+import { LetterButtonColor } from '../../../Buttons/LetterButton';
 
 function DetailComment() {
 	return (

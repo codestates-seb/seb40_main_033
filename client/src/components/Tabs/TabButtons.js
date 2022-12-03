@@ -1,6 +1,6 @@
 import DefaultTabButton from './DefaultTabButton';
 
-export function DayControlTab(onClick, currentIdx) {
+export function DayControlTab({ onClick, currentIdx, orderId }) {
 	const menuArr = [
 		{ name: '30일', index: 0 },
 		{ name: '60일', index: 1 },
@@ -17,6 +17,7 @@ export function DayControlTab(onClick, currentIdx) {
 			onClick={onClick}
 			currentIdx={currentIdx}
 			highlightLeftValue={highlightValue}
+			orderId={orderId}
 		/>
 	);
 }
