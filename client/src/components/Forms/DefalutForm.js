@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { LetterButton } from '../Buttons/LetterButton';
 import { PurpleButton } from '../Buttons/PurpleButton';
-// height: input 높이   target: 상품에 대한 {target}를 20자 이상 적어주세요
+
 function DefalutForm({
 	placeholder,
 	maxLength,
@@ -52,7 +52,7 @@ function DefalutForm({
 	);
 }
 
-const Form = styled.form`
+const Form = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin-top: 34px;
@@ -84,9 +84,11 @@ const Input = styled.textarea`
 	border: 1px solid var(--gray-200);
 	resize: none;
 	overflow: hidden;
+
 	::placeholder {
 		color: var(--gray-300);
 	}
+
 	:focus-visible {
 		outline: none;
 		border: 1px solid var(--purple-200);
@@ -105,7 +107,6 @@ const Count = styled.div`
 
 const ErrMessage = styled.div`
 	font-size: 11px;
-
 	color: var(--red-100);
 `;
 
