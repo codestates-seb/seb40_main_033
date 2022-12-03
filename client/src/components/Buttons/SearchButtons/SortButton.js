@@ -20,7 +20,7 @@ export function SortButton({ children }) {
 		setIsOpen(!isOpen);
 		// console.log(isOpen);
 	};
-	const menus = ['최신순', '찜 많은순', '높은가격순', '낮은가격순', '인기순'];
+	const menus = ['최신순', '찜 많은순', '높은가격순', '낮은가격순', '조회순'];
 	const path = ['', 'totalWishes', 'priceH', 'priceL', 'view'];
 
 	const clickMenus = (e) => {
@@ -50,7 +50,6 @@ export function SortButton({ children }) {
 				</MenuBox>
 			)}
 			<MainBox>
-				{' '}
 				<OpenButton onClick={handleOpenClick} isOpen={isOpen}>
 					<IoIosArrowBack />
 				</OpenButton>
@@ -63,7 +62,7 @@ export function SortButton({ children }) {
 	);
 }
 
-export function PriceSortButton({ children, refetch }) {
+export function PriceSortButton({ children }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const { onSale } = useSelector((state) => state.filter);
 	const dispatch = useDispatch();
@@ -79,7 +78,7 @@ export function PriceSortButton({ children, refetch }) {
 
 	return (
 		<ButtonContainer className="price-container" isOpen={isOpen} price>
-			{isOpen && <PriceButton min={0} max={100000} refetch={refetch} />}
+			{isOpen && <PriceButton min={0} max={100000} />}
 			<MainBox>
 				<OpenButton onClick={handleOpenClick} isOpen={isOpen}>
 					<IoIosArrowBack />

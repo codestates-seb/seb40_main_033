@@ -6,17 +6,6 @@ function BrandsWindow() {
 	const dispatch = useDispatch();
 	const { brand } = useSelector((state) => state.filter);
 
-	// MYNI,
-	// 	Centrum,
-	// 	Habitual,
-	// 	NaturalLife,
-	// 	Roniewell,
-	// 	GNM,
-	// 	nzOrigin,
-	// 	FarmAndTop,
-	// 	NutrioneLife,
-	// 	SOLGAR;
-
 	const brandList = [
 		{
 			name: '',
@@ -63,6 +52,7 @@ function BrandsWindow() {
 			text: 'SOLGAR',
 		},
 	];
+
 	return (
 		<WindowContainer>
 			{brandList.map((c) => (

@@ -35,7 +35,7 @@ function SearchList() {
 
 	return (
 		<Box>
-			<PageTitle refetch={refetch} />
+			<PageTitle />
 			<Mesage>
 				<Text>{key}에 대한 검색 결과입니다</Text>
 			</Mesage>
