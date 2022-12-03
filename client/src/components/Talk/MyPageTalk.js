@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { useState, useCallback } from 'react';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { LetterButtonColor } from '../Buttons/LetterButton';
 import { DotDate } from '../Etc/ListDate';
 import OrderDetailList from '../Lists/MyPageLists/OrderDetailList';
@@ -12,26 +14,38 @@ function MyPageTalk({ talk, isReply }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-	const { mutate } = useDelete(
-		talk.reply
-			? `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/comments/${talk?.talkCommentId}`
-			: `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/talks/${talk?.talkId}`,
-		// 'http://localhost:3001/reviews',
+	// 토크 삭제
+	const { mutate: talkDeleteMu, response: talkDeleteRes } = useDelete(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talk.talkId}`,
 	);
 
-	const handleFormOpen = () => {
-		setOpenForm(!openForm);
-	};
+	// 리토크 삭제
+	const { mutate: reTalkDeleteMu, response: reTalkDeleteRes } = useDelete(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talk.talkCommentId}`,
+	);
 
+	const handleFormOpen = useCallback(
+		(e) => {
+			setOpenForm(true);
+		},
+		[openForm],
+	);
+
+	// 삭제 모달 열기
 	const handleDeleteClick = useCallback(() => {
 		setOpenDeleteModal(true);
 	}, []);
 
-	// review 삭제 요청!
+	// 토크 삭제 요청
 	const handleDeleteTalk = useCallback(() => {
-		mutate();
-		console.log('삭제 요청');
+		// 리토크
+		if (isReply) {
+			reTalkDeleteMu();
+		} else {
+			talkDeleteMu();
+		}
 		setOpenDeleteModal(false);
+		toast.success('삭제가 완료되었습니다!');
 	}, []);
 
 	return (
