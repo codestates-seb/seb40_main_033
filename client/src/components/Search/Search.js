@@ -4,18 +4,16 @@ import { useCallback, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { setKeyword } from '../../redux/slice/filterSlice';
 
-function Search() {
+function Search({ refetch }) {
 	const [click, setClick] = useState(false);
-	const [search, setSearch] = useState('');
 	const dispatch = useDispatch();
 
-	const handleSearch = useCallback((e) => {
+	const handleSearch = useCallback(async (e) => {
 		if (e.key === 'Enter') {
-			dispatch(setKeyword(e.target.value));
+			await dispatch(setKeyword(e.target.value));
+			refetch();
 		}
-	});
-
-	console.log(search);
+	}, []);
 
 	const clickBtn = () => {
 		setClick(!click);
