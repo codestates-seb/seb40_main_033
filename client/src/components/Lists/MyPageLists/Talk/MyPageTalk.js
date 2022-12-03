@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import { useState, useCallback } from 'react';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { LetterButtonColor } from '../Buttons/LetterButton';
-import { DotDate } from '../Etc/ListDate';
-import OrderDetailList from '../Lists/MyPageLists/OrderDetailList';
-import DeleteNotesModal from '../Modals/DeleteNotesModal';
-import TalkModal from '../Modals/TalkModal';
-import { useDelete } from '../../hooks/useFetch';
+import { LetterButtonColor } from '../../../Buttons/LetterButton';
+import { DotDate } from '../../../Etc/ListDate';
+import OrderDetailList from '../OrderDetailList';
+import DeleteNotesModal from '../../../Modals/DeleteNotesModal';
+import TalkModal from '../../../Modals/TalkModal';
+import { useDelete } from '../../../../hooks/useFetch';
 
 function MyPageTalk({ talk, isReply }) {
 	const [openForm, setOpenForm] = useState(false);
@@ -70,8 +69,8 @@ function MyPageTalk({ talk, isReply }) {
 				<BottomContainer>
 					{isReply && <MdSubdirectoryArrowRight />}
 					<Content>{talk.content}</Content>
+					<DotDate date={talk.createdAt} />
 				</BottomContainer>
-				<DotDate date={talk.createdAt} />
 				<TalkModal
 					setIsOpen={setOpenForm}
 					modalIsOpen={openForm}
@@ -103,6 +102,7 @@ const Image = styled.img`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const ListContainer = styled.div`
@@ -111,6 +111,13 @@ const ListContainer = styled.div`
 	align-items: flex-end;
 	width: 100%;
 	margin-left: 30px;
+	position: relative;
+
+	time {
+		position: absolute;
+		right: 5px;
+		bottom: -55px;
+	}
 `;
 
 const NameContainer = styled.div`
@@ -130,6 +137,7 @@ const Info = styled.div`
 	&.name {
 		color: var(--gray-600);
 		font-weight: var(--bold);
+		cursor: pointer;
 	}
 `;
 
@@ -145,6 +153,7 @@ const BottomContainer = styled.div`
 	align-self: flex-start;
 	margin-top: 15px;
 	flex-grow: 1;
+
 	// 사이 간격 조절
 	svg {
 		margin-right: 10px;
