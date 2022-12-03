@@ -24,8 +24,8 @@ function SmallListCards({ item }) {
 						<div className="title brandName">{item.brand}</div>
 						<div className="title itemName">{item.title}</div>
 						<Price
-							nowPrice={item.price}
-							beforePrice={item.discountPrice}
+							nowPrice={item.discountPrice}
+							beforePrice={item.price}
 							discountRate={item.discountRate}
 							fontSize="13px"
 						/>
@@ -35,7 +35,10 @@ function SmallListCards({ item }) {
 			<DefaultContainer onClick={handleItemClick} className="hover" hover>
 				<ContentBox>
 					<ContentContainer star>
-						<ShortTextStar />
+						<ShortTextStar
+							starAvg={item.starAvg}
+							reviewCount={item.reviewSize}
+						/>
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemDescription>{item.content}</ItemDescription>
@@ -52,8 +55,6 @@ const EntireContainer = styled.div`
 	position: relative;
 	margin-right: 20px;
 	margin-bottom: 30px;
-	/* background-color: white; */
-	/* border: 1px solid red; // 구분을 쉽게 하기 위한 선입니다. */
 	&:hover {
 		.hover {
 			opacity: 1;
@@ -66,6 +67,12 @@ const EntireContainer = styled.div`
 		}
 		.beforeDiscounted {
 			color: var(--gray-200);
+		}
+		.white {
+			color: white;
+			> path {
+				color: var(--gray-200);
+			}
 		}
 	}
 `;
@@ -107,7 +114,7 @@ const ContentContainer = styled.div`
 			? css`
 					padding-top: 23px;
 					justify-content: center;
-					padding-bottom: 77px;
+					padding-bottom: 60px;
 			  `
 			: props.buttom
 			? css`
@@ -131,6 +138,7 @@ const ContentContainer = styled.div`
 		font-weight: var(--extraBold);
 		font-size: 16px;
 		padding-bottom: 27.5px;
+		word-break: keep-all;
 	}
 	.itemPrice {
 		font-size: 16px;
@@ -139,8 +147,8 @@ const ContentContainer = styled.div`
 `;
 
 const ItemImg = styled.img`
-	width: 110px;
-	height: 125px;
+	width: 140px;
+	height: 140px;
 `;
 
 const ItemDescription = styled.p`
@@ -148,6 +156,7 @@ const ItemDescription = styled.p`
 	font-size: 20px;
 	line-height: 25px;
 	letter-spacing: -0.04em;
+	word-break: keep-all;
 `;
 
 export default SmallListCards;

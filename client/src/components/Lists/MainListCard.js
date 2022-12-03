@@ -23,8 +23,8 @@ function MainListCard({ item }) {
 						<div className="title brandName">{item.brand}</div>
 						<div className="title itemName">{item.title}</div>
 						<Price
-							nowPrice={item.price}
-							beforePrice={item.discountPrice}
+							nowPrice={item.discountPrice}
+							beforePrice={item.price}
 							discountRate={item.discountRate}
 							fontSize="16px"
 						/>
@@ -109,7 +109,7 @@ const ContentContainer = styled.div`
 			? css`
 					padding-top: 58px;
 					justify-content: center;
-					padding-bottom: 82px;
+					padding-bottom: 72px;
 			  `
 			: props.bottom
 			? css`
@@ -132,6 +132,7 @@ const ContentContainer = styled.div`
 		font-weight: var(--extraBold);
 		font-size: 20px;
 		padding-bottom: 27.5px;
+		word-break: keep-all;
 	}
 	.itemPrice {
 		font-size: 20px;
@@ -140,8 +141,8 @@ const ContentContainer = styled.div`
 `;
 
 const ItemImg = styled.img`
-	width: 132px;
-	height: 153px;
+	width: 156px;
+	height: 156px;
 `;
 
 const ItemDescription = styled.p`
@@ -149,5 +150,6 @@ const ItemDescription = styled.p`
 	font-size: 20px;
 	line-height: 25px;
 	letter-spacing: -0.04em;
+	word-break: keep-all;
 `;
 export default MainListCard;
