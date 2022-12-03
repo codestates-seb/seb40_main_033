@@ -36,6 +36,11 @@ function DetailTalkList({
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talkId}`,
 	);
 
+	// 리토크 삭제
+	const { mutate: reTalkDeleteMu, response: reTalkDeleteRes } = useDelete(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/{talkcomment-id}`,
+	);
+
 	// // 리토크 작성
 	const { mutate: reTalkCreateMu, response: reTalkCreateRes } = usePost(
 		`	http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkId}?itemId=${itemId}`,
@@ -120,8 +125,14 @@ function DetailTalkList({
 
 	// talk 삭제 요청! ===> 이거 target이 뭐냐에 따라 좀 달라야할듯
 	const handleDeleteTalk = useCallback(() => {
-		console.log('삭제 요청');
-		talkDeleteMu();
+		// 리토크
+		if (isReply) {
+			console.log('이건 리토크');
+		} else {
+			talkDeleteMu();
+		}
+		// console.log('삭제 요청');
+		// talkDeleteMu();
 		setOpenDeleteModal(false);
 	}, []);
 
