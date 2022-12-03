@@ -164,16 +164,35 @@ function Detail() {
 						)}
 						{lists.talks.data &&
 							lists.talks.data.map((talk) => (
-								<DetailTalkList
-									key={talk.talkId}
-									itemId={talk.itemId}
-									createdAt={talk.createdAt}
-									content={talk.content}
-									userId={talk.userId}
-									talkId={talk.talkId}
-									shopper={talk.shopper}
-									talkComments={talk.talkComments}
-								/>
+								<>
+									<DetailTalkList
+										key={talk.talkId}
+										itemId={talk.itemId}
+										createdAt={talk.createdAt}
+										content={talk.content}
+										userId={talk.userId}
+										talkId={talk.talkId}
+										shopper={talk.shopper}
+										talkComments={talk.talkComments}
+										displayName={talk.displayName}
+									/>
+									{talk.talkComments &&
+										talk.talkComments.map((retalk) => {
+											return (
+												<DetailTalkList
+													key={retalk.talkCommentId}
+													content={retalk.content}
+													createdAt={retalk.createdAt}
+													shopper={retalk.shopper}
+													displayName={retalk.displayName}
+													userId={retalk.userId}
+													isReply
+												/>
+											);
+										})}
+									{/* <DetailTalkList {...talk.talkComments.map(retalk => content={retalk.content}
+										)} /> */}
+								</>
 							))}
 						<ListsContainer className="talk" />
 					</Notes>

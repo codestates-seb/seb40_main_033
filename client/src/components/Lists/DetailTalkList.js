@@ -16,6 +16,7 @@ function DetailTalkList({
 	content,
 	talkId,
 	userId,
+	displayName,
 	shopper,
 	talkComments,
 }) {
@@ -53,6 +54,22 @@ function DetailTalkList({
 
 	console.log('토크의 토크', talkComments);
 
+	// 리토크 작성!
+	const handleReTalkCreate = useCallback(
+		(e) => {
+			// e.preventDefault();
+			console.log('제출', reContent);
+			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
+			if (reContent.length < 20) {
+				toast.error('20자 이상 작성해주세요.');
+				return;
+			}
+			reTalkCreateMu({ content: reContent });
+			console.log('response', reTalkCreateRes);
+		},
+		[reContent],
+	);
+
 	// 토크 수정!
 	const handleTalkUpdate = useCallback(
 		(e) => {
@@ -75,22 +92,6 @@ function DetailTalkList({
 		(e) => {
 			setNewContent(e.target.value);
 			console.log('내용:', e.target.value);
-		},
-		[newContent],
-	);
-
-	// 리토크 작성!
-	const handleReTalkCreate = useCallback(
-		(e) => {
-			e.preventDefault();
-			console.log('제출', newContent);
-			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
-			if (newContent.length < 20) {
-				toast.error('20자 이상 작성해주세요.');
-				return;
-			}
-			reTalkCreateMu({ newContent });
-			console.log('response', reTalkCreateRes);
 		},
 		[newContent],
 	);
@@ -142,7 +143,7 @@ function DetailTalkList({
 			<Box>
 				<TopContainer>
 					<Name className={shopper && 'shopper'}>
-						{shopper ? '구매자' : '비구매자'}
+						{displayName || (shopper ? '구매자' : '비구매자')}
 					</Name>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
