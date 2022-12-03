@@ -25,14 +25,9 @@ function SmallListCards({ item }) {
 						<div className="title itemName">{item.title}</div>
 						<Price
 							nowPrice={item.price}
-							// item.price
-							beforePrice={10000}
-							// item.discountPrice
-							discountRate="20%"
-							// item.discountRate
-							fontSize="16px"
-							font-weight="var(--regular)"
-							refetch
+							beforePrice={item.discountPrice}
+							discountRate={item.discountRate}
+							fontSize="13px"
 						/>
 					</ContentContainer>
 				</ContentBox>

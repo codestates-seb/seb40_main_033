@@ -29,6 +29,7 @@ function SearchList() {
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/search${path}?keyword=${keyword}${query}`,
 		pathname,
 	);
+	console.log(items);
 
 	useEffect(() => {
 		refetch();
@@ -45,7 +46,7 @@ function SearchList() {
 		<Box>
 			<PageTitle />
 			<Mesage>
-				<Text>{keyword}에 대한 검색 결과입니다</Text>
+				<Text>{`"${keyword}"에 대한 검색 결과입니다.`}</Text>
 			</Mesage>
 			<ItemListBox>
 				{items.data.data.map((item) => (
