@@ -24,20 +24,18 @@ function OrderDetail() {
 	if (isError) {
 		return <div>Error: {error.message}</div>;
 	}
-	console.log('data', data.data.data); // 여기서 배송지정보, 결제정보
-	console.log('list?', data.data.data.itemOrders.data); // 여기서 배송지정보, 결제정보
 
 	const lists = !isLoading && data.data.data.itemOrders.data;
 	const info = !isLoading && data.data.data;
-	console.log('info', info);
 
+	console.log('lists', lists);
+	console.log('info', info);
 	const payData = {
 		totalPrice: info.totalPrice,
 		totalDiscountPrice: info.totalDiscountPrice,
 		expectPrice: info.expectPrice,
 	};
 
-	// console.log(info.name);
 	return (
 		<Box>
 			<LeftContainer>
@@ -56,18 +54,20 @@ function OrderDetail() {
 					lists.map((list) => (
 						<OrderDetailList
 							key={list.itemOrderId}
-							orderId={list.itemOrderId} // 이게 맞나 나중에 확인
+							itemOrderId={list.itemOrderId} // 개별주문아이디!
 							itemId={list.item.itemId}
 							brand={list.item.brand}
 							thumbnail={list.item.thumbnail}
 							title={list.item.title}
-							// price={list.item.discountPrice || list.item.price}
 							quantity={list.quantity}
 							nowPrice={list.item.disCountPrice || list.item.price}
 							discountRate={
 								list.item.discountRate === 0 ? '' : list.item.discountRate
 							}
 							beforePrice={list.item.disCountPrice ? list.item.price : null}
+							period={list.period}
+							subscription={list.subscription}
+							orderStatus={info.orderStatus}
 						/>
 					))}
 			</RightContainer>

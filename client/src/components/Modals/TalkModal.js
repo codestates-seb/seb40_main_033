@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { toast } from 'react-toastify';
 import DefalutModal from './DefalutModal';
 import PayLists from '../Lists/PayLists';
 import UpdateTalkForm from '../Forms/UpdateTalkForm';
@@ -9,25 +10,46 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 	const data = {
 		title: 'Talk',
 	};
+	const [talkContent, setTalkContent] = useState(talk.content);
 
-	const [content, setContent] = useState(talk?.content);
-
-	const { mutate, isLoading, isError, error, response } = usePatch(
-		talk.reply
-			? `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/comments/${talk?.talkCommentId}`
-			: `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/talks/${talk?.talkId}`,
-		// 'http://localhost:3001/reviews',
+	// 토크 수정
+	const { mutate: talkUpdateMu, response: talkUpdateRes } = usePatch(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talk.talkId}`,
 	);
 
-	const handleContent = useCallback((e) => {
-		setContent(e.target.value);
-	}, []);
+	// 리토크 수정
+	const { mutate: reTalkUpdateMu, response: reTalkUpdateRes } = usePatch(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talk.talkCommentId}`,
+	);
 
-	const handleSubmit = useCallback((e) => {
-		e.preventDefault();
-		mutate({ content });
-		setIsOpen(false);
-	}, []);
+	// 토크 수정 컨텐츠 상태
+	const handleNewContent = useCallback(
+		(e) => {
+			setTalkContent(e.target.value);
+			console.log('내용:', e.target.value);
+		},
+		[talkContent],
+	);
+
+	// 토크 수정!
+	const handleTalkUpdate = useCallback(
+		(e) => {
+			if (talkContent.length < 20) {
+				toast.error('20자 이상 작성해주세요.');
+				return;
+			}
+
+			// 리토크
+			if (talk.reply) {
+				reTalkUpdateMu({ content: talkContent });
+			} else {
+				talkUpdateMu({ content: talkContent });
+			}
+			toast.success('수정이 완료되었습니다!');
+			setIsOpen(false);
+		},
+		[talkContent],
+	);
 
 	return (
 		<DefalutModal
@@ -44,9 +66,9 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 			}
 			form={
 				<UpdateTalkForm
-					content={content}
-					handleContent={handleContent}
-					handleSubmit={handleSubmit}
+					content={talkContent}
+					handleContent={handleNewContent}
+					handleSubmit={handleTalkUpdate}
 				/>
 			}
 			setIsOpen={setIsOpen}

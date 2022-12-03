@@ -7,7 +7,14 @@ import OrderDetailList from './MyPageLists/OrderDetailList';
 import ReviewModal from '../Modals/ReviewModal';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
 
-function DetailReviewList({ content }) {
+function DetailReviewList({
+	itemId,
+	star,
+	displayName,
+	createdAt,
+	content,
+	review,
+}) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -25,10 +32,27 @@ function DetailReviewList({ content }) {
 		setOpenDeleteModal(false);
 	}, []);
 
+	// const review = {
+	// 	item: {
+	// 		reviewId,
+	// 		content,
+	// 		brand,
+	// 		thumbnail,
+	// 		title,
+	// 		nowPrice,
+	// 		beforePrice,
+	// 		discountRate,
+	// 		quantity,
+	// 		star,
+	// 		userId,
+	// 		itemId,
+	// 	},
+	// };
+
 	return (
 		<Box>
 			<TopContainer>
-				<Name>코알라</Name>
+				<Name>{displayName}</Name>
 				<ButtonContainer>
 					<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
 						수정
@@ -40,14 +64,15 @@ function DetailReviewList({ content }) {
 				</ButtonContainer>
 			</TopContainer>
 			<InfoContainer>
-				<LongTextStar noText />
-				<DotDate date="2022/11/23T11:33:33" />
+				<LongTextStar noText star={star} />
+				<DotDate date={createdAt} />
 			</InfoContainer>
 			<Review>{content}</Review>
 			<ReviewModal
 				setIsOpen={setOpenForm}
 				modalIsOpen={openForm}
 				OrderDetailList={OrderDetailList}
+				review={review}
 			/>
 			<DeleteNotesModal
 				openDeleteModal={openDeleteModal}
