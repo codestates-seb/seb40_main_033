@@ -12,6 +12,7 @@ import { logout } from '../../redux/slice/userSlice';
 function MyPageHeader() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const localNick = localStorage.getItem('nickName');
 	const { nickName } = useSelector((store) => store.nickName);
 	console.log(nickName);
 	const handleLogout = useCallback(async () => {
@@ -32,7 +33,7 @@ function MyPageHeader() {
 		<Container>
 			<TempLogo />
 			<TextContainer>
-				<Nickname>{nickName || '-'}</Nickname>
+				<Nickname>{localNick}</Nickname>
 				<Nim>님</Nim>
 				<GrayLetterButton onClick={handleLogout} fontSize="13px">
 					로그아웃

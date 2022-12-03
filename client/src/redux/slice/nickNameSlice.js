@@ -10,6 +10,7 @@ const nickNameSlice = createSlice({
 	reducers: {
 		change: (state, action) => {
 			Object.assign(state, { nickName: action.payload });
+			localStorage.setItem('nickName', action.payload);
 		},
 	},
 });
