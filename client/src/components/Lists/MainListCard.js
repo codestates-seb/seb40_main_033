@@ -1,28 +1,16 @@
 /* eslint-disable no-nested-ternary */
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
-/* Default List는 item(배열)을 props를 받는 컴포넌트 입니다.
-[{
-	"thumbnail": "/",
-	"descriptionImage": "/",
-	"title":"비타민B",
-	"content": "비타민B에 대한 설명!!!",
-	"expiration": "2023-12-31",
-	"brand": "BRAND2",
-	"sales": 0,
-	"price": 12000,
-	"capacity": 60,
-	"servingSize": 3,
-	"discountRate": 20,
-	"discountPrice": 9600,
-	"categories": [
-		{
-			"categoryName": "눈_건강"
-		}
-	]]
-배열의 구성은 이러하며, 실제 api에 어떻게 오느냐에 따라 내용물을 변경하셔도 됩니다. */
+
 function MainListCard({ item }) {
+	const navigate = useNavigate();
+
+	const handleItemClick = () => {
+		navigate(`/detail/${item.itemId}`);
+	};
+
 	return (
 		<EntireContainer>
 			<DefaultContainer>
@@ -43,7 +31,7 @@ function MainListCard({ item }) {
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
-			<DefaultContainer className="hover" hover>
+			<DefaultContainer onClick={handleItemClick} className="hover" hover>
 				<ContentBox>
 					<ContentContainer star>
 						<ShortTextStar
