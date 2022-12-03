@@ -43,6 +43,15 @@ public class ItemOrderService {
         return itemOrder;
     }
 
+    public ItemOrder changeSubQuantity(long itemOrderId, int upDown)  {
+        ItemOrder itemOrder = findItemOrder(itemOrderId);
+
+        itemOrder.setQuantity(itemOrder.getQuantity() + upDown);
+        itemOrderRepository.save(itemOrder);
+
+        return itemOrder;
+    }
+
     public int countTotalPrice( List<ItemOrder> itemOrders ){
 
         if(itemOrders == null) return 0;

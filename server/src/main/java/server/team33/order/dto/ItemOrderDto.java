@@ -37,4 +37,18 @@ public class ItemOrderDto {
         private ZonedDateTime updatedAt;
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SubResponse { // 정기 구독 목록 조회
+
+        private long itemOrderId;
+        private int quantity;
+        private int period;
+        private ItemSimpleResponseDto item;
+        private int totalPrice; // quantity * price
+        private ZonedDateTime nextDelivery; // 다음 배송일
+    }
+
 }

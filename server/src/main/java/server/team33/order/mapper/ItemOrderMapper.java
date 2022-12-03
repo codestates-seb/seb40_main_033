@@ -83,4 +83,32 @@ public interface ItemOrderMapper {
 
         return itemOrderSimpleResponseDtos;
     }
+
+    default ItemOrderDto.SubResponse itemOrderToSubResponse(ItemOrder itemOrder, ItemMapper itemMapper) {
+
+        ItemOrderDto.SubResponse subResponse = new ItemOrderDto.SubResponse();
+        subResponse.setItemOrderId(itemOrder.getItemOrderId());
+        subResponse.setQuantity(itemOrder.getQuantity());
+        subResponse.setPeriod(itemOrder.getPeriod());
+        subResponse.setItem(itemMapper.itemToItemSimpleResponseDto(itemOrder.getItem()));
+
+        int totalPrice = subResponse.getQuantity() * (itemOrder.getItem().getPrice() - itemOrder.getItem().getDiscountPrice());
+
+        subResponse.setTotalPrice(totalPrice);
+        subResponse.setNextDelivery(itemOrder.getNextDelivery());
+
+        return subResponse;
+    }
+
+    default List<ItemOrderDto.SubResponse> itemOrdersToSubResponses(List<ItemOrder> itemOrders, ItemMapper itemMapper) {
+        if(itemOrders == null) return null;
+
+        List<ItemOrderDto.SubResponse> subResponses = new ArrayList<>();
+
+        for(ItemOrder itemOrder : itemOrders) {
+            subResponses.add(itemOrderToSubResponse(itemOrder, itemMapper));
+        }
+
+        return subResponses;
+    }
 }
