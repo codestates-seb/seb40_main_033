@@ -118,7 +118,7 @@ const BeforePrice = styled.del`
 `;
 
 const Percent = styled.div`
-	color: var(--red-100);
+	color: var(--red-100) !important;
 	margin-left: 6px;
 	font-weight: var(--bold);
 `;

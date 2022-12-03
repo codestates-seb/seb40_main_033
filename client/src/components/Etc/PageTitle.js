@@ -24,7 +24,7 @@ function PageTitle({ title, handleSearch, refetch }) {
 		<Container>
 			<TitleContainer>
 				{showSearchBar ? (
-					<Search handleSearch={handleSearch} refetch={refetch} />
+					<Search handleSearch={handleSearch} />
 				) : (
 					<>
 						<TempLogo />

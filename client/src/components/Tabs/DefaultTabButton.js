@@ -15,11 +15,12 @@ function DefaultTabButton({
 	note,
 	onClick,
 }) {
+	const highlightWidth = toggle ? 68 : 73;
 	const { pathname } = useLocation();
 	const [currentTab, setCurrentTab] = useState(currentIdx || 0);
 	const [highlight, setHighlight] = useState({
 		left: highlightLeftValue || 0,
-		width: 68,
+		width: currentIdx === 3 ? 82 : highlightWidth,
 	});
 
 	const [delayOpen, setDelayOpen] = useState(false);
@@ -37,6 +38,7 @@ function DefaultTabButton({
 		// 선택된 Tab Menu에 따라 하이라이트가 이동
 		const left = menuEl.current.children[index].offsetLeft;
 		const width = menuEl.current.children[index].offsetWidth;
+		console.log(left, width);
 
 		switch (index) {
 			case 0:

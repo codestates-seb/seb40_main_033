@@ -15,7 +15,6 @@ export default function PayLists({
 	period,
 }) {
 	// isSub="isSub" 이런식으로 줘야 함
-	console.log(thumbnail);
 	return (
 		<Box>
 			<ImageContainer>

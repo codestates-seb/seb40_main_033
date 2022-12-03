@@ -1,17 +1,28 @@
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 import MypageTalk from '../../components/Talk/MyPageTalk';
 import Pagination from '../../components/Etc/Pagination';
+import { useGet } from '../../hooks/useFetch';
 
 // 작성글 관리 - 토크
 function NoteTalk() {
+	const { pathname } = useLocation();
+	const { isLoading, isError, data, error } = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/mypage',
+		// 'http://localhost:3001/talk',
+		pathname,
+	);
+	const talks = data?.data?.data;
+	console.log(talks);
+
+	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
+	if (isError) return <div>{error.message}</div>;
 	return (
 		<>
 			<ListContainer>
-				<MypageTalk content="Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit." />
-				<MypageTalk
-					isReply
-					content="Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit. Rorem ipsum dolor sit amet, consectetur adipisicing elit."
-				/>
+				{talks.map((talk) => (
+					<MypageTalk key={talk.talkId} talk={talk} isReply={talk.reply} />
+				))}
 			</ListContainer>
 			<Pagination total="10" limit="8" />
 		</>

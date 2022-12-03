@@ -1,9 +1,12 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	sort: '',
 	price: '',
-	key: '',
+	keyWord: '',
+	brand: '',
+	onSale: false,
 };
 
 const filterSlice = createSlice({
@@ -20,8 +23,15 @@ const filterSlice = createSlice({
 		setKeyword: (state, action) => {
 			Object.assign(state, { key: action.payload });
 		},
+		setBrand: (state, { payload }) => {
+			state.brand = payload;
+		},
+		setOnSale: (state, { payload }) => {
+			state.onSale = payload;
+		},
 	},
 });
 
-export const { setSort, setPrice, setKeyword } = filterSlice.actions;
+export const { setSort, setPrice, setKeyword, setOnSale, setBrand } =
+	filterSlice.actions;
 export default filterSlice;

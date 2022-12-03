@@ -6,10 +6,18 @@ import { DotDate } from '../Etc/ListDate';
 import OrderDetailList from '../Lists/MyPageLists/OrderDetailList';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
 import TalkModal from '../Modals/TalkModal';
+import { useDelete } from '../../hooks/useFetch';
 
-function MyPageTalk({ content, isReply }) {
+function MyPageTalk({ talk, isReply }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+	const { mutate } = useDelete(
+		talk.reply
+			? `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/comments/${talk?.talkCommentId}`
+			: `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/talks/${talk?.talkId}`,
+		// 'http://localhost:3001/reviews',
+	);
 
 	const handleFormOpen = () => {
 		setOpenForm(!openForm);
@@ -21,21 +29,19 @@ function MyPageTalk({ content, isReply }) {
 
 	// review 삭제 요청!
 	const handleDeleteTalk = useCallback(() => {
+		mutate();
 		console.log('삭제 요청');
 		setOpenDeleteModal(false);
 	}, []);
 
 	return (
 		<Box>
-			<Image
-				src="https://wiselycompany.cafe24.com/web/product/medium/202211/46763d93d5fd373356268c62b05f5560.jpg"
-				alt="상품 이미지"
-			/>
+			<Image src={talk.item.thumbnail} alt="상품 이미지" />
 			<ListContainer>
 				<TopContainer>
 					<NameContainer>
-						<Info className="brand"> California Gold Nutrition</Info>
-						<Info className="name">오메가3 프리미엄 피쉬 오일</Info>
+						<Info className="brand">{talk.item.brand}</Info>
+						<Info className="name">{talk.item.title}</Info>
 					</NameContainer>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
@@ -49,13 +55,14 @@ function MyPageTalk({ content, isReply }) {
 				</TopContainer>
 				<BottomContainer>
 					{isReply && <MdSubdirectoryArrowRight />}
-					<Content>{content}</Content>
+					<Content>{talk.content}</Content>
 				</BottomContainer>
-				<DotDate date="2022/11/23T11:33:33" />
+				<DotDate date={talk.createdAt} />
 				<TalkModal
 					setIsOpen={setOpenForm}
 					modalIsOpen={openForm}
 					OrderDetailList={OrderDetailList}
+					talk={talk}
 				/>
 				<DeleteNotesModal
 					openDeleteModal={openDeleteModal}
@@ -77,7 +84,7 @@ const Box = styled.li`
 `;
 
 const Image = styled.img`
-	width: 160px;
+	min-width: 160px;
 	height: 160px;
 	display: flex;
 	justify-content: center;
