@@ -12,32 +12,19 @@ function DefalutForm({
 	handleContent,
 	handleSubmit,
 }) {
-	const [contents, setContents] = useState('');
-
-	useEffect(() => {
-		setContents(content);
-	}, []);
-
-	const handleInputChange = useCallback((e) => {
-		setContents(e.target.value);
-		handleContent(e);
-	}, []);
-
-	// contents가 20자가 넘지 않은 상태에서 제출할 경우에, InfoMessage 강조해주세요~!
 	return (
 		<Form>
 			<Input
 				placeholder={placeholder}
-				value={contents}
-				onChange={handleInputChange}
+				value={content}
+				onChange={handleContent}
 				maxLength={maxLength}
 				height={height}
 				target={target}
 			/>
-			<Count>{contents && `${contents.length}/${maxLength}`}</Count>
-			{/* {letterButton} */}
+			<Count>{content && `${content.length}/${maxLength}`}</Count>
 			<BottomContainer>
-				{contents?.length >= maxLength ? (
+				{content?.length >= maxLength ? (
 					<ErrMessage>{maxLength}자 이상 입력하실 수 없습니다.</ErrMessage>
 				) : (
 					<InfoMessage>
