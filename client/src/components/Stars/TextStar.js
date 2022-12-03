@@ -3,7 +3,7 @@ import { FaStar } from 'react-icons/fa';
 
 // 별 다섯개
 export function LongTextStar({ noText, star, average, count }) {
-	const starData = star || 5;
+	const starData = star || 0;
 
 	return (
 		<StarContainer>

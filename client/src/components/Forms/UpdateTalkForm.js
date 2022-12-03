@@ -1,6 +1,5 @@
 // 마이페이지의 talk 수정 form
 import DefalutForm from './DefalutForm';
-import { PurpleButton } from '../Buttons/PurpleButton';
 
 function UpdateTalkForm({ content, handleContent, handleSubmit }) {
 	return (
@@ -10,11 +9,8 @@ function UpdateTalkForm({ content, handleContent, handleSubmit }) {
 			height={130}
 			target="토크"
 			content={content}
-			purpleButton={
-				<PurpleButton width="84px" height="35px" fontSize="13px">
-					작성완료
-				</PurpleButton>
-			}
+			handleContent={handleContent}
+			handleSubmit={handleSubmit}
 		/>
 	);
 }

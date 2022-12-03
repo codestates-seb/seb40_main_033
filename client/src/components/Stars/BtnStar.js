@@ -14,14 +14,13 @@ function BtnStar({ star, handleStar }) {
 		if (e.target.localName === 'path') {
 			return;
 		}
-		// e.stopPropagation();
-		// if (e.target.id === clickedStar) {
-		// 	setClickedStar('');
-		// } else {
-		setClickedStar(e.target.id);
-		// }
-		handleStar(clickedStar);
-		// console.log(e.target.id);
+
+		if (e.target.id === clickedStar) {
+			setClickedStar(''); // 현재 누른 게 아까 누른 점수와 동일하다면 점수 초기화(0)
+		} else {
+			setClickedStar(e.target.id);
+		}
+		handleStar(e);
 	}, []);
 
 	const handleStarHover = useCallback((e) => {

@@ -1,28 +1,44 @@
-import { useMutation, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Pagination from '../../components/Etc/Pagination';
 import MyPageReviewList from '../../components/Lists/MyPageLists/MyPageReviewList';
-import { useGet, usePatch } from '../../hooks/useFetch';
+import { useGet } from '../../hooks/useFetch';
 
 // 작성글 관리 - 리뷰
 function NoteReview() {
 	const { pathname } = useLocation();
 	const { isLoading, isError, data, error } = useGet(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
-		// 'http://localhost:3001/reviews',
 		pathname,
 	);
-	const reviews = data?.data?.data;
-	// console.log('🚀 ~ file: NoteReview.js:17 ~ NoteReview ~ reviews', reviews);
+	const lists = data?.data?.data;
 
 	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
 	if (isError) return <div>{error.message}</div>;
+
+	console.log('lists', lists);
 	return (
 		<>
 			<ListContainer>
-				{reviews?.map((review) => (
-					<MyPageReviewList key={review.reviewId} review={review} />
+				{lists?.map((list) => (
+					<MyPageReviewList
+						key={list.reviewId}
+						createdAt={list.createdAt}
+						content={list.content}
+						quantity={list.quantity}
+						reviewId={list.reviewId}
+						star={list.star}
+						userId={list.userId}
+						itemId={list.item.itemId}
+						brand={list.item.brand}
+						thumbnail={list.item.thumbnail}
+						title={list.item.title}
+						nowPrice={list.item.disCountPrice || list.item.price}
+						discountRate={
+							list.item.discountRate === 0 ? '' : list.item.discountRate
+						}
+						beforePrice={list.item.disCountPrice ? list.item.price : null}
+					/>
 				))}
 			</ListContainer>
 			<Pagination total="10" limit="8" />

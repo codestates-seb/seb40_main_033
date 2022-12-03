@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { LetterButton } from '../Buttons/LetterButton';
 import { PurpleButton } from '../Buttons/PurpleButton';
-// height: input 높이   target: 상품에 대한 {target}를 20자 이상 적어주세요
+
 function DefalutForm({
 	placeholder,
 	maxLength,
@@ -12,32 +12,19 @@ function DefalutForm({
 	handleContent,
 	handleSubmit,
 }) {
-	const [contents, setContents] = useState('');
-
-	useEffect(() => {
-		setContents(content);
-	}, []);
-
-	const handleInputChange = useCallback((e) => {
-		setContents(e.target.value);
-		handleContent(e);
-	}, []);
-
-	// contents가 20자가 넘지 않은 상태에서 제출할 경우에, InfoMessage 강조해주세요~!
 	return (
 		<Form>
 			<Input
 				placeholder={placeholder}
-				value={contents}
-				onChange={handleInputChange}
+				value={content}
+				onChange={handleContent}
 				maxLength={maxLength}
 				height={height}
 				target={target}
 			/>
-			<Count>{contents && `${contents.length}/${maxLength}`}</Count>
-			{/* {letterButton} */}
+			<Count>{content && `${content.length}/${maxLength}`}</Count>
 			<BottomContainer>
-				{contents?.length >= maxLength ? (
+				{content?.length >= maxLength ? (
 					<ErrMessage>{maxLength}자 이상 입력하실 수 없습니다.</ErrMessage>
 				) : (
 					<InfoMessage>
@@ -46,7 +33,9 @@ function DefalutForm({
 				)}
 				{target === '토크' ? (
 					<TalkSubmitBtn>
-						<LetterButton className="talk-submit">작성완료</LetterButton>
+						<LetterButton className="talk-submit" onClick={handleSubmit}>
+							작성완료
+						</LetterButton>
 					</TalkSubmitBtn>
 				) : (
 					<PurpleButton
@@ -63,7 +52,7 @@ function DefalutForm({
 	);
 }
 
-const Form = styled.form`
+const Form = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin-top: 34px;
@@ -95,9 +84,11 @@ const Input = styled.textarea`
 	border: 1px solid var(--gray-200);
 	resize: none;
 	overflow: hidden;
+
 	::placeholder {
 		color: var(--gray-300);
 	}
+
 	:focus-visible {
 		outline: none;
 		border: 1px solid var(--purple-200);
@@ -116,7 +107,6 @@ const Count = styled.div`
 
 const ErrMessage = styled.div`
 	font-size: 11px;
-
 	color: var(--red-100);
 `;
 

@@ -1,47 +1,72 @@
 import styled from 'styled-components';
 import { useState, useCallback } from 'react';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
-import { LetterButtonColor } from '../Buttons/LetterButton';
-import { DotDate } from '../Etc/ListDate';
-import OrderDetailList from '../Lists/MyPageLists/OrderDetailList';
-import DeleteNotesModal from '../Modals/DeleteNotesModal';
-import TalkModal from '../Modals/TalkModal';
-import { useDelete } from '../../hooks/useFetch';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { LetterButtonColor } from '../../../Buttons/LetterButton';
+import { DotDate } from '../../../Etc/ListDate';
+import OrderDetailList from '../OrderDetailList';
+import DeleteNotesModal from '../../../Modals/DeleteNotesModal';
+import TalkModal from '../../../Modals/TalkModal';
+import { useDelete } from '../../../../hooks/useFetch';
 
 function MyPageTalk({ talk, isReply }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const navigate = useNavigate();
 
-	const { mutate } = useDelete(
-		talk.reply
-			? `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/comments/${talk?.talkCommentId}`
-			: `http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/talks/${talk?.talkId}`,
-		// 'http://localhost:3001/reviews',
+	// 토크 삭제
+	const { mutate: talkDeleteMu, response: talkDeleteRes } = useDelete(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talk.talkId}`,
 	);
 
-	const handleFormOpen = () => {
-		setOpenForm(!openForm);
+	// 리토크 삭제
+	const { mutate: reTalkDeleteMu, response: reTalkDeleteRes } = useDelete(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talk.talkCommentId}`,
+	);
+
+	const handleFormOpen = useCallback(
+		(e) => {
+			setOpenForm(true);
+		},
+		[openForm],
+	);
+
+	const handleItemClick = () => {
+		navigate(`/detail/${talk.item.itemId}`);
 	};
 
+	// 삭제 모달 열기
 	const handleDeleteClick = useCallback(() => {
 		setOpenDeleteModal(true);
 	}, []);
 
-	// review 삭제 요청!
+	// 토크 삭제 요청
 	const handleDeleteTalk = useCallback(() => {
-		mutate();
-		console.log('삭제 요청');
+		// 리토크
+		if (isReply) {
+			reTalkDeleteMu();
+		} else {
+			talkDeleteMu();
+		}
 		setOpenDeleteModal(false);
+		toast.success('삭제가 완료되었습니다!');
 	}, []);
 
 	return (
 		<Box>
-			<Image src={talk.item.thumbnail} alt="상품 이미지" />
+			<Image
+				src={talk.item.thumbnail}
+				alt="상품 이미지"
+				onClick={handleItemClick}
+			/>
 			<ListContainer>
 				<TopContainer>
 					<NameContainer>
 						<Info className="brand">{talk.item.brand}</Info>
-						<Info className="name">{talk.item.title}</Info>
+						<Info className="name" onClick={handleItemClick}>
+							{talk.item.title}
+						</Info>
 					</NameContainer>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
@@ -56,8 +81,8 @@ function MyPageTalk({ talk, isReply }) {
 				<BottomContainer>
 					{isReply && <MdSubdirectoryArrowRight />}
 					<Content>{talk.content}</Content>
+					<DotDate date={talk.createdAt} />
 				</BottomContainer>
-				<DotDate date={talk.createdAt} />
 				<TalkModal
 					setIsOpen={setOpenForm}
 					modalIsOpen={openForm}
@@ -89,6 +114,7 @@ const Image = styled.img`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const ListContainer = styled.div`
@@ -97,6 +123,13 @@ const ListContainer = styled.div`
 	align-items: flex-end;
 	width: 100%;
 	margin-left: 30px;
+	position: relative;
+
+	time {
+		position: absolute;
+		right: 5px;
+		bottom: -55px;
+	}
 `;
 
 const NameContainer = styled.div`
@@ -116,6 +149,7 @@ const Info = styled.div`
 	&.name {
 		color: var(--gray-600);
 		font-weight: var(--bold);
+		cursor: pointer;
 	}
 `;
 
@@ -131,6 +165,7 @@ const BottomContainer = styled.div`
 	align-self: flex-start;
 	margin-top: 15px;
 	flex-grow: 1;
+
 	// 사이 간격 조절
 	svg {
 		margin-right: 10px;

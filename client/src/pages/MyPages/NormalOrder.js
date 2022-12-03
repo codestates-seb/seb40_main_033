@@ -27,9 +27,7 @@ function NormalOrder() {
 		<>
 			<ListContainer>
 				{data &&
-					lists.map((list) => (
-						<OrderList key={list.orderId} list={list} totalPrice />
-					))}
+					lists.map((list) => <OrderList key={list.orderId} list={list} />)}
 			</ListContainer>
 			<Pagination total="10" limit="8" />
 		</>

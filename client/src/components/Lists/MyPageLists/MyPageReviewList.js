@@ -9,18 +9,31 @@ import ReviewModal from '../../Modals/ReviewModal';
 import DeleteNotesModal from '../../Modals/DeleteNotesModal';
 import { useDelete } from '../../../hooks/useFetch';
 
-function MyPageReviewList({ review }) {
+function MyPageReviewList({
+	createdAt,
+	content,
+	quantity,
+	reviewId,
+	star,
+	userId,
+	itemId,
+	brand,
+	thumbnail,
+	title,
+	nowPrice,
+	discountRate,
+	beforePrice,
+}) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const navigate = useNavigate();
 
 	const { mutate } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.reviewId}`,
-		// 'http://localhost:3001/reviews',
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${reviewId}`,
 	);
 
 	const handleItemClick = () => {
-		navigate(`/detail/${review.item.itemId}`);
+		navigate(`/detail/${itemId}`);
 	};
 
 	const handleFormOpen = () => {
@@ -37,6 +50,23 @@ function MyPageReviewList({ review }) {
 		setOpenDeleteModal(false);
 	}, []);
 
+	const review = {
+		item: {
+			reviewId,
+			content,
+			brand,
+			thumbnail,
+			title,
+			nowPrice,
+			beforePrice,
+			discountRate,
+			quantity,
+			star,
+			userId,
+			itemId,
+		},
+	};
+
 	return (
 		<Box>
 			<Image
@@ -47,9 +77,9 @@ function MyPageReviewList({ review }) {
 			<ListContainer>
 				<TopContainer>
 					<NameContainer>
-						<Info className="brand">{review.item.brand}</Info>
+						<Info className="brand">{brand}</Info>
 						<Info className="name" onClick={handleItemClick}>
-							{review.item.title}
+							{title}
 						</Info>
 					</NameContainer>
 					<ButtonContainer>
@@ -63,10 +93,10 @@ function MyPageReviewList({ review }) {
 					</ButtonContainer>
 				</TopContainer>
 				<InfoContainer>
-					<LongTextStar noText star={review.star} />
-					<DotDate date={review.createdAt} />
+					<LongTextStar noText star={star} />
+					<DotDate date={createdAt} />
 				</InfoContainer>
-				<Review>{review.content}</Review>
+				<Review>{content}</Review>
 				<ReviewModal
 					setIsOpen={setOpenForm}
 					modalIsOpen={openForm}
@@ -99,13 +129,13 @@ const Image = styled.img`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const ListContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	/* height: 160px; // 임시 */
 	margin-left: 30px;
 `;
 
@@ -126,6 +156,7 @@ const Info = styled.div`
 	&.name {
 		color: var(--gray-600);
 		font-weight: var(--bold);
+		cursor: pointer;
 	}
 `;
 
