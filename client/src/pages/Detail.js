@@ -1,30 +1,55 @@
 import styled from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useCallback, useState } from 'react';
+import { toast } from 'react-toastify';
 import Summary from '../components/ItemSummary/Summary';
 import DetailReviewList from '../components/Lists/DetailReviewList';
 import DetailTalkList from '../components/Lists/DetailTalkList';
 import TalkForm from '../components/Forms/TalkForm';
-import { useGet } from '../hooks/useFetch';
+import { useGet, usePost } from '../hooks/useFetch';
 
 function Detail() {
+	// state 초기값 토크 조회값일 수도!
+	const [content, setContent] = useState('');
 	const { pathname } = useLocation();
-
 	const { id } = useParams();
 	const { isLoading, isError, data, error } = useGet(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/items/${id}`,
 		pathname,
 	);
+	const { loginStatus } = useSelector((store) => store.user);
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
+	// 토크 작성
+	const { mutate: talkMu, response } = usePost(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${id}`,
+	);
 
-	if (isError) {
-		return <div>Error: {error.message}</div>;
-	}
+	const handleSubmit = useCallback(
+		(e) => {
+			// e.preventDefault();
+			console.log('제출', content);
+			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
+			if (content.length < 20) {
+				toast.error('20자 이상 작성해주세요.');
+				return;
+			}
+			talkMu({ content });
+			console.log('response', response);
+		},
+		[content],
+	);
 
+	const handleContent = useCallback(
+		(e) => {
+			setContent(e.target.value);
+			console.log('내용:', e.target.value);
+		},
+		[content],
+	);
 	const lists = !isLoading && data.data.data;
 
+	console.log('lists.talks', lists.talks);
 	const content1 = `요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이 덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!! 팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이 새벽에 자느라 아침마다 항상 피곤했는데 꾸준히 먹으니 피로감이
 	덜해졌어요!! 덕분에 프로젝트에서 3인분의 효율을 낼 수 있을 것 같아요!!
 	팀원들아 나만 믿어~~~! ^^ 저렴한 가격에 좋은 제품입니다. 요새 매일같이
@@ -67,9 +92,10 @@ function Detail() {
 
 	영양 정보
 	- 용량 : ${lists.capacity}정 (${lists.capacity / lists.servingSize}일)
-	- 영양성분 : ${lists.nutritionFacts.map(
-		(fact) => `${fact.ingredient}: ${fact.volume}`,
-	)}
+	- 영양성분 : ${
+		lists &&
+		lists?.nutritionFacts.map((fact) => `${fact.ingredient}: ${fact.volume}`)
+	}
 	   1일 섭취량: 1회 ${lists.servingSize}정
 
 	섭취 방법
@@ -87,6 +113,14 @@ function Detail() {
 - 충격에 제품이 깨질 수 있으니 주의하십시오.
 
 	`;
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (isError) {
+		return <div>Error: {error.message}</div>;
+	}
 
 	return (
 		<DetailContainer>
@@ -113,19 +147,42 @@ function Detail() {
 					<Notes>
 						<InfoTitle>Review</InfoTitle>
 						<ListsContainer>
-							<DetailReviewList content={content2} />
-							<DetailReviewList content={content1} />
-							<DetailReviewList content={content3} />
+							{lists.reviews.data &&
+								lists.reviews.data.map((review) => (
+									<DetailReviewList
+										key={review.reviewId}
+										itemId={review.itemId}
+										star={review.star}
+										displayName={review.displayName}
+										createdAt={review.createdAt}
+										content={review.content}
+										userId={review.userId}
+									/>
+								))}
 						</ListsContainer>
 					</Notes>
 					<Notes>
 						<InfoTitle>Talk</InfoTitle>
-						<TalkForm />
-						<ListsContainer className="talk">
-							<DetailTalkList />
-							<DetailTalkList isReply />
-							<DetailTalkList />
-						</ListsContainer>
+						{loginStatus && (
+							<TalkForm
+								content={content}
+								handleContent={handleContent}
+								handleSubmit={handleSubmit}
+							/>
+						)}
+						{lists.talks.data &&
+							lists.talks.data.map((talk) => (
+								<DetailTalkList
+									key={talk.talkId}
+									itemId={talk.itemId}
+									createdAt={talk.createdAt}
+									content={talk.content}
+									userId={talk.userId}
+									shopper={talk.shopper}
+									talkComments={talk.talkComments}
+								/>
+							))}
+						<ListsContainer className="talk" />
 					</Notes>
 				</Contents>
 				<SummaryContainer>

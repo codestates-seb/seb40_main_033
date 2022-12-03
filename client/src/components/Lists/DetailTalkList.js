@@ -6,7 +6,15 @@ import { DotDate } from '../Etc/ListDate';
 import TalkForm from '../Forms/TalkForm';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
 
-function DetailTalkList({ isReply }) {
+function DetailTalkList({
+	isReply,
+	itemId,
+	createdAt,
+	content,
+	userId,
+	shopper,
+	talkComments,
+}) {
 	const [writable, setWritable] = useState(false);
 	const [writeReply, setWriteReply] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -37,7 +45,9 @@ function DetailTalkList({ isReply }) {
 			{isReply && <MdSubdirectoryArrowRight />}
 			<Box>
 				<TopContainer>
-					<Name>코알라2</Name>
+					<Name className={shopper && 'shopper'}>
+						{shopper ? '구매자' : '비구매자'}
+					</Name>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
 							수정
@@ -48,21 +58,12 @@ function DetailTalkList({ isReply }) {
 						</LetterButtonColor>
 					</ButtonContainer>
 				</TopContainer>
-				{writable ? (
-					<TalkForm />
-				) : (
-					<Talk>
-						이거 좋나여? 리뷰보니까 사고 싶어지는데 광고같기도 하고... 이거
-						좋나여? 리뷰보니까 사고 싶어지는데 광고같기도 하고... 이거 좋나여?
-						리뷰보니까 사고 싶어지는데 광고같기도 하고... 이거 좋나여?
-						리뷰보니까 사고 싶어지는데 광고같기도 하고...
-					</Talk>
-				)}
+				{writable ? <TalkForm /> : <Talk>{content}</Talk>}
 				<InfoContainer className={isReply && 'reply'}>
 					{!isReply && !writable && (
 						<LetterButton onClick={handleFormOpen}>답변 작성</LetterButton>
 					)}
-					<DotDate date="2022/11/23T11:33:33" />
+					<DotDate date={createdAt} />
 				</InfoContainer>
 				{writeReply && (
 					<TalkForm placeholder="토크에 대한 답글을 남겨주세요." />
@@ -113,7 +114,10 @@ const TopContainer = styled.div`
 const Name = styled.div`
 	font-size: 16px;
 	font-weight: var(--bold);
-	margin-bottom: 10px;
+
+	&.shopper {
+		color: var(--purple-300);
+	}
 `;
 
 const InfoContainer = styled.div`

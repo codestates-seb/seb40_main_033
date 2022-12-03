@@ -33,7 +33,9 @@ function DefalutForm({
 				)}
 				{target === '토크' ? (
 					<TalkSubmitBtn>
-						<LetterButton className="talk-submit">작성완료</LetterButton>
+						<LetterButton className="talk-submit" onClick={handleSubmit}>
+							작성완료
+						</LetterButton>
 					</TalkSubmitBtn>
 				) : (
 					<PurpleButton
