@@ -1,11 +1,17 @@
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
 // 세연님이 별점 만들면 가져다가 쓰자.
 
-function SmallListCards({ item }) {
-	console.log(item, 'item임/');
+function SmallListCards({ item, refetch }) {
+	const navigate = useNavigate();
+
+	const handleItemClick = () => {
+		navigate(`/detail/${item.itemId}`);
+	};
+
 	return (
 		<EntireContainer id="이거임">
 			<DefaultContainer>
@@ -14,11 +20,11 @@ function SmallListCards({ item }) {
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
-					<ContentContainer buttom>
+					<ContentContainer buttom onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
 						<div className="title itemName">{item.title}</div>
 						<Price
-							nowPrice={8000}
+							nowPrice={item.price}
 							// item.price
 							beforePrice={10000}
 							// item.discountPrice
@@ -26,11 +32,12 @@ function SmallListCards({ item }) {
 							// item.discountRate
 							fontSize="16px"
 							font-weight="var(--regular)"
+							refetch
 						/>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
-			<DefaultContainer className="hover" hover>
+			<DefaultContainer onClick={handleItemClick} className="hover" hover>
 				<ContentBox>
 					<ContentContainer star>
 						<ShortTextStar />
