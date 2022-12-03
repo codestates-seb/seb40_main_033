@@ -114,7 +114,7 @@ const Label = styled.label`
 `;
 
 const BeforePrice = styled.del`
-	color: var(--gray-300) !important;
+	color: var(--gray-300);
 `;
 
 const Percent = styled.div`

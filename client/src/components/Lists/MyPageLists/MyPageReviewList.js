@@ -1,7 +1,6 @@
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable import/no-named-as-default */
 import styled from 'styled-components';
 import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import { DotDate } from '../../Etc/ListDate';
 import { LongTextStar } from '../../Stars/TextStar';
@@ -13,11 +12,16 @@ import { useDelete } from '../../../hooks/useFetch';
 function MyPageReviewList({ review }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const navigate = useNavigate();
 
 	const { mutate } = useDelete(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.reviewId}`,
 		// 'http://localhost:3001/reviews',
 	);
+
+	const handleItemClick = () => {
+		navigate(`/detail/${review.item.itemId}`);
+	};
 
 	const handleFormOpen = () => {
 		setOpenForm(!openForm);
@@ -35,12 +39,18 @@ function MyPageReviewList({ review }) {
 
 	return (
 		<Box>
-			<Image src={review.item.thumbnail} alt="상품 이미지" />
+			<Image
+				src={review.item.thumbnail}
+				alt="상품 이미지"
+				onClick={handleItemClick}
+			/>
 			<ListContainer>
 				<TopContainer>
 					<NameContainer>
 						<Info className="brand">{review.item.brand}</Info>
-						<Info className="name">{review.item.title}</Info>
+						<Info className="name" onClick={handleItemClick}>
+							{review.item.title}
+						</Info>
 					</NameContainer>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
