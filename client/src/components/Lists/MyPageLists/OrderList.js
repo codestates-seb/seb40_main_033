@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
+import { toast } from 'react-toastify';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import { DotDate } from '../../Etc/ListDate';
 import Price from '../../Etc/Price';
@@ -26,9 +27,11 @@ function OrderList({ list }) {
 		setOpenCancel(true);
 	}, []);
 
+	// 주문 취소
 	const handleCancel = useCallback(() => {
 		mutate();
-		console.log('response', response);
+		setOpenCancel(false);
+		toast.success('취소되었습니다.');
 	}, []);
 
 	const statusEng = ['ORDER_COMPLETE', 'ORDER_CANCEL', 'ORDER_SUBSCRIBE'];
