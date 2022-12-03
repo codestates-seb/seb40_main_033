@@ -17,6 +17,6 @@ public class UserAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle( HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException ) throws IOException, ServletException{
         log.error("권한 없는 사용자");
-        UserAuthenticationEntryPoint.errorToJson(response, HttpStatus.FORBIDDEN);
+        UserAuthenticationEntryPoint.errorToJson(response, accessDeniedException, HttpStatus.FORBIDDEN);
     }
 }

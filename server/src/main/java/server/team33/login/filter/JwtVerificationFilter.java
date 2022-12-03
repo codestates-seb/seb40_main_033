@@ -46,25 +46,20 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             setAuthtoContext(claims);//Authentication에 저장
             log.info("");
 
-        } catch(InsufficientAuthenticationException e){
+        } catch(InsufficientAuthenticationException e1){
             log.error(InsufficientAuthenticationException.class.getSimpleName());
-
 
         } catch(MalformedJwtException e1){
             log.error(MalformedJwtException.class.getSimpleName());
 
-
         } catch(SignatureException e1){
             log.error(SignatureException.class.getSimpleName());
-
 
         } catch(ExpiredJwtException e1){
             log.error(ExpiredJwtException.class.getSimpleName());
 
-
         } catch(Exception e1){
             log.error(Exception.class.getSimpleName());
-
         }
         log.error("다음 메서드 진행");
         filterChain.doFilter(request, response); // 완료되면 다음 필터로 이동
