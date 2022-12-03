@@ -1,16 +1,34 @@
 import styled from 'styled-components';
 import { IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import { DotDate } from '../../Etc/ListDate';
 import Price from '../../Etc/Price';
+import CancelModal from '../../Modals/CancelModal';
+import { useDelete } from '../../../hooks/useFetch';
 
 function OrderList({ list }) {
 	const navigate = useNavigate();
+	const [openCancel, setOpenCancel] = useState(false);
 
-	const handleDetailBtnClick = useCallback(() => {
+	const { mutate, isLoading, isError, error, response } = useDelete(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/${list.orderId}`,
+	);
+
+	// 상세로 이동
+	const handleDetailClick = useCallback(() => {
 		navigate(`/mypage/order/${list.orderId}`);
+	}, []);
+
+	// 취소 모달
+	const handleCancelClick = useCallback(() => {
+		setOpenCancel(true);
+	}, []);
+
+	const handleCancel = useCallback(() => {
+		mutate();
+		console.log('response', response);
 	}, []);
 
 	const statusEng = ['ORDER_COMPLETE', 'ORDER_CANCEL', 'ORDER_SUBSCRIBE'];
@@ -28,20 +46,13 @@ function OrderList({ list }) {
 						<DotDate date={list.createdAt} />
 					</ShoppingInfo>
 					<Name>
-						{`${list.item.brand}, ${list.item.title} 
+						{`${list.item.brand}, ${list.item.title}, ${list.item.capacity}정 
 						${list.item.length > 1 ? `외 ${list.item.totalItems - 1}개` : ''}`}
 					</Name>
-					<Price
-						nowPrice={list.item.discountPrice || list.item.price}
-						discountRate={
-							list.item.discountRate === 0 ? '' : list.item.discountRate
-						}
-						beforePrice={list.item.discountPrice ? list.item.price : null}
-						isTotal
-					/>
+					<Price nowPrice={list.expectPrice} isTotal />
 				</InfoContainer>
 				<BtnContainer>
-					<IconBtnContainer onClick={handleDetailBtnClick}>
+					<IconBtnContainer onClick={handleDetailClick}>
 						<LetterButtonColor
 							color="gray"
 							colorCode="500"
@@ -54,8 +65,8 @@ function OrderList({ list }) {
 						</LetterButtonColor>
 						<IoIosArrowForward />
 					</IconBtnContainer>
-					{list.orderStatus === '주문완료' && (
-						<IconBtnContainer>
+					{status !== '주문취소' && (
+						<IconBtnContainer onClick={handleCancelClick}>
 							<LetterButtonColor
 								color="red"
 								colorCode="100"
@@ -71,6 +82,12 @@ function OrderList({ list }) {
 					)}
 				</BtnContainer>
 			</MainContainer>
+			<CancelModal
+				openCancelModal={openCancel}
+				setOpenCancelModal={setOpenCancel}
+				handleCancel={handleCancel}
+				target="주문"
+			/>
 		</Box>
 	);
 }
