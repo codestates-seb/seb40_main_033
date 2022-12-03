@@ -85,6 +85,13 @@ public class OrderService {
         return findAllSubs;
     }
 
+    public Page<ItemOrder> findAllSubs(User user, int page) {
+        Page<ItemOrder> findAllSubs = itemOrderRepository.findAllSubs(
+                PageRequest.of(page, 6, Sort.by("itemOrderId").descending()), OrderStatus.ORDER_SUBSCRIBE, user.getUserId());
+
+        return findAllSubs;
+    }
+
     public Order findVerifiedOrder(long orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Order findOrder = optionalOrder.orElseThrow(
@@ -109,19 +116,6 @@ public class OrderService {
         Order newOrder = new Order(order);
         orderRepository.save(newOrder);
         return newOrder;
-    }
-
-    public Order changeSubQuantity(long orderId, int upDown)  {
-        Order order = findVerifiedOrder(orderId);
-        ItemOrder itemOrder = order.getItemOrders().get(0);
-        itemOrder.setQuantity(itemOrder.getQuantity() + upDown);
-        itemOrderRepository.save(itemOrder);
-
-        order.setTotalPrice(itemOrderService.countTotalPrice(order.getItemOrders()));
-        order.setTotalDiscountPrice(itemOrderService.countDiscountTotalPrice(order.getItemOrders()));
-        order.setExpectPrice(order.getTotalPrice() - order.getTotalDiscountPrice());
-
-        return order;
     }
 
 }

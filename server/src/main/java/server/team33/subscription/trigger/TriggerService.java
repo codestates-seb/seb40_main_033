@@ -18,7 +18,7 @@ public class TriggerService {
         return  newTrigger()
                  .forJob(jobKey)
                  .withSchedule(simpleSchedule()
-                                  .withIntervalInSeconds(itemOrder.getPeriod())
+                                  .withIntervalInMinutes(itemOrder.getPeriod())
                                   .repeatForever()
             )
                 .startNow()
