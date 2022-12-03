@@ -13,14 +13,17 @@ function WishList() {
 		isError,
 		data: wishListItems,
 		error,
-	} = useGet('http://localhost:3001/wishes', pathname);
+	} = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes',
+		pathname,
+	);
 	if (isLoading) return <PendingBox>아이템을 불러오는 중입니다...</PendingBox>;
 	if (isError)
 		return <PendingBox className="error">{error.message}</PendingBox>;
 	return (
 		<EntireContainer>
 			<WishBox>
-				{wishListItems.data.map((wishItem, idx) => (
+				{wishListItems.data.data.map((wishItem, idx) => (
 					<WishListCards
 						item={wishItem}
 						key={`${idx.toString()}-${wishItem}`}

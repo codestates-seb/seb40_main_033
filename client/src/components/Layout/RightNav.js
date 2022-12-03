@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function RightNav() {
-	const { accessToken } = useSelector((store) => store.user);
+	const accessToken = localStorage.getItem('accessToken');
 	const [openSearch, setOpenSearch] = useState(false);
 	const navigate = useNavigate();
 
