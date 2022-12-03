@@ -9,10 +9,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function RightNav() {
-	// const { accessToken } = store.getState().user;
-	const { loginStatus } = useSelector((store) => store.user);
+	const { accessToken } = useSelector((store) => store.user);
 	const [openSearch, setOpenSearch] = useState(false);
-	const [isOpen, setIsOpen] = useState(false);
 	const navigate = useNavigate();
 
 	// 검색창 오픈
@@ -20,18 +18,9 @@ function RightNav() {
 		setOpenSearch(!openSearch);
 	}, [openSearch]);
 
-	// 임시 페이지 이동 관련 함수
-	const handleBtnOpen = useCallback(() => {
-		setIsOpen(!isOpen);
-	}, [isOpen]);
-
 	const handleSearch = useCallback((e) => {
 		if (e.key === 'Enter') {
-			if (e.target.value === '') {
-				navigate('/search');
-			} else {
-				navigate(`/search?keyword=${e.target.value.replaceAll(' ', '_')}`);
-			}
+			navigate(`/search`);
 			setOpenSearch(false);
 		}
 	}, []);
@@ -40,7 +29,7 @@ function RightNav() {
 		<Container>
 			<Nav>
 				<IconContainer>
-					<Link to={loginStatus ? '/mypage' : '/login'}>
+					<Link to={accessToken ? '/mypage/user-info' : '/login'}>
 						<AiOutlineUser />
 					</Link>
 					<AiOutlineSearch
@@ -53,80 +42,10 @@ function RightNav() {
 							placeholder="검색어 입력 후 엔터를 눌러주세요."
 						/>
 					)}
-					<Link to="/cart/normal">
+					<Link to={accessToken ? '/cart/normal' : '/login'}>
 						<AiOutlineShoppingCart />
 					</Link>
 				</IconContainer>
-				<button className="temp-btn" type="button" onClick={handleBtnOpen}>
-					🔵
-				</button>
-				{isOpen ? (
-					<RouteContainer>
-						<Member>
-							기현
-							<button type="button">
-								<Link to="signup">회원가입</Link>
-							</button>
-							<button type="button">
-								<Link to="login">로그인</Link>
-							</button>
-							<button type="button">
-								<Link to="/">메인</Link>
-							</button>
-							<button type="button">
-								<Link to="mypage/note/review">리뷰관리</Link>
-							</button>
-							<button type="button">
-								<Link to="mypage/note/talk">토크관리</Link>
-							</button>
-						</Member>
-						<Member>
-							현수
-							<button type="button">
-								<Link to="mypage/user-info">회원정보</Link>
-							</button>
-							<button type="button">
-								<Link to="mypage/sub-manage">정기구독목록</Link>
-							</button>
-							<button type="button">
-								<Link to="mypage/wish">위시리스트</Link>
-							</button>
-							<button type="button">
-								<Link to="pay/normal">일반결제</Link>
-							</button>
-							<button type="button">
-								<Link to="pay/subscription">정기결제</Link>
-							</button>
-						</Member>
-						<Member>
-							세연
-							<button type="button">
-								<Link to="mypage/order/normal">주문내역</Link>
-							</button>
-							<button type="button">
-								<Link to="mypage/order/1">주문내역상세</Link>
-							</button>
-							<button type="button">
-								<Link to="detail/1">상세</Link>
-							</button>
-						</Member>
-						<Member>
-							지환
-							<button type="button">
-								<Link to="cart/normal">일반장바구니</Link>
-							</button>
-							<button type="button">
-								<Link to="cart/subscription">정기장바구니</Link>
-							</button>
-							<button type="button">
-								<Link to="list">목록</Link>
-							</button>
-							<button type="button">
-								<Link to="search">검색목록</Link>
-							</button>
-						</Member>
-					</RouteContainer>
-				) : null}
 			</Nav>
 		</Container>
 	);
