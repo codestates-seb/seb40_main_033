@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useState, useCallback } from 'react';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import { LetterButtonColor } from '../../../Buttons/LetterButton';
 import { DotDate } from '../../../Etc/ListDate';
 import OrderDetailList from '../OrderDetailList';
@@ -12,6 +13,7 @@ import { useDelete } from '../../../../hooks/useFetch';
 function MyPageTalk({ talk, isReply }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const navigate = useNavigate();
 
 	// 토크 삭제
 	const { mutate: talkDeleteMu, response: talkDeleteRes } = useDelete(
@@ -29,6 +31,10 @@ function MyPageTalk({ talk, isReply }) {
 		},
 		[openForm],
 	);
+
+	const handleItemClick = () => {
+		navigate(`/detail/${talk.item.itemId}`);
+	};
 
 	// 삭제 모달 열기
 	const handleDeleteClick = useCallback(() => {
@@ -49,12 +55,18 @@ function MyPageTalk({ talk, isReply }) {
 
 	return (
 		<Box>
-			<Image src={talk.item.thumbnail} alt="상품 이미지" />
+			<Image
+				src={talk.item.thumbnail}
+				alt="상품 이미지"
+				onClick={handleItemClick}
+			/>
 			<ListContainer>
 				<TopContainer>
 					<NameContainer>
 						<Info className="brand">{talk.item.brand}</Info>
-						<Info className="name">{talk.item.title}</Info>
+						<Info className="name" onClick={handleItemClick}>
+							{talk.item.title}
+						</Info>
 					</NameContainer>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
