@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import WishlistButton from '../Buttons/WishlistButton';
 import Tag from '../Etc/Tag';
@@ -21,13 +21,12 @@ function Summary({
 	beforePrice,
 	discountRate,
 	itemId,
+	wishlist,
 }) {
+	const { pathname } = useLocation();
 	const navigate = useNavigate();
 	const [path, setPath] = useState(''); // 바로결제하기 클릭 시, 이동할 페이지
 	const [showOptions, setShowOptions] = useState(false);
-	const [wish, setWish] = useState(
-		'유저가 찜누른 아이템id 리스트 조회해서 대조',
-	);
 	const [openModal, setOpenModal] = useState(false);
 	const [modalContents, setModalContents] =
 		useState('장바구니에 상품이 담겼습니다.'); // 장바구니에 이미 담겼을 때 변경
@@ -36,42 +35,24 @@ function Summary({
 		period: 30,
 		subscription: false,
 	});
-	/*
-	! 바로 구매하기
-	{
-    "itemId": 1,
-    "quantity": 3,
-    "period": 30,
-    "subscription": false
-	}
-	! 장바구니에 담기 (정기)
-	{
-    "quantity":3,
-    "period":30,
-    "subscription":true
-	}
-	! 장바구니에 담기 (일반)
-	{
-    "quantity":3,
-    "subscription":false
-	}
-	
-	*/
+	const [isCheckedWish, setIsCheckedWish] = useState(false);
+	// const [isCheckedWish, setIsCheckedWish] = useState(wishlist.includes(itemId));
+
 	const {
 		mutate: cartMu,
 		response: cartRes,
-		isLoading: cartLoading,
-		isError: cartIsErr,
-		error: cartErr,
+		// isLoading: cartLoading,
+		// isError: cartIsErr,
+		// error: cartErr,
 	} = usePost(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/${itemId}`,
 	);
 
 	const {
 		mutate: purMu,
-		isLoading: purLoading,
-		isSuccess: purSuccess,
-		isError: purIsErr,
+		// isLoading: purLoading,
+		// isSuccess: purSuccess,
+		// isError: purIsErr,
 	} = usePurchase(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/single',
 		path,
@@ -163,7 +144,7 @@ function Summary({
 		cartMu({ ...orderList });
 		console.log('장바구니 요청 응답!', cartRes);
 		setOpenModal(true);
-	}, []);
+	}, [orderList]);
 
 	// * 장바구니 페이지로 가는 함수
 	const handleCartClick = useCallback(() => {
@@ -173,7 +154,13 @@ function Summary({
 		} else {
 			navigate('/cart/normal');
 		}
-	}, [orderList.subscription]);
+	}, [orderList]);
+
+	//* 위시리스트
+	const handleWishClick = useCallback(() => {
+		console.log('하트클릭');
+		setIsCheckedWish(!isCheckedWish);
+	}, [isCheckedWish]);
 
 	// if (isLoading) {
 	// 	return <div>Loading...</div>;
@@ -192,7 +179,11 @@ function Summary({
 							{brand || 'California Gold Nutrition'}
 							{/* 나중에 상품 브랜드를 받아서 바꿔줘야 합니다. */}
 						</p>
-						<WishlistButton />
+						<WishlistButton
+							setIsChecked={setIsCheckedWish}
+							isChecked={isCheckedWish}
+							itemId={itemId}
+						/>
 					</HeadBox>
 					<MiddleBox>
 						{/* <div className="itemName">멀티비타민</div> */}
