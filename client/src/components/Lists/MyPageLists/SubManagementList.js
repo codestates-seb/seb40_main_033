@@ -7,56 +7,86 @@ import { DayControlTab } from '../../Tabs/TabButtons';
 import Price from '../../Etc/Price';
 import { KrDate } from '../../Etc/ListDate';
 import CancelModal from '../../Modals/CancelModal';
+import { useDelete, usePatch } from '../../../hooks/useFetch';
 
-function SubManagementList() {
-	const price = 6000;
-	const [quantity, setQuantity] = useState(1);
+function SubManagementList({ subManageData }) {
+	const [quantity, setQuantity] = useState(subManageData.quantity);
 	const [openCancelModal, setOpenCancelModal] = useState(false);
-
-	const onPlusClick = useCallback(() => {
+	const [subPeriod, setSubPeriod] = useState(subManageData.period);
+	const { mutate: plusMutate } = usePatch(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/subs/${subManageData.itemOrderId}?upDown=1`,
+	);
+	const { mutate: minusMutate } = usePatch(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/subs/${subManageData.itemOrderId}?upDown=-1`,
+	);
+	const { mutate: modifyPeriod } = usePatch(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/change?period=${subPeriod}&orderId=${subManageData.orderId}`,
+	);
+	const { mutate: deleteSub } = useDelete(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/cancel?orderId=${subManageData.orderId}`,
+	);
+	console.log(subManageData, 'subManageData');
+	const onPlusClick = useCallback(async () => {
+		await plusMutate();
 		setQuantity(quantity + 1);
 		toast.success('수량이 변경되었습니다.'); // 실제 요청에 붙이셔야 할 것 같아요~ 아마도
 	}, [quantity]);
 
-	const onMinusClick = useCallback(() => {
+	const onMinusClick = useCallback(async () => {
+		await minusMutate();
 		setQuantity(quantity - 1);
 		toast.success('수량이 변경되었습니다.'); // 실제 요청에 붙이셔야 할 것 같아요~ 아마도
 	}, [quantity]);
 
+	const handleModifyPeriod = useCallback(
+		async (e) => {
+			await setSubPeriod(e.target.innerText.replace('일', ''));
+			// console.log(e.target.innerText, '왜됨???');
+			await modifyPeriod();
+		},
+		[subPeriod],
+	);
+
 	const handleModalOpen = useCallback(() => {
 		setOpenCancelModal(true);
 	}, []);
-
-	// const handleCancel = useCallback(() => {
-	// 	console.log('취소를 요청하는 함수를 CancelModal에 전달해주세요');
-	// }, []);
+	const handleCancel = useCallback(() => {
+		deleteSub();
+	}, []);
 
 	return (
 		<Box>
 			<CancelModal
+				handleCancel={handleCancel}
 				openCancelModal={openCancelModal}
 				setOpenCancelModal={setOpenCancelModal}
 				target="정기 구독"
 			/>
 			<SubContainer>
 				<Label>구독 주기</Label>
-				<DayControlTab />
+				<DayControlTab
+					orderId={subManageData.orderId}
+					onClick={handleModifyPeriod}
+					currentIdx={subManageData.period / 30 - 1}
+				/>
 				<IoMdClose onClick={handleModalOpen} />
 			</SubContainer>
 			<ListContainer>
-				<Image
-					src="https://wiselycompany.cafe24.com/web/product/medium/202211/46763d93d5fd373356268c62b05f5560.jpg"
-					alt="상품 이미지"
-				/>
+				<Image src={subManageData.item.thumbnail} alt="상품 이미지" />
 				<RightContainer>
 					<InfoContainer>
-						<Info className="brand"> California Gold Nutrition</Info>
-						<Info className="name">오메가3 프리미엄 피쉬 오일</Info>
-						<Price nowPrice={price} />
+						<Info className="brand"> {subManageData.item.brand}</Info>
+						<Info className="name">{subManageData.item.title}</Info>
+						<Price
+							nowPrice={subManageData.item.disCountPrice}
+							quantity={1}
+							discountRate={subManageData.item.discountRate}
+							beforePrice={subManageData.item.price}
+						/>
 					</InfoContainer>
 					<BottomContainer>
 						<Info className="notice">
-							다음 배송일은 <KrDate date="2023-01-30T08:24:32.060555" /> 입니다.
+							다음 배송일은 <KrDate date={subManageData.nextDelivery} /> 입니다.
 						</Info>
 						<QuantityContainer>
 							<Label>수량</Label>
@@ -67,7 +97,7 @@ function SubManagementList() {
 							/>
 						</QuantityContainer>
 						<Price // 가격 * 수량
-							nowPrice={price}
+							nowPrice={subManageData.item.disCountPrice}
 							quantity={quantity} // 수량!
 							fontSize="20px"
 							fontWeight="extraBold"

@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { usePatch } from '../../hooks/useFetch';
 
 // currentIdx ==> 지금 선택한 탭의 index
 // highlightValue ==> 지금 선택한 탭의 left 위치 (0번째: 0, 1번째: 68, 2번째: 136 ... => 68씩 증가!)
@@ -14,7 +15,11 @@ function DefaultTabButton({
 	order,
 	note,
 	onClick,
+	orderId,
 }) {
+	const { mutate: postponeSub } = usePatch(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/delay?orderId=${orderId}&delay=30`,
+	);
 	const highlightWidth = toggle ? 68 : 73;
 	const { pathname } = useLocation();
 	const [currentTab, setCurrentTab] = useState(currentIdx || 0);
@@ -109,6 +114,11 @@ function DefaultTabButton({
 		}
 	}, []);
 
+	const delayButtonClick = useCallback(() => {
+		postponeSub();
+		setDelayOpen((prev) => !prev);
+	});
+
 	return (
 		<TabContainer toggle={toggle}>
 			<Highlight
@@ -131,7 +141,7 @@ function DefaultTabButton({
 				{delayButton && (
 					<li
 						className={`submenu red ${delayOpen ? 'open' : ''}`}
-						onClick={() => setDelayOpen((prev) => !prev)}
+						onClick={delayButtonClick}
 						role="presentation"
 					>
 						미루기
