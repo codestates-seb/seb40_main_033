@@ -23,7 +23,7 @@ function MyPageHeader() {
 				console.log('error in fetching posts');
 			});
 		if (response) {
-			dispatch(logout());
+			await dispatch(logout());
 			navigate('/', { replace: true });
 			toast.success('로그아웃 되었습니다!');
 		}
