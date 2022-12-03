@@ -1,28 +1,16 @@
 /* eslint-disable no-nested-ternary */
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
-/* Default List는 item(배열)을 props를 받는 컴포넌트 입니다.
-[{
-	"thumbnail": "/",
-	"descriptionImage": "/",
-	"title":"비타민B",
-	"content": "비타민B에 대한 설명!!!",
-	"expiration": "2023-12-31",
-	"brand": "BRAND2",
-	"sales": 0,
-	"price": 12000,
-	"capacity": 60,
-	"servingSize": 3,
-	"discountRate": 20,
-	"discountPrice": 9600,
-	"categories": [
-		{
-			"categoryName": "눈_건강"
-		}
-	]]
-배열의 구성은 이러하며, 실제 api에 어떻게 오느냐에 따라 내용물을 변경하셔도 됩니다. */
+
 function MainListCard({ item }) {
+	const navigate = useNavigate();
+
+	const handleItemClick = () => {
+		navigate(`/detail/${item.itemId}`);
+	};
+
 	return (
 		<EntireContainer>
 			<DefaultContainer>
@@ -33,17 +21,19 @@ function MainListCard({ item }) {
 					</ContentContainer>
 					<ContentContainer bottom>
 						<div className="title brandName">{item.brand}</div>
-						<div className="title itemName">{item.title}</div>
-						<Price
-							nowPrice={item.price}
-							beforePrice={item.discountPrice}
-							discountRate={item.discountRate}
-							fontSize="16px"
-						/>
+						<NamePriceBox>
+							<div className="title itemName">{item.title}</div>
+							<Price
+								nowPrice={item.discountPrice}
+								beforePrice={item.price}
+								discountRate={item.discountRate}
+								fontSize="16px"
+							/>
+						</NamePriceBox>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
-			<DefaultContainer className="hover" hover>
+			<DefaultContainer onClick={handleItemClick} className="hover" hover>
 				<ContentBox>
 					<ContentContainer star>
 						<ShortTextStar
@@ -121,7 +111,7 @@ const ContentContainer = styled.div`
 			? css`
 					padding-top: 58px;
 					justify-content: center;
-					padding-bottom: 82px;
+					padding-bottom: 72px;
 			  `
 			: props.bottom
 			? css`
@@ -143,7 +133,8 @@ const ContentContainer = styled.div`
 	.itemName {
 		font-weight: var(--extraBold);
 		font-size: 20px;
-		padding-bottom: 27.5px;
+		/* padding-bottom: 27.5px; */
+		word-break: keep-all;
 	}
 	.itemPrice {
 		font-size: 20px;
@@ -151,9 +142,16 @@ const ContentContainer = styled.div`
 	}
 `;
 
+const NamePriceBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 70px;
+`;
+
 const ItemImg = styled.img`
-	width: 132px;
-	height: 153px;
+	width: 156px;
+	height: 156px;
 `;
 
 const ItemDescription = styled.p`
@@ -161,5 +159,6 @@ const ItemDescription = styled.p`
 	font-size: 20px;
 	line-height: 25px;
 	letter-spacing: -0.04em;
+	word-break: keep-all;
 `;
 export default MainListCard;

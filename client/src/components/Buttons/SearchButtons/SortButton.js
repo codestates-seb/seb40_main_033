@@ -7,21 +7,21 @@ import { FiFilter } from 'react-icons/fi';
 import PriceButton from './PriceButton';
 import { LetterButtonColor } from '../LetterButton';
 import { LightPurpleButton } from '../PurpleButton';
-import { setSort } from '../../../redux/slice/filterSlice';
+import { setSort, setOnSale } from '../../../redux/slice/filterSlice';
 
 export function SortButton({ children }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const dispatch = useDispatch();
 
-	const { sort } = useSelector((store) => store.filter);
-	console.log('sort', sort);
+	// const { sort } = useSelector((store) => store.filter);
+	// console.log('sort', sort);
 
 	const handleOpenClick = () => {
 		setIsOpen(!isOpen);
 		// console.log(isOpen);
 	};
-	const menus = ['최신순', '찜 많은순', '높은가격순', '낮은가격순', '인기순'];
-	const path = ['1', 'totalWishes', '3', '4', 'view'];
+	const menus = ['최신순', '찜 많은순', '높은가격순', '낮은가격순', '조회순'];
+	const path = ['', 'totalWishes', 'priceH', 'priceL', 'view'];
 
 	const clickMenus = (e) => {
 		const target = e.target.innerText;
@@ -50,7 +50,6 @@ export function SortButton({ children }) {
 				</MenuBox>
 			)}
 			<MainBox>
-				{' '}
 				<OpenButton onClick={handleOpenClick} isOpen={isOpen}>
 					<IoIosArrowBack />
 				</OpenButton>
@@ -65,10 +64,16 @@ export function SortButton({ children }) {
 
 export function PriceSortButton({ children }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const { onSale } = useSelector((state) => state.filter);
+	const dispatch = useDispatch();
 
 	const handleOpenClick = () => {
 		setIsOpen(!isOpen);
 		// console.log(isOpen);
+	};
+
+	const handleOnSale = () => {
+		dispatch(setOnSale(!onSale));
 	};
 
 	return (
@@ -84,7 +89,12 @@ export function PriceSortButton({ children }) {
 						<FiFilter />
 					</NameBox>
 					{isOpen && (
-						<LightPurpleButton fontSize="11px" width="70px" fontWeight="bold">
+						<LightPurpleButton
+							fontSize="11px"
+							width="70px"
+							fontWeight="bold"
+							onClick={handleOnSale}
+						>
 							할인상품
 							<br />
 							모아보기

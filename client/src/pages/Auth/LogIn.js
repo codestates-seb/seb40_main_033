@@ -59,7 +59,7 @@ function LogIn() {
 				</LinkContainer>
 			</FormContainer>
 			<Background>
-				<Text>With Pillivery Ready For Life</Text>
+				<Text>With Pillivery Subscribe Health</Text>
 			</Background>
 		</AuthContainer>
 	);

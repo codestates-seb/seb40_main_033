@@ -5,7 +5,7 @@ import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
 // 세연님이 별점 만들면 가져다가 쓰자.
 
-function SmallListCards({ item, refetch }) {
+function SmallListCards({ item }) {
 	const navigate = useNavigate();
 
 	const handleItemClick = () => {
@@ -22,25 +22,26 @@ function SmallListCards({ item, refetch }) {
 					</ContentContainer>
 					<ContentContainer buttom onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
-						<div className="title itemName">{item.title}</div>
-						<Price
-							nowPrice={item.price}
-							// item.price
-							beforePrice={10000}
-							// item.discountPrice
-							discountRate="20%"
-							// item.discountRate
-							fontSize="16px"
-							font-weight="var(--regular)"
-							refetch
-						/>
+						<NamePriceBox>
+							<div className="title itemName">{item.title}</div>
+							<Price
+								className="itemPrice"
+								nowPrice={item.discountPrice}
+								beforePrice={item.price}
+								discountRate={item.discountRate}
+								fontSize="14px"
+							/>
+						</NamePriceBox>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
 			<DefaultContainer onClick={handleItemClick} className="hover" hover>
 				<ContentBox>
 					<ContentContainer star>
-						<ShortTextStar />
+						<ShortTextStar
+							starAvg={item.starAvg}
+							reviewCount={item.reviewSize}
+						/>
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemDescription>{item.content}</ItemDescription>
@@ -57,8 +58,6 @@ const EntireContainer = styled.div`
 	position: relative;
 	margin-right: 20px;
 	margin-bottom: 30px;
-	/* background-color: white; */
-	/* border: 1px solid red; // 구분을 쉽게 하기 위한 선입니다. */
 	&:hover {
 		.hover {
 			opacity: 1;
@@ -71,6 +70,12 @@ const EntireContainer = styled.div`
 		}
 		.beforeDiscounted {
 			color: var(--gray-200);
+		}
+		.white {
+			color: white;
+			> path {
+				color: var(--gray-200);
+			}
 		}
 	}
 `;
@@ -112,7 +117,7 @@ const ContentContainer = styled.div`
 			? css`
 					padding-top: 23px;
 					justify-content: center;
-					padding-bottom: 77px;
+					padding-bottom: 60px;
 			  `
 			: props.buttom
 			? css`
@@ -135,7 +140,8 @@ const ContentContainer = styled.div`
 	.itemName {
 		font-weight: var(--extraBold);
 		font-size: 16px;
-		padding-bottom: 27.5px;
+		/* padding-bottom: 27.5px; */
+		word-break: keep-all;
 	}
 	.itemPrice {
 		font-size: 16px;
@@ -143,9 +149,16 @@ const ContentContainer = styled.div`
 	}
 `;
 
+const NamePriceBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 60px;
+`;
+
 const ItemImg = styled.img`
-	width: 110px;
-	height: 125px;
+	width: 140px;
+	height: 140px;
 `;
 
 const ItemDescription = styled.p`
@@ -153,6 +166,7 @@ const ItemDescription = styled.p`
 	font-size: 20px;
 	line-height: 25px;
 	letter-spacing: -0.04em;
+	word-break: keep-all;
 `;
 
 export default SmallListCards;
