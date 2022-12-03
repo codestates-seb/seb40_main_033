@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
@@ -43,6 +43,12 @@ function ItemList() {
 		return <ItemListBox> {error.message} </ItemListBox>;
 	}
 
+	const [category, setCategory] = useState('all');
+
+	const onSelect = useCallback((ctg) => {
+		setCategory(ctg);
+	}, []);
+
 	return (
 		<Box>
 			<PageTitle title={category.split('_').join(' ')} refetch={refetch} />
@@ -51,7 +57,7 @@ function ItemList() {
 			</Brand>
 			<ItemListBox>
 				{items.data.data.map((item) => (
-					<SmallListCards key={item.itemId} item={item} />
+					<SmallListCards key={item.itemId} item={item} refetch={refetch} />
 				))}
 			</ItemListBox>
 		</Box>
