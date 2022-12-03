@@ -58,8 +58,8 @@ function OrderDetailList({
 						{quantity && <Quantity>{quantity}개 / </Quantity>}
 						<Price // 가격 * 수량
 							nowPrice={nowPrice}
-							beforePrice={beforePrice}
-							discountRate={discountRate}
+							beforePrice={nowPrice === beforePrice && null}
+							discountRate={nowPrice === beforePrice && null}
 							fontSize="14px"
 							fontWeight="Bold"
 							quantity={quantity}
