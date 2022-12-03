@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { MdSubdirectoryArrowRight } from 'react-icons/md';
+import { MdSubdirectoryArrowRight, MdPayments } from 'react-icons/md';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { HiBadgeCheck } from 'react-icons/hi';
 import { LetterButtonColor, LetterButton } from '../Buttons/LetterButton';
 import { DotDate } from '../Etc/ListDate';
 import TalkForm from '../Forms/TalkForm';
@@ -13,20 +14,21 @@ function DetailTalkList({
 	isReply,
 	itemId,
 	createdAt,
+	reTalkContent,
 	content,
 	talkId,
 	userId,
+	talkCommentId,
 	displayName,
 	shopper,
-	talkComments,
 }) {
 	const [writable, setWritable] = useState(false);
 	const [writeReply, setWriteReply] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
-	const [newContent, setNewContent] = useState(content); // 업데이트할 토크 컨텐츠
+	const [newContent, setNewContent] = useState(content || reTalkContent); // 업데이트할 토크 컨텐츠
 	const [reContent, setReContent] = useState(''); // 새로 작성한 리토크
-	const [NewReContent, setNewReContent] = useState(talkComments && content); // 업데이트할 리토크
 	const { loginStatus } = useSelector((store) => store.user);
+
 	// 토크 수정
 	const { mutate: talkUpdateMu, response: talkUpdateRes } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talkId}`,
@@ -39,52 +41,17 @@ function DetailTalkList({
 
 	// 리토크 삭제
 	const { mutate: reTalkDeleteMu, response: reTalkDeleteRes } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/{talkcomment-id}`,
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkCommentId}`,
 	);
 
-	// // 리토크 작성
+	// 리토크 작성
 	const { mutate: reTalkCreateMu, response: reTalkCreateRes } = usePost(
 		`	http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkId}?itemId=${itemId}`,
 	);
 
-	// // 리토크 수정
-	// const { mutate: reTalkUpdateMu, response: reTalkUpdateRes } = usePatch(
-	// 	`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/{talkcomment-id}`,
-	// );
-
-	console.log('토크의 토크', talkComments);
-
-	// 리토크 작성!
-	const handleReTalkCreate = useCallback(
-		(e) => {
-			// e.preventDefault();
-			console.log('제출', reContent);
-			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
-			if (reContent.length < 20) {
-				toast.error('20자 이상 작성해주세요.');
-				return;
-			}
-			reTalkCreateMu({ content: reContent });
-			console.log('response', reTalkCreateRes);
-		},
-		[reContent],
-	);
-
-	// 토크 수정!
-	const handleTalkUpdate = useCallback(
-		(e) => {
-			// e.preventDefault();
-			console.log('제출', newContent);
-			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
-			if (newContent.length < 20) {
-				toast.error('20자 이상 작성해주세요.');
-				return;
-			}
-
-			talkUpdateMu({ content: newContent });
-			console.log('response', talkUpdateRes);
-		},
-		[newContent],
+	// 리토크 수정
+	const { mutate: reTalkUpdateMu, response: reTalkUpdateRes } = usePatch(
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkCommentId}`,
 	);
 
 	// 토크 수정 컨텐츠 상태
@@ -96,11 +63,45 @@ function DetailTalkList({
 		[newContent],
 	);
 
-	// 리톡 컨텐츠 상태 변경
+	// 리톡 작성 컨텐츠 상태
 	const handleReContent = useCallback(
 		(e) => {
 			setReContent(e.target.value);
 			console.log('내용:', e.target.value);
+		},
+		[reContent],
+	);
+
+	// 리토크 작성! (답글)
+	const handleReTalkCreate = useCallback(
+		(e) => {
+			if (reContent.length < 20) {
+				toast.error('20자 이상 작성해주세요.');
+				return;
+			}
+			reTalkCreateMu({ content: reContent });
+
+			console.log('리토크 작성');
+			setWriteReply(!writeReply);
+		},
+		[reContent],
+	);
+
+	// 토크 수정!
+	const handleTalkUpdate = useCallback(
+		(e) => {
+			if (newContent.length < 20) {
+				toast.error('20자 이상 작성해주세요.');
+				return;
+			}
+
+			// 리토크
+			if (isReply) {
+				reTalkUpdateMu({ content: newContent });
+			} else {
+				talkUpdateMu({ content: newContent });
+			}
+			setWritable(false);
 		},
 		[newContent],
 	);
@@ -124,16 +125,13 @@ function DetailTalkList({
 		setOpenDeleteModal(true);
 	}, []);
 
-	// talk 삭제 요청! ===> 이거 target이 뭐냐에 따라 좀 달라야할듯
 	const handleDeleteTalk = useCallback(() => {
 		// 리토크
 		if (isReply) {
-			console.log('이건 리토크');
+			reTalkDeleteMu();
 		} else {
 			talkDeleteMu();
 		}
-		// console.log('삭제 요청');
-		// talkDeleteMu();
 		setOpenDeleteModal(false);
 	}, []);
 
@@ -142,9 +140,15 @@ function DetailTalkList({
 			{isReply && <MdSubdirectoryArrowRight />}
 			<Box>
 				<TopContainer>
-					<Name className={shopper && 'shopper'}>
-						{displayName || (shopper ? '구매자' : '비구매자')}
-					</Name>
+					<User>
+						<Name>{displayName} </Name>
+						{shopper && (
+							<>
+								<HiBadgeCheck />
+								<span>이 상품을 구매하셨어요!</span>
+							</>
+						)}
+					</User>
 					<ButtonContainer>
 						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
 							수정
@@ -199,7 +203,7 @@ const TalkContainer = styled.li`
 	display: flex;
 	background-color: white;
 	width: 100%;
-	padding: 34px 10px 26px 10px;
+	padding: 34px 10px 30px 10px;
 	border-bottom: 1px solid #f1f1f1;
 
 	svg {
@@ -221,13 +225,25 @@ const TopContainer = styled.div`
 	width: 100%;
 `;
 
+const User = styled.div`
+	display: flex;
+	align-items: center;
+
+	& > svg {
+		margin: 0 2px 0 5px;
+		font-size: 16px;
+	}
+
+	span {
+		font-size: 9px;
+		color: var(--purple-300);
+	}
+`;
+
 const Name = styled.div`
 	font-size: 16px;
 	font-weight: var(--bold);
-
-	&.shopper {
-		color: var(--purple-300);
-	}
+	margin-top: 1px;
 `;
 
 const InfoContainer = styled.div`
