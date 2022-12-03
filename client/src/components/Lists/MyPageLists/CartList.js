@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import styled from 'styled-components';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import CounterBtn from '../../Buttons/CounterButton';
@@ -33,6 +33,7 @@ function CartList({ data, item, sub }) {
 	// const { mutate: patchCheckFalse } = usePatch(
 	// 	`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/exclude/${data.itemCartId}?buynow=false`,
 	// );
+
 	const { mutate: patchCheck } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/exclude/${data.itemCartId}?buynow=${isChecked}`,
 	);
@@ -59,20 +60,10 @@ function CartList({ data, item, sub }) {
 		toast.error('삭제되었습니다.');
 	}, []);
 
-	// useEffect(() => {
-	// 	patchCheck();
-	// }, [isChecked]);
-
 	const handleCheck = async () => {
 		await setChecked(!isChecked);
 		await patchCheck();
 	};
-	// const handleCheck = useCallback(() => {
-	// 	console.log(isChecked);
-	// 	setChecked(!isChecked);
-	// 	// patchCheck();
-	// 	console.log(isChecked);
-	// }, [isChecked]);
 
 	return (
 		<Box>

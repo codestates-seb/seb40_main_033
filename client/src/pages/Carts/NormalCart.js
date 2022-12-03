@@ -81,13 +81,11 @@ const Box = styled.div`
 `;
 
 const List = styled.div`
-	/* padding-top: 20px; */
 	background-color: white;
 	border-radius: 10px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	margin-top: 20px;
 	width: 983px;
-	/* height: 1094px; */
 	flex-direction: column;
 	display: flex;
 	align-items: center;
