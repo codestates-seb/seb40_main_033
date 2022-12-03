@@ -78,8 +78,10 @@ public class ItemCartController {
     }
 
     @DeleteMapping("/itemcarts/{itemcart-id}") // 장바구니에서 특정 아이템 삭제
-    public ResponseEntity deleteItemCart(@PathVariable("itemcart-id") @Positive long itemCartId) {
-        itemCartService.deleteItemCart(itemCartId);
+    public ResponseEntity deleteItemCart(@PathVariable("itemcart-id") @Positive long itemCartId,
+                                         @RequestParam(value = "subscription") boolean subscription) {
+        long cartId = itemCartService.deleteItemCart(itemCartId);
+        cartService.refreshCart(cartId, subscription);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

@@ -64,9 +64,12 @@ public class ItemCartService {
         return itemCartRepository.save(itemCart);
     }
 
-    public void deleteItemCart(long itemCartId) { // 장바구니 항목 삭제
+    public long deleteItemCart(long itemCartId) { // 장바구니 항목 삭제
         ItemCart itemCart = findVerifiedItemCart(itemCartId);
+        long cartId = itemCart.getCart().getCartId(); // 장바구니 리프레시를 위해 카트 정보 확인
         itemCartRepository.delete(itemCart);
+
+        return cartId;
     }
 
     public List<ItemCart> findItemCarts(Cart cart, boolean subscription) { // 장바구니 목록 조회
