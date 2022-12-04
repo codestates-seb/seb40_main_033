@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import MypageTalk from '../../components/Lists/MyPageLists/Talk/MyPageTalk';
 import Pagination from '../../components/Etc/Pagination';
 import { useGet } from '../../hooks/useFetch';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 // 작성글 관리 - 토크
 function NoteTalk() {
@@ -14,7 +15,7 @@ function NoteTalk() {
 	const talks = data?.data?.data;
 	console.log(talks);
 
-	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
+	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
 	return (
 		<>

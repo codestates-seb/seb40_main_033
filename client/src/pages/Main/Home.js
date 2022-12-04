@@ -5,6 +5,7 @@ import MainCaroucel from '../../components/Caroucel/MainCaroucel';
 import { login } from '../../redux/slice/userSlice';
 import MainSection from './MainSection';
 import { useGet } from '../../hooks/useFetch';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 const sectionTitle = [
 	['Best', '인기 많은 상품만 모았어요!'],
@@ -31,7 +32,7 @@ function Home() {
 	);
 
 	const list = data?.data;
-
+	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
 	return (
 		<div>

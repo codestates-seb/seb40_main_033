@@ -1,10 +1,8 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import styled, { css } from 'styled-components';
-import Pagination from '../../components/Etc/Pagination';
+import styled from 'styled-components';
 import WishListCards from '../../components/Lists/WishListCards';
 import { useGet } from '../../hooks/useFetch';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 function WishList() {
 	const { pathname } = useLocation();
@@ -17,7 +15,7 @@ function WishList() {
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes',
 		pathname,
 	);
-	if (isLoading) return <PendingBox>아이템을 불러오는 중입니다...</PendingBox>;
+	if (isLoading) return <LoadingSpinner />;
 	if (isError)
 		return <PendingBox className="error">{error.message}</PendingBox>;
 	return (
@@ -30,11 +28,9 @@ function WishList() {
 					/>
 				))}
 			</WishBox>
-			{/* {wishListItems.data.length !== 0 ? (
-				<Pagination total={wishListItems.data.length} limit={16} />
-			) : (
-				<h1>상품이 없어연!!!</h1>
-			)} */}
+			{wishListItems.data.length === 0 && (
+				<PendingBox>찜한 상품이 없습니다!</PendingBox>
+			)}
 		</EntireContainer>
 	);
 }
