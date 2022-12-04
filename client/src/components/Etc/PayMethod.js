@@ -21,8 +21,8 @@ export default function PayMethod({ payData }) {
 				orderId: `${orderId}abcdef`, // 주문 id
 				orderName: `${itemOrders.data[0].item.title}, ${itemOrders.data.length} 건`, // 결제상품 이름
 				customerName: `Pillivery`, // 판매자, 판매처 이름
-				successUrl: 'http://localhost:3000', // 성공시 리다이렉트 주소
-				failUrl: 'http://localhost:3000', // 실패시 리다이렉트 주소
+				successUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/', // 성공시 리다이렉트 주소
+				failUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/', // 실패시 리다이렉트 주소
 				validHours: 24, // 유효시간
 				cashReceipt: {
 					type: '소득공제',
