@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import Price from './Price';
 
-// 배송지 정보
 export function DestinationInfo({ name, phone, address, detailAddress }) {
 	return (
 		<InfoContainer className="top">
@@ -25,8 +24,6 @@ export function DestinationInfo({ name, phone, address, detailAddress }) {
 	);
 }
 
-// 결제 정보
-// 결제수단까지 표시하고자 하면 options 필요
 export function PaymentInfo({ payData }) {
 	return (
 		<InfoContainer className="bottom">

@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { IoIosArrowForward } from 'react-icons/io';
 import React, { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import Price from '../../Etc/Price';
 import ReviewModal from '../../Modals/ReviewModal';
@@ -21,10 +22,17 @@ function OrderDetailList({
 	period,
 	subscription,
 	orderStatus,
+	itemId,
 }) {
 	const [modalIsOpen, setIsOpen] = useState(false);
+	const navigate = useNavigate();
+
 	const openModal = useCallback(() => {
 		setIsOpen(true);
+	}, []);
+
+	const handlePageMove = useCallback(() => {
+		navigate(`/detail/${itemId}`);
 	}, []);
 
 	const review = {
@@ -41,15 +49,15 @@ function OrderDetailList({
 
 	return (
 		<Box className={inModal && 'in-modal'}>
-			<ImageContainer>
+			<ImageContainer onClick={handlePageMove}>
 				<Image src={thumbnail} alt="상품 이미지" />
 			</ImageContainer>
 			<Wrap>
 				<InformationForm className={subscription && 'subscription'}>
 					<Brand>{brand}</Brand>
-					<Name>
-						{title} {capacity && `, ${capacity}정`}
-					</Name>
+					<Name onClick={handlePageMove}>{`${title}, ${
+						capacity && `, ${capacity}정`
+					}`}</Name>
 					<Price fontSize="13px" nowPrice={nowPrice} />
 				</InformationForm>
 				{subscription && <Period>{`${period}일 마다`}</Period>}
@@ -116,6 +124,7 @@ const Wrap = styled.div`
 
 const ImageContainer = styled.div`
 	display: flex;
+	cursor: pointer;
 `;
 
 const Image = styled.img`
@@ -142,6 +151,7 @@ const Brand = styled.div`
 const Name = styled.div`
 	font-weight: var(--bold);
 	margin-bottom: 14px;
+	cursor: pointer;
 `;
 
 const BottomContainer = styled.div`

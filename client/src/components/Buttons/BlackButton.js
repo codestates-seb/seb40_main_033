@@ -24,13 +24,13 @@ const DefaultButton = styled.button`
 	${(props) =>
 		props.black
 			? css`
-					-webkit-user-select: none; // 글씨 드래그 방지
+					-webkit-user-select: none;
 					color: white;
 					background-color: var(--gray-500);
 					border: none;
 			  `
 			: css`
-					-webkit-user-select: none; // 글씨 드래그 방지
+					-webkit-user-select: none;
 					color: var(--gray-500);
 					background-color: white;
 					border: 0.5px solid var(--gray-500);

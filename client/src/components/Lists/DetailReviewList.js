@@ -14,9 +14,12 @@ function DetailReviewList({
 	createdAt,
 	content,
 	review,
+	userId,
 }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const user = localStorage.getItem('userId');
+	const [isAuthor] = useState(Number(user) === userId);
 
 	const handleFormOpen = () => {
 		setOpenForm(!openForm);
@@ -28,40 +31,24 @@ function DetailReviewList({
 
 	// review 삭제 요청!
 	const handleDeleteTalk = useCallback(() => {
-		console.log('삭제 요청');
 		setOpenDeleteModal(false);
 	}, []);
-
-	// const review = {
-	// 	item: {
-	// 		reviewId,
-	// 		content,
-	// 		brand,
-	// 		thumbnail,
-	// 		title,
-	// 		nowPrice,
-	// 		beforePrice,
-	// 		discountRate,
-	// 		quantity,
-	// 		star,
-	// 		userId,
-	// 		itemId,
-	// 	},
-	// };
 
 	return (
 		<Box>
 			<TopContainer>
 				<Name>{displayName}</Name>
-				<ButtonContainer>
-					<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
-						수정
-					</LetterButtonColor>
-					<span />
-					<LetterButtonColor onClick={handleDeleteClick} fontSize="12px">
-						삭제
-					</LetterButtonColor>
-				</ButtonContainer>
+				{isAuthor && (
+					<ButtonContainer>
+						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
+							수정
+						</LetterButtonColor>
+						<span />
+						<LetterButtonColor onClick={handleDeleteClick} fontSize="12px">
+							삭제
+						</LetterButtonColor>
+					</ButtonContainer>
+				)}
 			</TopContainer>
 			<InfoContainer>
 				<LongTextStar noText star={star} />

@@ -3,6 +3,7 @@ import { IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
+import { BsListStars } from 'react-icons/bs';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import { DotDate } from '../../Etc/ListDate';
 import Price from '../../Etc/Price';
@@ -12,15 +13,22 @@ import { useDelete } from '../../../hooks/useFetch';
 function OrderList({ list }) {
 	const navigate = useNavigate();
 	const [openCancel, setOpenCancel] = useState(false);
-
 	const { mutate, isLoading, isError, error, response } = useDelete(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/${list.orderId}`,
 	);
+
+	const handlePageMove = useCallback(() => {
+		navigate(`/detail/${list.item.itemId}`);
+	}, []);
 
 	// 상세로 이동
 	const handleDetailClick = useCallback(() => {
 		navigate(`/mypage/order/${list.orderId}`);
 	}, []);
+
+	const handleItemClick = () => {
+		navigate(`/detail/${list.item.itemId}`);
+	};
 
 	// 취소 모달
 	const handleCancelClick = useCallback(() => {
@@ -34,21 +42,22 @@ function OrderList({ list }) {
 		toast.success('취소되었습니다.');
 	}, []);
 
-	const statusEng = ['ORDER_COMPLETE', 'ORDER_CANCEL', 'ORDER_SUBSCRIBE'];
-	const statusKr = ['주문완료', '주문취소', '구독 중'];
-	const idx = statusEng.indexOf(list.orderStatus);
-	const status = statusKr[idx];
+	const status = list.orderStatus.includes('CANCEL') ? '주문취소' : '주문완료';
 
 	return (
 		<Box>
-			<Image src={list.item.thumbnail} alt="상품 이미지" />
+			<Image
+				src={list.item.thumbnail}
+				alt="상품 이미지"
+				onClick={handleItemClick}
+			/>
 			<MainContainer>
 				<InfoContainer>
 					<ShoppingInfo>
 						<DeliveryStatus>{status}</DeliveryStatus>
 						<DotDate date={list.createdAt} />
 					</ShoppingInfo>
-					<Name>
+					<Name onClick={handleItemClick}>
 						{`${list.item.brand}, ${list.item.title}, ${list.item.capacity}정 
 						${list.item.length > 1 ? `외 ${list.item.totalItems - 1}개` : ''}`}
 					</Name>
@@ -117,6 +126,7 @@ const Image = styled.img`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const InfoContainer = styled.div`
@@ -142,6 +152,7 @@ const Name = styled.div`
 	font-size: 16px;
 	font-weight: var(--bold);
 	margin-bottom: 20px;
+	cursor: pointer;
 `;
 
 const BtnContainer = styled.div`

@@ -45,9 +45,12 @@ export const fetchLogIn = async ({ email, password }) => {
 		username: email,
 		password,
 	});
-	const { authorization: accessToken, refresh: refreshToken } = headers;
-	return { accessToken, refreshToken };
-	// return data;
+	const {
+		authorization: accessToken,
+		refresh: refreshToken,
+		userid: userId,
+	} = headers;
+	return { accessToken, refreshToken, userId };
 };
 
 export const fetchUserInfos = async () => {

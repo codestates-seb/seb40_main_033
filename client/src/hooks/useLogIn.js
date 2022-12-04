@@ -13,8 +13,8 @@ export default function useLogIn() {
 		// () => ({ accessToken: 'asdasd', refreshToken: 'sdfsdf' }),
 		(form) => fetchLogIn(form),
 		{
-			onSuccess: async ({ accessToken, refreshToken }, { email }) => {
-				dispatch(login({ accessToken, refreshToken, email }));
+			onSuccess: async ({ accessToken, refreshToken, userId }, { email }) => {
+				dispatch(login({ accessToken, refreshToken, email, userId }));
 				toast.success('로그인 되었습니다 !');
 				navigate('/', { replace: true });
 			},
