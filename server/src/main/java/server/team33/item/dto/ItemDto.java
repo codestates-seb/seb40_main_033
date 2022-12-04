@@ -72,6 +72,8 @@ public class ItemDto {
         private String content;
         private int capacity;
         private int price;
+        private int discountRate;
+        private int discountPrice;
         private double starAvg;
         private int reviewSize;
         private Brand brand;

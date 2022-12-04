@@ -31,6 +31,8 @@ public interface WishMapper {
         wishItemResponseDto.setContent(wish.getItem().getContent());
         wishItemResponseDto.setCapacity(wish.getItem().getCapacity());
         wishItemResponseDto.setPrice(wish.getItem().getPrice());
+        wishItemResponseDto.setDiscountRate(wish.getItem().getDiscountRate());
+        wishItemResponseDto.setDiscountPrice(wish.getItem().getDiscountPrice());
         wishItemResponseDto.setBrand(wish.getItem().getBrand());
         wishItemResponseDto.setNutritionFacts(
                 itemMapper.nutritionFactToNutritionFactResponseDto(wish.getItem().getNutritionFacts()));
