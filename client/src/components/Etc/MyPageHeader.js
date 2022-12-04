@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { TempLogo } from '../../assets/Icons';
-import { useGet } from '../../hooks/useFetch';
 import { GrayLetterButton } from '../Buttons/LetterButton';
 import { logout } from '../../redux/slice/userSlice';
 

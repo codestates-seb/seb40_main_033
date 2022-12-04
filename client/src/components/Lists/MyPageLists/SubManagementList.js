@@ -56,6 +56,7 @@ function SubManagementList({ subManageData }) {
 	}, []);
 	const handleCancel = useCallback(() => {
 		deleteSub();
+		setOpenCancelModal(false);
 	}, []);
 
 	return (
