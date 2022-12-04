@@ -4,17 +4,6 @@ import { useCallback, useState } from 'react';
 import { usePost } from '../../hooks/useFetch';
 
 function WishlistButton({ isChecked, itemId, setIsChecked }) {
-	/*
-	! isChecked
-	이미 체크 되어있는 지 확인하는 상태 0(FALSE) 1(TRUE)
-	  ===> 상위에서 관리!
-		* 현수님은 그냥 isChecked로 내려주시면 될 것 같구 저는 상태로 관리할게요~
-		
-	! request
-	요청은 체크 상태와는 반대로 가야함!
-	  ===> request라는 상태로 관리!
-	*/
-
 	const [request, setRequest] = useState(isChecked ? 0 : 1);
 	const { mutate, response } = usePost(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes/${itemId}?wish=${request}`,

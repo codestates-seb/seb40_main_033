@@ -37,8 +37,19 @@ function Summary({
 		period: 30,
 		subscription: false,
 	});
-	const [isCheckedWish, setIsCheckedWish] = useState(false);
-	// const [isCheckedWish, setIsCheckedWish] = useState(wishlist.includes(itemId));
+
+	const { data: WishData } = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes/item',
+		`detail/wishs`,
+	);
+
+	const [isCheckedWish, setIsCheckedWish] = useState(
+		WishData?.data?.data.includes(itemId),
+	);
+
+	useEffect(() => {
+		setIsCheckedWish(WishData?.data?.data.includes(itemId));
+	}, [WishData]);
 
 	const {
 		mutate: cartMu,
