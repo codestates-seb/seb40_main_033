@@ -6,7 +6,6 @@ import {
 	AiOutlineShoppingCart,
 } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 function RightNav() {
 	const accessToken = localStorage.getItem('accessToken');
@@ -20,8 +19,11 @@ function RightNav() {
 
 	const handleSearch = useCallback((e) => {
 		if (e.key === 'Enter') {
-			navigate(`/search`);
-			setOpenSearch(false);
+			if (e.target.value === '') {
+				navigate('/search');
+			} else {
+				navigate(`/search?keyword=${e.target.value.replaceAll(' ', '_')}`);
+			}
 		}
 	}, []);
 
