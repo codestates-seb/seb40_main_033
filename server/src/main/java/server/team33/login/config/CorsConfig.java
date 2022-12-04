@@ -20,6 +20,7 @@ public class CorsConfig {
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addExposedHeader("Authorization");
         corsConfiguration.addExposedHeader("Refresh");
+        corsConfiguration.addExposedHeader("userId");
 
         source.registerCorsConfiguration("/**",corsConfiguration);
 

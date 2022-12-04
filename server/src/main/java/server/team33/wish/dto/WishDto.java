@@ -23,6 +23,8 @@ public class WishDto {
         private String content;
         private int capacity;
         private int price;
+        private int discountRate;
+        private int discountPrice;
         private Brand brand;
         private List<NutritionFactDto.Response> nutritionFacts;
         private double starAvg;

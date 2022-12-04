@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import server.team33.cart.service.CartService;
 import server.team33.cart.service.ItemCartService;
 import server.team33.item.mapper.ItemMapper;
 import server.team33.item.service.ItemService;
@@ -38,6 +39,7 @@ public class OrderController {
     private final ItemService itemService;
     private final ItemOrderService itemOrderService;
     private final ItemCartService itemCartService;
+    private final CartService cartService;
     private final UserService userService;
     private final OrderMapper orderMapper;
     private final ItemMapper itemMapper;
@@ -63,6 +65,8 @@ public class OrderController {
 
         List<ItemOrder> itemOrders = itemOrderMapper.itemCartsToItemOrders(
                 itemCartService.findItemCarts(user.getCart(), subscription, true), itemCartService);
+
+        cartService.refreshCart(user.getCart().getCartId(), subscription);
 
         Order order = orderService.callOrder(itemOrders, user);
 

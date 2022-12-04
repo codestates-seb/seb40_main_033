@@ -87,12 +87,13 @@ public interface ItemOrderMapper {
     default ItemOrderDto.SubResponse itemOrderToSubResponse(ItemOrder itemOrder, ItemMapper itemMapper) {
 
         ItemOrderDto.SubResponse subResponse = new ItemOrderDto.SubResponse();
+        subResponse.setOrderId(itemOrder.getOrder().getOrderId());
         subResponse.setItemOrderId(itemOrder.getItemOrderId());
         subResponse.setQuantity(itemOrder.getQuantity());
         subResponse.setPeriod(itemOrder.getPeriod());
         subResponse.setItem(itemMapper.itemToItemSimpleResponseDto(itemOrder.getItem()));
 
-        int totalPrice = subResponse.getQuantity() * (itemOrder.getItem().getPrice() - itemOrder.getItem().getDiscountPrice());
+        int totalPrice = subResponse.getQuantity() * (itemOrder.getItem().getDiscountPrice());
 
         subResponse.setTotalPrice(totalPrice);
         subResponse.setNextDelivery(itemOrder.getNextDelivery());

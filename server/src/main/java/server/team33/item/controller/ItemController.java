@@ -49,7 +49,7 @@ public class ItemController {
                                   @RequestParam(value="talkPage", defaultValue="1") int talkPage) {
         Item item = itemService.findItem(itemId);
         return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemDetailResponseDto(
-                item, reviewService, reviewMapper, talkService, talkMapper, reviewPage-1, 3, talkPage-1, 2)), HttpStatus.OK);
+                item, reviewService, reviewMapper, talkService, talkMapper, reviewPage-1, 5, talkPage-1, 5)), HttpStatus.OK);
     }
 
 

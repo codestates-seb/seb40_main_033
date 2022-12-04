@@ -168,6 +168,8 @@ public interface ItemMapper {
         itemCategoryResponse.setContent(item.getContent());
         itemCategoryResponse.setCapacity(item.getCapacity());
         itemCategoryResponse.setPrice(item.getPrice());
+        itemCategoryResponse.setDiscountRate(item.getDiscountRate());
+        itemCategoryResponse.setDiscountPrice(item.getDiscountPrice());
         itemCategoryResponse.setStarAvg(item.getStarAvg());
         itemCategoryResponse.setReviewSize(item.getReviews().size());
         itemCategoryResponse.setBrand(item.getBrand());
