@@ -104,6 +104,11 @@ const RightContainer = styled(LeftContainer)`
 	align-items: center;
 	display: flex;
 	justify-content: flex-start;
+	overflow-x: visible;
+	overflow-y: scroll;
+	::-webkit-scrollbar {
+		display: none;
+	}
 `;
 
 const Title = styled.h1`
