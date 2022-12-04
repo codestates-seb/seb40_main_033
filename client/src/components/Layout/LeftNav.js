@@ -6,7 +6,14 @@ import { GrPowerCycle } from 'react-icons/gr';
 import { RiHeartAddLine } from 'react-icons/ri';
 import { AiOutlinePlusCircle, AiOutlineThunderbolt } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import { Skin, Brain, Intestine, TempLogo, Liver } from '../../assets/Icons';
+import {
+	Skin,
+	Brain,
+	Intestine,
+	TempLogo,
+	Liver,
+	Logo,
+} from '../../assets/Icons';
 
 function LeftNav() {
 	const [openCategories, setOpenCategories] = useState(false);
@@ -56,7 +63,7 @@ function LeftNav() {
 		<Container>
 			<Nav>
 				<Link to="/">
-					<TempLogo />
+					<Logo />
 				</Link>
 				<Hamburger onClick={handleCategoriesOpen}>
 					<div className={openCategories ? 'bar1' : null} />
@@ -205,7 +212,7 @@ const Category = styled.div`
 `;
 
 const Hamburger = styled.div`
-	margin: 60px 0 20px 0;
+	margin: 45px 0 20px 0;
 	cursor: pointer;
 
 	div {
