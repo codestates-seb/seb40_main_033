@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
 function App() {
 	return (
 		<HelmetProvider>
-			<Helmet title="Pillivery" />
+			<Helmet title="Pillivery | With Pillivery Subscribe Health" />
 			<QueryClientProvider client={queryClient}>
 				<Provider store={store}>
 					<GlobalStyle />
