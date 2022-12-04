@@ -72,7 +72,9 @@ function LeftNav() {
 					<CategoryContainer>
 						{categories.map((el, i) => (
 							<Link
-								to={`/list?categoryName=${categories[i].replaceAll(' ', '_')}`}
+								to={`/list?categoryName=${categories[i]
+									.replaceAll(' ', '_')
+									.replaceAll('/', '_')}`}
 								key={`${i.toString()}-${el}`}
 								onClick={clickCategories}
 							>

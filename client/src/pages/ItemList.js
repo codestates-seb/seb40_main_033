@@ -59,7 +59,14 @@ function ItemList() {
 
 	return (
 		<Box>
-			<PageTitle title={category.split('_').join(' ')} refetch={refetch} />
+			<PageTitle
+				title={
+					category === '관절_뼈_건강'
+						? '관절/뼈 건강'
+						: category.split('_').join(' ')
+				}
+				refetch={refetch}
+			/>
 			<Brand>
 				<BrandsWindow />
 			</Brand>
