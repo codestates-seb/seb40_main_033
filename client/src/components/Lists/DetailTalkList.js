@@ -28,6 +28,8 @@ function DetailTalkList({
 	const [newContent, setNewContent] = useState(content || reTalkContent); // 업데이트할 토크 컨텐츠
 	const [reContent, setReContent] = useState(''); // 새로 작성한 리토크
 	const { loginStatus } = useSelector((store) => store.user);
+	const user = localStorage.getItem('userId');
+	const [isAuthor, setIsAuthor] = useState(Number(user) === userId);
 
 	// 토크 수정
 	const { mutate: talkUpdateMu, response: talkUpdateRes } = usePatch(
@@ -149,15 +151,17 @@ function DetailTalkList({
 							</>
 						)}
 					</User>
-					<ButtonContainer>
-						<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
-							수정
-						</LetterButtonColor>
-						<span />
-						<LetterButtonColor onClick={handleDeleteClick} fontSize="12px">
-							삭제
-						</LetterButtonColor>
-					</ButtonContainer>
+					{isAuthor && (
+						<ButtonContainer>
+							<LetterButtonColor onClick={handleFormOpen} fontSize="12px">
+								수정
+							</LetterButtonColor>
+							<span />
+							<LetterButtonColor onClick={handleDeleteClick} fontSize="12px">
+								삭제
+							</LetterButtonColor>
+						</ButtonContainer>
+					)}
 				</TopContainer>
 				{writable ? (
 					<TalkForm
