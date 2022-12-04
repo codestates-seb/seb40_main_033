@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/carts").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/carts/**").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/carts/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/payments/**").hasRole("USER")
+//                .antMatchers(HttpMethod.GET, "/payments/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/wishes/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/wishes/**").hasRole("USER")
                 .antMatchers( "/wishes/**").hasRole("USER")

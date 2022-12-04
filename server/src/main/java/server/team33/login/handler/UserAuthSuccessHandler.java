@@ -75,7 +75,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         queryParams.add("access_token", "Bearer " + accessToken);
         queryParams.add("refresh_token", refreshToken);
         log.info("query = {}", queryParams);
-        return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(3000) // 호스트랑 포트는 나중에 변경해야한다.
+        return UriComponentsBuilder.newInstance().scheme("http").host("pillivery.s3-website.ap-northeast-2.amazonaws.com")
                 .queryParams(queryParams).build().toUri();
     }
 
@@ -85,7 +85,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         queryParams.add("email", principalDetails.getUsername());
         queryParams.add("userId", String.valueOf(principalDetails.getUser().getUserId()));
         log.error("{}", queryParams);
-        return UriComponentsBuilder.newInstance().scheme("http").host("localhost").port(3000) // TODO 호스트랑 포트는 나중에 변경해야한다.
+        return UriComponentsBuilder.newInstance().scheme("http").host("pillivery.s3-website.ap-northeast-2.amazonaws.com")
                 .path("/signup").queryParams(queryParams).build().toUri();
     }
 
