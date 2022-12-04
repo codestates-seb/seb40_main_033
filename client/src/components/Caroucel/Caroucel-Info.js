@@ -1,7 +1,8 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ColoredButton } from '../Buttons/PurpleButton';
 
-function CaroucelInfo({ type, title, description, color }) {
+function CaroucelInfo({ type, title, description, color, link }) {
 	return (
 		<InfoContainer>
 			<Type>{type}</Type>
@@ -17,9 +18,16 @@ function CaroucelInfo({ type, title, description, color }) {
 					<Description key={`${i.toString()}-${text}`}>{text}</Description>
 				))}
 			</DescriptionBox>
-			<ColoredButton type="submit" width="110px" height="35px" bgColor={color}>
-				READ MORE
-			</ColoredButton>
+			<Link to={link}>
+				<ColoredButton
+					type="submit"
+					width="110px"
+					height="35px"
+					bgColor={color}
+				>
+					READ MORE
+				</ColoredButton>
+			</Link>
 		</InfoContainer>
 	);
 }
