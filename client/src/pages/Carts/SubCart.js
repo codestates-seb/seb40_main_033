@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
-import { useGet, usePost } from '../../hooks/useFetch';
+import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
+import usePurchase from '../../hooks/usePurchase';
 
 // 정기 장바구니
 function SubCart() {
@@ -22,9 +22,14 @@ function SubCart() {
 	);
 	// console.log('items', items);
 
-	const { mutate } = usePost(
+	const { mutate: purchaseMutate } = usePurchase(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders?subscription=true',
+		'subscription',
 	);
+
+	const handleOrder = () => {
+		purchaseMutate();
+	};
 
 	if (isLoading) {
 		return <LoadingSpinner />;
@@ -63,7 +68,7 @@ function SubCart() {
 					/>
 				</Display>
 				<Button>
-					<PurpleButton width="143px" height="50px" onClick={() => mutate()}>
+					<PurpleButton width="143px" height="50px" onClick={handleOrder}>
 						구매하기
 					</PurpleButton>
 				</Button>
