@@ -5,7 +5,6 @@ import DefaultPayment from '../components/Etc/DefaultPayment';
 function Payment() {
 	const location = useLocation();
 	const payData = location.state;
-	console.log(payData, '페이먼트');
 	return <DefaultPayment payData={payData} titleName="일반 결제" />;
 }
 
