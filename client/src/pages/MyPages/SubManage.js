@@ -1,6 +1,7 @@
 // 정기구독관리
 import { useLocation, useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import SubManagementList from '../../components/Lists/MyPageLists/SubManagementList';
 import { useGet } from '../../hooks/useFetch';
 
@@ -16,6 +17,7 @@ function SubManage() {
 		pathname,
 	);
 	console.log(subManageDatas, '섭매니지');
+	if (isLoading) return <LoadingSpinner />;
 	return (
 		<SubManageContainer>
 			{subManageDatas?.data?.data.map((subManageData, idx) => (

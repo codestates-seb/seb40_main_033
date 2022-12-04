@@ -17,6 +17,7 @@ import GoodbyeModal from '../../components/Modals/GoodbyeModal';
 import { useGet, useDelete, usePatch } from '../../hooks/useFetch';
 import { change } from '../../redux/slice/nickNameSlice';
 import { logout } from '../../redux/slice/userSlice';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 export function UserInfo() {
 	const { mutate: accountDelete, isError: deleteError } = useDelete(
@@ -150,7 +151,7 @@ export function UserInfo() {
 		console.log(value);
 		userPatch(value);
 	};
-	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
+	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
 	return (
 		<MainContainer>

@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import Pagination from '../../components/Etc/Pagination';
 import WishListCards from '../../components/Lists/WishListCards';
 import { useGet } from '../../hooks/useFetch';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 function WishList() {
 	const { pathname } = useLocation();
@@ -17,7 +18,7 @@ function WishList() {
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes',
 		pathname,
 	);
-	if (isLoading) return <PendingBox>아이템을 불러오는 중입니다...</PendingBox>;
+	if (isLoading) return <LoadingSpinner />;
 	if (isError)
 		return <PendingBox className="error">{error.message}</PendingBox>;
 	return (
