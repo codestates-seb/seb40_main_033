@@ -10,8 +10,8 @@ import server.team33.order.entity.OrderStatus;
 import server.team33.user.entity.User;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Page<Order> findAllByUserAndSubscriptionAndOrderStatusNotAndOrderStatusNot(
-            Pageable pageable, User user, boolean subscription, OrderStatus orderStatus1, OrderStatus orderStatus2);
+    Page<Order> findAllByUserAndSubscriptionAndOrderStatusNot(
+            Pageable pageable, User user, boolean subscription, OrderStatus orderStatus1);
 
     @Query("Select distinct o from ORDERS o join ITEM_ORDERS io on o.orderId = io.order.orderId " +
             "where io.item.itemId = :itemId and o.user.userId = :userId")

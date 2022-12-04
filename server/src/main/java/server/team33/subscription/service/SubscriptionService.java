@@ -42,13 +42,15 @@ public class SubscriptionService {
     }
 
 
-    public ZonedDateTime  changePeriod( Long orderId, Integer period ) throws SchedulerException, InterruptedException{
+    public ItemOrder changePeriod( Long orderId, Integer period ) throws SchedulerException, InterruptedException{
 
         ItemOrder itemOrder = itemOrderService.setItemPeriod(orderId, period);
         log.info("changed period = {}", itemOrder.getPeriod());
 
-        if(payDirectly(orderId, period, itemOrder))
-            return itemOrder.getPaymentDay().plusDays(itemOrder.getPeriod());
+        if(payDirectly(orderId, period, itemOrder)) {
+            itemOrder.getPaymentDay().plusDays(itemOrder.getPeriod());
+            return itemOrder;
+        }
 
         ZonedDateTime paymentDay = itemOrder.getPaymentDay();
         String nextDelivery = String.valueOf(paymentDay.plusDays(itemOrder.getPeriod()));
@@ -58,11 +60,12 @@ public class SubscriptionService {
 
         extendPeriod(orderId, updatedItemOrder);
 
-        return paymentDay.plusDays(itemOrder.getPeriod());
+        paymentDay.plusDays(itemOrder.getPeriod());
+        return updatedItemOrder;
     }
 
     private boolean payDirectly( Long orderId, Integer period, ItemOrder itemOrder ) throws SchedulerException{
-        boolean noMargin = itemOrder.getPaymentDay().plusSeconds(period).isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))); //바궈야진
+        boolean noMargin = itemOrder.getPaymentDay().plusDays(period).isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))); //바궈야진
         log.info("margin = {}", noMargin);
 
         if(noMargin){
@@ -85,11 +88,12 @@ public class SubscriptionService {
     }
 
 
-    public ZonedDateTime delayDelivery( Long orderId, Integer delay ) throws SchedulerException{
+    public ItemOrder delayDelivery( Long orderId, Integer delay ) throws SchedulerException{
         log.info("dealyDelivery");
         ItemOrder itemOrder = itemOrderService.delayDelivery(orderId, delay);
         resetSchedule(orderId, itemOrder);
-        return itemOrder.getNextDelivery();
+//        itemOrder.getNextDelivery();
+        return itemOrder;
     }
 
     public void cancelScheduler( Long orderId ) throws SchedulerException{

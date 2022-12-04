@@ -6,7 +6,13 @@ import org.quartz.SchedulerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.team33.item.mapper.ItemMapper;
 import server.team33.order.entity.ItemOrder;
+import server.team33.order.entity.Order;
+import server.team33.order.mapper.ItemOrderMapper;
+import server.team33.order.service.ItemOrderService;
+import server.team33.order.service.OrderService;
+import server.team33.response.SingleResponseDto;
 import server.team33.subscription.service.SubscriptionService;
 
 import java.time.ZonedDateTime;
@@ -18,12 +24,20 @@ import java.util.List;
 @RequestMapping("/schedule")
 public class ScheduleController {
     private final SubscriptionService subscriptionService;
+    private final OrderService orderService;
+    private final ItemOrderService itemOrderService;
+
+    private final ItemOrderMapper itemOrderMapper;
+    private final ItemMapper itemMapper;
 
     @GetMapping("/kakao")
     public ResponseEntity startsKakaoSchedule( @RequestParam(name = "orderId") Long orderId ) throws SchedulerException{
 
         List<ItemOrder> itemOrders = subscriptionService.getItemOrders(orderId);
-        for(ItemOrder itemOrder : itemOrders){
+        for(ItemOrder io : itemOrders){
+            Order order = orderService.findOrder(orderId);
+            String nextDelivery = String.valueOf(order.getCreatedAt().plusDays(io.getPeriod()));
+            ItemOrder itemOrder = itemOrderService.setDeliveryInfo(orderId, order.getCreatedAt(), nextDelivery);
             subscriptionService.startSchedule(orderId, itemOrder);
         }
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
@@ -40,14 +54,16 @@ public class ScheduleController {
 //    }
 
     @PatchMapping("/change")
-    public ZonedDateTime changePeriod(
+    public ResponseEntity changePeriod(
             @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "period") Integer period ) throws SchedulerException, InterruptedException{
-        return subscriptionService.changePeriod(orderId, period);
+        ItemOrder itemOrder = subscriptionService.changePeriod(orderId, period);
+        return new ResponseEntity<>(new SingleResponseDto<>(itemOrderMapper.itemOrderToSubResponse(itemOrder, itemMapper)), HttpStatus.OK);
     }
 
     @PatchMapping("/delay")
-    public ZonedDateTime delay( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "delay") Integer delay ) throws SchedulerException{
-        return subscriptionService.delayDelivery(orderId, delay);
+    public ResponseEntity delay( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "delay") Integer delay ) throws SchedulerException{
+        ItemOrder itemOrder = subscriptionService.delayDelivery(orderId, delay);
+        return new ResponseEntity<>(new SingleResponseDto<>(itemOrderMapper.itemOrderToSubResponse(itemOrder, itemMapper)), HttpStatus.OK);
     }
 
     @DeleteMapping("/cancel")

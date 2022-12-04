@@ -6,6 +6,8 @@ import org.quartz.Trigger;
 import org.springframework.stereotype.Component;
 import server.team33.order.entity.ItemOrder;
 
+import java.util.Date;
+
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
@@ -21,8 +23,8 @@ public class TriggerService {
                                   .withIntervalInMinutes(itemOrder.getPeriod())
                                   .repeatForever()
             )
-                .startNow()
-//                .startAt(Date.from(itemOrder.getNextDelivery().toInstant())) //TODO 정석
+//                .startNow()
+                .startAt(Date.from(itemOrder.getNextDelivery().toInstant())) //TODO 정석
                 .build();
     }
 
