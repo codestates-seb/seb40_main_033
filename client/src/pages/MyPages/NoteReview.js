@@ -1,6 +1,7 @@
+/* eslint-disable react/style-prop-object */
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import Pagination from '../../components/Etc/Pagination';
+// import Pagination from '../../components/Etc/Pagination';
 import MyPageReviewList from '../../components/Lists/MyPageLists/MyPageReviewList';
 import { useGet } from '../../hooks/useFetch';
 
@@ -16,32 +17,35 @@ function NoteReview() {
 	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
 	if (isError) return <div>{error.message}</div>;
 
-	console.log('lists', lists);
 	return (
 		<>
 			<ListContainer>
-				{lists?.map((list) => (
-					<MyPageReviewList
-						key={list.reviewId}
-						createdAt={list.createdAt}
-						content={list.content}
-						quantity={list.quantity}
-						reviewId={list.reviewId}
-						star={list.star}
-						userId={list.userId}
-						itemId={list.item.itemId}
-						brand={list.item.brand}
-						thumbnail={list.item.thumbnail}
-						title={list.item.title}
-						nowPrice={list.item.disCountPrice || list.item.price}
-						discountRate={
-							list.item.discountRate === 0 ? '' : list.item.discountRate
-						}
-						beforePrice={list.item.disCountPrice ? list.item.price : null}
-					/>
-				))}
+				{lists.length === 0 ? (
+					<div className="blank">작성하신 리뷰가 없습니다.</div>
+				) : (
+					lists?.map((list) => (
+						<MyPageReviewList
+							key={list.reviewId}
+							createdAt={list.createdAt}
+							content={list.content}
+							quantity={list.quantity}
+							reviewId={list.reviewId}
+							star={list.star}
+							userId={list.userId}
+							itemId={list.item.itemId}
+							brand={list.item.brand}
+							thumbnail={list.item.thumbnail}
+							title={list.item.title}
+							nowPrice={list.item.disCountPrice || list.item.price}
+							discountRate={
+								list.item.discountRate === 0 ? '' : list.item.discountRate
+							}
+							beforePrice={list.item.disCountPrice ? list.item.price : null}
+						/>
+					))
+				)}
 			</ListContainer>
-			<Pagination total="10" limit="8" />
+			{/* <Pagination total="10" limit="8" /> */}
 		</>
 	);
 }
@@ -61,6 +65,14 @@ const ListContainer = styled.main`
 		:last-child {
 			border: none;
 		}
+	}
+
+	.blank {
+		height: 200px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 16px;
 	}
 `;
 
