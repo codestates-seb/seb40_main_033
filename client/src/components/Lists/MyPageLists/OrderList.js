@@ -43,6 +43,7 @@ function OrderList({ list }) {
 	}, []);
 
 	const status = list.orderStatus.includes('CANCEL') ? '주문취소' : '주문완료';
+	const totalNum = Number(list.totalItems);
 
 	return (
 		<Box>
@@ -59,7 +60,7 @@ function OrderList({ list }) {
 					</ShoppingInfo>
 					<Name onClick={handleItemClick}>
 						{`${list.item.brand}, ${list.item.title}, ${list.item.capacity}정 
-						${list.item.length > 1 ? `외 ${list.item.totalItems - 1}개` : ''}`}
+						${totalNum > 1 ? `외 ${totalNum - 1}개` : ''}`}
 					</Name>
 					<Price nowPrice={list.expectPrice} isTotal />
 				</InfoContainer>
