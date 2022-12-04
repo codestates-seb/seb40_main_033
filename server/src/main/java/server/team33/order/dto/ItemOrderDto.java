@@ -43,6 +43,7 @@ public class ItemOrderDto {
     @AllArgsConstructor
     public static class SubResponse { // 정기 구독 목록 조회
 
+        private long orderId;
         private long itemOrderId;
         private int quantity;
         private int period;
