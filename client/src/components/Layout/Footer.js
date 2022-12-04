@@ -32,19 +32,12 @@ function Footer() {
 				</Top>
 				<Body>
 					<BoxLeft>
+						<Text>서울특별시 강남구 영동대로 106길 12, 502호</Text>
 						<Text>
-							서울특별시 강남구 영동대로 96길 20, 5층(삼성동, 대화빌딩) 대표자:
-							김동욱
+							사업자 번호: 001-717-99-09821 , 통신판매업신고번호: 2020-서울강남
 						</Text>
-						<Text>
-							사업자 등록번호: 344-88-00965, 통신판매업신고번호:
-							2020-서울강남-02333
-						</Text>
-						<Text>
-							개인정보보호책임자: 김윤호 yhkim@wiselycompany.com, 고객센터:
-							1833-9133
-						</Text>
-						<Text>© Copyright ⓒ 2022 pillivery</Text>
+						<Text>고객센터: 1122-1234</Text>
+
 						<Box>
 							<Contents
 								as="a"
@@ -103,6 +96,7 @@ function Footer() {
 								최민석
 							</Contents>
 						</Box>
+						<Copyright>© Copyright ⓒ 2022 pillivery</Copyright>
 					</BoxLeft>
 					<BoxRight>
 						<Img />
@@ -130,7 +124,7 @@ const Wrap = styled.div`
 `;
 
 const Top = styled.div`
-	margin-top: 10px;
+	margin-top: 5px;
 	display: flex;
 `;
 
@@ -138,7 +132,7 @@ const Title = styled.div`
 	font-size: 16px;
 	color: var(--gray-200);
 	font-weight: var(--bold);
-	margin-left: 100px;
+	margin-left: 90px;
 `;
 
 const Body = styled.div`
@@ -146,11 +140,14 @@ const Body = styled.div`
 	height: 220px;
 	display: flex;
 	justify-content: space-between;
+	padding-top: 60px;
 `;
 
 const Text = styled.div`
 	color: var(--gray-200);
+	font-weight: var(--regular);
 	margin-bottom: 10px;
+	margin-left: 30px;
 `;
 
 const BoxLeft = styled.div`
@@ -165,8 +162,9 @@ const Box = styled.div`
 
 const Contents = styled.div`
 	color: var(--gray-200);
-	margin-top: 70px;
-	margin-left: 30px;
+	font-weight: var(--regular);
+	margin-top: 50px;
+	margin-left: 40px;
 `;
 
 const BoxRight = styled.div`
@@ -177,7 +175,7 @@ const Img = styled.div`
 	border: 1px solid var(--gray-200);
 	width: 60px;
 	height: 60px;
-	margin-top: 100px;
+	margin-top: 30px;
 	margin-right: 30px;
 `;
 
@@ -185,8 +183,16 @@ const Pil = styled.div`
 	color: var(--gray-200);
 	font-weight: var(--bold);
 	font-size: 18px;
-	margin-top: 120px;
+	margin-top: 60px;
 	margin-right: 240px;
+`;
+
+const Copyright = styled.div`
+	color: var(--gray-200);
+	font-weight: var(--light);
+	font-size: 13px;
+	margin-top: 30px;
+	margin-left: 200px;
 `;
 
 export default Footer;
