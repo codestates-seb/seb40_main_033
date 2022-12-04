@@ -12,6 +12,7 @@ const initialState = {
 	refreshToken: '',
 	email: '',
 	isSocial: false,
+	userId: '',
 };
 
 const userSlice = createSlice({
@@ -19,8 +20,14 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		login: (state, { payload }) => {
-			const { accessToken, refreshToken, email, keepLoggedIn, isSocial } =
-				payload;
+			const {
+				accessToken,
+				refreshToken,
+				userId,
+				email,
+				keepLoggedIn,
+				isSocial,
+			} = payload;
 
 			if (keepLoggedIn) {
 				state.keepLoggedIn = true;
@@ -30,6 +37,8 @@ const userSlice = createSlice({
 				localStorage.setItem('loginStatus', true);
 				state.accessToken = accessToken;
 				localStorage.setItem('accessToken', accessToken);
+				state.userId = userId;
+				localStorage.setItem('userId', userId);
 			}
 			state.refreshToken = refreshToken;
 			state.email = email;

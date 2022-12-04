@@ -3,6 +3,7 @@ import { IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
+import { BsListStars } from 'react-icons/bs';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import { DotDate } from '../../Etc/ListDate';
 import Price from '../../Etc/Price';
@@ -15,6 +16,10 @@ function OrderList({ list }) {
 	const { mutate, isLoading, isError, error, response } = useDelete(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/${list.orderId}`,
 	);
+
+	const handlePageMove = useCallback(() => {
+		navigate(`/detail/${list.item.itemId}`);
+	}, []);
 
 	// 상세로 이동
 	const handleDetailClick = useCallback(() => {
@@ -37,10 +42,7 @@ function OrderList({ list }) {
 		toast.success('취소되었습니다.');
 	}, []);
 
-	const statusEng = ['ORDER_COMPLETE', 'ORDER_CANCEL', 'ORDER_SUBSCRIBE'];
-	const statusKr = ['주문완료', '주문취소', '구독 중'];
-	const idx = statusEng.indexOf(list.orderStatus);
-	const status = statusKr[idx];
+	const status = list.orderStatus.includes('CANCEL') ? '주문취소' : '주문완료';
 
 	return (
 		<Box>

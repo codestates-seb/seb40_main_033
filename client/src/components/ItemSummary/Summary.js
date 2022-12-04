@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import WishlistButton from '../Buttons/WishlistButton';
 import Tag from '../Etc/Tag';
 import { BlackButton, WhiteButton } from '../Buttons/BlackButton';
@@ -26,36 +27,41 @@ function Summary({
 	reviewCount,
 }) {
 	const { pathname } = useLocation();
+	const { id } = useParams();
+
 	const navigate = useNavigate();
 	const [path, setPath] = useState(''); // 바로결제하기 클릭 시, 이동할 페이지
 	const [showOptions, setShowOptions] = useState(false);
-	const [openModal, setOpenModal] = useState(false);
-	const [modalContents, setModalContents] =
-		useState('장바구니에 상품이 담겼습니다.'); // 장바구니에 이미 담겼을 때 변경
+	const [openCartModal, setOpenCartModal] = useState(false);
+	const token = localStorage.getItem('accessToken');
 	const [orderList, setOrdertList] = useState({
 		quantity: 1,
 		period: 30,
 		subscription: false,
 	});
-	const [isCheckedWish, setIsCheckedWish] = useState(false);
-	// const [isCheckedWish, setIsCheckedWish] = useState(wishlist.includes(itemId));
 
-	const {
-		mutate: cartMu,
-		response: cartRes,
-		// isLoading: cartLoading,
-		// isError: cartIsErr,
-		// error: cartErr,
-	} = usePost(
+	const { data: WishData } = useGet(
+		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes/item',
+		`detail/wishs`,
+	);
+
+	const [isCheckedWish, setIsCheckedWish] = useState(
+		WishData?.data?.data.includes(itemId) ? 1 : 0,
+	);
+
+	useEffect(() => {
+		if (WishData?.data?.data.includes(itemId)) {
+			setIsCheckedWish(1);
+		} else {
+			setIsCheckedWish(0);
+		}
+	}, []);
+
+	const { mutate: cartMu, response: cartRes } = usePost(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/${itemId}`,
 	);
 
-	const {
-		mutate: purMu,
-		// isLoading: purLoading,
-		// isSuccess: purSuccess,
-		// isError: purIsErr,
-	} = usePurchase(
+	const { mutate: purMu } = usePurchase(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/single',
 		path,
 	);
@@ -81,7 +87,7 @@ function Summary({
 		},
 		[orderList],
 	);
-	console.log(orderList);
+
 	// * 일반/정기 선택
 	const handleTypeClick = useCallback(
 		(e) => {
@@ -97,90 +103,52 @@ function Summary({
 		[showOptions, orderList],
 	);
 
-	// * path 변경
-	// const handleParamsChange = useCallback(
-	// 	(e) => {
-	// 		if (e.target.innerText === '바로 구매하기') {
-	// 			setPath('/pay/normal');
-	// 		} else if (e.target.innerText === '장바구니 담기') {
-	// 			setPath('/pay/subscription');
-	// 		}
-	// 	},
-	// 	[path],
-	// );
-
-	console.log('path', path);
-
 	// * 결제 요청 후, 결제 페이지로 가는 함수
 	const handlePayClick = useCallback(() => {
-		console.log('📌 결제 요청 보낼 데이터!!', { ...orderList, itemId });
-		console.log('결제되면 이리로 가세요', path);
-		purMu({ ...orderList, itemId });
-		// console.log('response', response);
-
-		// if (response) {
-		// 	if (orderList.subscription) {
-		// 		navigate('/pay/subscription', { state: response.data.data });
-		// 	} else {
-		// 		navigate('/pay/normal', { state: response.data.data });
-		// 	}
-		// }
+		if (token) {
+			purMu({ ...orderList, itemId });
+		} else {
+			toast.error('로그인이 필요한 서비스입니다.');
+		}
 	}, [orderList]);
 
-	/*
-		! 장바구니에 담기 (정기)
-	{
-    "quantity":3,
-    "period":30,
-    "subscription":true
-	}
-	! 장바구니에 담기 (일반)
-	{
-    "quantity":3,
-    "subscription":false
-	}
-	*/
 	// * 장바구니 요청 후, 모달을 띄우는 함수
 	const handleOpenModalClick = useCallback(() => {
-		console.log('📌 장바구니로 보낼 데이터!', orderList);
-		cartMu({ ...orderList });
-		console.log('장바구니 요청 응답!', cartRes);
-		setOpenModal(true);
+		if (token) {
+			cartMu({ ...orderList });
+			setOpenCartModal(true);
+		} else {
+			toast.error('로그인이 필요한 서비스입니다.');
+		}
 	}, [orderList]);
 
 	// * 장바구니 페이지로 가는 함수
 	const handleCartClick = useCallback(() => {
 		if (orderList.subscription) {
-			// http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/{item-id}
 			navigate('/cart/subscription');
 		} else {
 			navigate('/cart/normal');
 		}
 	}, [orderList]);
 
-	//* 위시리스트
-	const handleWishClick = useCallback(() => {
-		console.log('하트클릭');
-		setIsCheckedWish(!isCheckedWish);
-	}, [isCheckedWish]);
+	// // 로그인 모달을 띄우는 함수
+	// const handleOpenLoginModal = () => {
+	// 	if (!token) {
+	// 		setOpenLoginModal(true);
+	// 	}
+	// };
 
-	// if (isLoading) {
-	// 	return <div>Loading...</div>;
-	// }
-
-	// if (isError) {
-	// 	return <div>Error: {error.message}</div>;
-	// }
+	// 로그인 모달 속, 로그인 페이지로 가는 함수
+	const handleLoginMove = useCallback(() => {
+		navigate('/login');
+	}, []);
 
 	return (
 		<Container>
 			<EntireContainer showOptions={showOptions}>
 				<MainContainer>
 					<HeadBox>
-						<p>
-							{brand || 'California Gold Nutrition'}
-							{/* 나중에 상품 브랜드를 받아서 바꿔줘야 합니다. */}
-						</p>
+						<p>{brand}</p>
 						<WishlistButton
 							setIsChecked={setIsCheckedWish}
 							isChecked={isCheckedWish}
@@ -188,12 +156,8 @@ function Summary({
 						/>
 					</HeadBox>
 					<MiddleBox>
-						{/* <div className="itemName">멀티비타민</div> */}
-						<NameBox>{name || '멀티비타민'}</NameBox>
-						<DescBox>
-							{content ||
-								'필수 영양소 멀티비타민&미네랄 20종. 활력충전을 위한 고함량 비타민 B군'}
-						</DescBox>
+						<NameBox>{name}</NameBox>
+						<DescBox>{content}</DescBox>
 						<TagsBox>
 							<Tag funcArr={categories} />
 						</TagsBox>
@@ -250,9 +214,9 @@ function Summary({
 				)}
 			</EntireContainer>
 			<CartModal
-				setOpenModal={setOpenModal}
-				openModal={openModal}
-				contents={modalContents}
+				setOpenModal={setOpenCartModal}
+				openModal={openCartModal}
+				contents="장바구니에 상품이 담겼습니다."
 				onClickPbtn={handleCartClick}
 			/>
 		</Container>

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import Summary from '../components/ItemSummary/Summary';
@@ -8,17 +7,18 @@ import DetailReviewList from '../components/Lists/DetailReviewList';
 import DetailTalkList from '../components/Lists/DetailTalkList';
 import TalkForm from '../components/Forms/TalkForm';
 import { useGet, usePost } from '../hooks/useFetch';
+import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 
 function Detail() {
 	// state 초기값 토크 조회값일 수도!
 
 	const { pathname } = useLocation();
 	const { id } = useParams();
+	const token = localStorage.getItem('accessToken');
 	const { isLoading, isError, data, error } = useGet(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/items/${id}`,
 		pathname,
 	);
-	const { loginStatus } = useSelector((store) => store.user);
 
 	// 토크 작성
 	const { mutate: talkMu, response } = usePost(
@@ -30,9 +30,6 @@ function Detail() {
 	// 토크 작성 요청
 	const handleSubmit = useCallback(
 		(e) => {
-			// e.preventDefault();
-			console.log('제출', content);
-			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
 			if (content.length < 20) {
 				toast.error('20자 이상 작성해주세요.');
 				return;
@@ -48,13 +45,10 @@ function Detail() {
 	const handleContent = useCallback(
 		(e) => {
 			setContent(e.target.value);
-			console.log('내용:', e.target.value);
 		},
 		[content],
 	);
 	const lists = !isLoading && data.data.data;
-
-	console.log('lists', lists);
 
 	const deliveryInfo = `배송 방법 : 택배 배송
 	배송 지역 : 전국
@@ -140,7 +134,7 @@ function Detail() {
 					<Notes>
 						<InfoTitle>Review</InfoTitle>
 						<ListsContainer>
-							{lists.reviews.data &&
+							{lists.reviews.data.length !== 0 ? (
 								lists.reviews.data.map((review) => (
 									<DetailReviewList
 										key={review.reviewId}
@@ -166,32 +160,23 @@ function Detail() {
 												star: review.star,
 											},
 										}}
-										// reviewId,
-										// content,
-										// brand,
-										// thumbnail,
-										// title,
-										// nowPrice,
-										// beforePrice,
-										// discountRate,
-										// quantity,
-										// star,
-										// userId,
-										// itemId,
 									/>
-								))}
+								))
+							) : (
+								<NoNote>작성된 리뷰가 없습니다.</NoNote>
+							)}
 						</ListsContainer>
 					</Notes>
 					<Notes className="talk">
 						<InfoTitle>Talk</InfoTitle>
-						{loginStatus && (
+						{token && (
 							<TalkForm
 								content={content}
 								handleContent={handleContent}
 								handleSubmit={handleSubmit}
 							/>
 						)}
-						{lists.talks.data &&
+						{lists.talks.data.length !== 0 ? (
 							lists.talks.data.map((talk) => (
 								<>
 									<DetailTalkList
@@ -202,7 +187,6 @@ function Detail() {
 										userId={talk.userId}
 										talkId={talk.talkId}
 										shopper={talk.shopper}
-										// talkComments={talk.talkComments}
 										displayName={talk.displayName}
 									/>
 									{talk.talkComments &&
@@ -223,7 +207,10 @@ function Detail() {
 									{/* <DetailTalkList {...talk.talkComments.map(retalk => content={retalk.content}
 										)} /> */}
 								</>
-							))}
+							))
+						) : (
+							<NoNote>작성된 토크가 없습니다.</NoNote>
+						)}
 						<ListsContainer className="talk" />
 					</Notes>
 				</Contents>
@@ -328,6 +315,10 @@ const ListsContainer = styled.div`
 	}
 `;
 
-const NoNote = styled.div``; // 작성글이 없을 경우
+const NoNote = styled.div`
+	display: flex;
+	align-items: center;
+	height: 250px;
+`; // 작성글이 없을 경우
 
 export default Detail;
