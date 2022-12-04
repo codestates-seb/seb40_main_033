@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import MypageTalk from '../../components/Lists/MyPageLists/Talk/MyPageTalk';
-import Pagination from '../../components/Etc/Pagination';
+// import Pagination from '../../components/Etc/Pagination';
 import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
@@ -13,20 +13,23 @@ function NoteTalk() {
 		pathname,
 	);
 	const talks = data?.data?.data;
-	console.log(talks);
 
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
 	return (
 		<>
 			<ListContainer>
-				{talks.map((talk) => (
-					<MypageTalk
-						key={talk.talkId || `${talk.talkCommentId.toString()}-${talk}`}
-						talk={talk}
-						isReply={talk.reply}
-					/>
-				))}
+				{talks.length === 0 ? (
+					<div className="blank">작성하신 토크가 없습니다.</div>
+				) : (
+					talks.map((talk) => (
+						<MypageTalk
+							key={talk.talkId || `${talk.talkCommentId.toString()}-${talk}`}
+							talk={talk}
+							isReply={talk.reply}
+						/>
+					))
+				)}
 			</ListContainer>
 			{/* <Pagination total="10" limit="8" /> */}
 		</>
@@ -48,6 +51,14 @@ const ListContainer = styled.main`
 		:last-child {
 			border: none;
 		}
+	}
+
+	.blank {
+		height: 200px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 16px;
 	}
 `;
 

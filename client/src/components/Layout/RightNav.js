@@ -6,6 +6,7 @@ import {
 	AiOutlineShoppingCart,
 } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
+import { IoIosArrowBack } from 'react-icons/io';
 
 function RightNav() {
 	const accessToken = localStorage.getItem('accessToken');
@@ -25,6 +26,13 @@ function RightNav() {
 				navigate(`/search?keyword=${e.target.value.replaceAll(' ', '_')}`);
 			}
 		}
+	}, []);
+
+	const handleScroll = useCallback(() => {
+		window.scroll({
+			top: 0,
+			behavior: 'smooth',
+		});
 	}, []);
 
 	return (
@@ -49,6 +57,9 @@ function RightNav() {
 					</Link>
 				</IconContainer>
 			</Nav>
+			<ScrollTop onClick={handleScroll}>
+				<IoIosArrowBack />
+			</ScrollTop>
 		</Container>
 	);
 }
@@ -162,26 +173,31 @@ const IconContainer = styled.li`
 	}
 `;
 
-const RouteContainer = styled.div`
-	button {
-		cursor: pointer;
-		outline: none;
-		border: 1px solid;
-		background: none;
-		width: 85px;
-		margin: 2px;
-		a {
-			width: 100%;
-		}
-	}
-`;
+// scroll top 버튼
+const ScrollTop = styled.button`
+	position: fixed;
+	bottom: 40px;
+	right: 35px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 1px solid #f1f0fe;
+	background-color: white;
+	cursor: pointer;
+	z-index: 999;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.07);
+	transform: rotate(90deg);
 
-const Member = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin: 30px 0;
-	font-size: 16px;
+	& > svg {
+		path {
+			color: var(--purple-200);
+		}
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		top: 23%;
+		left: 22%;
+	}
 `;
 
 export default RightNav;

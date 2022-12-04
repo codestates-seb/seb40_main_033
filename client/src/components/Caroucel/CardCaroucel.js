@@ -8,10 +8,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import MainListCard from '../Lists/MainListCard';
 
 function CardCaroucel({ items }) {
-	console.log(items);
-
 	const settings = {
-		// dots: true,
 		infinite: false,
 		speed: 500,
 		slidesToShow: 3,
