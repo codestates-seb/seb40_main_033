@@ -16,6 +16,7 @@ public class TalkAndCommentDto { // 상세페이지 - 토크
 
     private long talkId;
     private long userId;
+    private String displayName;
     private long itemId;
     private String content;
     private boolean shopper;

@@ -85,6 +85,7 @@ public interface TalkMapper {
         TalkAndCommentDto talkAndCommentDto = new TalkAndCommentDto();
         talkAndCommentDto.setTalkId(talk.getTalkId());
         talkAndCommentDto.setUserId(talk.getUser().getUserId());
+        talkAndCommentDto.setDisplayName(talk.getUser().getDisplayName());
         talkAndCommentDto.setItemId(talk.getItem().getItemId());
         talkAndCommentDto.setContent(talk.getContent());
         talkAndCommentDto.setShopper(talk.isShopper());
