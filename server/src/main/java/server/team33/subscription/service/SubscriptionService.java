@@ -47,7 +47,7 @@ public class SubscriptionService {
         ItemOrder itemOrder = itemOrderService.setItemPeriod(orderId, period);
         log.info("changed period = {}", itemOrder.getPeriod());
 
-        if(payDirectly(orderId, period, itemOrder)) {
+        if(payDirectly(orderId, period, itemOrder)){
             itemOrder.getPaymentDay().plusDays(itemOrder.getPeriod());
             return itemOrder;
         }
@@ -89,20 +89,21 @@ public class SubscriptionService {
 
 
     public ItemOrder delayDelivery( Long orderId, Integer delay ) throws SchedulerException{
-        log.info("dealyDelivery");
+        log.info("delay Delivery");
         ItemOrder itemOrder = itemOrderService.delayDelivery(orderId, delay);
         resetSchedule(orderId, itemOrder);
-//        itemOrder.getNextDelivery();
+        //        itemOrder.getNextDelivery();
         return itemOrder;
     }
 
-    public void cancelScheduler( Long orderId ) throws SchedulerException{
+    public void cancelScheduler( Long orderId, Long itemOrderId ) throws SchedulerException{
         log.info("cancelScheduler");
-        ItemOrder itemOrder = getItemOrder(orderId);
-        deleteSchedule(orderId,itemOrder);
-        orderService.cancelOrder(orderId);
+        ItemOrder itemOrder = getItemOrder(itemOrderId);
+        deleteSchedule(orderId, itemOrder);
+        itemOrderService.cancelItemOrder(orderId, itemOrder);
         log.warn("canceled item title = {}", itemOrder.getItem().getTitle());
     }
+
     private void resetSchedule( Long orderId, ItemOrder itemOrder ) throws SchedulerException{
         deleteSchedule(orderId, itemOrder);
         startSchedule(orderId, itemOrder);
@@ -113,10 +114,8 @@ public class SubscriptionService {
         return order.getItemOrders();
     }
 
-    public ItemOrder getItemOrder( Long orderId ){
-        Order order = orderService.findOrder(orderId);
-        ItemOrder itemOrder = order.getItemOrders().get(0);
-        return itemOrder;
+    public ItemOrder getItemOrder( Long itemOrderId ){
+        return itemOrderService.findItemOrder(itemOrderId);
     }
 
     public User getUser( Long orderId ){

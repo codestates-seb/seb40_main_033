@@ -166,4 +166,16 @@ public class ItemOrderService {
         throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
     }
 
+    public void cancelItemOrder( Long orderId, ItemOrder itemOrder ){
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isPresent()){
+            int i = order.get().getItemOrders().indexOf(itemOrder);
+            ItemOrder itemOrder1 = order.get().getItemOrders().get(i);
+            itemOrder1.setSubscription(false);
+            log.warn("이게 진짜 된다고 = {}",itemOrder1.isSubscription());
+        }
+
+
+
+    }
 }
