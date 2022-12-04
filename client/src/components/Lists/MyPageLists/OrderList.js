@@ -13,7 +13,6 @@ import { useDelete } from '../../../hooks/useFetch';
 function OrderList({ list }) {
 	const navigate = useNavigate();
 	const [openCancel, setOpenCancel] = useState(false);
-
 	const { mutate, isLoading, isError, error, response } = useDelete(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/${list.orderId}`,
 	);
@@ -26,6 +25,10 @@ function OrderList({ list }) {
 	const handleDetailClick = useCallback(() => {
 		navigate(`/mypage/order/${list.orderId}`);
 	}, []);
+
+	const handleItemClick = () => {
+		navigate(`/detail/${list.item.itemId}`);
+	};
 
 	// 취소 모달
 	const handleCancelClick = useCallback(() => {
@@ -46,7 +49,7 @@ function OrderList({ list }) {
 			<Image
 				src={list.item.thumbnail}
 				alt="상품 이미지"
-				onClick={handlePageMove}
+				onClick={handleItemClick}
 			/>
 			<MainContainer>
 				<InfoContainer>
@@ -54,7 +57,7 @@ function OrderList({ list }) {
 						<DeliveryStatus>{status}</DeliveryStatus>
 						<DotDate date={list.createdAt} />
 					</ShoppingInfo>
-					<Name>
+					<Name onClick={handleItemClick}>
 						{`${list.item.brand}, ${list.item.title}, ${list.item.capacity}정 
 						${list.item.length > 1 ? `외 ${list.item.totalItems - 1}개` : ''}`}
 					</Name>
@@ -149,6 +152,7 @@ const Name = styled.div`
 	font-size: 16px;
 	font-weight: var(--bold);
 	margin-bottom: 20px;
+	cursor: pointer;
 `;
 
 const BtnContainer = styled.div`

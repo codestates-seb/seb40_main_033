@@ -10,7 +10,6 @@ function WishListCards({ item }) {
 	const handleItemClick = () => {
 		navigate(`/detail/${item.itemId}`);
 	};
-	console.log(item, '아이템이다');
 	return (
 		<EntireContainer>
 			<DefaultContainer>

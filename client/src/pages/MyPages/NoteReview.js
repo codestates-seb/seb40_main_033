@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import Pagination from '../../components/Etc/Pagination';
 import MyPageReviewList from '../../components/Lists/MyPageLists/MyPageReviewList';
 import { useGet } from '../../hooks/useFetch';
@@ -13,7 +14,7 @@ function NoteReview() {
 	);
 	const lists = data?.data?.data;
 
-	if (isLoading) return <div>정보를 불러오는 중 입니다...!</div>;
+	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
 
 	console.log('lists', lists);

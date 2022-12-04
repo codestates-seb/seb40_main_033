@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import OrderList from '../../components/Lists/MyPageLists/OrderList';
 import Pagination from '../../components/Etc/Pagination';
 import { useGet } from '../../hooks/useFetch';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 function NormalOrder() {
 	const { pathname } = useLocation();
@@ -14,7 +15,7 @@ function NormalOrder() {
 	);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingSpinner />;
 	}
 
 	if (isError) {

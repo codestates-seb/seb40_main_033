@@ -6,6 +6,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import OrderDetailList from '../../components/Lists/MyPageLists/OrderDetailList';
 import { PaymentInfo, DestinationInfo } from '../../components/Etc/PayInfo';
 import { useGet } from '../../hooks/useFetch';
+import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 // 주문내역 상세조회
 function OrderDetail() {
@@ -18,7 +19,7 @@ function OrderDetail() {
 	);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingSpinner />;
 	}
 
 	if (isError) {
