@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useCallback, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import CounterBtn from '../../Buttons/CounterButton';
 import { DayControlTab } from '../../Tabs/TabButtons';
 import Price from '../../Etc/Price';
@@ -10,6 +11,11 @@ import CancelModal from '../../Modals/CancelModal';
 import { useDelete, usePatch } from '../../../hooks/useFetch';
 
 function SubManagementList({ subManageData }) {
+	const navigate = useNavigate();
+	const handleItemClick = () => {
+		navigate(`/detail/${subManageData.item.itemId}`);
+	};
+	console.log(subManageData);
 	const [quantity, setQuantity] = useState(subManageData.quantity);
 	const [openCancelModal, setOpenCancelModal] = useState(false);
 	const [subPeriod, setSubPeriod] = useState(subManageData.period);
@@ -41,7 +47,6 @@ function SubManagementList({ subManageData }) {
 	const handleModifyPeriod = useCallback(
 		async (e) => {
 			await setSubPeriod(e.target.innerText.replace('일', ''));
-			// console.log(e.target.innerText, '왜됨???');
 			await modifyPeriod();
 			toast.success('주기를 변경했습니다!');
 		},
@@ -73,11 +78,17 @@ function SubManagementList({ subManageData }) {
 				<IoMdClose onClick={handleModalOpen} />
 			</SubContainer>
 			<ListContainer>
-				<Image src={subManageData.item.thumbnail} alt="상품 이미지" />
+				<Image
+					src={subManageData.item.thumbnail}
+					alt="상품 이미지"
+					onClick={handleItemClick}
+				/>
 				<RightContainer>
 					<InfoContainer>
 						<Info className="brand"> {subManageData.item.brand}</Info>
-						<Info className="name">{subManageData.item.title}</Info>
+						<Info className="name" onClick={handleItemClick}>
+							{subManageData.item.title}
+						</Info>
 						<Price
 							nowPrice={subManageData.item.disCountPrice}
 							quantity={1}
@@ -158,6 +169,7 @@ const Info = styled.div`
 	&.name {
 		color: var(--gray-600);
 		font-weight: var(--bold);
+		cursor: pointer;
 	}
 
 	&.notice {
@@ -181,6 +193,7 @@ const Image = styled.img`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const RightContainer = styled.div`
