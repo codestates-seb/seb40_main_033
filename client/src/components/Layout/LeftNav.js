@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components';
 import { HiOutlineEye } from 'react-icons/hi';
-import { render } from 'react-dom';
 import { useCallback, useState } from 'react';
 import { BiBone } from 'react-icons/bi';
 import { GrPowerCycle } from 'react-icons/gr';
@@ -52,10 +51,6 @@ function LeftNav() {
 		setHoverTarget('');
 	}, []);
 
-	const clickCategories = () => {
-		render();
-	};
-
 	// TempLogo는 로고 자리 확인용 임시 아이콘
 	return (
 		<Container>
@@ -72,9 +67,10 @@ function LeftNav() {
 					<CategoryContainer>
 						{categories.map((el, i) => (
 							<Link
-								to={`/list?categoryName=${categories[i].replaceAll(' ', '_')}`}
+								to={`/list?categoryName=${categories[i]
+									.replaceAll(' ', '_')
+									.replaceAll('/', '_')}`}
 								key={`${i.toString()}-${el}`}
-								onClick={clickCategories}
 							>
 								<ListContainer
 									onMouseEnter={handleBtnHover}

@@ -30,7 +30,7 @@ function Price({
 				<>
 					<IoIosArrowBack className="white" />
 					<BeforePrice className="beforeDiscounted">
-						{(Number(beforePrice) * Number(quantity)).toLocaleString('ko-KR')}원
+						{Number(beforePrice).toLocaleString('ko-KR')}원
 					</BeforePrice>
 					<Percent>{`${discountRate}%`}</Percent>
 				</>
