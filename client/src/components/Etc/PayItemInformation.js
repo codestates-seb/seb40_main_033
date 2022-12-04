@@ -4,11 +4,10 @@ import PayPageContainer from './PayPageContainer';
 
 export default function PayItemInformation({ payData, isSub }) {
 	const orderedItems = payData.itemOrders.data;
-	console.log(orderedItems, 'orderedItems');
 	return (
 		<PayPageContainer Info="상품 정보">
 			<ListContainer>
-				{orderedItems.map((orderedItem, idx) => (
+				{orderedItems.map((orderedItem) => (
 					<PayLists
 						key={`${orderedItem.itemOrderId}`}
 						brand={orderedItem.item.brand}

@@ -9,21 +9,19 @@ import AddressModal from '../Modals/AddressModal';
 
 export default function PayMethod({ payData }) {
 	const [url, setUrl] = useState('');
-	console.log(payData, '결제수단의 payData');
 	const { expectPrice, orderId, itemOrders, subscription } = payData;
 	const clientKey = process.env.REACT_APP_CLIENT_API_KEY;
 	const [isPayModal, setPayModal] = useState(false);
 	const tossPay = () =>
 		loadTossPayments(clientKey).then((tossPayments) => {
-			// 카드 결제 메서드 실행
 			tossPayments.requestPayment('카드', {
-				amount: `${expectPrice}`, // 총가격
-				orderId: `${orderId}abcdef`, // 주문 id
-				orderName: `${itemOrders.data[0].item.title}, ${itemOrders.data.length} 건`, // 결제상품 이름
-				customerName: `Pillivery`, // 판매자, 판매처 이름
-				successUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/', // 성공시 리다이렉트 주소
-				failUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/', // 실패시 리다이렉트 주소
-				validHours: 24, // 유효시간
+				amount: `${expectPrice}`,
+				orderId: `${orderId}abcdef`,
+				orderName: `${itemOrders.data[0].item.title}, ${itemOrders.data.length} 건`,
+				customerName: `Pillivery`,
+				successUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/',
+				failUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/',
+				validHours: 24,
 				cashReceipt: {
 					type: '소득공제',
 				},

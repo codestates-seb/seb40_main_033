@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-param-reassign */
-// 회원정보
 import { useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Postcode from '@actbase/react-daum-postcode';
@@ -51,7 +50,6 @@ export function UserInfo() {
 	const [openGoodbye, setOpenGoodbye] = useState(false);
 
 	useEffect(() => {
-		console.log('userData', userData);
 		if (userData) {
 			setValue('이메일', userData.data.email);
 			setValue('닉네임', userData.data.displayName);
@@ -76,9 +74,9 @@ export function UserInfo() {
 		}
 	});
 	const nicknameReg = register('닉네임', {
-		required: '닉네임을 입력해주세요.', // 빈 칸일때
+		required: '닉네임을 입력해주세요.',
 		pattern: {
-			value: /^[A-Za-z0-9가-힣]{2,9}$/, // 한글 및 숫자 영문자
+			value: /^[A-Za-z0-9가-힣]{2,9}$/,
 			message: '한글, 영어, 숫자를 사용해 2~9자 사이로 지어주세요.',
 		},
 	});
@@ -89,7 +87,7 @@ export function UserInfo() {
 	const pwReg = register('비밀번호', {
 		required: '비밀번호를 입력해주세요.',
 		pattern: {
-			value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, // 한글 및 숫자 영문자
+			value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/,
 			message: '문자, 숫자, 특수문자를 사용해 8자 이상으로 지어주세요.',
 		},
 		validate: {
@@ -111,14 +109,14 @@ export function UserInfo() {
 	const nameReg = register('이름', {
 		required: '이름을 입력해주세요.',
 		pattern: {
-			value: /^[가-힣]{2,5}$/, // 한글 및 숫자 영문자
+			value: /^[가-힣]{2,5}$/,
 			message: '한글 5글자 이내로 작성해주세요.',
 		},
 	});
 	const telReg = register('전화번호', {
 		required: '전화번호를 입력해주세요.',
 		pattern: {
-			value: /^\d{2,3}-\d{3,4}-\d{4}$/, // 한글 및 숫자 영문자
+			value: /^\d{2,3}-\d{3,4}-\d{4}$/,
 			message: '올바른 형식으로 작성해주세요.',
 		},
 	});
@@ -139,7 +137,6 @@ export function UserInfo() {
 
 	const onValid = (data) => {
 		const value = {
-			// 밑의 방식으로 꺼낸 다음, 바디에 넣어서 보내기.
 			displayName: data.닉네임,
 			email: data.이메일,
 			password: data.비밀번호,
@@ -148,7 +145,6 @@ export function UserInfo() {
 			address: data.주소,
 			detailAddress: data.상세주소,
 		};
-		console.log(value);
 		userPatch(value);
 	};
 	if (isLoading) return <LoadingSpinner />;
@@ -291,7 +287,7 @@ const Box = styled.form`
 	border-radius: 10px;
 
 	button {
-		align-self: flex-end; // 이 설정 기억해둘 것 엥 얘는 왜 끝에있지 하고 아무거나 건들면 안됨..
+		align-self: flex-end;
 		font-weight: var(--regular);
 	}
 

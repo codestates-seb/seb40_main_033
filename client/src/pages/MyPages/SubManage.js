@@ -1,23 +1,22 @@
-// 정기구독관리
-import { useLocation, useParams } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import SubManagementList from '../../components/Lists/MyPageLists/SubManagementList';
 import { useGet } from '../../hooks/useFetch';
 
 function SubManage() {
 	const { pathname } = useLocation();
-	// 페이지네이션으로 할건지? 무한 스크롤로 할 건지?
 	const {
 		data: subManageDatas,
 		isError,
 		isLoading,
+		error,
 	} = useGet(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/subs',
 		pathname,
 	);
-	console.log(subManageDatas, '섭매니지');
 	if (isLoading) return <LoadingSpinner />;
+	if (isError) return <div>{error.message}</div>;
 	return (
 		<SubManageContainer>
 			{subManageDatas?.data?.data.map((subManageData, idx) => (

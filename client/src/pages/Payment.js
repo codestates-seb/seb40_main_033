@@ -1,4 +1,3 @@
-// 일반결제 페이지
 import { useLocation } from 'react-router-dom';
 import DefaultPayment from '../components/Etc/DefaultPayment';
 

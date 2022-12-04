@@ -14,14 +14,13 @@ function MyPageHeader() {
 	const navigate = useNavigate();
 	const localNick = localStorage.getItem('nickName');
 	const { nickName } = useSelector((store) => store.nickName);
-	console.log(nickName);
 	const handleLogout = useCallback(async () => {
 		const response = await axios
 			.get(
 				'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users/logout',
 			)
 			.catch(() => {
-				console.log('error in fetching posts');
+				toast.error('회원정보를 불러오는데 실패했습니다!');
 			});
 		if (response) {
 			await dispatch(logout());

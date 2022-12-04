@@ -15,7 +15,6 @@ function SubManagementList({ subManageData }) {
 	const handleItemClick = () => {
 		navigate(`/detail/${subManageData.item.itemId}`);
 	};
-	console.log(subManageData);
 	const [quantity, setQuantity] = useState(subManageData.quantity);
 	const [openCancelModal, setOpenCancelModal] = useState(false);
 	const [subPeriod, setSubPeriod] = useState(subManageData.period);
@@ -31,7 +30,6 @@ function SubManagementList({ subManageData }) {
 	const { mutate: deleteSub } = useDelete(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/cancel?orderId=${subManageData.orderId}`,
 	);
-	console.log(subManageData, 'subManageData');
 	const onPlusClick = useCallback(async () => {
 		await plusMutate();
 		setQuantity(quantity + 1);
