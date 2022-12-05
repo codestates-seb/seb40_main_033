@@ -56,9 +56,9 @@ public class ItemService {
     public Page<Item> findBrandItems(String categoryName, Brand brand, int page, int size, String sort) {
         brandService.verifyExistBrand(brand);
 
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findAllCategoryNameAndBrand(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), categoryName, brand);
             return lowSortItems;
@@ -70,9 +70,9 @@ public class ItemService {
     }
 
     public Page<Item> findSaleItems(String categoryName, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findAllCategoryNameAndDiscountRate(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), categoryName);
             return lowSortItems;
@@ -85,9 +85,9 @@ public class ItemService {
 
     public Page<Item> findBrandSaleItems(String categoryName, Brand brand, int page, int size, String sort) {
         brandService.verifyExistBrand(brand);
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findAllCategoryNameAndDiscountRateAndBrand(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), categoryName, brand);
             return lowSortItems;
@@ -111,9 +111,9 @@ public class ItemService {
     }
 
     public Page<Item> searchItems(String keyword, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findByTitleContaining(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), keyword);
 
@@ -127,9 +127,9 @@ public class ItemService {
     }
 
     public Page<Item> pricefilteredItems(int low, int high, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findByPriceBetween(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), low, high);
 
@@ -143,9 +143,9 @@ public class ItemService {
     }
 
     public Page<Item> searchPriceFilteredItems(String keyword, int low, int high, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findByTitleContainingAndPriceBetween(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), keyword, low, high);
 
@@ -159,9 +159,9 @@ public class ItemService {
     }
 
     public Page<Item> searchSaleItems(String keyword, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findByTitleContainingAndDiscountRateGreaterThan(
                     PageRequest.of(page, size, Sort.by(sort).ascending()),keyword, 0);
 
@@ -175,9 +175,9 @@ public class ItemService {
     }
 
     public Page<Item> searchSalePriceFilteredItems(String keyword, int low, int high, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findByTitleContainingAndDiscountRateGreaterThanAndPriceBetween(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), keyword, 0, low, high);
 
@@ -191,9 +191,9 @@ public class ItemService {
     }
 
     public Page<Item> priceFilteredCategoryItems(String categoryName, int low, int high, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findByCategoryNameAndPriceBetween(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), categoryName, low, high);
             return lowSortItems;
@@ -205,9 +205,9 @@ public class ItemService {
     }
 
     public Page<Item> priceFilteredCategorySaleItems(String categoryName, int low, int high, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findByCategoryNameAndSaleAndPriceBetween(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), categoryName, low, high);
             return lowSortItems;
@@ -219,9 +219,9 @@ public class ItemService {
     }
 
     public Page<Item> priceFilteredCategoryAndBrandItems(String categoryName, Brand brand, int low, int high, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findByCategoryNameAndBrandAndPriceBetween(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), categoryName, brand, low, high);
             return lowSortItems;
@@ -233,9 +233,9 @@ public class ItemService {
     }
 
     public Page<Item> priceFilteredCategoryAndBrandAndSaleItems(String categoryName, Brand brand, int low, int high, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findByCategoryNameAndBrandAndSaleAndPriceBetween(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), categoryName, brand, low, high);
             return lowSortItems;
