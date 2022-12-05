@@ -25,6 +25,7 @@ function RightNav() {
 			} else {
 				navigate(`/search?keyword=${e.target.value.replaceAll(' ', '_')}`);
 			}
+			setOpenSearch(false);
 		}
 	}, []);
 
