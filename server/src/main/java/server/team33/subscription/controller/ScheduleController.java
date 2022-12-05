@@ -67,8 +67,8 @@ public class ScheduleController {
     }
 
     @DeleteMapping("/cancel")
-    public ZonedDateTime delete( @RequestParam(name = "orderId") Long orderId ) throws SchedulerException{
-        subscriptionService.cancelScheduler(orderId);
+    public ZonedDateTime delete( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "itemOrderId") Long itemOrderId ) throws SchedulerException{
+        subscriptionService.cancelScheduler(orderId, itemOrderId);
         return ZonedDateTime.now();
     }
 

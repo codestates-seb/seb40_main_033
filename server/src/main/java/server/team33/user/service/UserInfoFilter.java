@@ -43,7 +43,7 @@ public class UserInfoFilter {
         existPhoneNum(user.getPhone());
     }
 
-    public void filterMoreInfo( User user ){
+    public void filterMoreInfo( UserDto.PostMoreInfo user ){
         existDisplayName(user.getDisplayName());
         existPhoneNum(user.getPhone());
     }

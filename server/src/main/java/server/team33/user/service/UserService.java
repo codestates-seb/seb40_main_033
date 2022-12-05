@@ -43,11 +43,11 @@ public class UserService {
         userInfoFilter.filterUserInfo(user);
         encodePassword(user);
         createRole(user);
-        Cart cart = Cart.createCart(user);
-        cartRepository.save(cart);
+        makeCart(user);
         userRepository.save(user);
         return user;
     }
+
 
     public User deleteUser(){
         User loginUser = getLoginUser();
@@ -77,8 +77,8 @@ public class UserService {
         Optional<User> loginUser = userRepository.findByEmail(userDto.getEmail());
 
         if(loginUser.isPresent()){
-
-            userInfoFilter.filterMoreInfo(loginUser.get());
+            makeCart(loginUser.get());
+            userInfoFilter.filterMoreInfo(userDto);
             loginUser.get().setUserStatus(UserStatus.USER_ACTIVE);
             loginUser.get().setAddress(userDto.getAddress());
             loginUser.get().setDetailAddress(userDto.getDetailAddress());
@@ -131,5 +131,8 @@ public class UserService {
         if(user.isPresent()) return user.get().getUserId();
         throw new AuthenticationServiceException("Authentication exception");
     }
-
+    private void makeCart( User user ){
+        Cart cart = Cart.createCart(user);
+        cartRepository.save(cart);
+    }
 }
