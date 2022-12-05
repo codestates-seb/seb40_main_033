@@ -17,7 +17,7 @@ export function LongTextStar({ noText, star, average, count }) {
 			</Icon>
 			{!noText && (
 				<>
-					<Score>{average}</Score>
+					<Score>{average.toFixed(1)}</Score>
 					<Count>{`(${count})`}</Count>
 				</>
 			)}
