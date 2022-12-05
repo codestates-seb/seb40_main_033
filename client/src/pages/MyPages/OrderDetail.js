@@ -128,7 +128,7 @@ const Title = styled.h1`
 	padding: 70px 0 20px 0;
 	/* border: 1px solid red; */
 	background-color: white;
-	z-index: 100;
+	/* z-index: 100; */
 	&.order {
 		padding-left: 50px;
 	}
