@@ -27,10 +27,13 @@ function NormalOrder() {
 	return (
 		<>
 			<ListContainer>
-				{data &&
-					lists.map((list) => <OrderList key={list.orderId} list={list} />)}
+				{data && lists.length === 0 ? (
+					<Nolists>주문 내역이 없습니다.</Nolists>
+				) : (
+					lists.map((list) => <OrderList key={list.orderId} list={list} />)
+				)}
 			</ListContainer>
-			<Pagination total="10" limit="8" />
+			{/* <Pagination total="10" limit="8" /> */}
 		</>
 	);
 }
@@ -44,12 +47,21 @@ const ListContainer = styled.main`
 	border-radius: 10px;
 	background-color: white;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
+	width: 100%;
 
 	& > {
 		:last-child {
 			border: none;
 		}
 	}
+`;
+
+const Nolists = styled.div`
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 16px;
 `;
 
 export default React.memo(NormalOrder);
