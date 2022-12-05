@@ -43,6 +43,14 @@ public class ItemController {
         return new ResponseEntity(new SingleResponseDto<>(mapper.itemToItemDetailResponseDto(result)), HttpStatus.OK);
     }
 
+
+    @DeleteMapping("/items/{item-id}")
+    public ResponseEntity deleteItem(@PathVariable("item-id") long itemId) {
+        itemService.deleteItem(itemId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
     @GetMapping("/items/{item-id}")
     public ResponseEntity getItem(@PathVariable("item-id") long itemId,
                                   @RequestParam(value="reviewPage", defaultValue="1") int reviewPage,

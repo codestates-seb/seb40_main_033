@@ -39,9 +39,9 @@ public class ItemService {
     }
 
     public Page<Item> findItems(String categoryName, int page, int size, String sort) {
-        if(Objects.equals(sort, "priceH")) sort = "price";
+        if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if (Objects.equals(sort, "priceL")) {
-            sort = "price";
+            sort = "discountPrice";
             Page<Item> lowSortItems = itemRepository.findAllByCategoryName(
                     PageRequest.of(page, size, Sort.by(sort).ascending()), categoryName);
             return lowSortItems;
@@ -247,5 +247,9 @@ public class ItemService {
     }
 
 
+    public void deleteItem(long itemId) {
+        Item verifiedItem = findVerifiedItem(itemId);
+        itemRepository.delete(verifiedItem);
+    }
 
 }
