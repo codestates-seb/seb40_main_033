@@ -56,7 +56,10 @@ function SearchList() {
 		<Box>
 			<PageTitle />
 			<Mesage>
-				<Text>{`"${keyword}"에 대한 검색 결과입니다.`}</Text>
+				<Text>{`"${keyword.replaceAll(
+					'_',
+					' ',
+				)}"에 대한 검색 결과입니다.`}</Text>
 			</Mesage>
 			<ItemListBox>
 				{items.data.data.map((item) => (
