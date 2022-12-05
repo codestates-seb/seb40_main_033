@@ -34,35 +34,27 @@ public class ScheduleController {
     public ResponseEntity startsKakaoSchedule( @RequestParam(name = "orderId") Long orderId ) throws SchedulerException{
 
         List<ItemOrder> itemOrders = subscriptionService.getItemOrders(orderId);
+
         for(ItemOrder io : itemOrders){
+            log.warn(io.getItem().getTitle());
             Order order = orderService.findOrder(orderId);
             String nextDelivery = String.valueOf(order.getCreatedAt().plusDays(io.getPeriod()));
-            ItemOrder itemOrder = itemOrderService.setDeliveryInfo(orderId, order.getCreatedAt(), nextDelivery);
+            ItemOrder itemOrder = itemOrderService.setDeliveryInfo(orderId, order.getCreatedAt(), nextDelivery, io);
             subscriptionService.startSchedule(orderId, itemOrder);
         }
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-//    @GetMapping("/general")
-//    public ResponseEntity startsGeneralSchedule( @RequestParam(name = "orderId") Long orderId ) throws SchedulerException{
-//
-//        List<ItemOrder> itemOrders = subscriptionService.getItemOrders(orderId);
-//        for(ItemOrder itemOrder : itemOrders){
-//            subscriptionService.startSchedule(orderId, itemOrder);
-//        }
-//        return new ResponseEntity<>(HttpStatus.ACCEPTED);
-//    }
-
     @PatchMapping("/change")
     public ResponseEntity changePeriod(
-            @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "period") Integer period ) throws SchedulerException, InterruptedException{
-        ItemOrder itemOrder = subscriptionService.changePeriod(orderId, period);
+            @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "period") Integer period, @RequestParam(name = "itemOrderId") Long itemOrderId ) throws SchedulerException, InterruptedException{
+        ItemOrder itemOrder = subscriptionService.changePeriod(orderId, period, itemOrderId);
         return new ResponseEntity<>(new SingleResponseDto<>(itemOrderMapper.itemOrderToSubResponse(itemOrder, itemMapper)), HttpStatus.OK);
     }
 
     @PatchMapping("/delay")
-    public ResponseEntity delay( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "delay") Integer delay ) throws SchedulerException{
-        ItemOrder itemOrder = subscriptionService.delayDelivery(orderId, delay);
+    public ResponseEntity delay( @RequestParam(name = "orderId") Long orderId, @RequestParam(name = "delay") Integer delay, @RequestParam(name = "itemOrderId") Long itemOrderId ) throws SchedulerException{
+        ItemOrder itemOrder = subscriptionService.delayDelivery(orderId, delay, itemOrderId);
         return new ResponseEntity<>(new SingleResponseDto<>(itemOrderMapper.itemOrderToSubResponse(itemOrder, itemMapper)), HttpStatus.OK);
     }
 

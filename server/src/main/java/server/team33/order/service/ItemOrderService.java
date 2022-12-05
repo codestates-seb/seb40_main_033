@@ -11,6 +11,7 @@ import server.team33.order.entity.ItemOrder;
 import server.team33.order.entity.Order;
 import server.team33.order.reposiroty.ItemOrderRepository;
 import server.team33.order.reposiroty.OrderRepository;
+import server.team33.subscription.service.SubscriptionService;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class ItemOrderService {
     private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
 
+
     public List<ItemOrder> createItemOrder( ItemOrder itemOrder ){
         itemOrderRepository.save(itemOrder);
         List<ItemOrder> itemOrders = new ArrayList<>();
@@ -35,15 +37,14 @@ public class ItemOrderService {
         return itemOrders;
     }
 
-    public ItemOrder findItemOrder(long itemOrderId) {
+    public ItemOrder findItemOrder( long itemOrderId ){
         Optional<ItemOrder> optionalItemOrder = itemOrderRepository.findById(itemOrderId);
-        ItemOrder itemOrder = optionalItemOrder.orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
+        ItemOrder itemOrder = optionalItemOrder.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
 
         return itemOrder;
     }
 
-    public ItemOrder changeSubQuantity(long itemOrderId, int upDown)  {
+    public ItemOrder changeSubQuantity( long itemOrderId, int upDown ){
         ItemOrder itemOrder = findItemOrder(itemOrderId);
 
         itemOrder.setQuantity(itemOrder.getQuantity() + upDown);
@@ -96,28 +97,29 @@ public class ItemOrderService {
 
         return totalquantity;
     }
-    public void minusSales(List<ItemOrder> itemOrders) { // 주문 취소할 경우 아이템 판매량에서 제외
 
-        for(ItemOrder itemOrder : itemOrders) {
+    public void minusSales( List<ItemOrder> itemOrders ){ // 주문 취소할 경우 아이템 판매량에서 제외
+
+        for(ItemOrder itemOrder : itemOrders){
             int sales = itemOrder.getQuantity();
             itemOrder.getItem().setSales(itemOrder.getItem().getSales() - sales);
             itemRepository.save(itemOrder.getItem());
         }
     }
 
-    public void plusSales(ItemOrder itemOrder) { // 주문 요청할 경우 아이템 판매량 증가
+    public void plusSales( ItemOrder itemOrder ){ // 주문 요청할 경우 아이템 판매량 증가
 
         int sales = itemOrder.getQuantity();
         itemOrder.getItem().setSales(itemOrder.getItem().getSales() + sales);
         itemRepository.save(itemOrder.getItem());
     }
 
-    public ItemOrder setItemPeriod( Long orderId, Integer period ){
+    public ItemOrder setItemPeriod( Long orderId, Integer period, ItemOrder io ){
 
         Optional<Order> order = orderRepository.findById(orderId);
 
         if(order.isPresent()){
-            ItemOrder itemOrder = order.get().getItemOrders().get(0);
+            ItemOrder itemOrder = getItemOrder(io, order);
             itemOrder.setPeriod(period);
             log.error("주기변경 = {}", itemOrder.getPeriod());
             return itemOrder;
@@ -125,12 +127,12 @@ public class ItemOrderService {
         throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
     }
 
-    public ItemOrder delayDelivery( Long orderId, Integer delay ){
+    public ItemOrder delayDelivery( Long orderId, Integer delay, ItemOrder io ){
 
         Optional<Order> order = orderRepository.findById(orderId);
 
         if(order.isPresent()){
-            ItemOrder itemOrder = order.get().getItemOrders().get(0);
+            ItemOrder itemOrder = getItemOrder(io, order);
             ZonedDateTime nextDelivery = itemOrder.getNextDelivery().plusDays(delay);
             itemOrder.setNextDelivery(nextDelivery);
             return itemOrder;
@@ -138,44 +140,45 @@ public class ItemOrderService {
         throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
     }
 
-    public ItemOrder setDeliveryInfo( Long orderId, ZonedDateTime paymentDay, String nextDelivery ){
+
+    public ItemOrder setDeliveryInfo( Long orderId, ZonedDateTime paymentDay, String nextDelivery, ItemOrder io ){
 
         Optional<Order> order = orderRepository.findById(orderId);
 
         if(order.isPresent()){
-            ItemOrder itemOrder = order.get().getItemOrders().get(0);
-            itemOrder.setNextDelivery(ZonedDateTime.parse(nextDelivery));
+            ItemOrder itemOrder = getItemOrder(io, order);
             itemOrder.setPaymentDay(paymentDay);
-            log.info("setDeliveryInfo payday = {}", itemOrder.getPaymentDay());
-            log.info("setDeliveryInfo nextDeliverday= {}", itemOrder.getNextDelivery());
+            itemOrder.setNextDelivery(ZonedDateTime.parse(nextDelivery));
             return itemOrder;
         }
+
         throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
     }
-    public ItemOrder itemOrderCopy( Long orderId, Order order ){
-        Optional<Order> orderEntity = orderRepository.findById(orderId);
-        log.warn("여기서 오더 아이디 = {}", order.getOrderId());
+
+    public ItemOrder itemOrderCopy( Long lastOrderId, Order newOrder, ItemOrder io ){
+        Optional<Order> orderEntity = orderRepository.findById(lastOrderId);
+        log.warn("여기서 오더 아이디 = {}", newOrder.getOrderId());
         if(orderEntity.isPresent()){
-            ItemOrder io = orderEntity.get().getItemOrders().get(0);
-            ItemOrder itemOrder = new ItemOrder(io);
-            itemOrder.setOrder(order);
+            ItemOrder itemOrder = new ItemOrder(getItemOrder(io, orderEntity));
+            itemOrder.setOrder(newOrder);
             plusSales(itemOrder);
             itemOrderRepository.save(itemOrder);
             return itemOrder;
-        }
-        throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
+        } throw new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND);
     }
 
     public void cancelItemOrder( Long orderId, ItemOrder itemOrder ){
         Optional<Order> order = orderRepository.findById(orderId);
         if(order.isPresent()){
-            int i = order.get().getItemOrders().indexOf(itemOrder);
-            ItemOrder itemOrder1 = order.get().getItemOrders().get(i);
-            itemOrder1.setSubscription(false);
-            log.warn("이게 진짜 된다고 = {}",itemOrder1.isSubscription());
+            ItemOrder itemOrderInOrder = getItemOrder(itemOrder, order);
+            itemOrderInOrder.setSubscription(false);
+            log.warn("is subsucription = {}", itemOrderInOrder.isSubscription());
         }
 
+    }
 
-
+    private ItemOrder getItemOrder( ItemOrder io, Optional<Order> order ){
+        int i = order.get().getItemOrders().indexOf(io);
+        return order.get().getItemOrders().get(i);
     }
 }

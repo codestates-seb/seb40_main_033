@@ -50,11 +50,11 @@ public class KaKaoSubscriptionJob implements Job {
         Long orderId = (Long) mergedJobDataMap.get("orderId");
         log.info("start orderId = {}", orderId);
         String nextDelivery = String.valueOf(paymentDay.plusDays(itemOrder.getPeriod()));
-        itemOrderService.setDeliveryInfo(orderId, paymentDay, nextDelivery);
+        itemOrderService.setDeliveryInfo(orderId, paymentDay, nextDelivery, itemOrder);
 
         Order newOrder = getNewOrder(orderId);
         log.info("newOrder Id = {}", newOrder.getOrderId());
-        ItemOrder newItemOrder = itemOrderService.itemOrderCopy(orderId, newOrder);
+        ItemOrder newItemOrder = itemOrderService.itemOrderCopy(orderId, newOrder, itemOrder);
 
         JobDetail newJob = updateJob(itemOrder, orderId, newOrder, newItemOrder);
         try{
