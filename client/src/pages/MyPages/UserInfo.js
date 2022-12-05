@@ -6,6 +6,7 @@ import Postcode from '@actbase/react-daum-postcode';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import {
 	LetterButton,
 	LetterButtonColor,
@@ -146,6 +147,7 @@ export function UserInfo() {
 			detailAddress: data.상세주소,
 		};
 		userPatch(value);
+		toast.success('회원정보가 수정되었습니다!');
 	};
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
