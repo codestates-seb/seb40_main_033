@@ -19,8 +19,6 @@ function RightNav() {
 		setOpenSearch(!openSearch);
 	}, [openSearch]);
 
-	const clickOutSide = (e) => {};
-
 	const handleSearch = useCallback((e) => {
 		if (e.key === 'Enter') {
 			if (e.target.value === '') {
