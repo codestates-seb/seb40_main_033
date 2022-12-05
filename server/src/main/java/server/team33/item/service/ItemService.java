@@ -111,6 +111,7 @@ public class ItemService {
     }
 
     public Page<Item> searchItems(String keyword, int page, int size, String sort) {
+        keyword = keyword.replace("_", " ");
         if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
             sort = "discountPrice";
@@ -143,6 +144,7 @@ public class ItemService {
     }
 
     public Page<Item> searchPriceFilteredItems(String keyword, int low, int high, int page, int size, String sort) {
+        keyword = keyword.replace("_", " ");
         if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
             sort = "discountPrice";
@@ -159,6 +161,7 @@ public class ItemService {
     }
 
     public Page<Item> searchSaleItems(String keyword, int page, int size, String sort) {
+        keyword = keyword.replace("_", " ");
         if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
             sort = "discountPrice";
@@ -175,6 +178,7 @@ public class ItemService {
     }
 
     public Page<Item> searchSalePriceFilteredItems(String keyword, int low, int high, int page, int size, String sort) {
+        keyword = keyword.replace("_", " ");
         if(Objects.equals(sort, "priceH")) sort = "discountPrice";
         if(Objects.equals(sort, "priceL")) {
             sort = "discountPrice";
