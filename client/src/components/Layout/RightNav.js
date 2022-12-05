@@ -51,6 +51,7 @@ function RightNav() {
 						<SearchBar
 							onKeyDown={handleSearch}
 							placeholder="검색어 입력 후 엔터를 눌러주세요."
+							autoFocus
 						/>
 					)}
 					<Link to={accessToken ? '/cart/normal' : '/login'}>
