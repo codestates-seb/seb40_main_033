@@ -50,7 +50,7 @@ function OrderDetail() {
 				<PaymentInfo options payData={payData} />
 			</LeftContainer>
 			<RightContainer>
-				<Title>주문 상세 내역</Title>
+				<Title className="order">주문 상세 내역</Title>
 				{data &&
 					lists.map((list) => (
 						<OrderDetailList
@@ -68,6 +68,7 @@ function OrderDetail() {
 							beforePrice={list.item.disCountPrice ? list.item.price : null}
 							period={list.period}
 							subscription={list.subscription}
+							capacity={list.item.capacity}
 							orderStatus={info.orderStatus}
 						/>
 					))}
@@ -90,7 +91,7 @@ const LeftContainer = styled.section`
 	background-color: white;
 	width: 510px;
 	height: 710px;
-	padding: 60px 50px;
+	padding: 70px 50px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	border-radius: 10px;
 
@@ -104,7 +105,11 @@ const RightContainer = styled(LeftContainer)`
 	align-items: center;
 	display: flex;
 	justify-content: flex-start;
+	position: relative;
+	padding: 0px;
 	overflow-x: visible;
+	width: 510px;
+	padding-bottom: 30px;
 	overflow-y: scroll;
 	::-webkit-scrollbar {
 		display: none;
@@ -114,9 +119,19 @@ const RightContainer = styled(LeftContainer)`
 const Title = styled.h1`
 	font-size: 20px;
 	font-weight: var(--bold);
-	margin-bottom: 35px;
+	/* margin-bottom: 35px; */
 	align-self: flex-start;
-	/* text-align: left; */
+	position: sticky;
+	width: 100%;
+	top: 0px;
+	/* padding-bottom: 20px; */
+	padding: 70px 0 20px 0;
+	/* border: 1px solid red; */
+	background-color: white;
+	z-index: 100;
+	&.order {
+		padding-left: 50px;
+	}
 `;
 
 export default React.memo(OrderDetail);

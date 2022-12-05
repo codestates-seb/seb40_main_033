@@ -44,8 +44,12 @@ function OrderDetailList({
 			nowPrice,
 			beforePrice,
 			discountRate,
+			capacity,
 		},
 	};
+	console.log('nowPrice', nowPrice);
+	console.log('beforePrice', beforePrice);
+	console.log('discountRate', discountRate);
 
 	return (
 		<Box className={inModal && 'in-modal'}>
@@ -55,7 +59,7 @@ function OrderDetailList({
 			<Wrap>
 				<InformationForm className={subscription && 'subscription'}>
 					<Brand>{brand}</Brand>
-					<Name onClick={handlePageMove}>{`${title}, ${
+					<Name onClick={handlePageMove}>{`${title}${
 						capacity && `, ${capacity}정`
 					}`}</Name>
 					<Price fontSize="13px" nowPrice={nowPrice} />
@@ -66,8 +70,8 @@ function OrderDetailList({
 						{quantity && <Quantity>{quantity}개 / </Quantity>}
 						<Price // 가격 * 수량
 							nowPrice={nowPrice}
-							beforePrice={nowPrice === beforePrice && null}
-							discountRate={nowPrice === beforePrice && null}
+							beforePrice={nowPrice === beforePrice ? null : beforePrice}
+							discountRate={nowPrice === beforePrice ? null : discountRate}
 							fontSize="14px"
 							fontWeight="Bold"
 							quantity={quantity}
@@ -106,9 +110,6 @@ const Box = styled.div`
 	display: flex;
 	align-items: center;
 	padding: 19px;
-	* {
-		color: var(--gray-600);
-	}
 	&.in-modal {
 		width: 100%;
 	}
@@ -150,6 +151,7 @@ const Brand = styled.div`
 
 const Name = styled.div`
 	font-weight: var(--bold);
+	color: var(--gray-600);
 	margin-bottom: 14px;
 	cursor: pointer;
 `;
@@ -184,7 +186,7 @@ const ReviewContainer = styled.div`
 	cursor: pointer;
 	align-self: end;
 	position: absolute;
-	bottom: -29px;
+	bottom: -25px;
 	right: -12px;
 	* {
 		color: var(--gray-500);
