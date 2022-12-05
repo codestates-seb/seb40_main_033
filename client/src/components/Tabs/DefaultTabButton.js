@@ -17,9 +17,10 @@ function DefaultTabButton({
 	note,
 	onClick,
 	orderId,
+	itemOrderId,
 }) {
 	const { mutate: postponeSub } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/delay?orderId=${orderId}&delay=30`,
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/delay?orderId=${orderId}&delay=7&itemOrderId=${itemOrderId}`,
 	);
 	const highlightWidth = toggle ? 68 : 73;
 	const { pathname } = useLocation();
