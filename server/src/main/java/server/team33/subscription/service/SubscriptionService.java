@@ -11,7 +11,6 @@ import server.team33.order.service.OrderService;
 import server.team33.subscription.job.JobDetailService;
 import server.team33.subscription.trigger.TriggerService;
 import server.team33.user.entity.User;
-import server.team33.user.service.UserService;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -30,7 +29,6 @@ public class SubscriptionService {
     private final OrderService orderService;
     private final ItemOrderService itemOrderService;
 
-    private final UserService userService;
 
     public void startSchedule( Long orderId, ItemOrder itemOrder ) throws SchedulerException{
         User user = getUser(orderId);
@@ -42,9 +40,9 @@ public class SubscriptionService {
     }
 
 
-    public ItemOrder changePeriod( Long orderId, Integer period ) throws SchedulerException, InterruptedException{
+    public ItemOrder changePeriod( Long orderId, Integer period, Long itemOrderId ) throws SchedulerException, InterruptedException{
 
-        ItemOrder itemOrder = itemOrderService.setItemPeriod(orderId, period);
+        ItemOrder itemOrder = itemOrderService.setItemPeriod(orderId, period, findItemOrderInOrder(orderId, itemOrderId));
         log.info("changed period = {}", itemOrder.getPeriod());
 
         if(payDirectly(orderId, period, itemOrder)){
@@ -56,13 +54,14 @@ public class SubscriptionService {
         String nextDelivery = String.valueOf(paymentDay.plusDays(itemOrder.getPeriod()));
         log.info("extend nextDelivery = {}", nextDelivery);
 
-        ItemOrder updatedItemOrder = itemOrderService.setDeliveryInfo(orderId, paymentDay, nextDelivery);
+        ItemOrder updatedItemOrder = itemOrderService.setDeliveryInfo(orderId, paymentDay, nextDelivery, itemOrder);
 
         extendPeriod(orderId, updatedItemOrder);
 
         paymentDay.plusDays(itemOrder.getPeriod());
         return updatedItemOrder;
     }
+
 
     private boolean payDirectly( Long orderId, Integer period, ItemOrder itemOrder ) throws SchedulerException{
         boolean noMargin = itemOrder.getPaymentDay().plusDays(period).isBefore(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))); //바궈야진
@@ -88,9 +87,9 @@ public class SubscriptionService {
     }
 
 
-    public ItemOrder delayDelivery( Long orderId, Integer delay ) throws SchedulerException{
+    public ItemOrder delayDelivery( Long orderId, Integer delay, Long itemOrderId ) throws SchedulerException{
         log.info("delay Delivery");
-        ItemOrder itemOrder = itemOrderService.delayDelivery(orderId, delay);
+        ItemOrder itemOrder = itemOrderService.delayDelivery(orderId, delay, findItemOrderInOrder(orderId, itemOrderId));
         resetSchedule(orderId, itemOrder);
         //        itemOrder.getNextDelivery();
         return itemOrder;
@@ -121,6 +120,13 @@ public class SubscriptionService {
     public User getUser( Long orderId ){
         Order order = orderService.findOrder(orderId);
         return order.getUser();
+    }
+
+    private ItemOrder findItemOrderInOrder( Long orderId, Long itemOrderId ){
+        Order order = orderService.findOrder(orderId);
+        ItemOrder itemOrder = getItemOrder(itemOrderId);
+        int i = order.getItemOrders().indexOf(itemOrder);
+        return order.getItemOrders().get(i);
     }
 
 }
