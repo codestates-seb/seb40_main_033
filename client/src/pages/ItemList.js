@@ -1,4 +1,3 @@
-/* eslint-disable no-unsafe-optional-chaining */
 import styled from 'styled-components';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';

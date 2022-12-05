@@ -33,22 +33,6 @@ function LogIn() {
 		mutate({ email: data.이메일, password: data.비밀번호 });
 	};
 
-	const LoginData = {
-		username: 'tkfka156@gmail.com',
-		password: 'asdfg',
-	};
-	const URI =
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080';
-	const logIn = () => {
-		fetch(`${URI}/users/login`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(LoginData),
-		})
-			.then((res) => res.json())
-			.then((res) => console.log(res));
-	};
-
 	return (
 		<AuthContainer>
 			<FormContainer>
