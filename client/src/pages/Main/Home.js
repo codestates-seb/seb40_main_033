@@ -27,18 +27,17 @@ function Home() {
 	const { pathname } = useLocation();
 	const { isLoading, isError, data, error } = useGet(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/main',
-		// 'http://localhost:3001/main',
 		pathname,
 	);
 
 	const list = data?.data;
-	if (isLoading) return <LoadingSpinner />;
+
 	if (isError) return <div>{error.message}</div>;
 	return (
 		<div>
 			<MainCaroucel />
 			{isLoading ? (
-				<div />
+				<LoadingSpinner />
 			) : (
 				<>
 					<MainSection

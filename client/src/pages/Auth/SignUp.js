@@ -10,58 +10,10 @@ import { fetchMoreInfo, fetchSignUp } from '../../apis/userApis';
 import { login } from '../../redux/slice/userSlice';
 import { Logo } from '../../assets/Icons';
 
-// const URI = 'http://ec2-3-35-17-245.ap-northeast-2.compute.amazonaws.com:8080';
-const URI = 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080';
-const data = {
-	displayName: 'sdfsdf',
-	address: 'sdgelblf',
-	detailAddress: 'dmdmdmdm',
-	realName: 'gmeif',
-	phone: '030303013030',
-	email: 'tkfka156@gmail.com',
-	password: 'asdfg',
-};
-
-const moreInfoData = {
-	email: 'bangion93@gmail.com',
-	displayName: 'loopy12',
-	realName: '손오공',
-	address: '서울특별시 부평구 본동 광명아파트',
-	phone: '03030303030',
-	detailAddress: 'sdfsdsdf',
-};
-
 // 회원가입 페이지
 function SignUp() {
-	// url 파라미터 콘솔에 찍기
-	// const url = new URL(window.location.href);
-	// console.log('🚀 ~ file: SignUp.js ~ url', url);
-	// const email = url.searchParams.get('email');
-	// console.log('🚀 ~ file: SignUp.js ~ email', email);
 	const [searchParams] = useSearchParams();
 	const email = searchParams.get('email') || '';
-	console.log(email);
-	// const location = useLocation();
-	// console.log('🚀 ~ file: SignUp.js ~ location', location);
-
-	// const signUp = () => {
-	// 	fetch(`${URI}/users`, {
-	// 		method: 'POST',
-	// 		headers: { 'Content-Type': 'application/json' },
-	// 		body: JSON.stringify(data),
-	// 	})
-	// 		.then((res) => res.json())
-	// 		.then((res) => console.log(res));
-	// };
-
-	// 닉네임: 'asd';
-	// 비밀번호: 'asdfg';
-	// 비밀번호확인: 'asdfg';
-	// 상세주소: 'asd';
-	// 이름: 'asd';
-	// 이메일: 'coding@naver.com';
-	// 전화번호: '010-123-123';
-	// 주소: '(12417)경기 가평군 가평읍 광장로22번길 27-9';
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -85,28 +37,6 @@ function SignUp() {
 		mutate(data);
 	};
 
-	// const handleMoreInfo = () => {
-	// 	fetch(`${URI}/users/more-info`, {
-	// 		method: 'POST',
-	// 		headers: { 'Content-Type': 'application/json' },
-	// 		body: JSON.stringify(moreInfoData),
-	// 	})
-	// 		.then((res) => res.json())
-	// 		.then((res) => console.log(res));
-	// };
-
-	// const token =
-	// 	'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJVU0VSIl0sInVzZXJuYW1lIjoiYmFuZ2lvbjkzQGdtYWlsLmNvbSIsInN1YiI6ImJhbmdpb245M0BnbWFpbC5jb20iLCJleHAiOjE2Njk1NDkzOTAsImlhdCI6MTY2OTU0NzU5MH0.uFow8FzJCVwVsNF94N6RANTrxrxdoqmhyLez8Z76TQg';
-
-	// const handleLogOut = () => {
-	// 	fetch(`${URI}/users/logout`, {
-	// 		method: 'GET',
-	// 		headers: { Authorization: `Bearer ${token}` },
-	// 	})
-	// 		.then((res) => res.json())
-	// 		.then((res) => console.log(res));
-	// };
-
 	return (
 		<AuthContainer>
 			<FormContainer>
@@ -115,15 +45,6 @@ function SignUp() {
 				</Link>
 				<AuthTitle title="회원가입" />
 				<AuthForm signUp handleSignUp={handleSignUp} email={email} />
-				{/* <button type="button" onClick={signUp}>
-					회원가입
-				</button>
-				<button type="button" onClick={handleLogOut}>
-					로그아웃
-				</button>
-				<button type="button" onClick={handleMoreInfo}>
-					moreInfo
-				</button> */}
 				<LinkContainer>
 					이미 계정이 있으신가요? <Link to="/login">로그인</Link>
 				</LinkContainer>

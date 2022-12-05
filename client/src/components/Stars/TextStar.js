@@ -17,7 +17,7 @@ export function LongTextStar({ noText, star, average, count }) {
 			</Icon>
 			{!noText && (
 				<>
-					<Score>{average}</Score>
+					<Score>{average.toFixed(1)}</Score>
 					<Count>{`(${count})`}</Count>
 				</>
 			)}
@@ -27,7 +27,7 @@ export function LongTextStar({ noText, star, average, count }) {
 
 // 별 하나
 export function ShortTextStar({ starAvg, reviewCount }) {
-	const starData = starAvg || 0;
+	const starData = starAvg.toFixed(1) || 0;
 	const reviewCountData = reviewCount || 0;
 
 	return (
