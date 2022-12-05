@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import {
 	AiOutlineUser,
@@ -12,11 +12,14 @@ function RightNav() {
 	const accessToken = localStorage.getItem('accessToken');
 	const [openSearch, setOpenSearch] = useState(false);
 	const navigate = useNavigate();
+	const modalRef = useRef();
 
 	// 검색창 오픈
 	const handleSearchOpen = useCallback(() => {
 		setOpenSearch(!openSearch);
 	}, [openSearch]);
+
+	const clickOutSide = (e) => {};
 
 	const handleSearch = useCallback((e) => {
 		if (e.key === 'Enter') {
@@ -36,6 +39,20 @@ function RightNav() {
 		});
 	}, []);
 
+	const clickModalOutside = (e) => {
+		if (!modalRef.current.contains(e.target)) {
+			setOpenSearch(false);
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener('mousedown', clickModalOutside);
+
+		return () => {
+			document.removeEventListener('mousedown', clickModalOutside);
+		};
+	});
+
 	return (
 		<Container>
 			<Nav>
@@ -52,6 +69,7 @@ function RightNav() {
 							onKeyDown={handleSearch}
 							placeholder="검색어 입력 후 엔터를 눌러주세요."
 							autoFocus
+							ref={modalRef}
 						/>
 					)}
 					<Link to={accessToken ? '/cart/normal' : '/login'}>
@@ -113,6 +131,7 @@ const SearchBar = styled.input`
 	right: -12px;
 	top: 66px;
 	animation: ${showSearchBar} 0.25s ease-in-out;
+	text-indent: 4px;
 
 	:focus {
 		outline: 0.8px solid var(--green-100);
