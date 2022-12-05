@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Slider from 'react-slick';
 import styled from 'styled-components';
 import './slick.css';

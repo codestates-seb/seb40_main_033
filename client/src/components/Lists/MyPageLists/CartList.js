@@ -225,8 +225,7 @@ const InfoContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	// 1,2번째 자식 요소 호버시 커서 변경
-	& > :nth-child(1),
+	// 2번째 자식 요소 호버시 커서 변경
 	& > :nth-child(2) {
 		cursor: pointer;
 	}

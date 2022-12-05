@@ -16,7 +16,7 @@ import { Logo } from '../../assets/Icons';
 // 로그인 페이지
 function LogIn() {
 	// 다른 페이지로 이동 후 뒤로가기 시 로그인 페이지로 이동하지 않도록 함
-	const { mutate, isLoading, isSuccess, isError } = useLogIn();
+	const { mutate } = useLogIn();
 	const { loginStatus, accessToken, email } = useSelector(
 		(store) => store.user,
 	);
