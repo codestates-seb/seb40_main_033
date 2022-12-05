@@ -33,6 +33,7 @@ export function UserInfo() {
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
 		pathname,
 	);
+
 	const { mutate: userPatch } = usePatch(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
 	);
@@ -58,6 +59,10 @@ export function UserInfo() {
 			setValue('전화번호', userData.data.phone);
 			setValue('주소', userData.data.address);
 			setValue('상세주소', userData.data.detailAddress);
+			if (userData.data.social) {
+				setValue('비밀번호', 'asdf4321!');
+				setValue('비밀번호재확인', 'asdf4321!');
+			}
 			dispatch(change(userData.data.displayName));
 		}
 	}, [userData]);
@@ -171,11 +176,13 @@ export function UserInfo() {
 							label="비밀번호"
 							register={pwReg}
 							errors={errors?.비밀번호?.message}
+							social={userData.data.social}
 						/>
 						<Information
 							label="비밀번호재확인"
 							register={rePwReg}
 							errors={errors?.비밀번호재확인?.message}
+							social={userData.data.social}
 						/>
 					</InputBox>
 				</InfoBox>
@@ -234,12 +241,16 @@ export function UserInfo() {
 	);
 }
 
-export function Information({ label, handleOpenAddress, register, errors }) {
+export function Information({
+	label,
+	handleOpenAddress,
+	register,
+	errors,
+	social,
+}) {
 	return (
 		<UserInfoBox>
-			{label === '비밀번호재확인' ||
-			label === '상세주소' ||
-			label === 'detailAddress' ? (
+			{label === '비밀번호재확인' || label === '상세주소' ? (
 				<InputLabel />
 			) : (
 				<InputLabel> {label} </InputLabel>
@@ -252,9 +263,7 @@ export function Information({ label, handleOpenAddress, register, errors }) {
 							? 'password'
 							: 'text'
 					}
-					readOnly={
-						label === '이메일' || label === '주소' || label === 'address'
-					}
+					readOnly={label === '이메일' || label === '주소' || social === true}
 					{...((label === '주소' || label === 'address') && {
 						onClick: handleOpenAddress,
 					})}
@@ -280,12 +289,11 @@ const Box = styled.form`
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	border: 1px solid #f1f1f1;
 	background-color: white;
 	width: 864px;
 	height: 710px;
 	padding: 30px 50px 30px 50px;
-	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
+	box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.05);
 	border-radius: 10px;
 
 	button {
