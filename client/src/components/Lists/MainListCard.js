@@ -19,7 +19,7 @@ function MainListCard({ item }) {
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
-					<ContentContainer bottom>
+					<ContentContainer bottom onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
 						<NamePriceBox>
 							<div className="title itemName">{item.title}</div>
@@ -39,6 +39,7 @@ function MainListCard({ item }) {
 						<ShortTextStar
 							starAvg={item.starAvg}
 							reviewCount={item.reviewSize}
+							main="main"
 						/>
 					</ContentContainer>
 					<ContentContainer middle>
@@ -100,18 +101,16 @@ const DefaultContainer = styled.div`
 const ContentBox = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 24px 24px 33px 24px;
+	padding: 25px 25px 33px 25px;
 `;
 const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
-	margin-top: 10px;
 	${(props) =>
 		props.middle
 			? css`
-					padding-top: 58px;
 					justify-content: center;
-					padding-bottom: 72px;
+					padding-bottom: 66px;
 			  `
 			: props.bottom
 			? css`
@@ -133,7 +132,6 @@ const ContentContainer = styled.div`
 	.itemName {
 		font-weight: var(--extraBold);
 		font-size: 20px;
-		/* padding-bottom: 27.5px; */
 		word-break: keep-all;
 	}
 	.itemPrice {
@@ -150,15 +148,18 @@ const NamePriceBox = styled.div`
 `;
 
 const ItemImg = styled.img`
-	width: 156px;
-	height: 156px;
+	width: 100%;
+	height: 100%;
 `;
 
 const ItemDescription = styled.p`
 	color: white;
-	font-size: 20px;
-	line-height: 25px;
+	font-size: 18px;
+	line-height: 26px;
 	letter-spacing: -0.04em;
 	word-break: keep-all;
+	margin-top: 70px;
+	text-align: left;
+	width: 100%;
 `;
 export default MainListCard;
