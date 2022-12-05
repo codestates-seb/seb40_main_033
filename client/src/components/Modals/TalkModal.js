@@ -12,17 +12,17 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 	};
 	const [talkContent, setTalkContent] = useState(talk.content);
 
-	// 토크 수정
+	// 토크 수정 hook
 	const { mutate: talkUpdateMu, response: talkUpdateRes } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talk.talkId}`,
 	);
 
-	// 리토크 수정
+	// 리토크 수정 hook
 	const { mutate: reTalkUpdateMu, response: reTalkUpdateRes } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talk.talkCommentId}`,
 	);
 
-	// 토크 수정 컨텐츠 상태
+	// 토크/리토크 수정할 컨텐츠 상태
 	const handleNewContent = useCallback(
 		(e) => {
 			setTalkContent(e.target.value);
@@ -31,25 +31,29 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 		[talkContent],
 	);
 
-	// 토크 수정!
-	const handleTalkUpdate = useCallback(
-		(e) => {
-			if (talkContent.length < 20) {
-				toast.error('20자 이상 작성해주세요.');
-				return;
-			}
+	// 토크/리토크 수정 요청 함수!
+	const handleTalkUpdate = useCallback(() => {
+		// 컨텐츠가 20자가 넘지 않는다면 에러메시지 노출
+		if (talkContent.length < 20) {
+			toast.error('20자 이상 작성해주세요.');
+			return;
+		}
 
-			// 리토크
-			if (talk.reply) {
-				reTalkUpdateMu({ content: talkContent });
-			} else {
-				talkUpdateMu({ content: talkContent });
-			}
-			toast.success('수정이 완료되었습니다!');
-			setIsOpen(false);
-		},
-		[talkContent],
-	);
+		// 리토크라면 리토크 수정 요청
+		if (talk.reply) {
+			reTalkUpdateMu({ content: talkContent });
+
+			// 토크라면 토크 수정 요청
+		} else {
+			talkUpdateMu({ content: talkContent });
+		}
+
+		// 수정이 끝나면 완료메시지 노출
+		toast.success('수정이 완료되었습니다!');
+
+		// 모달 닫기
+		setIsOpen(false);
+	}, [talkContent]);
 
 	return (
 		<DefalutModal

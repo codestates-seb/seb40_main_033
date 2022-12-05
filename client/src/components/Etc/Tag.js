@@ -1,14 +1,21 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 function Tag({ funcArr }) {
+	console.log(funcArr);
 	return (
 		<TagContainer>
 			{funcArr.map((func, index) => (
-				<TagName key={`${index.toString()}-${func}`}>
-					{func === '관절_뼈_건강'
-						? func.replaceAll('_', ' ').replace('절 뼈', '절/뼈')
-						: func.replaceAll('_', ' ')}
-				</TagName>
+				<Link
+					to={`/list?categoryName=${func}`}
+					key={`${index.toString()}-${func}`}
+				>
+					<TagName>
+						{func === '관절_뼈_건강'
+							? func.replaceAll('_', ' ').replace('절 뼈', '절/뼈')
+							: func.replaceAll('_', ' ')}
+					</TagName>
+				</Link>
 			))}
 		</TagContainer>
 	);

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Logo } from '../../assets/Icons';
 
 function Footer() {
 	return (
@@ -32,18 +33,22 @@ function Footer() {
 				</Top>
 				<Body>
 					<BoxLeft>
-						<Text>서울특별시 강남구 영동대로 106길 12, 502호</Text>
 						<Text>
-							사업자 번호: 001-717-99-09821 , 통신판매업신고번호: 2020-서울강남
+							서울특별시 강남구 영양대로 필리길 305, 3355호, 대표자: 김필리
 						</Text>
-						<Text>고객센터: 1122-1234</Text>
-
+						<Text>
+							사업자 번호: 123-45-678900 , 통신판매업신고번호:
+							2022-서울강남-221204
+						</Text>
+						<Text>고객센터: 1234-1234</Text>
+						<Text>E-mail: pillivery@pillivery.com</Text>
 						<Box>
 							<Contents
 								as="a"
 								href="https://github.com/dohyeons"
 								target="_blank"
 								rel="noopener noreferrer"
+								className="first"
 							>
 								도현수
 							</Contents>
@@ -92,15 +97,16 @@ function Footer() {
 								href="https://github.com/choizz156"
 								target="_blank"
 								rel="noopener noreferrer"
+								className="last"
 							>
 								최민석
 							</Contents>
 						</Box>
-						<Copyright>© Copyright ⓒ 2022 pillivery</Copyright>
+						<Copyright>© Copyright ⓒ 2022 Pillivery</Copyright>
 					</BoxLeft>
 					<BoxRight>
-						<Img />
-						<Pil>pillivery</Pil>
+						<Logo />
+						<Pil>Pillivery</Pil>
 					</BoxRight>
 				</Body>
 			</Wrap>
@@ -115,6 +121,9 @@ const FooterContainer = styled.footer`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	* {
+		color: var(--gray-300);
+	}
 `;
 
 const Wrap = styled.div`
@@ -130,7 +139,6 @@ const Top = styled.div`
 
 const Title = styled.div`
 	font-size: 16px;
-	color: var(--gray-200);
 	font-weight: var(--bold);
 	margin-left: 90px;
 `;
@@ -144,16 +152,17 @@ const Body = styled.div`
 `;
 
 const Text = styled.div`
-	color: var(--gray-200);
+	color: var(--gray-300);
 	font-weight: var(--regular);
-	margin-bottom: 10px;
-	margin-left: 30px;
+	margin-bottom: 7px;
+	font-size: 14px;
 `;
 
 const BoxLeft = styled.div`
 	flex-direction: column;
 	display: flex;
 	justify-content: center;
+	margin-left: 40px;
 `;
 
 const Box = styled.div`
@@ -161,14 +170,32 @@ const Box = styled.div`
 `;
 
 const Contents = styled.div`
-	color: var(--gray-200);
+	/* color: var(--gray-200); */
 	font-weight: var(--regular);
 	margin-top: 50px;
-	margin-left: 40px;
+	height: fit-content;
+	padding: 0 20px;
+	border-right: 1px solid var(--gray-200);
+	&.first {
+		padding: 0 20px 0 0;
+	}
+	&.last {
+		border: none;
+	}
 `;
 
 const BoxRight = styled.div`
 	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 200px;
+	margin-bottom: 10px;
+	svg {
+		margin-right: 12px;
+		* {
+			fill: var(--gray-200);
+		}
+	}
 `;
 
 const Img = styled.div`
@@ -180,19 +207,15 @@ const Img = styled.div`
 `;
 
 const Pil = styled.div`
-	color: var(--gray-200);
 	font-weight: var(--bold);
 	font-size: 18px;
-	margin-top: 60px;
-	margin-right: 240px;
 `;
 
 const Copyright = styled.div`
-	color: var(--gray-200);
 	font-weight: var(--light);
 	font-size: 13px;
 	margin-top: 30px;
-	margin-left: 200px;
+	/* margin-left: 200px; */
 `;
 
 export default Footer;

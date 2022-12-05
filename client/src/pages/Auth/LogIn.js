@@ -11,6 +11,7 @@ import {
 	Text,
 } from './SignUp';
 import SocialLogIn from './SocialLogIn';
+import { Logo } from '../../assets/Icons';
 
 // 로그인 페이지
 function LogIn() {
@@ -51,6 +52,9 @@ function LogIn() {
 	return (
 		<AuthContainer>
 			<FormContainer>
+				<Link to="/">
+					<Logo />
+				</Link>
 				<AuthTitle title="로그인" />
 				<AuthForm handleLogIn={handleLogIn} />
 				<SocialLogIn />

@@ -8,6 +8,7 @@ import AuthTitle from '../../components/Etc/AuthTitle';
 import { AuthForm } from '../../components/Inputs/AuthForm';
 import { fetchMoreInfo, fetchSignUp } from '../../apis/userApis';
 import { login } from '../../redux/slice/userSlice';
+import { Logo } from '../../assets/Icons';
 
 // const URI = 'http://ec2-3-35-17-245.ap-northeast-2.compute.amazonaws.com:8080';
 const URI = 'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080';
@@ -109,6 +110,9 @@ function SignUp() {
 	return (
 		<AuthContainer>
 			<FormContainer>
+				<Link to="/">
+					<Logo />
+				</Link>
 				<AuthTitle title="회원가입" />
 				<AuthForm signUp handleSignUp={handleSignUp} email={email} />
 				{/* <button type="button" onClick={signUp}>
@@ -145,10 +149,19 @@ export const FormContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
+	position: relative;
 	align-items: center;
 	padding-top: 50px;
 	width: 90%;
 	height: 100%;
+
+	& > a {
+		svg {
+			position: absolute;
+			left: 40px;
+			top: 45px;
+		}
+	}
 `;
 
 export const LinkContainer = styled.div`
