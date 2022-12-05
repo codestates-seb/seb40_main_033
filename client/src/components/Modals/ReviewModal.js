@@ -15,36 +15,22 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 	const [star, setStar] = useState(review.item.star || '');
 	const [content, setContent] = useState(review.item.content || ''); // 내용
 
-	const {
-		mutate: patchMu,
-		isLoading: patchIsLoad,
-		isError: patchIsErr,
-		error: patchErr,
-		response: patchRes,
-	} = usePatch(`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.item.reviewId}
+	const { mutate: patchMu } =
+		usePatch(`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.item.reviewId}
 	`);
 
 	// 주문내역 상세페이지 - 리뷰 작성
-	const {
-		mutate: postMu,
-		isLoading: postIsLoad,
-		isError: postIsErr,
-		error: postErr,
-		response: postRes,
-	} = usePost(
+	const { mutate: postMu } = usePost(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.item.itemOrderId}`,
 	);
-	console.log('review', review);
 
 	const handleStar = useCallback((e) => {
 		setStar(e.target.id); // 누른 별만큼 별점 설정
-		console.log('별점:', e.target.id);
 	}, []);
 
 	const handleContent = useCallback(
 		(e) => {
 			setContent(e.target.value);
-			console.log('내용:', e.target.value);
 		},
 		[content],
 	);
@@ -52,23 +38,20 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 	const handleSubmit = useCallback(
 		(e) => {
 			e.preventDefault();
-			console.log('제출', { content, star });
-			// 마이페이지- 주문내역상세페이지 리뷰 작성 요청
 			if (content.length < 20) {
 				toast.error('20자 이상 작성해주세요.');
 				return;
 			}
+
+			// 리뷰 작성 요청
 			if (pathname.includes('order')) {
 				postMu({ star, content });
-				console.log(postRes);
-				// 리뷰 수정 요청
+				toast.success('리뷰 작성이 완료되었습니다!');
 			} else {
 				patchMu({ star, content });
-				console.log(patchRes);
+				toast.success('리뷰 수정이 완료되었습니다!');
 			}
 			setIsOpen(false);
-			console.log('리뷰 작성 및 수정 요청');
-			toast.success('리뷰 수정이 완료되었습니다!');
 		},
 		[star, content],
 	);
