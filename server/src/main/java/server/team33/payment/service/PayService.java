@@ -154,7 +154,8 @@ public class PayService {
 
     private HttpHeaders getGeneralHeader(){
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Authorization", "Basic dGVzdF9za196WExrS0V5cE5BcldtbzUwblgzbG1lYXhZRzVSOg==");
+        httpHeaders.set("Authorization", "Basic dGVzdF9za19rWkxLR1B4NE0zTXFlMkpQTnkyM0JhV3lwdjFvOg==");
+//        httpHeaders.set("Authorization", "Basic dGVzdF9za196WExrS0V5cE5BcldtbzUwblgzbG1lYXhZRzVSOg==");
         httpHeaders.set("Content-Type", "application/json");
         return httpHeaders;
     }
