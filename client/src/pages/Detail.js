@@ -1,13 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
 import { useCallback, useState, useRef } from 'react';
 import { toast } from 'react-toastify';
+import { IoIosArrowBack } from 'react-icons/io';
 import Summary from '../components/ItemSummary/Summary';
 import DetailReviewList from '../components/Lists/DetailReviewList';
 import DetailTalkList from '../components/Lists/DetailTalkList';
 import TalkForm from '../components/Forms/TalkForm';
 import { useGet, usePost } from '../hooks/useFetch';
-import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 import {
 	DeliveryInfo,
 	ReturnInfo,
@@ -15,11 +15,33 @@ import {
 } from '../components/Etc/ItemDetailInfo';
 
 function Detail() {
-	// state 초기값 토크 조회값일 수도!
-	const ref = useRef();
 	const { pathname } = useLocation();
 	const { id } = useParams();
+	const reviewRef = useRef(null);
 	const token = localStorage.getItem('accessToken');
+	const [content, setContent] = useState(''); // 토크 컨텐츠!
+	const [isTalkOpen, setIsTalkOpen] = useState(false);
+	// 토크 폼 닫을 때 애니메이션 효과를 위한 상태
+	const [isDelay, setIsDelay] = useState(false);
+
+	// arrow 아이콘 클릭 시 토크 폼 오픈
+	const handleOpenTalkForm = useCallback(() => {
+		console.log('클릭?');
+		if (isTalkOpen) {
+			setIsDelay(true);
+			setTimeout(() => setIsTalkOpen(false), 300);
+		} else {
+			setIsTalkOpen(true);
+			setIsDelay(false);
+		}
+	}, [isTalkOpen, isDelay]);
+
+	// summary 속 별점 클릭 시 하단 리뷰 섹션으로 이동
+	const handleMoveToReview = () => {
+		reviewRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	};
+
+	// 상품 상세 조회
 	const { isLoading, isError, data, error } = useGet(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/items/${id}`,
 		pathname,
@@ -29,8 +51,6 @@ function Detail() {
 	const { mutate: talkMu, response } = usePost(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${id}`,
 	);
-
-	const [content, setContent] = useState(''); // 토크 컨텐츠!
 
 	// 토크 작성 요청
 	const handleSubmit = useCallback(
@@ -42,6 +62,9 @@ function Detail() {
 			talkMu({ content });
 			console.log('response', response);
 			setContent('');
+			setIsTalkOpen(false);
+			setIsDelay(true);
+			// setTimeout(() => setIsTalkOpen(false), 300);
 		},
 		[content],
 	);
@@ -61,6 +84,8 @@ function Detail() {
 	if (isError) {
 		return <div>Error: {error.message}</div>;
 	}
+
+	console.log('lists', lists);
 
 	return (
 		<DetailContainer>
@@ -89,13 +114,13 @@ function Detail() {
 						<InfoTitle>교환 및 반품정보</InfoTitle>
 						<ReturnInfo />
 					</InfoContainer>
-					<Notes>
+					<Notes ref={reviewRef}>
 						<InfoTitle>Review</InfoTitle>
 						<ListsContainer>
 							{lists.reviews.data.length !== 0 ? (
 								lists.reviews.data.map((review) => (
 									<DetailReviewList
-										key={review.reviewId}
+										key={`${review.reviewId}-review`}
 										itemId={review.itemId}
 										star={review.star}
 										displayName={review.displayName}
@@ -128,48 +153,55 @@ function Detail() {
 					<Notes className="talk">
 						<InfoTitle>Talk</InfoTitle>
 						{token && (
-							<TalkForm
-								content={content}
-								handleContent={handleContent}
-								handleSubmit={handleSubmit}
-							/>
-						)}
-						{lists.talks.data.length !== 0 ? (
-							lists.talks.data.map((talk) => (
-								<>
-									<DetailTalkList
-										key={talk.talkId}
-										itemId={talk.itemId}
-										createdAt={talk.createdAt}
-										content={talk.content}
-										userId={talk.userId}
-										talkId={talk.talkId}
-										shopper={talk.shopper}
-										displayName={talk.displayName}
+							<TalkFormContainer isDelay={isDelay}>
+								<TalkFormOpenBtn isDelay={isDelay} onClick={handleOpenTalkForm}>
+									<IoIosArrowBack className={isDelay && 'delay'} />
+									토크 작성하기
+								</TalkFormOpenBtn>
+								{isTalkOpen && (
+									<TalkForm
+										content={content}
+										handleContent={handleContent}
+										handleSubmit={handleSubmit}
 									/>
-									{talk.talkComments &&
-										talk.talkComments.map((retalk) => {
-											return (
-												<DetailTalkList
-													key={`${retalk.talkCommentId.toString()}-retalk`}
-													talkCommentId={retalk.talkCommentId}
-													reTalkContent={retalk.content}
-													createdAt={retalk.createdAt}
-													shopper={retalk.shopper}
-													displayName={retalk.displayName}
-													userId={retalk.userId}
-													isReply
-												/>
-											);
-										})}
-									{/* <DetailTalkList {...talk.talkComments.map(retalk => content={retalk.content}
-										)} /> */}
-								</>
-							))
-						) : (
-							<NoNote>작성된 토크가 없습니다.</NoNote>
+								)}
+							</TalkFormContainer>
 						)}
-						<ListsContainer className="talk" />
+						<ListsContainer className="talk">
+							{lists.talks.data.length !== 0 ? (
+								lists.talks.data.map((talk) => (
+									<>
+										<DetailTalkList
+											key={talk.talkId}
+											itemId={talk.itemId}
+											createdAt={talk.createdAt}
+											content={talk.content}
+											userId={talk.userId}
+											talkId={talk.talkId}
+											shopper={talk.shopper}
+											displayName={talk.displayName}
+										/>
+										{talk.talkComments &&
+											talk.talkComments.map((retalk) => {
+												return (
+													<DetailTalkList
+														key={`${retalk.talkCommentId.toString()}-retalk`}
+														talkCommentId={retalk.talkCommentId}
+														reTalkContent={retalk.content}
+														createdAt={retalk.createdAt}
+														shopper={retalk.shopper}
+														displayName={retalk.displayName}
+														userId={retalk.userId}
+														isReply
+													/>
+												);
+											})}
+									</>
+								))
+							) : (
+								<NoNote>작성된 토크가 없습니다.</NoNote>
+							)}
+						</ListsContainer>
 					</Notes>
 				</Contents>
 				<SummaryContainer>
@@ -184,6 +216,7 @@ function Detail() {
 						beforePrice={lists.discountPrice ? lists.price : null}
 						starAvg={lists.starAvg}
 						reviewCount={lists.reviews.data.length}
+						handleMoveToReview={handleMoveToReview}
 					/>
 				</SummaryContainer>
 			</>
@@ -238,13 +271,6 @@ const InfoTitle = styled.h2`
 	align-self: start;
 `;
 
-const InfoContent = styled.pre`
-	white-space: pre-line;
-	font-size: 15px;
-	line-height: 1.5;
-	color: var(--gray-400);
-`;
-
 const Notes = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -254,9 +280,112 @@ const Notes = styled.div`
 	margin-top: 100px;
 	&.talk {
 		> :nth-child(2) {
-			margin-bottom: 44px;
+			margin-bottom: 30px;
 		}
 		/* margin-bottom: 20px; */
+	}
+`;
+
+// 열릴 때 화살표 위로
+const rotateArrow = keyframes`
+	0% {
+		transform: rotate(-90deg);
+	}
+	100% {
+		transform: rotate(-630deg);
+	}
+`;
+
+// 닫힐 때 화살표 아래로
+const rotateArrowReverse = keyframes`
+	0% {
+		transform: rotate(-630deg);
+	}
+	100% {
+		transform: rotate(-90deg);
+	}
+`;
+
+const slideIn = keyframes`
+	0% {
+		opacity: 0%;
+		transform: translateY(-50px)
+	}
+	50% {
+		opacity: 10%;
+	}
+	100% {
+		opacity: 100;
+		transform: translateY(0)
+	}
+`;
+
+const slideOut = keyframes`
+	0% {
+		opacity: 80%;
+		/* transform: translateY(0); */
+
+	}
+	50% {
+		opacity: 10%;
+	}
+	100% {
+		opacity: 0%;
+		transform: translateY(-50px);
+		/* height: 0; */
+	}
+`;
+
+const TalkFormContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	/* justify-content: center; */
+	align-items: center;
+
+	// 토크 폼
+	& > :nth-child(2) {
+		margin-bottom: 10px;
+		${({ isDelay }) =>
+			!isDelay // 딜레이가 아님 === 열림
+				? css`
+						animation: ${slideIn} 0.3s ease;
+				  `
+				: css`
+						animation: ${slideOut} 0.3s ease;
+				  `};
+	}
+`;
+
+const TalkFormOpenBtn = styled.div`
+	display: flex;
+	align-items: center;
+	color: var(--purple-200);
+	width: 100%;
+	justify-content: center;
+	cursor: pointer;
+
+	// 토크 폼 여는 버튼
+	svg {
+		align-self: flex-end;
+		font-size: 16px;
+		margin-right: 6px;
+		transform: rotate(-90deg);
+
+		path {
+			color: var(--purple-200);
+		}
+
+		cursor: pointer;
+		${({ isDelay }) =>
+			!isDelay // 딜레이가 아님 === 열림
+				? css`
+						animation: ${rotateArrow} 0.3s ease-in-out;
+						transform: rotate(-270deg);
+				  `
+				: css`
+						animation: ${rotateArrowReverse} 0.3s ease-in-out;
+				  `};
 	}
 `;
 
@@ -266,11 +395,11 @@ const ListsContainer = styled.div`
 	align-items: center;
 	width: 100%;
 
-	&.talk {
+	/* &.talk {
 		> :nth-child(1) {
-			margin-top: 40px;
+			margin-top: 20px;
 		}
-	}
+	} */
 `;
 
 const NoNote = styled.div`
