@@ -47,7 +47,7 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
 
     private void redirect( HttpServletResponse response, PrincipalDetails principalDetails ) throws IOException{
         List<String> tokens = delegateToken(principalDetails.getUser(), jwtToken);
-        String uri = createURI(tokens.get(0), tokens.get(1)).toString();
+        String uri = createURI(tokens.get(0), tokens.get(1), principalDetails).toString();
         response.sendRedirect(uri);
     }
     private void redirectInfo( HttpServletRequest request, HttpServletResponse response, Authentication authentication ) throws IOException{
@@ -70,10 +70,11 @@ public class UserAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
         return (PrincipalDetails) authentication.getPrincipal();
     }
 
-    private URI createURI( String accessToken, String refreshToken ){
+    private URI createURI( String accessToken, String refreshToken, PrincipalDetails principalDetails ){
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", "Bearer " + accessToken);
         queryParams.add("refresh_token", refreshToken);
+        queryParams.add("userId", String.valueOf(principalDetails.getUser().getUserId()));
         log.info("query = {}", queryParams);
         return UriComponentsBuilder.newInstance().scheme("http").host("pillivery.s3-website.ap-northeast-2.amazonaws.com")
                 .queryParams(queryParams).build().toUri();
