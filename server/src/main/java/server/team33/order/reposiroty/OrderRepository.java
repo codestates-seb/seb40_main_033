@@ -13,6 +13,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Page<Order> findAllByUserAndSubscriptionAndOrderStatusNot(
             Pageable pageable, User user, boolean subscription, OrderStatus orderStatus1);
 
+    Page<Order> findAllByUserAndSubscriptionAndOrderStatusNotAndOrderStatusNot(
+            Pageable pageable, User user, boolean subscription, OrderStatus orderStatus1, OrderStatus orderStatus2
+    );
+
     @Query("Select distinct o from ORDERS o join ITEM_ORDERS io on o.orderId = io.order.orderId " +
             "where io.item.itemId = :itemId and o.user.userId = :userId")
     Order findByItemAndUser(@Param("itemId") long itemId, @Param("userId") long userId);

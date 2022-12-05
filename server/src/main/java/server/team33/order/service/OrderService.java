@@ -71,9 +71,16 @@ public class OrderService {
     }
 
     public Page<Order> findOrders(User user, int page, boolean subscription) {
-        Page<Order> findAllOrder = orderRepository.findAllByUserAndSubscriptionAndOrderStatusNot(
+        if(subscription) {
+            Page<Order> findAllOrder = orderRepository.findAllByUserAndSubscriptionAndOrderStatusNot(
+                    PageRequest.of(page, 7, Sort.by("orderId").descending()),
+                    user, true, OrderStatus.ORDER_REQUEST);
+
+            return findAllOrder;
+        }
+        Page<Order> findAllOrder = orderRepository.findAllByUserAndSubscriptionAndOrderStatusNotAndOrderStatusNot(
                 PageRequest.of(page, 7, Sort.by("orderId").descending()),
-                user, subscription, OrderStatus.ORDER_REQUEST);
+                user, false, OrderStatus.ORDER_REQUEST, OrderStatus.ORDER_SUBSCRIBE);
 
         return findAllOrder;
     }
