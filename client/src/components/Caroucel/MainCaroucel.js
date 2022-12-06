@@ -92,33 +92,34 @@ const ArrowButton = styled.button`
 	}
 `;
 
+const settings = {
+	dots: true,
+	infinite: true,
+	speed: 500,
+	slidesToShow: 2,
+	slidesToScroll: 1,
+	autoplay: true,
+	autoplaySpeed: 5000,
+	pauseOnHover: true,
+	nextArrow: (
+		<ArrowButton right>
+			<IoIosArrowBack />
+		</ArrowButton>
+	),
+	prevArrow: (
+		<ArrowButton left>
+			<IoIosArrowBack />
+		</ArrowButton>
+	),
+	className: 'center',
+	centerMode: true,
+	centerPadding: '0px',
+};
+
 function MainCaroucel() {
 	const [sliderRef, setSliderRef] = useState(null);
 	const [isPlaying, setIsPlaying] = useState(true);
 
-	const settings = {
-		dots: true,
-		infinite: true,
-		speed: 500,
-		slidesToShow: 2,
-		slidesToScroll: 1,
-		autoplay: true,
-		autoplaySpeed: 5000,
-		pauseOnHover: true,
-		nextArrow: (
-			<ArrowButton right>
-				<IoIosArrowBack />
-			</ArrowButton>
-		),
-		prevArrow: (
-			<ArrowButton left>
-				<IoIosArrowBack />
-			</ArrowButton>
-		),
-		className: 'center',
-		centerMode: true,
-		centerPadding: '0px',
-	};
 	const pauseFn = () => {
 		sliderRef.slickPause();
 	};

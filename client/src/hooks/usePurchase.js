@@ -1,16 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 
 function usePurchase(url, params) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
-	// const [response, setResponse] = useState(null);
 
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
-		(data) => axios.post(url, data), // .then((res) => setResponse(res))
+		(data) => axiosInstance.post(url, data), // .then((res) => setResponse(res))
 		{
 			onSuccess: (res) => {
 				navigate(`/pay/${params}`, { state: res.data.data }); // 결제 페이지로 응답 전송

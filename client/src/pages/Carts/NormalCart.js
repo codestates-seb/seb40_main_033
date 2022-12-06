@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
-import { useGet, usePost } from '../../hooks/useFetch';
+import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import usePurchase from '../../hooks/usePurchase';
 
@@ -16,13 +16,10 @@ function NormalCart() {
 		isError,
 		data: items,
 		error,
-	} = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts?subscription=false',
-		pathname,
-	);
+	} = useGet('/carts?subscription=false', pathname);
 
 	const { mutate: purchaseMutate } = usePurchase(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders?subscription=false',
+		'/orders?subscription=false',
 		'normal',
 	);
 

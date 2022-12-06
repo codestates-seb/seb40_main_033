@@ -16,13 +16,10 @@ function SubCart() {
 		isError,
 		data: items,
 		error,
-	} = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts?subscription=true',
-		pathname,
-	);
+	} = useGet('/carts?subscription=true', pathname);
 
 	const { mutate: purchaseMutate } = usePurchase(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders?subscription=true',
+		'/orders?subscription=true',
 		'subscription',
 	);
 

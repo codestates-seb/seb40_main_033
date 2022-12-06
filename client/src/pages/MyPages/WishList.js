@@ -11,10 +11,7 @@ function WishList() {
 		isError,
 		data: wishListItems,
 		error,
-	} = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes',
-		pathname,
-	);
+	} = useGet('/wishes', pathname);
 	if (isLoading) return <LoadingSpinner />;
 	if (isError)
 		return <PendingBox className="error">{error.message}</PendingBox>;

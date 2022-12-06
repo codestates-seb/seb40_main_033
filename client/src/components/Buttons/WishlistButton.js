@@ -7,9 +7,7 @@ import { usePost } from '../../hooks/useFetch';
 function WishlistButton({ isChecked, itemId, setIsChecked }) {
 	const [request, setRequest] = useState(isChecked ? 0 : 1);
 	const token = localStorage.getItem('accessToken');
-	const { mutate } = usePost(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes/${itemId}?wish=${request}`,
-	);
+	const { mutate } = usePost(`/wishes/${itemId}?wish=${request}`);
 
 	const handleHeartClick = useCallback(() => {
 		if (!token) {

@@ -18,25 +18,25 @@ function CartList({ data, item, sub }) {
 	const navigate = useNavigate();
 
 	const { mutate: quantityPlus } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/${data.itemCartId}?upDown=+1`,
+		`/carts/itemcarts/${data.itemCartId}?upDown=+1`,
 	);
 
 	const { mutate: quantityMinus } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/${data.itemCartId}?upDown=-1`,
+		`/carts/itemcarts/${data.itemCartId}?upDown=-1`,
 	);
 
 	const { mutate: deleteCart } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/${
-			data.itemCartId
-		}?subscription=${sub ? 'true' : 'false'}`,
+		`/carts/itemcarts/${data.itemCartId}?subscription=${
+			sub ? 'true' : 'false'
+		}`,
 	);
 
 	const { mutate: patchCheck } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/exclude/${data.itemCartId}?buyNow=${isChecked}`,
+		`/carts/itemcarts/exclude/${data.itemCartId}?buyNow=${isChecked}`,
 	);
 
 	const { mutate: patchPeriod } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/itemcarts/period/${data.itemCartId}?period=${period}`,
+		`/carts/itemcarts/period/${data.itemCartId}?period=${period}`,
 	);
 
 	const handleItemClick = () => {

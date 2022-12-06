@@ -10,7 +10,7 @@ function SubscriptionOrder() {
 	const { pathname } = useLocation();
 
 	const { isLoading, isError, data, error } = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders?subscription=true&page=1&size=70',
+		'/orders?subscription=true&page=1&size=70',
 		pathname,
 	);
 
