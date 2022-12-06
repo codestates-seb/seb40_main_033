@@ -1,0 +1,23 @@
+{
+	"env": {
+			"browser": true,
+			"es2021": true,
+			"node": true
+	},
+	"extends": [
+			"airbnb",
+			"plugin:react/recommended",
+			"plugin:prettier/recommended"
+	],
+	"rules": {
+			"import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+			"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+			"react/react-in-jsx-scope": 0,
+			"no-unused-vars": 1,
+			"react/prop-types": 0,
+			"react/jsx-props-no-spreading": 0
+	},
+	"parserOptions": {
+			"ecmaVersion": 2020
+	}
+}
