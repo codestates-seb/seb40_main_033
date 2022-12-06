@@ -1,16 +1,16 @@
+/* eslint-disable no-unused-expressions */
 import styled from 'styled-components';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
-import axios from 'axios';
-import { useInfiniteQuery } from 'react-query';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
 import paramsMaker from '../utils/paramsMaker';
 import BrandsWindow from '../components/Etc/BrandsWindow';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 import { setClear } from '../redux/slice/filterSlice';
+import useGetList from '../hooks/useGetList';
 
 // 목록 페이지
 function ItemList() {
@@ -29,45 +29,32 @@ function ItemList() {
 	// API 요청
 	const { pathname } = useLocation();
 
-	const fetchItemList = async ({ pageParam = 1 }) => {
-		const res = await axios.get(
-			`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/category${path}?categoryName=${category}${query}&page=${pageParam}&size=12`,
-		);
-		const { data } = res.data;
-		const { pageInfo } = res.data;
-
-		return {
-			data,
-			nextPage: pageParam + 1,
-			isLast: pageInfo.totalPages <= pageInfo.page,
-		};
-	};
-
 	const { ref, inView } = useInView();
 	const { data, status, fetchNextPage, isFetchingNextPage, refetch } =
-		useInfiniteQuery(pathname, fetchItemList, {
-			getNextPageParam: (lastPage) =>
-				!lastPage.isLast ? lastPage.nextPage : undefined,
-		});
-	console.log(data, status);
+		useGetList(pathname, category, path, query);
 
 	useEffect(() => {
 		if (inView) fetchNextPage();
 	}, [inView]);
 
-	// 상태들이 바뀔때마다 새로운 아이템 목록을 불러옴
-	useEffect(() => {
-		refetch();
-	}, [category, price, sort, brand, onSale]);
-
 	// 카테고리가 바뀌면 상태 초기화
-	useEffect(() => {
-		dispatch(setClear());
+	const handleCategory = async () => {
+		await dispatch(setClear());
 		window.scroll({
 			top: 0,
 			behavior: 'auto',
 		});
+		await refetch();
+	};
+
+	useEffect(() => {
+		handleCategory();
 	}, [category]);
+
+	// 상태들이 바뀔때마다 새로운 아이템 목록을 불러옴
+	useEffect(() => {
+		refetch();
+	}, [price, sort, brand, onSale]);
 
 	if (status === 'Loading') {
 		return <LoadingSpinner />;
