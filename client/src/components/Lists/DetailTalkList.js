@@ -32,28 +32,24 @@ function DetailTalkList({
 	const [isAuthor] = useState(Number(user) === userId);
 
 	// 토크 수정
-	const { mutate: talkUpdateMu } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talkId}`,
-	);
+	const { mutate: talkUpdateMu } = usePatch(`/talks/${talkId}`);
 
 	// 토크 삭제
-	const { mutate: talkDeleteMu } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talkId}`,
-	);
+	const { mutate: talkDeleteMu } = useDelete(`/talks/${talkId}`);
 
 	// 리토크 삭제
 	const { mutate: reTalkDeleteMu } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkCommentId}`,
+		`/talks/comments/${talkCommentId}`,
 	);
 
 	// 리토크 작성
 	const { mutate: reTalkCreateMu } = usePost(
-		`	http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkId}?itemId=${itemId}`,
+		`/talks/comments/${talkId}?itemId=${itemId}`,
 	);
 
 	// 리토크 수정
 	const { mutate: reTalkUpdateMu } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkCommentId}`,
+		`/talks/comments/${talkCommentId}`,
 	);
 
 	// 토크 수정 컨텐츠 상태

@@ -11,10 +11,7 @@ function SubManage() {
 		isError,
 		isLoading,
 		error,
-	} = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/subs',
-		pathname,
-	);
+	} = useGet('/orders/subs', pathname);
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
 	return (

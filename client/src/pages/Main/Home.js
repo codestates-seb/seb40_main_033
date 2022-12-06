@@ -26,10 +26,7 @@ function Home() {
 	}, []);
 
 	const { pathname } = useLocation();
-	const { isLoading, isError, data, error } = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/main',
-		pathname,
-	);
+	const { isLoading, isError, data, error } = useGet('/main', pathname);
 
 	const list = data?.data;
 

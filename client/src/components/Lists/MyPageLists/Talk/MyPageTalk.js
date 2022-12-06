@@ -16,12 +16,12 @@ function MyPageTalk({ talk, isReply }) {
 	const navigate = useNavigate();
 	// 토크 삭제
 	const { mutate: talkDeleteMu, response: talkDeleteRes } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talk.talkId}`,
+		`/talks/${talk.talkId}`,
 	);
 
 	// 리토크 삭제
 	const { mutate: reTalkDeleteMu, response: reTalkDeleteRes } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talk.talkCommentId}`,
+		`/talks/comments/${talk.talkCommentId}`,
 	);
 
 	const handleFormOpen = useCallback(

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,6 +6,7 @@ import { toast } from 'react-toastify';
 import { TempLogo } from '../../assets/Icons';
 import { GrayLetterButton } from '../Buttons/LetterButton';
 import { logout } from '../../redux/slice/userSlice';
+import axiosInstance from '../../utils/axiosInstance';
 
 function MyPageHeader() {
 	const dispatch = useDispatch();
@@ -14,13 +14,9 @@ function MyPageHeader() {
 	const localNick = localStorage.getItem('nickName');
 	const { nickName } = useSelector((store) => store.nickName);
 	const handleLogout = useCallback(async () => {
-		const response = await axios
-			.get(
-				'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users/logout',
-			)
-			.catch(() => {
-				toast.error('회원정보를 불러오는데 실패했습니다!');
-			});
+		const response = await axiosInstance.get('/users/logout').catch(() => {
+			toast.error('회원정보를 불러오는데 실패했습니다!');
+		});
 		if (response) {
 			await dispatch(logout());
 			navigate('/', { replace: true });
