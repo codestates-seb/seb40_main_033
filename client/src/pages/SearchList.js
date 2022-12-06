@@ -1,19 +1,17 @@
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
-import { useGet } from '../hooks/useFetch';
 import paramsMaker from '../utils/paramsMaker';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
-import Pagination from '../components/Etc/Pagination';
+import { useGetSearchList } from '../hooks/useGetList';
+import { setClear } from '../redux/slice/filterSlice';
 
 // 목록 페이지
 function SearchList() {
-	// 페이지네이션
-	const [currentPage, setCurrentPage] = useState(1);
-
 	const { sort, price, brand, onSale } = useSelector((state) => state.filter);
 
 	// uri에 붙일 파람스 생성
@@ -23,33 +21,44 @@ function SearchList() {
 	const [searchParams] = useSearchParams();
 	const keyword = searchParams.get('keyword');
 
+	// API 요청 (무한 스크롤)
 	const { pathname } = useLocation();
-	const {
-		isLoading,
-		isError,
-		data: items,
-		error,
-		refetch,
-	} = useGet(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/search${path}?keyword=${keyword}${query}&page=${currentPage}&size=12`,
-		pathname,
-	);
 
-	const pageInfo = items?.data?.pageInfo;
+	const { ref, inView } = useInView();
+	const { data, status, fetchNextPage, isFetchingNextPage, refetch } =
+		useGetSearchList(pathname, keyword, path, query);
 
+	// 최하단 div가 보이면 다음 페이지를 불러옴
 	useEffect(() => {
-		refetch();
+		if (inView) fetchNextPage();
+	}, [inView]);
+
+	// 카테고리가 바뀌면 상태 초기화
+	const dispatch = useDispatch();
+
+	const handleFilterClear = async () => {
+		await dispatch(setClear());
 		window.scroll({
 			top: 0,
 			behavior: 'auto',
 		});
-	}, [keyword, price, sort, brand, onSale, currentPage]);
+		await refetch();
+	};
 
-	if (isLoading) {
+	useEffect(() => {
+		handleFilterClear();
+	}, [keyword]);
+
+	// 상태들이 바뀔때마다 새로운 아이템 목록을 불러옴
+	useEffect(() => {
+		refetch();
+	}, [price, sort, brand, onSale]);
+
+	if (status === 'Loading') {
 		return <LoadingSpinner />;
 	}
-	if (isError) {
-		return <ItemListBox> {error.message} </ItemListBox>;
+	if (status === 'error') {
+		return <ItemListBox> error </ItemListBox>;
 	}
 
 	return (
@@ -62,16 +71,15 @@ function SearchList() {
 				)}"에 대한 검색 결과입니다.`}</Text>
 			</Mesage>
 			<ItemListBox>
-				{items.data.data.map((item) => (
-					<SmallListCards key={item.itemId} item={item} />
+				{data?.pages.map((page, index) => (
+					<React.Fragment key={`${index.toString()}`}>
+						{page.data.map((item) => (
+							<SmallListCards key={item.itemId} item={item} />
+						))}
+					</React.Fragment>
 				))}
 			</ItemListBox>
-			<Pagination
-				total={pageInfo.totalElements}
-				size={pageInfo.size}
-				page={currentPage}
-				setPage={setCurrentPage}
-			/>
+			{isFetchingNextPage ? <LoadingSpinner /> : <div ref={ref} />}
 		</Box>
 	);
 }

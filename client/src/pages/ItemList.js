@@ -10,12 +10,10 @@ import paramsMaker from '../utils/paramsMaker';
 import BrandsWindow from '../components/Etc/BrandsWindow';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 import { setClear } from '../redux/slice/filterSlice';
-import useGetList from '../hooks/useGetList';
+import { useGetList } from '../hooks/useGetList';
 
 // 목록 페이지
 function ItemList() {
-	const dispatch = useDispatch();
-
 	// uri에 사용할 정보들을 리덕스에서 가지고옴
 	const { sort, price, brand, onSale } = useSelector((state) => state.filter);
 
@@ -26,19 +24,22 @@ function ItemList() {
 	const [searchParams] = useSearchParams();
 	const category = searchParams.get('categoryName') || 'all';
 
-	// API 요청
+	// API 요청 (무한 스크롤)
 	const { pathname } = useLocation();
 
 	const { ref, inView } = useInView();
 	const { data, status, fetchNextPage, isFetchingNextPage, refetch } =
 		useGetList(pathname, category, path, query);
 
+	// 최하단 div가 보이면 다음 페이지를 불러옴
 	useEffect(() => {
 		if (inView) fetchNextPage();
 	}, [inView]);
 
 	// 카테고리가 바뀌면 상태 초기화
-	const handleCategory = async () => {
+	const dispatch = useDispatch();
+
+	const handleFilterClear = async () => {
 		await dispatch(setClear());
 		window.scroll({
 			top: 0,
@@ -48,7 +49,7 @@ function ItemList() {
 	};
 
 	useEffect(() => {
-		handleCategory();
+		handleFilterClear();
 	}, [category]);
 
 	// 상태들이 바뀔때마다 새로운 아이템 목록을 불러옴

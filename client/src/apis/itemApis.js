@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 
 export const fetchCathgoryItems = async ({
 	category,
@@ -6,8 +6,8 @@ export const fetchCathgoryItems = async ({
 	query,
 	pageParam,
 }) => {
-	const res = await axios.get(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/category${path}?categoryName=${category}${query}&page=${pageParam}&size=12`,
+	const res = await axiosInstance.get(
+		`/category${path}?categoryName=${category}${query}&page=${pageParam}&size=12`,
 	);
 	const { data } = res.data;
 	const { pageInfo } = res.data;
@@ -19,14 +19,14 @@ export const fetchCathgoryItems = async ({
 	};
 };
 
-export const fetchItemList = async ({
-	category,
+export const fetchSearchItems = async ({
+	keyword,
 	path,
 	query,
 	pageParam = 1,
 }) => {
-	const res = await axios.get(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/category${path}?categoryName=${category}${query}&page=${pageParam}&size=12`,
+	const res = await axiosInstance.get(
+		`/search${path}?keyword=${keyword}${query}&page=${pageParam}&size=12`,
 	);
 	const { data } = res.data;
 	const { pageInfo } = res.data;
