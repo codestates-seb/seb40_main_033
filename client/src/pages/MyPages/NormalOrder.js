@@ -15,7 +15,11 @@ function NormalOrder() {
 	);
 
 	if (isLoading) {
-		return <LoadingSpinner />;
+		return (
+			<ListContainer>
+				<LoadingSpinner />
+			</ListContainer>
+		);
 	}
 
 	if (isError) {
@@ -47,7 +51,9 @@ const ListContainer = styled.main`
 	border-radius: 10px;
 	background-color: white;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
-	width: 100%;
+	width: 864px;
+	min-height: 200px;
+	position: relative;
 
 	& > {
 		:last-child {
@@ -57,7 +63,6 @@ const ListContainer = styled.main`
 `;
 
 const Nolists = styled.div`
-	height: 200px;
 	display: flex;
 	justify-content: center;
 	align-items: center;

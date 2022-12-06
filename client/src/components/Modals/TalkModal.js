@@ -13,12 +13,12 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 	const [talkContent, setTalkContent] = useState(talk.content);
 
 	// 토크 수정 hook
-	const { mutate: talkUpdateMu, response: talkUpdateRes } = usePatch(
+	const { mutate: talkUpdateMu } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talk.talkId}`,
 	);
 
 	// 리토크 수정 hook
-	const { mutate: reTalkUpdateMu, response: reTalkUpdateRes } = usePatch(
+	const { mutate: reTalkUpdateMu } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talk.talkCommentId}`,
 	);
 
@@ -26,7 +26,6 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 	const handleNewContent = useCallback(
 		(e) => {
 			setTalkContent(e.target.value);
-			console.log('내용:', e.target.value);
 		},
 		[talkContent],
 	);

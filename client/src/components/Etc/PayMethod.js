@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
@@ -19,8 +20,10 @@ export default function PayMethod({ payData }) {
 				orderId: `${orderId}abcdef`,
 				orderName: `${itemOrders.data[0].item.title}, ${itemOrders.data.length} 건`,
 				customerName: `Pillivery`,
-				successUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/',
-				failUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/',
+				successUrl:
+					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/general/success',
+				failUrl:
+					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/fail',
 				validHours: 24,
 				cashReceipt: {
 					type: '소득공제',
@@ -70,6 +73,17 @@ export default function PayMethod({ payData }) {
 					<GobackButton onClick={() => window.history.back()}>
 						전 페이지로 돌아가기
 					</GobackButton>
+					<Link
+						to={
+							subscription
+								? '/mypage/order/subscription'
+								: '/mypage/order/normal'
+						}
+					>
+						<LightPurpleButton width="150px" height="40px" fontSize="13px">
+							주문내역 보러가기
+						</LightPurpleButton>
+					</Link>
 				</AddressModal>
 			)}
 		</PayPageContainer>
@@ -80,7 +94,8 @@ const ButtonBox = styled.div`
 	display: flex;
 	flex-direction: row;
 	width: 100%;
-	justify-content: space-between;
+	/* justify-content: space-between; */ // 토스가 복구되면 얘를 써야 합니다.
+	justify-content: center; // 토스가 복구되기 전 까지의 임시 설정입니다.
 	margin-bottom: 44px;
 	&.sub {
 		justify-content: center;
@@ -134,11 +149,12 @@ const PayFrame = styled.iframe`
 `;
 
 const GobackButton = styled.button`
+	margin-bottom: 8px;
 	margin-top: 20px;
 	width: 150px;
-	height: 50px;
+	height: 40px;
 	border: 0.5px solid var(--gray-300);
-	border-radius: 10px;
+	border-radius: 6px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	background-color: white;
 	text-align: center;

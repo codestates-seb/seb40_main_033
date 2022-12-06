@@ -25,6 +25,7 @@ function Summary({
 	wishlist,
 	starAvg,
 	reviewCount,
+	handleMoveToReview,
 }) {
 	const { pathname } = useLocation();
 	const { id } = useParams();
@@ -166,6 +167,7 @@ function Summary({
 								star={Math.floor(starAvg)}
 								average={starAvg}
 								count={reviewCount}
+								onClick={handleMoveToReview}
 							/>
 							<SummaryPrice
 								nowPrice={nowPrice}
