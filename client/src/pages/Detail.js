@@ -136,6 +136,7 @@ function Detail() {
 												brand: lists.brand,
 												thumbnail: lists.thumbnail,
 												title: lists.title,
+												capacity: lists.capacity,
 												nowPrice: lists.discountPrice || lists.price,
 												discountRate:
 													lists.discountRate === 0 ? '' : lists.discountRate,
