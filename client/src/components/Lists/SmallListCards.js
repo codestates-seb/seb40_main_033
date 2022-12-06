@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
-// 세연님이 별점 만들면 가져다가 쓰자.
 
 function SmallListCards({ item }) {
 	const navigate = useNavigate();
