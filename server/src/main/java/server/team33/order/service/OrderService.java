@@ -106,8 +106,8 @@ public class OrderService {
         return findOrder;
     }
     public boolean isShopper(long itemId, long userId) { // 유저의 특정 아이템 구매여부 확인
-        Order order = orderRepository.findByItemAndUser(itemId, userId);
-        if(order == null) return false;
+        List<Order> order = orderRepository.findByItemAndUser(itemId, userId, OrderStatus.ORDER_REQUEST);
+        if(order.size() == 0) return false;
         else return true;
     }
     public void completeOrder( Long orderId ){
