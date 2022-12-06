@@ -23,6 +23,7 @@ function MyPageReviewList({
 	nowPrice,
 	discountRate,
 	beforePrice,
+	capacity,
 }) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -64,6 +65,7 @@ function MyPageReviewList({
 			star,
 			userId,
 			itemId,
+			capacity,
 		},
 	};
 
