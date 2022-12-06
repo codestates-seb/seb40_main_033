@@ -24,6 +24,7 @@ import server.team33.redis.RedisConfig;
 import server.team33.user.entity.User;
 import server.team33.user.service.UserService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
@@ -92,8 +93,8 @@ public class PaymentController {
 
 
     @GetMapping("/general/success")
-    public ResponseEntity home(
-            @RequestParam("paymentKey") String paymentKey, @RequestParam("amount") int amount, @RequestParam(name = "orderId") String orderId ) throws IOException{
+    public void home(
+            @RequestParam("paymentKey") String paymentKey, @RequestParam("amount") int amount, @RequestParam(name = "orderId") String orderId, HttpServletResponse response ) throws IOException{
 
         String result = payService.generalPay(paymentKey, orderId, amount);
 
@@ -101,7 +102,9 @@ public class PaymentController {
 
         orderService.completeOrder(Long.parseLong(orderId));
 
-        return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+        String url = "http://pillivery.s3-website.ap-northeast-2.amazonaws.com/mypage/order/normal";
+
+        response.sendRedirect(url);
     }
 
 //    @GetMapping("/general/subs/success")
