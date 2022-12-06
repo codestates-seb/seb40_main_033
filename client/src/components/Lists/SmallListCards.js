@@ -180,7 +180,7 @@ const ItemDescription = styled.p`
 
 const Ingredient = styled.p`
 	display: flex;
-	color: var(--purple-100);
+	color: var(--gray-200);
 	margin-top: 12px;
 	line-height: 1.3;
 	word-break: keep-all;

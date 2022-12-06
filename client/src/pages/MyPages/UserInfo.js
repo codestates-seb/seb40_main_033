@@ -76,18 +76,17 @@ export function UserInfo() {
 		required: '닉네임을 입력해주세요.',
 		pattern: {
 			value: /^[A-Za-z0-9가-힣]{2,9}$/,
-			message: '한글, 영어, 숫자를 사용해 2~9자 사이로 지어주세요.',
+			message: '한글, 영문, 숫자를 사용해 2~9자 사이로 지어주세요.',
 		},
 	});
 	const mailReg = register('이메일', {
-		// required: false,
 		required: true,
 	});
 	const pwReg = register('비밀번호', {
 		required: '비밀번호를 입력해주세요.',
-		pattern: {
-			value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/,
-			message: '문자, 숫자, 특수문자를 사용해 8자 이상으로 지어주세요.',
+		minLength: {
+			value: 5,
+			message: '비밀번호가 너무 짧습니다.',
 		},
 		validate: {
 			no1234: (value) =>
@@ -97,7 +96,7 @@ export function UserInfo() {
 		},
 	});
 	const rePwReg = register('비밀번호재확인', {
-		required: '비밀번호를 다시 한번 입력해주세요.',
+		required: '비밀번호를 다시 입력해주세요.',
 		validate: {
 			matchPreviousPassword: (value) => {
 				const { 비밀번호 } = watch();
@@ -106,24 +105,24 @@ export function UserInfo() {
 		},
 	});
 	const nameReg = register('이름', {
-		required: '이름을 입력해주세요.',
-		pattern: {
-			value: /^[가-힣]{2,5}$/,
-			message: '한글 5글자 이내로 작성해주세요.',
+		required: '작성해주세요.',
+		minLength: {
+			value: 2,
+			message: '2글자 이상 작성해주세요.',
 		},
 	});
 	const telReg = register('전화번호', {
-		required: '전화번호를 입력해주세요.',
+		required: '작성해주세요.',
 		pattern: {
-			value: /^\d{2,3}-\d{3,4}-\d{4}$/,
-			message: '올바른 형식으로 작성해주세요.',
+			value: /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/,
+			message: '000-0000-0000 형식으로 작성해주세요.',
 		},
 	});
 	const adressReg = register('주소', {
-		required: '주소를 입력해주세요.',
+		required: '작성해주세요.',
 	});
 	const detailAddressReg = register('상세주소', {
-		required: false,
+		required: '작성해주세요.',
 	});
 
 	const handleOpenDelete = () => {

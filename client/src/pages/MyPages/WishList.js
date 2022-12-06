@@ -6,29 +6,25 @@ import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 function WishList() {
 	const { pathname } = useLocation();
-	const {
-		isLoading,
-		isError,
-		data: wishListItems,
-		error,
-	} = useGet('/wishes', pathname);
+	const { isLoading, isError, data, error } = useGet('/wishes', pathname);
+	const wishListItems = data?.data?.data;
 	if (isLoading) return <LoadingSpinner />;
-	if (isError)
-		return <PendingBox className="error">{error.message}</PendingBox>;
-	return (
+	if (isError) return <div>{error.message}</div>;
+	return wishListItems.length !== 0 ? (
 		<EntireContainer>
 			<WishBox>
-				{wishListItems.data.data.map((wishItem, idx) => (
+				{wishListItems.map((wishItem, idx) => (
 					<WishListCards
 						item={wishItem}
 						key={`${idx.toString()}-${wishItem}`}
 					/>
 				))}
 			</WishBox>
-			{wishListItems.data.length === 0 && (
-				<PendingBox>찜한 상품이 없습니다!</PendingBox>
-			)}
 		</EntireContainer>
+	) : (
+		<ListContainer>
+			<div className="blank">찜한 상품이 없습니다.</div>
+		</ListContainer>
 	);
 }
 const EntireContainer = styled.div`
@@ -41,16 +37,29 @@ const WishBox = styled.main`
 	grid-template-columns: repeat(4, 1fr);
 `;
 
-const PendingBox = styled.div`
-	width: 100%;
-	height: 100;
+const ListContainer = styled.main`
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
 	align-items: center;
-	font-size: 24px;
-	color: var(--purple-300);
-	&.error {
-		color: var(--red-100);
+	padding: 4px;
+	margin: 0px 0 75px 0;
+	border-radius: 10px;
+	background-color: white;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
+	width: 872px;
+
+	& > {
+		:last-child {
+			border: none;
+		}
+	}
+
+	.blank {
+		height: 200px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 16px;
 	}
 `;
 export default WishList;

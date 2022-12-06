@@ -22,14 +22,10 @@ function Summary({
 	beforePrice,
 	discountRate,
 	itemId,
-	wishlist,
 	starAvg,
 	reviewCount,
 	handleMoveToReview,
 }) {
-	const { pathname } = useLocation();
-	const { id } = useParams();
-
 	const navigate = useNavigate();
 	const [path, setPath] = useState(''); // 바로결제하기 클릭 시, 이동할 페이지
 	const [showOptions, setShowOptions] = useState(false);
@@ -132,9 +128,9 @@ function Summary({
 	// };
 
 	// 로그인 모달 속, 로그인 페이지로 가는 함수
-	const handleLoginMove = useCallback(() => {
-		navigate('/login');
-	}, []);
+	// const handleLoginMove = useCallback(() => {
+	// 	navigate('/login');
+	// }, []);
 
 	return (
 		<Container>

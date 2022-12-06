@@ -6,22 +6,22 @@ import { useGet } from '../../hooks/useFetch';
 
 function SubManage() {
 	const { pathname } = useLocation();
-	const {
-		data: subManageDatas,
-		isError,
-		isLoading,
-		error,
-	} = useGet('/orders/subs', pathname);
+	const { data, isError, isLoading, error } = useGet('/orders/subs', pathname);
+	const subManageDatas = data?.data?.data;
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
 	return (
 		<SubManageContainer>
-			{subManageDatas?.data?.data.map((subManageData, idx) => (
-				<SubManagementList
-					key={`${idx.toString()}-${subManageData}`}
-					subManageData={subManageData}
-				/>
-			))}
+			{subManageDatas.length === 0 ? (
+				<div className="blank">정기구독 신청 내역이 없습니다.</div>
+			) : (
+				subManageDatas.map((subManageData, idx) => (
+					<SubManagementList
+						key={`${idx.toString()}-${subManageData}`}
+						subManageData={subManageData}
+					/>
+				))
+			)}
 		</SubManageContainer>
 	);
 }
@@ -37,10 +37,18 @@ const SubManageContainer = styled.main`
 	border-radius: 10px;
 	background-color: white;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
+	width: 872px;
 
 	& > {
 		:last-child {
 			border: none;
+		}
+		.blank {
+			height: 200px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 16px;
 		}
 	}
 `;

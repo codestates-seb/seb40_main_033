@@ -114,16 +114,12 @@ const RightContainer = styled(LeftContainer)`
 const Title = styled.h1`
 	font-size: 20px;
 	font-weight: var(--bold);
-	/* margin-bottom: 35px; */
 	align-self: flex-start;
 	position: sticky;
 	width: 100%;
 	top: 0px;
-	/* padding-bottom: 20px; */
 	padding: 70px 0 20px 0;
-	/* border: 1px solid red; */
 	background-color: white;
-	/* z-index: 100; */
 	&.order {
 		padding-left: 50px;
 	}

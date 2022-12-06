@@ -91,8 +91,7 @@ const ButtonBox = styled.div`
 	flex-direction: column;
 	width: 100%;
 	height: 110px;
-	justify-content: space-between; // 토스가 복구되면 얘를 써야 합니다.
-	/* justify-content: center; // 토스가 복구되기 전 까지의 임시 설정입니다. */
+	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 44px;
 	&.sub {

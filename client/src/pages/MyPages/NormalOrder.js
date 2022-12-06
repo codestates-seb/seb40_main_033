@@ -63,6 +63,7 @@ const ListContainer = styled.main`
 `;
 
 const Nolists = styled.div`
+	height: 200px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
