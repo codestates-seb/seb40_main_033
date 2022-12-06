@@ -110,7 +110,7 @@ const ContentContainer = styled.div`
 		props.middle
 			? css`
 					justify-content: center;
-					padding-bottom: 66px;
+					padding-bottom: 46px;
 			  `
 			: props.bottom
 			? css`
@@ -127,16 +127,14 @@ const ContentContainer = styled.div`
 
 	.brandName {
 		color: var(--gray-400);
+		font-size: 15px;
 		padding-bottom: 10.5px;
 	}
 	.itemName {
 		font-weight: var(--extraBold);
 		font-size: 20px;
+		line-height: 1.1;
 		word-break: keep-all;
-	}
-	.itemPrice {
-		font-size: 20px;
-		font-weight: var(--regular);
 	}
 `;
 
@@ -144,7 +142,7 @@ const NamePriceBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 70px;
+	height: 85px;
 `;
 
 const ItemImg = styled.img`
@@ -155,7 +153,7 @@ const ItemImg = styled.img`
 const ItemDescription = styled.p`
 	color: white;
 	font-size: 18px;
-	line-height: 26px;
+	line-height: 1.4;
 	letter-spacing: -0.04em;
 	word-break: keep-all;
 	margin-top: 70px;
