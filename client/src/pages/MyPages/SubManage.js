@@ -17,7 +17,6 @@ function SubManage() {
 	);
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
-	console.log(subManageDatas);
 	return (
 		<SubManageContainer>
 			{subManageDatas?.data?.data.map((subManageData, idx) => (
