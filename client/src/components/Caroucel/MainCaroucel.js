@@ -21,10 +21,10 @@ const Info = [
 	},
 	{
 		type: 'EVENT',
-		title: ['Pillivery와 함께', '우리가족 뼈 건강을', ' 지켜보세요!'],
+		title: ['Farm&Top과 함께', '우리가족 뼈 건강을', ' 지켜보세요!'],
 		description: ['칼슘/마그네슘 할인전 이벤트', 'NOW ON SALE'],
 		color: '#FDB9AA',
-		link: '/list?categoryName=관절_뼈_건강',
+		link: '/detail/8',
 		image:
 			'https://farmntop.co.kr/web/product/big/202103/108ece6305937729911b08de5eb3e9d1.jpg',
 	},

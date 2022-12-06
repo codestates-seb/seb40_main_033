@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 import store from '../redux/store/store';
 
 const axiosInstance = axios.create({

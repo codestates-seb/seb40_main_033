@@ -29,9 +29,16 @@ const filterSlice = createSlice({
 		setOnSale: (state, { payload }) => {
 			state.onSale = payload;
 		},
+		setClear: (state) => {
+			state.sort = '';
+			state.price = '';
+			state.key = '';
+			state.brand = '';
+			state.onSale = false;
+		},
 	},
 });
 
-export const { setSort, setPrice, setKeyword, setOnSale, setBrand } =
+export const { setSort, setPrice, setKeyword, setOnSale, setBrand, setClear } =
 	filterSlice.actions;
 export default filterSlice;
