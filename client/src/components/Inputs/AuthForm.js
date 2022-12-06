@@ -184,10 +184,8 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 	// submit 되면 실행되는 함수.
 	const onValid = (data) => {
 		if (signUp) {
-			console.log('signUp', data);
 			handleSignUp(data);
 		} else {
-			console.log('LogIn', data);
 			handleLogIn(data);
 		}
 	};

@@ -10,18 +10,18 @@ export default function useLogIn() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
-		// () => ({ accessToken: 'asdasd', refreshToken: 'sdfsdf' }),
 		(form) => fetchLogIn(form),
 		{
 			onSuccess: async ({ accessToken, refreshToken, userId }, { email }) => {
 				dispatch(login({ accessToken, refreshToken, email, userId }));
 				toast.success('로그인 되었습니다 !');
+				// 다른 페이지로 이동 후 뒤로가기 시 로그인 페이지로 이동하지 않도록
 				navigate('/', { replace: true });
 			},
 			onError: async (data) => {
 				const { response } = data;
 				const { status, data: errorData } = response;
-				console.log(data);
+
 				if (status === 401) {
 					toast.error('아이디 또는 비밀번호를 다시 확인해주세요.');
 				} else if (status === 403) {
