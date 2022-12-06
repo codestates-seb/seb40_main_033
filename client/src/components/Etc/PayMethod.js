@@ -23,7 +23,7 @@ export default function PayMethod({ payData }) {
 				successUrl:
 					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/general/success',
 				failUrl:
-					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/fail',
+					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/fail',
 				validHours: 24,
 				cashReceipt: {
 					type: '소득공제',
@@ -41,7 +41,7 @@ export default function PayMethod({ payData }) {
 	return (
 		<PayPageContainer Info="결제 수단">
 			<ButtonBox className={subscription ? 'sub' : null}>
-				{/* {!subscription && (
+				{!subscription && (
 					<LightPurpleButton
 						width="220px"
 						height="50px"
@@ -52,7 +52,7 @@ export default function PayMethod({ payData }) {
 					>
 						카드 결제
 					</LightPurpleButton>
-				)} */}
+				)}
 				<KakaoPayButton onClick={kakaoClick}>
 					<KakaoPayImg />
 					카카오페이
