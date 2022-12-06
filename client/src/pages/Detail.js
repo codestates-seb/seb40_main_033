@@ -44,15 +44,10 @@ function Detail() {
 	};
 
 	// 상품 상세 조회
-	const { isLoading, isError, data, error } = useGet(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/items/${id}`,
-		pathname,
-	);
+	const { isLoading, isError, data, error } = useGet(`/items/${id}`, pathname);
 
 	// 토크 작성
-	const { mutate: talkMu } = usePost(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${id}`,
-	);
+	const { mutate: talkMu } = usePost(`/talks/${id}`);
 
 	// 토크 작성 요청
 	const handleSubmit = useCallback(() => {

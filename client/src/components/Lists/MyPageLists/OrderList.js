@@ -12,8 +12,8 @@ import { useDelete } from '../../../hooks/useFetch';
 function OrderList({ list }) {
 	const navigate = useNavigate();
 	const [openCancel, setOpenCancel] = useState(false);
-	const { mutate } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/${list.orderId}`,
+	const { mutate, isLoading, isError, error, response } = useDelete(
+		`/orders/${list.orderId}`,
 	);
 
 	const handlePageMove = useCallback(() => {

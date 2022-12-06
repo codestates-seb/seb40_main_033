@@ -20,23 +20,16 @@ import { logout } from '../../redux/slice/userSlice';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 export function UserInfo() {
-	const { mutate: accountDelete, isError: deleteError } = useDelete(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
-	);
+	const { mutate: accountDelete, isError: deleteError } = useDelete('/users');
 	const { pathname } = useLocation();
 	const {
 		isLoading,
 		isError,
 		data: userData,
 		error,
-	} = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
-		pathname,
-	);
+	} = useGet('/users', pathname);
 
-	const { mutate: userPatch } = usePatch(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/users',
-	);
+	const { mutate: userPatch } = usePatch('/users');
 	const {
 		register,
 		handleSubmit,

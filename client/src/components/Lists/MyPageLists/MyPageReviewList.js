@@ -29,9 +29,7 @@ function MyPageReviewList({
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const navigate = useNavigate();
 
-	const { mutate } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${reviewId}`,
-	);
+	const { mutate } = useDelete(`/reviews/${reviewId}`);
 
 	const handleItemClick = () => {
 		navigate(`/detail/${itemId}`);

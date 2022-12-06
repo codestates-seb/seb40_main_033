@@ -25,6 +25,9 @@ export function SortButton({ children }) {
 		dispatch(setSort(path[index]));
 	};
 
+	// 리덕스에서 sort를 가져서와서 동일한 값이면 active 색을 준다.
+	const sort = useSelector((state) => state.filter.sort);
+
 	return (
 		<ButtonContainer isOpen={isOpen}>
 			{isOpen && (
@@ -32,10 +35,14 @@ export function SortButton({ children }) {
 					{menus.map((menu, idx) => (
 						<MenuLi onClick={clickMenus} key={`${idx.toString()}-${menu}`}>
 							<LetterButtonColor
-								color="gray"
+								color={menus[path.indexOf(sort)] === menu ? 'purple' : 'gray'}
 								colorCode="300"
-								hoverColor="gray"
-								hoverColorCode="400"
+								hoverColor={
+									menus[path.indexOf(sort)] === menu ? 'purple' : 'gray'
+								}
+								hoverColorCode={
+									menus[path.indexOf(sort)] === menu ? '300' : '400'
+								}
 								fontSize="14px"
 							>
 								{menu}
@@ -84,9 +91,9 @@ export function PriceSortButton({ children }) {
 					</NameBox>
 					{isOpen && (
 						<LightPurpleButton
-							fontSize="11px"
+							fontSize={onSale ? '12px' : '11px'}
 							width="70px"
-							fontWeight="bold"
+							fontWeight={onSale ? 'extraBold' : 'bold'}
 							onClick={handleOnSale}
 						>
 							할인상품

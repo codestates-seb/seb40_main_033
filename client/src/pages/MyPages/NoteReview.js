@@ -10,7 +10,7 @@ import { useGet } from '../../hooks/useFetch';
 function NoteReview() {
 	const { pathname } = useLocation();
 	const { isLoading, isError, data, error } = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
+		'/reviews/mypage',
 		pathname,
 	);
 	const lists = data?.data?.data;

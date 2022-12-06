@@ -6,10 +6,7 @@ import { useGet } from '../../hooks/useFetch';
 
 function SubManage() {
 	const { pathname } = useLocation();
-	const { data, isError, isLoading, error } = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/subs',
-		pathname,
-	);
+	const { data, isError, isLoading, error } = useGet('/orders/subs', pathname);
 	const subManageDatas = data?.data?.data;
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;

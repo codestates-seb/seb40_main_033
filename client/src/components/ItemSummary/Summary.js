@@ -37,10 +37,7 @@ function Summary({
 		subscription: false,
 	});
 
-	const { data: WishData } = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes/item',
-		`detail/wishs`,
-	);
+	const { data: WishData } = useGet('/wishes/item', `detail/wishs`);
 
 	const [isCheckedWish, setIsCheckedWish] = useState(
 		WishData?.data?.data.includes(itemId) ? 1 : 0,
@@ -54,14 +51,9 @@ function Summary({
 		}
 	}, []);
 
-	const { mutate: cartMu, response: cartRes } = usePost(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/${itemId}`,
-	);
+	const { mutate: cartMu, response: cartRes } = usePost(`/carts/${itemId}`);
 
-	const { mutate: purMu } = usePurchase(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/single',
-		path,
-	);
+	const { mutate: purMu } = usePurchase('/orders/single', path);
 
 	// * 수량 +
 	const handlePlusClick = useCallback(() => {

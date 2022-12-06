@@ -6,10 +6,7 @@ import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
 function WishList() {
 	const { pathname } = useLocation();
-	const { isLoading, isError, data, error } = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes',
-		pathname,
-	);
+	const { isLoading, isError, data, error } = useGet('/wishes', pathname);
 	const wishListItems = data?.data?.data;
 	if (isLoading) return <LoadingSpinner />;
 	if (isError) return <div>{error.message}</div>;
