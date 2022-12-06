@@ -41,7 +41,7 @@ export default function PayMethod({ payData }) {
 	return (
 		<PayPageContainer Info="결제 수단">
 			<ButtonBox className={subscription ? 'sub' : null}>
-				{/* {!subscription && (
+				{!subscription && (
 					<LightPurpleButton
 						width="220px"
 						height="50px"
@@ -52,7 +52,7 @@ export default function PayMethod({ payData }) {
 					>
 						카드 결제
 					</LightPurpleButton>
-				)} */}
+				)}
 				<KakaoPayButton onClick={kakaoClick}>
 					<KakaoPayImg />
 					카카오페이
