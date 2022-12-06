@@ -37,6 +37,7 @@ function NoteReview() {
 							brand={list.item.brand}
 							thumbnail={list.item.thumbnail}
 							title={list.item.title}
+							capacity={list.item.capacity}
 							nowPrice={list.item.disCountPrice || list.item.price}
 							discountRate={
 								list.item.discountRate === 0 ? '' : list.item.discountRate

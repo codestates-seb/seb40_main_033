@@ -61,8 +61,13 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 					brand={talk?.item.brand}
 					thumbnail={talk?.item.thumbnail}
 					title={talk?.item.title}
-					price={talk?.item.price}
 					capacity={talk?.item.capacity}
+					itemId={talk?.item.itemId}
+					price={talk.item.disCountPrice || talk.item.price}
+					discountRate={
+						talk.item.discountRate === 0 ? '' : talk.item.discountRate
+					}
+					beforePrice={talk.item.disCountPrice ? talk.item.price : null}
 				/>
 			}
 			form={

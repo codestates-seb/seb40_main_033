@@ -45,8 +45,12 @@ function OrderDetailList({
 			beforePrice,
 			discountRate,
 			capacity,
+			quantity,
+			itemId,
 		},
 	};
+
+	console.log('itemId,', itemId);
 
 	return (
 		<Box className={inModal && 'in-modal'}>
