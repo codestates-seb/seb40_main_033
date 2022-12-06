@@ -11,7 +11,6 @@ import CancelModal from '../../Modals/CancelModal';
 import { useDelete, usePatch } from '../../../hooks/useFetch';
 
 function SubManagementList({ subManageData }) {
-	console.log(subManageData);
 	const navigate = useNavigate();
 	const handleItemClick = () => {
 		navigate(`/detail/${subManageData.item.itemId}`);
