@@ -19,8 +19,9 @@ function Home() {
 		const url = new URL(window.location.href);
 		const accessToken = url.searchParams.get('access_token');
 		const refreshToken = url.searchParams.get('refresh_token');
+		const userId = url.searchParams.get('userId');
 		if (accessToken) {
-			dispatch(login({ accessToken, refreshToken, isSocial: true }));
+			dispatch(login({ accessToken, refreshToken, isSocial: true, userId }));
 		}
 	}, []);
 
