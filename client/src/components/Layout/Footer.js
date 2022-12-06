@@ -8,7 +8,7 @@ function Footer() {
 				<Top>
 					<Title
 						as="a"
-						href="https://github.com/codestates-seb/seb40_main_033"
+						href="https://codestates.notion.site/40-Team033-Pillivery-830d5cf6ce4d4b6cbc6918d2d676bbb5"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -24,7 +24,7 @@ function Footer() {
 					</Title>
 					<Title
 						as="a"
-						href="https://github.com/codestates-seb/seb40_main_033"
+						href="https://www.figma.com/file/nUM8AqkQE17BEYgI803vO3/%ED%83%80%EB%9D%BD%ED%8C%8C%EC%9B%8C%EC%A0%84%EC%82%AC-%EC%B5%9C%EC%A2%85-%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84%2F%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85?node-id=30%3A2498&t=C1VG7dAxLM3TSKvQ-1"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
