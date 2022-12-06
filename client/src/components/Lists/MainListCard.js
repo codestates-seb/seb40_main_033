@@ -41,7 +41,9 @@ function MainListCard({ item }) {
 							main="main"
 						/>
 						<Ingredient>
-							{item.nutritionFacts.map((fact) => `${fact.ingredient} `)}
+							{String(
+								`${item.nutritionFacts.map((fact) => ` ${fact.ingredient}`)}`,
+							)}
 						</Ingredient>
 					</ContentContainer>
 					<ContentContainer middle>
