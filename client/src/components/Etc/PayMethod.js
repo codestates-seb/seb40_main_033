@@ -23,7 +23,7 @@ export default function PayMethod({ payData }) {
 				successUrl:
 					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/general/success',
 				failUrl:
-					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/fail',
+					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/fail',
 				validHours: 24,
 				cashReceipt: {
 					type: '소득공제',
