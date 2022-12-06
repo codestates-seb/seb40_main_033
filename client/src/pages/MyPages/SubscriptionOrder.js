@@ -23,7 +23,6 @@ function SubscriptionOrder() {
 		return <div>Error: {error.message}</div>;
 	}
 	const lists = !isLoading && data.data.data;
-	console.log(lists);
 
 	return (
 		<>
