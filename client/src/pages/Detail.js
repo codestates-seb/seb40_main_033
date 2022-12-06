@@ -12,7 +12,7 @@ import {
 	DeliveryInfo,
 	ReturnInfo,
 	ProductInfo,
-} from '../components/Etc/ItemDetailInfo';
+} from '../components/Etc/Constants';
 
 function Detail() {
 	const { pathname } = useLocation();
@@ -364,7 +364,7 @@ const TalkFormOpenBtn = styled.div`
 	width: 100%;
 	justify-content: center;
 	cursor: pointer;
-
+	-webkit-user-select: none;
 	// 토크 폼 여는 버튼
 	svg {
 		align-self: flex-end;
