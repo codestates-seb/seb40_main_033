@@ -173,18 +173,20 @@ const NamePriceBox = styled.div`
 const ItemDescription = styled.p`
 	width: 100%;
 	color: white;
-	font-size: 13px;
+	font-size: 15px;
 	line-height: 1.4;
 	letter-spacing: -0.04em;
 	margin-top: 50px;
 	word-break: keep-all;
 `;
+
 const Ingredient = styled.p`
 	display: flex;
 	color: var(--purple-100);
 	margin-top: 12px;
+	line-height: 1.3;
 	word-break: keep-all;
-	font-size: 9px;
+	font-size: 12px;
 `;
 
 export default WishListCards;
