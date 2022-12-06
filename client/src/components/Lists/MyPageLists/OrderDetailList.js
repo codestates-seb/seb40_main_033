@@ -47,9 +47,6 @@ function OrderDetailList({
 			capacity,
 		},
 	};
-	console.log('nowPrice', nowPrice);
-	console.log('beforePrice', beforePrice);
-	console.log('discountRate', discountRate);
 
 	return (
 		<Box className={inModal && 'in-modal'}>

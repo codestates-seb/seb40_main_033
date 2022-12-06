@@ -58,18 +58,19 @@ function RightNav() {
 					<Link to={accessToken ? '/mypage/user-info' : '/login'}>
 						<AiOutlineUser />
 					</Link>
-					<AiOutlineSearch
-						className={openSearch && 'search'}
-						onClick={handleSearchOpen}
-					/>
-					{openSearch && (
-						<SearchBar
-							onKeyDown={handleSearch}
-							placeholder="검색어 입력 후 엔터를 눌러주세요."
-							autoFocus
-							ref={modalRef}
+					<SearchContainer ref={modalRef}>
+						<AiOutlineSearch
+							className={openSearch && 'search'}
+							onClick={handleSearchOpen}
 						/>
-					)}
+						{openSearch && (
+							<SearchBar
+								onKeyDown={handleSearch}
+								placeholder="검색어 입력 후 엔터를 눌러주세요."
+								autoFocus
+							/>
+						)}
+					</SearchContainer>
 					<Link to={accessToken ? '/cart/normal' : '/login'}>
 						<AiOutlineShoppingCart />
 					</Link>
@@ -164,11 +165,20 @@ const IconContainer = styled.li`
 		}
 	}
 
+	path {
+		color: var(--purple-200);
+		stroke-width: 10;
+		transition: color 0.1s;
+	}
+`;
+
+const SearchContainer = styled.div`
 	// 서치 아이콘
-	& > svg {
+	svg {
 		cursor: pointer;
 		margin: 15px 0;
 		font-size: 24px;
+		position: relative;
 		z-index: 1;
 
 		:hover {
@@ -176,16 +186,15 @@ const IconContainer = styled.li`
 				color: var(--green-100);
 			}
 		}
-	}
 
-	.search {
-		path {
-			color: var(--green-100);
+		&.search {
+			path {
+				color: var(--green-100);
+			}
 		}
 	}
 
 	path {
-		/* cursor: pointer; */
 		color: var(--purple-200);
 		stroke-width: 10;
 		transition: color 0.1s;
