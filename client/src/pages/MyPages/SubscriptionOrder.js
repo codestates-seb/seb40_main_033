@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import OrderList from '../../components/Lists/MyPageLists/OrderList';
-import Pagination from '../../components/Etc/Pagination';
 import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
@@ -25,18 +24,15 @@ function SubscriptionOrder() {
 	const lists = !isLoading && data.data.data;
 
 	return (
-		<>
-			<ListContainer>
-				{data && lists.length === 0 ? (
-					<Nolists>주문 내역이 없습니다.</Nolists>
-				) : (
-					lists.map((list) => (
-						<OrderList key={list.orderId} list={list} totalPrice />
-					))
-				)}
-			</ListContainer>
-			{/* <Pagination total="10" limit="8" /> */}
-		</>
+		<ListContainer>
+			{data && lists.length === 0 ? (
+				<Nolists>주문 내역이 없습니다.</Nolists>
+			) : (
+				lists.map((list) => (
+					<OrderList key={list.orderId} list={list} totalPrice />
+				))
+			)}
+		</ListContainer>
 	);
 }
 

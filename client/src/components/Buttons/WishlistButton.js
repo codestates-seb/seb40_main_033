@@ -41,7 +41,7 @@ const WishBox = styled.div`
 		}
 	}
 	& > svg {
-		font-size: 20px;
+		font-size: 18px;
 		path {
 			cursor: pointer;
 			stroke: var(--gray-300);

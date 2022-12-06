@@ -7,6 +7,7 @@ import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
 import AddressModal from '../Modals/AddressModal';
+import constants from './Constants';
 
 export default function PayMethod({ payData }) {
 	const [url, setUrl] = useState('');
@@ -59,13 +60,8 @@ export default function PayMethod({ payData }) {
 				</KakaoPayButton>
 			</ButtonBox>
 			<ClauseContainer>
-				<Clauses>
-					환불 받으신 날짜 기준으로 3~5일(주말 제외) 후 결제대행사에서 직접
-					고객님의 계좌로 환불 처리됩니다.
-				</Clauses>
-				<Clauses>
-					회원 본인은 구매 조건, 주문 내용 확인 및 결제에 동의합니다.
-				</Clauses>
+				<Clauses>{constants.firstPayClause}</Clauses>
+				<Clauses>{constants.secondPayClause}</Clauses>
 			</ClauseContainer>
 			{isPayModal && (
 				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
@@ -92,10 +88,12 @@ export default function PayMethod({ payData }) {
 
 const ButtonBox = styled.div`
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	width: 100%;
-	/* justify-content: space-between; */ // 토스가 복구되면 얘를 써야 합니다.
-	justify-content: center; // 토스가 복구되기 전 까지의 임시 설정입니다.
+	height: 110px;
+	justify-content: space-between; // 토스가 복구되면 얘를 써야 합니다.
+	/* justify-content: center; // 토스가 복구되기 전 까지의 임시 설정입니다. */
+	align-items: center;
 	margin-bottom: 44px;
 	&.sub {
 		justify-content: center;

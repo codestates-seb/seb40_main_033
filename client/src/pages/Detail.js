@@ -12,7 +12,7 @@ import {
 	DeliveryInfo,
 	ReturnInfo,
 	ProductInfo,
-} from '../components/Etc/ItemDetailInfo';
+} from '../components/Etc/Constants';
 
 function Detail() {
 	const { pathname } = useLocation();
