@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import styled from 'styled-components';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import React, { useEffect } from 'react';
