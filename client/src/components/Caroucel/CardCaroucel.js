@@ -5,6 +5,35 @@ import './slick-theme.css';
 import { IoIosArrowBack } from 'react-icons/io';
 import MainListCard from '../Lists/MainListCard';
 
+const ArrowButton = styled.button`
+	width: 40px;
+	height: 40px;
+	background-color: white;
+	border: 1px solid #f1f0fe;
+	border-radius: 50px;
+	transition: 0.25s ease;
+	position: absolute;
+	right: -24px;
+	${({ left }) => left && `left: -40px;`}
+	& > svg {
+		path {
+			color: var(--purple-200);
+		}
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		top: 23%;
+		left: 22%;
+		${({ right }) =>
+			// 180도 회전
+			right &&
+			`
+			transform: rotate(180deg);
+			left: 28%;
+		`}
+	}
+`;
+
 const settings = {
 	infinite: false,
 	speed: 500,
@@ -48,33 +77,4 @@ export const SlideContainer = styled.div`
 export const SlidePage = styled.div`
 	width: 297px;
 	padding: 8px;
-`;
-
-const ArrowButton = styled.button`
-	width: 40px;
-	height: 40px;
-	background-color: white;
-	border: 1px solid #f1f0fe;
-	border-radius: 50px;
-	transition: 0.25s ease;
-	position: absolute;
-	right: -24px;
-	${({ left }) => left && `left: -40px;`}
-	& > svg {
-		path {
-			color: var(--purple-200);
-		}
-		width: 20px;
-		height: 20px;
-		position: absolute;
-		top: 23%;
-		left: 22%;
-		${({ right }) =>
-			// 180도 회전
-			right &&
-			`
-			transform: rotate(180deg);
-			left: 28%;
-		`}
-	}
 `;
