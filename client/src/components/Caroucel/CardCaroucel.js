@@ -5,24 +5,24 @@ import './slick-theme.css';
 import { IoIosArrowBack } from 'react-icons/io';
 import MainListCard from '../Lists/MainListCard';
 
-function CardCaroucel({ items }) {
-	const settings = {
-		infinite: false,
-		speed: 500,
-		slidesToShow: 3,
-		slidesToScroll: 1,
-		nextArrow: (
-			<ArrowButton right>
-				<IoIosArrowBack />
-			</ArrowButton>
-		),
-		prevArrow: (
-			<ArrowButton left>
-				<IoIosArrowBack />
-			</ArrowButton>
-		),
-	};
+const settings = {
+	infinite: false,
+	speed: 500,
+	slidesToShow: 3,
+	slidesToScroll: 1,
+	nextArrow: (
+		<ArrowButton right>
+			<IoIosArrowBack />
+		</ArrowButton>
+	),
+	prevArrow: (
+		<ArrowButton left>
+			<IoIosArrowBack />
+		</ArrowButton>
+	),
+};
 
+function CardCaroucel({ items }) {
 	return (
 		<SlideContainer>
 			<Slider {...settings}>
