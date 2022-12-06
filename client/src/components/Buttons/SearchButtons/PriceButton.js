@@ -6,8 +6,11 @@ import { LightPurpleButton } from '../PurpleButton';
 import { setPrice } from '../../../redux/slice/filterSlice';
 
 export default function PriceButton({ min, max, isOpen }) {
-	const [minVal, setMinVal] = useState(min);
-	const [maxVal, setMaxVal] = useState(max);
+	// 리덕스에 price값이 있으면 기본값으로 설정한다.
+	const { price } = useSelector((state) => state.filter);
+	const [reduxMin, reduxMax] = price.split('&').map((el) => el.split('=')[1]);
+	const [minVal, setMinVal] = useState(reduxMin || min);
+	const [maxVal, setMaxVal] = useState(reduxMax || max);
 	const minValRef = useRef(min);
 	const maxValRef = useRef(max);
 	const range = useRef(null);
