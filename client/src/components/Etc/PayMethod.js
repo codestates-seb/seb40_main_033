@@ -2,10 +2,12 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
 import AddressModal from '../Modals/AddressModal';
+import constants from './Constants';
 
 export default function PayMethod({ payData }) {
 	const [url, setUrl] = useState('');
@@ -19,8 +21,10 @@ export default function PayMethod({ payData }) {
 				orderId: `${orderId}abcdef`,
 				orderName: `${itemOrders.data[0].item.title}, ${itemOrders.data.length} 건`,
 				customerName: `Pillivery`,
-				successUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/',
-				failUrl: 'http://pillivery.s3-website.ap-northeast-2.amazonaws.com/',
+				successUrl:
+					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/general/success',
+				failUrl:
+					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/fail',
 				validHours: 24,
 				cashReceipt: {
 					type: '소득공제',
@@ -56,13 +60,8 @@ export default function PayMethod({ payData }) {
 				</KakaoPayButton>
 			</ButtonBox>
 			<ClauseContainer>
-				<Clauses>
-					환불 받으신 날짜 기준으로 3~5일(주말 제외) 후 결제대행사에서 직접
-					고객님의 계좌로 환불 처리됩니다.
-				</Clauses>
-				<Clauses>
-					회원 본인은 구매 조건, 주문 내용 확인 및 결제에 동의합니다.
-				</Clauses>
+				<Clauses>{constants.firstPayClause}</Clauses>
+				<Clauses>{constants.secondPayClause}</Clauses>
 			</ClauseContainer>
 			{isPayModal && (
 				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
@@ -70,6 +69,17 @@ export default function PayMethod({ payData }) {
 					<GobackButton onClick={() => window.history.back()}>
 						전 페이지로 돌아가기
 					</GobackButton>
+					<Link
+						to={
+							subscription
+								? '/mypage/order/subscription'
+								: '/mypage/order/normal'
+						}
+					>
+						<LightPurpleButton width="150px" height="40px" fontSize="13px">
+							주문내역 보러가기
+						</LightPurpleButton>
+					</Link>
 				</AddressModal>
 			)}
 		</PayPageContainer>
@@ -78,9 +88,12 @@ export default function PayMethod({ payData }) {
 
 const ButtonBox = styled.div`
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	width: 100%;
-	justify-content: space-between;
+	height: 110px;
+	justify-content: space-between; // 토스가 복구되면 얘를 써야 합니다.
+	/* justify-content: center; // 토스가 복구되기 전 까지의 임시 설정입니다. */
+	align-items: center;
 	margin-bottom: 44px;
 	&.sub {
 		justify-content: center;
@@ -134,11 +147,12 @@ const PayFrame = styled.iframe`
 `;
 
 const GobackButton = styled.button`
+	margin-bottom: 8px;
 	margin-top: 20px;
 	width: 150px;
-	height: 50px;
+	height: 40px;
 	border: 0.5px solid var(--gray-300);
-	border-radius: 10px;
+	border-radius: 6px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	background-color: white;
 	text-align: center;

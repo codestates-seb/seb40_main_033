@@ -15,11 +15,10 @@ function MainListCard({ item }) {
 		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
-					<ContentContainer />
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
-					<ContentContainer bottom>
+					<ContentContainer bottom onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
 						<NamePriceBox>
 							<div className="title itemName">{item.title}</div>
@@ -39,7 +38,13 @@ function MainListCard({ item }) {
 						<ShortTextStar
 							starAvg={item.starAvg}
 							reviewCount={item.reviewSize}
+							main="main"
 						/>
+						<Ingredient>
+							{String(
+								`${item.nutritionFacts.map((fact) => ` ${fact.ingredient}`)}`,
+							)}
+						</Ingredient>
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemDescription>{item.content}</ItemDescription>
@@ -97,21 +102,21 @@ const DefaultContainer = styled.div`
 			  `
 			: null}
 `;
+
 const ContentBox = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 24px 24px 33px 24px;
+	padding: 25px 25px 33px 25px;
 `;
+
 const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
-	margin-top: 10px;
 	${(props) =>
 		props.middle
 			? css`
-					padding-top: 58px;
 					justify-content: center;
-					padding-bottom: 72px;
+					padding-bottom: 46px;
 			  `
 			: props.bottom
 			? css`
@@ -121,24 +126,21 @@ const ContentContainer = styled.div`
 			  `
 			: props.star
 			? css`
-					flex-direction: row;
+					flex-direction: column;
 					margin-top: 5px;
 			  `
 			: null}
 
 	.brandName {
 		color: var(--gray-400);
+		font-size: 15px;
 		padding-bottom: 10.5px;
 	}
 	.itemName {
 		font-weight: var(--extraBold);
 		font-size: 20px;
-		/* padding-bottom: 27.5px; */
+		line-height: 1.1;
 		word-break: keep-all;
-	}
-	.itemPrice {
-		font-size: 20px;
-		font-weight: var(--regular);
 	}
 `;
 
@@ -146,19 +148,32 @@ const NamePriceBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 70px;
+	height: 85px;
 `;
 
 const ItemImg = styled.img`
-	width: 156px;
-	height: 156px;
+	width: 100%;
+	height: 100%;
 `;
 
 const ItemDescription = styled.p`
 	color: white;
-	font-size: 20px;
-	line-height: 25px;
+	font-size: 18px;
+	line-height: 1.4;
 	letter-spacing: -0.04em;
 	word-break: keep-all;
+	margin-top: 65px;
+	text-align: left;
+	width: 100%;
 `;
+
+const Ingredient = styled.p`
+	display: flex;
+	color: var(--purple-100);
+	margin-top: 12px;
+	font-size: 14px;
+	line-height: 1.3;
+	word-break: keep-all;
+`;
+
 export default MainListCard;

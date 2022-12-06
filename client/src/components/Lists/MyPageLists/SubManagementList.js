@@ -25,10 +25,10 @@ function SubManagementList({ subManageData }) {
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/subs/${subManageData.itemOrderId}?upDown=-1`,
 	);
 	const { mutate: modifyPeriod } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/change?period=${subPeriod}&orderId=${subManageData.orderId}`,
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/change?period=${subPeriod}&orderId=${subManageData.orderId}&itemOrderId=${subManageData.itemOrderId}`,
 	);
 	const { mutate: deleteSub } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/cancel?orderId=${subManageData.orderId}`,
+		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/cancel?orderId=${subManageData.orderId}&itemOrderId=${subManageData.itemOrderId}`,
 	);
 	const onPlusClick = useCallback(async () => {
 		await plusMutate();
@@ -71,6 +71,7 @@ function SubManagementList({ subManageData }) {
 				<Label>구독 주기</Label>
 				<DayControlTab
 					orderId={subManageData.orderId}
+					itemOrderId={subManageData.itemOrderId}
 					onClick={handleModifyPeriod}
 					currentIdx={subManageData.period / 30 - 1}
 				/>

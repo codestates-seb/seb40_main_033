@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import { FaStar } from 'react-icons/fa';
 
 // 별 다섯개
-export function LongTextStar({ noText, star, average, count }) {
+export function LongTextStar({ noText, star, average, count, onClick }) {
 	const starData = star || 0;
 
 	return (
-		<StarContainer>
+		<StarContainer onClick={onClick} className={onClick && 'pointer'}>
 			<Icon>
 				{new Array(starData).fill(0).map((el, i) => (
 					<FaStar key={`${i.toString()}`} id={el} className="yellow-star" />
@@ -17,7 +17,7 @@ export function LongTextStar({ noText, star, average, count }) {
 			</Icon>
 			{!noText && (
 				<>
-					<Score>{average}</Score>
+					<Score>{average.toFixed(1)}</Score>
 					<Count>{`(${count})`}</Count>
 				</>
 			)}
@@ -26,12 +26,12 @@ export function LongTextStar({ noText, star, average, count }) {
 }
 
 // 별 하나
-export function ShortTextStar({ starAvg, reviewCount }) {
-	const starData = starAvg || 0;
+export function ShortTextStar({ starAvg, reviewCount, main }) {
+	const starData = starAvg.toFixed(1) || 0;
 	const reviewCountData = reviewCount || 0;
 
 	return (
-		<StarContainer>
+		<StarContainer className={main && 'main'}>
 			<Icon>
 				<FaStar className="yellow-star" />
 			</Icon>
@@ -53,6 +53,16 @@ const Score = styled.div`
 const StarContainer = styled.div`
 	display: flex;
 	align-items: center;
+
+	&.main {
+		* {
+			font-size: 15px;
+		}
+	}
+
+	&.pointer {
+		cursor: pointer;
+	}
 `;
 
 const Icon = styled.div`

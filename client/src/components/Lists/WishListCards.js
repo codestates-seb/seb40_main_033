@@ -14,13 +14,13 @@ function WishListCards({ item }) {
 		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
-					<ContentContainer>
+					<ContentContainer wishBtn>
 						<WishlistButton isChecked itemId={item.itemId} />
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
-					<ContentContainer buttom onClick={handleItemClick}>
+					<ContentContainer bottom onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
 						<NamePriceBox>
 							<div className="title itemName">{item.title}</div>
@@ -28,7 +28,6 @@ function WishListCards({ item }) {
 								nowPrice={item.discountPrice || item.price}
 								beforePrice={item.price}
 								discountRate={item.discountRate}
-								quantity={1}
 								fontSize="13px"
 								font-weight="var(--regular)"
 							/>
@@ -44,7 +43,9 @@ function WishListCards({ item }) {
 							reviewCount={item.reviewSize}
 						/>
 						<Ingredient>
-							{item.nutritionFacts.map((fact) => `${fact.ingredient} `)}
+							{String(
+								`${item.nutritionFacts.map((fact) => ` ${fact.ingredient}`)}`,
+							)}
 						</Ingredient>
 					</ContentContainer>
 					<ContentContainer middle>
@@ -89,7 +90,6 @@ const DefaultContainer = styled.div`
 	height: 387px;
 	border-radius: 10px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
-	transition: 0.25s;
 	background-color: white;
 	${(props) =>
 		props.hover // hover라는 프롭스가 들어간 디폴트 컨테이너
@@ -118,12 +118,12 @@ const ContentContainer = styled.div`
 	${(props) =>
 		props.middle
 			? css`
-					padding-top: 23px;
 					justify-content: center;
-					padding-bottom: 77px;
+					padding-bottom: 26px;
 			  `
-			: props.buttom
+			: props.bottom
 			? css`
+					margin-top: 12px;
 					z-index: 1;
 					flex-direction: column;
 					justify-content: none;
@@ -131,7 +131,13 @@ const ContentContainer = styled.div`
 			: props.star
 			? css`
 					flex-direction: column;
-					margin-top: 5px;
+					margin-top: 6.5px;
+			  `
+			: props.wishBtn
+			? css`
+					position: absolute;
+					left: 196px;
+					top: 29px;
 			  `
 			: null}
 
@@ -143,8 +149,8 @@ const ContentContainer = styled.div`
 	.itemName {
 		font-weight: var(--extraBold);
 		font-size: 16px;
-		padding-bottom: 27.5px;
 		word-break: keep-all;
+		line-height: 1.1;
 	}
 	.itemPrice {
 		font-size: 16px;
@@ -153,29 +159,32 @@ const ContentContainer = styled.div`
 `;
 
 const ItemImg = styled.img`
-	width: 110px;
-	height: 125px;
+	width: 100%;
+	height: 100%;
 `;
 
 const NamePriceBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 70px;
+	height: 66px;
 `;
 
 const ItemDescription = styled.p`
 	width: 100%;
 	color: white;
-	font-size: 20px;
-	line-height: 25px;
+	font-size: 13px;
+	line-height: 1.4;
 	letter-spacing: -0.04em;
+	margin-top: 50px;
+	word-break: keep-all;
 `;
 const Ingredient = styled.p`
 	display: flex;
-	color: white;
+	color: var(--purple-100);
 	margin-top: 12px;
 	word-break: keep-all;
+	font-size: 9px;
 `;
 
 export default WishListCards;

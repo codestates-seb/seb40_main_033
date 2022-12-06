@@ -29,8 +29,6 @@ function OrderDetail() {
 	const lists = !isLoading && data.data.data.itemOrders.data;
 	const info = !isLoading && data.data.data;
 
-	console.log('lists', lists);
-	console.log('info', info);
 	const payData = {
 		totalPrice: info.totalPrice,
 		totalDiscountPrice: info.totalDiscountPrice,
