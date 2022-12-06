@@ -83,8 +83,7 @@ function DetailTalkList({
 			}
 			reTalkCreateMu({ content: reContent });
 
-			console.log('리토크 작성');
-			setWriteReply(!writeReply);
+			setWriteReply(false);
 		},
 		[reContent],
 	);
@@ -115,12 +114,12 @@ function DetailTalkList({
 				return;
 			}
 			if (e.target.innerText === '수정') {
-				setWritable(!writable);
+				setWritable(!writable); // 수정을 눌렀을 때
 			} else {
-				setWriteReply(!writeReply);
+				setWriteReply(!writeReply); // 답변작성을 눌렀을 때
 			}
 		},
-		[writable],
+		[writable, writeReply],
 	);
 
 	const handleDeleteClick = useCallback(() => {
@@ -222,7 +221,6 @@ const TalkContainer = styled.li`
 `;
 
 const TopContainer = styled.div`
-	/* border-bottom: 1px solid rgb(235, 235, 235); */
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -268,10 +266,6 @@ const InfoContainer = styled.div`
 `;
 
 const Talk = styled.div`
-	/* border: 1px solid black; */
-
-	/* height: 100px; */
-	/* text-align: left; */
 	align-self: start;
 	padding-top: 20px;
 	color: var(--gray-400);
@@ -279,15 +273,9 @@ const Talk = styled.div`
 	line-height: 1.5;
 	width: 100%;
 	height: 100%;
-	/* margin-bottom: 20px; */
 `;
 
 const ButtonContainer = styled.div`
-	/* width: 80px;
-	height: 20px; */
-	/* position: relative; */
-	/* left: 580px;
-	bottom: 80px; */
 	display: flex;
 	align-items: center;
 	color: var(--gray-300);
