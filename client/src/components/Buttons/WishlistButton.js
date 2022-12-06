@@ -15,7 +15,9 @@ function WishlistButton({ isChecked, itemId, setIsChecked }) {
 			return;
 		}
 		mutate();
-		setIsChecked(isChecked ? 0 : 1);
+		if (setIsChecked) {
+			setIsChecked(isChecked ? 0 : 1);
+		}
 	}, [isChecked]);
 
 	return (
