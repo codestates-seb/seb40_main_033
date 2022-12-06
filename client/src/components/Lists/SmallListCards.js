@@ -42,7 +42,9 @@ function SmallListCards({ item }) {
 							reviewCount={item.reviewSize}
 						/>
 						<Ingredient>
-							{item.nutritionFacts.map((fact) => `${fact.ingredient} `)}
+							{String(
+								`${item.nutritionFacts.map((fact) => ` ${fact.ingredient}`)}`,
+							)}
 						</Ingredient>
 					</ContentContainer>
 					<ContentContainer middle>
