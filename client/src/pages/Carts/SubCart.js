@@ -20,7 +20,6 @@ function SubCart() {
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts?subscription=true',
 		pathname,
 	);
-	// console.log('items', items);
 
 	const { mutate: purchaseMutate } = usePurchase(
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders?subscription=true',
