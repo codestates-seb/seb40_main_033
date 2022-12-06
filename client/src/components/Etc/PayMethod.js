@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
 import AddressModal from '../Modals/AddressModal';
 import constants from './Constants';
+import axiosInstance from '../../utils/axiosInstance';
 
 export default function PayMethod({ payData }) {
 	const [url, setUrl] = useState('');
@@ -33,8 +33,8 @@ export default function PayMethod({ payData }) {
 		});
 
 	const kakaoClick = async () => {
-		const response = await axios.get(
-			`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/kakao-pay?orderId=${orderId}`,
+		const response = await axiosInstance.get(
+			`/payments/kakao-pay?orderId=${orderId}`,
 		);
 		setUrl(response.data.next_redirect_pc_url);
 		setPayModal(true);
@@ -91,8 +91,7 @@ const ButtonBox = styled.div`
 	flex-direction: column;
 	width: 100%;
 	height: 110px;
-	justify-content: space-between; // 토스가 복구되면 얘를 써야 합니다.
-	/* justify-content: center; // 토스가 복구되기 전 까지의 임시 설정입니다. */
+	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 44px;
 	&.sub {

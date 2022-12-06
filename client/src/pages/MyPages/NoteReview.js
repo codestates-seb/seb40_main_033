@@ -10,7 +10,7 @@ import { useGet } from '../../hooks/useFetch';
 function NoteReview() {
 	const { pathname } = useLocation();
 	const { isLoading, isError, data, error } = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/mypage',
+		'/reviews/mypage',
 		pathname,
 	);
 	const lists = data?.data?.data;
@@ -37,6 +37,7 @@ function NoteReview() {
 							brand={list.item.brand}
 							thumbnail={list.item.thumbnail}
 							title={list.item.title}
+							capacity={list.item.capacity}
 							nowPrice={list.item.disCountPrice || list.item.price}
 							discountRate={
 								list.item.discountRate === 0 ? '' : list.item.discountRate

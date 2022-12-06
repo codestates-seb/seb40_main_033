@@ -19,16 +19,16 @@ function SubManagementList({ subManageData }) {
 	const [openCancelModal, setOpenCancelModal] = useState(false);
 	const [subPeriod, setSubPeriod] = useState(subManageData.period);
 	const { mutate: plusMutate } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/subs/${subManageData.itemOrderId}?upDown=1`,
+		`/orders/subs/${subManageData.itemOrderId}?upDown=1`,
 	);
 	const { mutate: minusMutate } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/subs/${subManageData.itemOrderId}?upDown=-1`,
+		`/orders/subs/${subManageData.itemOrderId}?upDown=-1`,
 	);
 	const { mutate: modifyPeriod } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/change?period=${subPeriod}&orderId=${subManageData.orderId}&itemOrderId=${subManageData.itemOrderId}`,
+		`/schedule/change?period=${subPeriod}&orderId=${subManageData.orderId}&itemOrderId=${subManageData.itemOrderId}`,
 	);
 	const { mutate: deleteSub } = useDelete(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/schedule/cancel?orderId=${subManageData.orderId}&itemOrderId=${subManageData.itemOrderId}`,
+		`/schedule/cancel?orderId=${subManageData.orderId}&itemOrderId=${subManageData.itemOrderId}`,
 	);
 	const onPlusClick = useCallback(async () => {
 		await plusMutate();

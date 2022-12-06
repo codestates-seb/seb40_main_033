@@ -13,10 +13,7 @@ function OrderDetail() {
 	const { pathname } = useLocation();
 	const { id } = useParams();
 
-	const { isLoading, isError, data, error } = useGet(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/${id}`,
-		pathname,
-	);
+	const { isLoading, isError, data, error } = useGet(`/orders/${id}`, pathname);
 
 	if (isLoading) {
 		return <LoadingSpinner />;
@@ -117,16 +114,12 @@ const RightContainer = styled(LeftContainer)`
 const Title = styled.h1`
 	font-size: 20px;
 	font-weight: var(--bold);
-	/* margin-bottom: 35px; */
 	align-self: flex-start;
 	position: sticky;
 	width: 100%;
 	top: 0px;
-	/* padding-bottom: 20px; */
 	padding: 70px 0 20px 0;
-	/* border: 1px solid red; */
 	background-color: white;
-	/* z-index: 100; */
 	&.order {
 		padding-left: 50px;
 	}

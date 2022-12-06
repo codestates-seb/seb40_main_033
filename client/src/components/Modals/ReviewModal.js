@@ -15,14 +15,11 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 	const [star, setStar] = useState(review.item.star || '');
 	const [content, setContent] = useState(review.item.content || ''); // 내용
 
-	const { mutate: patchMu } =
-		usePatch(`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.item.reviewId}
+	const { mutate: patchMu } = usePatch(`/reviews/${review.item.reviewId}
 	`);
 
 	// 주문내역 상세페이지 - 리뷰 작성
-	const { mutate: postMu } = usePost(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/reviews/${review.item.itemOrderId}`,
-	);
+	const { mutate: postMu } = usePost(`/reviews/${review.item.itemOrderId}`);
 
 	const handleStar = useCallback((e) => {
 		setStar(e.target.id); // 누른 별만큼 별점 설정
@@ -70,7 +67,8 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 					discountRate={review?.item.discountRate}
 					itemOrderId={review?.item.itemOrderId}
 					capacity={review?.item?.capacity}
-					quantity={review?.quantity}
+					quantity={review?.item?.quantity}
+					itemId={review?.item?.itemId}
 				/>
 			}
 			form={

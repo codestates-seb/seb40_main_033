@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import axios from 'axios';
 import { useState } from 'react';
+import axiosInstance from '../utils/axiosInstance';
 
 // export const fetchData = async (url) => {
 // 	const { data } = await axiosInstance.get(url).json();
@@ -11,7 +11,7 @@ import { useState } from 'react';
 export const useGet = (url, keyValue) => {
 	const { isLoading, isError, isSuccess, data, error, refetch } = useQuery(
 		[keyValue],
-		() => axios.get(url),
+		() => axiosInstance.get(url),
 	);
 
 	return { isLoading, isError, isSuccess, data, error, refetch };
@@ -22,7 +22,7 @@ export const usePost = (url) => {
 	const [response, setResponse] = useState(null);
 
 	const { mutate, isLoading, isError, error } = useMutation(
-		(data) => axios.post(url, data),
+		(data) => axiosInstance.post(url, data),
 		{
 			onSuccess: async (res) => {
 				setResponse(res);
@@ -39,7 +39,7 @@ export const useDelete = (url) => {
 	const [response, setResponse] = useState(null);
 
 	const { mutate, isLoading, isError, error } = useMutation(
-		() => axios.delete(url),
+		() => axiosInstance.delete(url),
 		{
 			onSuccess: async (res) => {
 				setResponse(res);
@@ -56,7 +56,7 @@ export const usePatch = (url) => {
 	const [response, setResponse] = useState(null);
 
 	const { mutate, isLoading, isError, error } = useMutation(
-		(data) => axios.patch(url, data),
+		(data) => axiosInstance.patch(url, data),
 		{
 			onSuccess: (res) => {
 				setResponse(res);

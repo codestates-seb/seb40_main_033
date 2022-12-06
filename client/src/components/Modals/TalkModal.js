@@ -13,13 +13,11 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 	const [talkContent, setTalkContent] = useState(talk.content);
 
 	// 토크 수정 hook
-	const { mutate: talkUpdateMu } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talk.talkId}`,
-	);
+	const { mutate: talkUpdateMu } = usePatch(`/talks/${talk.talkId}`);
 
 	// 리토크 수정 hook
 	const { mutate: reTalkUpdateMu } = usePatch(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talk.talkCommentId}`,
+		`/talks/comments/${talk.talkCommentId}`,
 	);
 
 	// 토크/리토크 수정할 컨텐츠 상태
@@ -63,8 +61,13 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 					brand={talk?.item.brand}
 					thumbnail={talk?.item.thumbnail}
 					title={talk?.item.title}
-					price={talk?.item.price}
 					capacity={talk?.item.capacity}
+					itemId={talk?.item.itemId}
+					price={talk.item.disCountPrice || talk.item.price}
+					discountRate={
+						talk.item.discountRate === 0 ? '' : talk.item.discountRate
+					}
+					beforePrice={talk.item.disCountPrice ? talk.item.price : null}
 				/>
 			}
 			form={

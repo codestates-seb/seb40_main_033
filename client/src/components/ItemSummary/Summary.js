@@ -22,14 +22,10 @@ function Summary({
 	beforePrice,
 	discountRate,
 	itemId,
-	wishlist,
 	starAvg,
 	reviewCount,
 	handleMoveToReview,
 }) {
-	const { pathname } = useLocation();
-	const { id } = useParams();
-
 	const navigate = useNavigate();
 	const [path, setPath] = useState(''); // 바로결제하기 클릭 시, 이동할 페이지
 	const [showOptions, setShowOptions] = useState(false);
@@ -41,10 +37,7 @@ function Summary({
 		subscription: false,
 	});
 
-	const { data: WishData } = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/wishes/item',
-		`detail/wishs`,
-	);
+	const { data: WishData } = useGet('/wishes/item', `detail/wishs`);
 
 	const [isCheckedWish, setIsCheckedWish] = useState(
 		WishData?.data?.data.includes(itemId) ? 1 : 0,
@@ -58,14 +51,9 @@ function Summary({
 		}
 	}, []);
 
-	const { mutate: cartMu, response: cartRes } = usePost(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts/${itemId}`,
-	);
+	const { mutate: cartMu, response: cartRes } = usePost(`/carts/${itemId}`);
 
-	const { mutate: purMu } = usePurchase(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders/single',
-		path,
-	);
+	const { mutate: purMu } = usePurchase('/orders/single', path);
 
 	// * 수량 +
 	const handlePlusClick = useCallback(() => {
@@ -140,9 +128,9 @@ function Summary({
 	// };
 
 	// 로그인 모달 속, 로그인 페이지로 가는 함수
-	const handleLoginMove = useCallback(() => {
-		navigate('/login');
-	}, []);
+	// const handleLoginMove = useCallback(() => {
+	// 	navigate('/login');
+	// }, []);
 
 	return (
 		<Container>

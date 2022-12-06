@@ -8,10 +8,7 @@ import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 // 작성글 관리 - 토크
 function NoteTalk() {
 	const { pathname } = useLocation();
-	const { isLoading, isError, data, error } = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/mypage',
-		pathname,
-	);
+	const { isLoading, isError, data, error } = useGet('/talks/mypage', pathname);
 	const talks = data?.data?.data;
 
 	if (isLoading) return <LoadingSpinner />;

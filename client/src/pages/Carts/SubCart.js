@@ -16,13 +16,10 @@ function SubCart() {
 		isError,
 		data: items,
 		error,
-	} = useGet(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/carts?subscription=true',
-		pathname,
-	);
+	} = useGet('/carts?subscription=true', pathname);
 
 	const { mutate: purchaseMutate } = usePurchase(
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/orders?subscription=true',
+		'/orders?subscription=true',
 		'subscription',
 	);
 
@@ -39,39 +36,50 @@ function SubCart() {
 
 	return (
 		<Box>
-			<List>
-				{items.data.data.itemCarts.data.map((item) => (
-					<CartList key={item.item.itemId} data={item} item={item.item} sub />
-				))}
-			</List>
-			<Bottom>
-				<Display>
-					<Text>합계</Text>
-					<Price
-						nowPrice={items.data.data.totalPrice}
-						fontSize="24px"
-						fontWeight="bold"
-					/>
-					<Text>할인 금액</Text>
-					<Price
-						nowPrice={items.data.data.totalDiscountPrice}
-						fontSize="24px"
-						fontWeight="bold"
-					/>
-					<Text>결제 예정 금액</Text>
-					<Price
-						nowPrice={items.data.data.expectPrice}
-						fontSize="24px"
-						fontWeight="bold"
-						purple
-					/>
-				</Display>
-				<Button>
-					<PurpleButton width="143px" height="50px" onClick={handleOrder}>
-						구매하기
-					</PurpleButton>
-				</Button>
-			</Bottom>
+			{items.data.data.itemCarts.data.length === 0 ? (
+				<List className="blank">장바구니에 담은 상품이 없습니다.</List>
+			) : (
+				<>
+					<List>
+						{items.data.data.itemCarts.data.map((item) => (
+							<CartList
+								key={item.item.itemId}
+								data={item}
+								item={item.item}
+								sub
+							/>
+						))}
+					</List>
+					<Bottom>
+						<Display>
+							<Text>합계</Text>
+							<Price
+								nowPrice={items.data.data.totalPrice}
+								fontSize="24px"
+								fontWeight="bold"
+							/>
+							<Text>할인 금액</Text>
+							<Price
+								nowPrice={items.data.data.totalDiscountPrice}
+								fontSize="24px"
+								fontWeight="bold"
+							/>
+							<Text>결제 예정 금액</Text>
+							<Price
+								nowPrice={items.data.data.expectPrice}
+								fontSize="24px"
+								fontWeight="bold"
+								purple
+							/>
+						</Display>
+						<Button>
+							<PurpleButton width="143px" height="50px" onClick={handleOrder}>
+								구매하기
+							</PurpleButton>
+						</Button>
+					</Bottom>
+				</>
+			)}
 		</Box>
 	);
 }
@@ -99,6 +107,13 @@ const List = styled.div`
 		:last-child {
 			border: none;
 		}
+	}
+	&.blank {
+		height: 200px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 16px;
 	}
 `;
 

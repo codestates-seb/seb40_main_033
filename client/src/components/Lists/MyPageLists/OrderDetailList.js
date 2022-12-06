@@ -45,6 +45,8 @@ function OrderDetailList({
 			beforePrice,
 			discountRate,
 			capacity,
+			quantity,
+			itemId,
 		},
 	};
 

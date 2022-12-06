@@ -13,6 +13,7 @@ import {
 	ReturnInfo,
 	ProductInfo,
 } from '../components/Etc/Constants';
+import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 
 function Detail() {
 	const { pathname } = useLocation();
@@ -43,15 +44,10 @@ function Detail() {
 	};
 
 	// 상품 상세 조회
-	const { isLoading, isError, data, error } = useGet(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/items/${id}`,
-		pathname,
-	);
+	const { isLoading, isError, data, error } = useGet(`/items/${id}`, pathname);
 
 	// 토크 작성
-	const { mutate: talkMu } = usePost(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${id}`,
-	);
+	const { mutate: talkMu } = usePost(`/talks/${id}`);
 
 	// 토크 작성 요청
 	const handleSubmit = useCallback(() => {
@@ -75,7 +71,11 @@ function Detail() {
 	);
 	const lists = !isLoading && data.data.data;
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return (
+			<DetailContainer className="loading">
+				<LoadingSpinner />
+			</DetailContainer>
+		);
 	}
 
 	if (isError) {
@@ -131,6 +131,7 @@ function Detail() {
 												brand: lists.brand,
 												thumbnail: lists.thumbnail,
 												title: lists.title,
+												capacity: lists.capacity,
 												nowPrice: lists.discountPrice || lists.price,
 												discountRate:
 													lists.discountRate === 0 ? '' : lists.discountRate,
@@ -224,6 +225,11 @@ const DetailContainer = styled.div`
 	justify-content: space-between;
 	width: 100%;
 	position: relative;
+	&.loading {
+		height: 490px;
+		justify-content: center;
+		align-items: center;
+	}
 `;
 
 const SummaryContainer = styled.div`
