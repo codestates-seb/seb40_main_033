@@ -5,7 +5,7 @@ import { BsDash } from 'react-icons/bs';
 import { LightPurpleButton } from '../PurpleButton';
 import { setPrice } from '../../../redux/slice/filterSlice';
 
-export default function PriceButton({ min, max, isOpen /* refetch */ }) {
+export default function PriceButton({ min, max, isOpen }) {
 	const [minVal, setMinVal] = useState(min);
 	const [maxVal, setMaxVal] = useState(max);
 	const minValRef = useRef(min);
@@ -46,7 +46,6 @@ export default function PriceButton({ min, max, isOpen /* refetch */ }) {
 
 	const changePrice = async () => {
 		await dispatch(setPrice(`low=${minVal}&high=${maxVal}`));
-		// refetch();
 	};
 
 	return (

@@ -91,9 +91,9 @@ export function PriceSortButton({ children }) {
 					</NameBox>
 					{isOpen && (
 						<LightPurpleButton
-							fontSize="11px"
+							fontSize={onSale ? '12px' : '11px'}
 							width="70px"
-							fontWeight="bold"
+							fontWeight={onSale ? 'extraBold' : 'bold'}
 							onClick={handleOnSale}
 						>
 							할인상품
