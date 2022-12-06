@@ -25,7 +25,7 @@ function Search() {
 				onClick={clickBtn}
 				onKeyDown={handleSearch}
 			/>
-			<Icon onClick={handleSearch}>
+			<Icon type="submit">
 				<AiOutlineSearch />
 			</Icon>
 		</Box>
@@ -71,12 +71,9 @@ const Icon = styled.button`
 		left: 110px;
 	}
 	.search {
-		path {
-			color: var(--green-100);
-		}
+		color: var(--green-100);
 	}
 	path {
-		/* cursor: pointer; */
 		color: var(--purple-200);
 		stroke-width: 10;
 		transition: color 0.1s;

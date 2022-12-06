@@ -13,12 +13,8 @@ export function SortButton({ children }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const dispatch = useDispatch();
 
-	// const { sort } = useSelector((store) => store.filter);
-	// console.log('sort', sort);
-
 	const handleOpenClick = () => {
 		setIsOpen(!isOpen);
-		// console.log(isOpen);
 	};
 	const menus = ['최신순', '조회순', '판매순', '높은가격순', '낮은가격순'];
 	const path = ['', 'view', 'sales', 'priceH', 'priceL'];
@@ -26,7 +22,6 @@ export function SortButton({ children }) {
 	const clickMenus = (e) => {
 		const target = e.target.innerText;
 		const index = menus.indexOf(target);
-		// console.log(index);
 		dispatch(setSort(path[index]));
 	};
 
@@ -69,7 +64,6 @@ export function PriceSortButton({ children }) {
 
 	const handleOpenClick = () => {
 		setIsOpen(!isOpen);
-		// console.log(isOpen);
 	};
 
 	const handleOnSale = () => {
