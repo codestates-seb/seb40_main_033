@@ -13,6 +13,7 @@ import {
 	ReturnInfo,
 	ProductInfo,
 } from '../components/Etc/Constants';
+import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 
 function Detail() {
 	const { pathname } = useLocation();
@@ -75,7 +76,11 @@ function Detail() {
 	);
 	const lists = !isLoading && data.data.data;
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return (
+			<DetailContainer className="loading">
+				<LoadingSpinner />
+			</DetailContainer>
+		);
 	}
 
 	if (isError) {
@@ -224,6 +229,11 @@ const DetailContainer = styled.div`
 	justify-content: space-between;
 	width: 100%;
 	position: relative;
+	&.loading {
+		height: 490px;
+		justify-content: center;
+		align-items: center;
+	}
 `;
 
 const SummaryContainer = styled.div`
