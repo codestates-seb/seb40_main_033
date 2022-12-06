@@ -74,9 +74,9 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 	});
 	const { ref: ref4, ...rest4 } = register('닉네임', {
 		required: signUp && '작성해주세요.',
-		minLength: {
-			value: 2,
-			message: '2글자 이상 작성해주세요.',
+		pattern: {
+			value: /^[A-Za-z0-9가-힣]{2,9}$/,
+			message: '한글, 영문, 숫자를 사용해 2~9자 사이로 지어주세요.',
 		},
 	});
 	const { ref: ref5, ...rest5 } = register('이름', {
