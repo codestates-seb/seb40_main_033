@@ -35,7 +35,7 @@ const WishBox = styled.div`
 	z-index: 99;
 	.red-heart {
 		path {
-			color: #ff555f; //var(--red-100);
+			color: #ff555f;
 			opacity: 100%;
 			stroke-width: 0;
 		}

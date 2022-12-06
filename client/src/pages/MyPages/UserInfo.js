@@ -80,7 +80,6 @@ export function UserInfo() {
 		},
 	});
 	const mailReg = register('이메일', {
-		// required: false,
 		required: true,
 	});
 	const pwReg = register('비밀번호', {
