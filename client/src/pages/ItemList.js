@@ -1,21 +1,18 @@
-/* eslint-disable no-unsafe-optional-chaining */
 import styled from 'styled-components';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useInView } from 'react-intersection-observer';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
-import { useGet } from '../hooks/useFetch';
 import paramsMaker from '../utils/paramsMaker';
 import BrandsWindow from '../components/Etc/BrandsWindow';
-import Pagination from '../components/Etc/Pagination';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
+import { setClear } from '../redux/slice/filterSlice';
+import { useGetList } from '../hooks/useGetList';
 
 // 목록 페이지
 function ItemList() {
-	// 페이지네이션
-	const [currentPage, setCurrentPage] = useState(1);
-
 	// uri에 사용할 정보들을 리덕스에서 가지고옴
 	const { sort, price, brand, onSale } = useSelector((state) => state.filter);
 
@@ -26,35 +23,44 @@ function ItemList() {
 	const [searchParams] = useSearchParams();
 	const category = searchParams.get('categoryName') || 'all';
 
-	// API 요청
+	// API 요청 (무한 스크롤)
 	const { pathname } = useLocation();
-	const {
-		isLoading,
-		isError,
-		data: items,
-		error,
-		refetch,
-	} = useGet(
-		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/category${path}?categoryName=${category}${query}&page=${currentPage}&size=12`,
-		pathname,
-	);
 
-	const pageInfo = items?.data?.pageInfo;
+	const { ref, inView } = useInView();
+	const { data, status, fetchNextPage, isFetchingNextPage, refetch } =
+		useGetList(pathname, category, path, query);
 
-	// 상태들이 바뀔때마다 새로운 아이템 목록을 불러옴
+	// 최하단 div가 보이면 다음 페이지를 불러옴
 	useEffect(() => {
-		refetch();
+		if (inView) fetchNextPage();
+	}, [inView]);
+
+	// 카테고리가 바뀌면 상태 초기화
+	const dispatch = useDispatch();
+
+	const handleFilterClear = async () => {
+		await dispatch(setClear());
 		window.scroll({
 			top: 0,
 			behavior: 'auto',
 		});
-	}, [category, price, sort, brand, onSale, currentPage]);
+		await refetch();
+	};
 
-	if (isLoading) {
+	useEffect(() => {
+		handleFilterClear();
+	}, [category]);
+
+	// 상태들이 바뀔때마다 새로운 아이템 목록을 불러옴
+	useEffect(() => {
+		refetch();
+	}, [price, sort, brand, onSale]);
+
+	if (status === 'Loading') {
 		return <LoadingSpinner />;
 	}
-	if (isError) {
-		return <ItemListBox> {error.message} </ItemListBox>;
+	if (status === 'error') {
+		return <ItemListBox> error </ItemListBox>;
 	}
 
 	return (
@@ -65,22 +71,20 @@ function ItemList() {
 						? '관절/뼈 건강'
 						: category.split('_').join(' ')
 				}
-				refetch={refetch}
 			/>
 			<Brand>
 				<BrandsWindow />
 			</Brand>
 			<ItemListBox>
-				{items.data.data.map((item) => (
-					<SmallListCards key={item.itemId} item={item} refetch={refetch} />
+				{data?.pages.map((page, index) => (
+					<React.Fragment key={`${index.toString()}`}>
+						{page.data.map((item) => (
+							<SmallListCards key={item.itemId} item={item} />
+						))}
+					</React.Fragment>
 				))}
 			</ItemListBox>
-			<Pagination
-				total={pageInfo.totalElements}
-				size={pageInfo.size}
-				page={currentPage}
-				setPage={setCurrentPage}
-			/>
+			{isFetchingNextPage ? <LoadingSpinner /> : <div ref={ref} />}
 		</Box>
 	);
 }

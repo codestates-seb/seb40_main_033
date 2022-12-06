@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>토스 페이먼츠 결제 연동 예제</title>
+    <script src="https://js.tosspayments.com/v1/payment"></script>
+</head>
+<body>
+<button id="card_button">카드 등록</button>
+
+<script type="text/javascript" th:inline="javascript">
+    window.addEventListener('load', (event) => {
+        document.getElementById("card_button").addEventListener("click", function() {
+            var clientKey = "test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq";
+            var tossPayments = TossPayments(clientKey);
+            tossPayments.requestBillingAuth('카드', { // 결제 수단 파라미터
+                                                    // 빌링키 발급 요청을 위한 파라미터
+                customerKey: '3MXvnCtlj4mlPIsRuCWa6',
+                successUrl: 'http://localhost:8080/payments/general/subs/success',
+                failUrl: 'http://localhost:8080/fail',
+                customerName: 1,
+            });
+        });
+    });
+</script>
+</body>
+</html>
+

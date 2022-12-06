@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 function Tag({ funcArr }) {
-	console.log(funcArr);
 	return (
 		<TagContainer>
 			{funcArr.map((func, index) => (

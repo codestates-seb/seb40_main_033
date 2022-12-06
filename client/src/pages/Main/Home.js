@@ -33,7 +33,13 @@ function Home() {
 
 	const list = data?.data;
 
-	if (isError) return <div>{error.message}</div>;
+	if (isError)
+		return (
+			<>
+				<MainCaroucel />
+				<div>{error.message}</div>
+			</>
+		);
 	return (
 		<div>
 			<MainCaroucel />
