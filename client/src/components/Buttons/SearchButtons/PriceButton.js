@@ -16,6 +16,16 @@ export default function PriceButton({ min, max, isOpen }) {
 	const range = useRef(null);
 	const dispatch = useDispatch();
 
+	// 이미 마운트 된 상태에서 리덕스 상태값이 변경되면 최소값과 최대값을 초기화한다.
+	useEffect(() => {
+		if (!reduxMin) {
+			setMinVal(min);
+		}
+		if (!reduxMax) {
+			setMaxVal(max);
+		}
+	}, [price]);
+
 	// Convert to percentage
 	const getPercent = useCallback(
 		(value) => Math.round(((value - min) / (max - min)) * 100),
