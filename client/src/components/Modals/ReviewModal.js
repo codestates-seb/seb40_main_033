@@ -70,7 +70,8 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 					discountRate={review?.item.discountRate}
 					itemOrderId={review?.item.itemOrderId}
 					capacity={review?.item?.capacity}
-					quantity={review?.quantity}
+					quantity={review?.item?.quantity}
+					itemId={review?.item?.itemId}
 				/>
 			}
 			form={

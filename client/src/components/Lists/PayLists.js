@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
 
 export default function PayLists({
@@ -13,19 +15,34 @@ export default function PayLists({
 	discountRate,
 	beforePrice,
 	period,
+	itemId,
 }) {
-	// isSub="isSub" 이런식으로 줘야 함
+	const navigate = useNavigate();
+
+	const handlePageMove = useCallback(() => {
+		navigate(`/detail/${itemId}`);
+	}, []);
+
 	return (
 		<Box>
 			<ImageContainer>
-				<Image src={thumbnail} />
+				<Image src={thumbnail} onClick={handlePageMove} />
 			</ImageContainer>
 			<Wrap>
 				<Brand>{brand}</Brand>
-				<Name>
+				<Name onClick={handlePageMove}>
 					{title}, {capacity}정
 				</Name>
-				<Price fontSize="13px" nowPrice={price} />
+				{!talk ? (
+					<Price fontSize="13px" nowPrice={price} />
+				) : (
+					<Price // 가격 * 수량
+						beforePrice={beforePrice}
+						discountRate={discountRate}
+						nowPrice={price}
+						fontSize="13px"
+					/>
+				)}
 				<BottomContainer>
 					<SubInfo className={isSub}>{period}일 마다</SubInfo>
 					{!talk && (
@@ -55,9 +72,6 @@ const Box = styled.div`
 	display: flex;
 	align-items: center;
 	padding: 19px;
-	* {
-		color: var(--gray-600);
-	}
 `;
 
 const Wrap = styled.div`
@@ -77,6 +91,7 @@ const Image = styled.img`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const Brand = styled.div`
@@ -88,6 +103,7 @@ const Brand = styled.div`
 const Name = styled.div`
 	font-weight: var(--bold);
 	margin-bottom: 14px;
+	cursor: pointer;
 `;
 
 const BottomContainer = styled.div`
@@ -111,7 +127,7 @@ const Total = styled.div`
 	display: flex;
 	font-weight: var(--bold);
 	* {
-		font-size: 16px;
+		font-size: 15px;
 	}
 `;
 
