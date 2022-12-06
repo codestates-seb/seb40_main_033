@@ -49,26 +49,22 @@ function Detail() {
 	);
 
 	// 토크 작성
-	const { mutate: talkMu, response } = usePost(
+	const { mutate: talkMu } = usePost(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${id}`,
 	);
 
 	// 토크 작성 요청
-	const handleSubmit = useCallback(
-		(e) => {
-			if (content.length < 20) {
-				toast.error('20자 이상 작성해주세요.');
-				return;
-			}
-			talkMu({ content });
-			console.log('response', response);
-			setContent('');
-			setIsTalkOpen(false);
-			setIsDelay(true);
-			// setTimeout(() => setIsTalkOpen(false), 300);
-		},
-		[content],
-	);
+	const handleSubmit = useCallback(() => {
+		if (content.length < 20) {
+			toast.error('20자 이상 작성해주세요.');
+			return;
+		}
+		talkMu({ content });
+		setContent('');
+		setIsTalkOpen(false);
+		setIsDelay(true);
+		// setTimeout(() => setIsTalkOpen(false), 300);
+	}, [content]);
 
 	// 토크 컨텐츠 상태
 	const handleContent = useCallback(
@@ -85,8 +81,6 @@ function Detail() {
 	if (isError) {
 		return <div>Error: {error.message}</div>;
 	}
-
-	console.log('lists', lists);
 
 	return (
 		<DetailContainer>
