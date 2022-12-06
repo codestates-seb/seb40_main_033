@@ -22,14 +22,15 @@ function Detail() {
 	const [content, setContent] = useState(''); // 토크 컨텐츠!
 	const [isTalkOpen, setIsTalkOpen] = useState(false);
 	// 토크 폼 닫을 때 애니메이션 효과를 위한 상태
-	const [isDelay, setIsDelay] = useState(false);
+	const [isDelay, setIsDelay] = useState(true);
 
 	// arrow 아이콘 클릭 시 토크 폼 오픈
 	const handleOpenTalkForm = useCallback(() => {
-		console.log('클릭?');
+		// 열려있으면?
 		if (isTalkOpen) {
-			setIsDelay(true);
-			setTimeout(() => setIsTalkOpen(false), 300);
+			setIsDelay(true); // 0.3초 딜레이 후에
+			setTimeout(() => setIsTalkOpen(false), 300); // 종료
+			// 닫혀있으면?
 		} else {
 			setIsTalkOpen(true);
 			setIsDelay(false);
@@ -48,26 +49,22 @@ function Detail() {
 	);
 
 	// 토크 작성
-	const { mutate: talkMu, response } = usePost(
+	const { mutate: talkMu } = usePost(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${id}`,
 	);
 
 	// 토크 작성 요청
-	const handleSubmit = useCallback(
-		(e) => {
-			if (content.length < 20) {
-				toast.error('20자 이상 작성해주세요.');
-				return;
-			}
-			talkMu({ content });
-			console.log('response', response);
-			setContent('');
-			setIsTalkOpen(false);
-			setIsDelay(true);
-			// setTimeout(() => setIsTalkOpen(false), 300);
-		},
-		[content],
-	);
+	const handleSubmit = useCallback(() => {
+		if (content.length < 20) {
+			toast.error('20자 이상 작성해주세요.');
+			return;
+		}
+		talkMu({ content });
+		setContent('');
+		setIsTalkOpen(false);
+		setIsDelay(true);
+		// setTimeout(() => setIsTalkOpen(false), 300);
+	}, [content]);
 
 	// 토크 컨텐츠 상태
 	const handleContent = useCallback(
@@ -84,8 +81,6 @@ function Detail() {
 	if (isError) {
 		return <div>Error: {error.message}</div>;
 	}
-
-	console.log('lists', lists);
 
 	return (
 		<DetailContainer>
@@ -282,7 +277,6 @@ const Notes = styled.div`
 		> :nth-child(2) {
 			margin-bottom: 30px;
 		}
-		/* margin-bottom: 20px; */
 	}
 `;
 
@@ -292,14 +286,14 @@ const rotateArrow = keyframes`
 		transform: rotate(-90deg);
 	}
 	100% {
-		transform: rotate(-630deg);
+		transform: rotate(-270deg);
 	}
 `;
 
 // 닫힐 때 화살표 아래로
 const rotateArrowReverse = keyframes`
 	0% {
-		transform: rotate(-630deg);
+		transform: rotate(-270deg);
 	}
 	100% {
 		transform: rotate(-90deg);
@@ -323,8 +317,6 @@ const slideIn = keyframes`
 const slideOut = keyframes`
 	0% {
 		opacity: 80%;
-		/* transform: translateY(0); */
-
 	}
 	50% {
 		opacity: 10%;
@@ -332,7 +324,6 @@ const slideOut = keyframes`
 	100% {
 		opacity: 0%;
 		transform: translateY(-50px);
-		/* height: 0; */
 	}
 `;
 
@@ -340,7 +331,6 @@ const TalkFormContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	/* justify-content: center; */
 	align-items: center;
 
 	// 토크 폼
@@ -361,30 +351,36 @@ const TalkFormOpenBtn = styled.div`
 	display: flex;
 	align-items: center;
 	color: var(--purple-200);
-	width: 100%;
 	justify-content: center;
 	cursor: pointer;
-	-webkit-user-select: none;
+	user-select: none;
+
+	* {
+		cursor: pointer;
+	}
+
 	// 토크 폼 여는 버튼
 	svg {
 		align-self: flex-end;
 		font-size: 16px;
 		margin-right: 6px;
+		cursor: pointer;
 		transform: rotate(-90deg);
 
 		path {
 			color: var(--purple-200);
 		}
 
-		cursor: pointer;
 		${({ isDelay }) =>
-			!isDelay // 딜레이가 아님 === 열림
+			!isDelay // delay false, open true
 				? css`
-						animation: ${rotateArrow} 0.3s ease-in-out;
-						transform: rotate(-270deg);
+						animation: ${rotateArrow} 0.18s ease-in-out;
+						transform: rotate(90deg);
 				  `
 				: css`
-						animation: ${rotateArrowReverse} 0.3s ease-in-out;
+						// delay true, open false
+						animation: ${rotateArrowReverse} 0.18s ease-in-out;
+						transform: rotate(-90deg);
 				  `};
 	}
 `;
@@ -394,18 +390,13 @@ const ListsContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	width: 100%;
-
-	/* &.talk {
-		> :nth-child(1) {
-			margin-top: 20px;
-		}
-	} */
 `;
 
+// 작성글이 없을 경우
 const NoNote = styled.div`
 	display: flex;
 	align-items: center;
 	height: 250px;
-`; // 작성글이 없을 경우
+`;
 
 export default Detail;

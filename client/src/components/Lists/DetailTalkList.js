@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MdSubdirectoryArrowRight, MdPayments } from 'react-icons/md';
+import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -29,30 +29,30 @@ function DetailTalkList({
 	const [reContent, setReContent] = useState(''); // 새로 작성한 리토크
 	const { loginStatus } = useSelector((store) => store.user);
 	const user = localStorage.getItem('userId');
-	const [isAuthor, setIsAuthor] = useState(Number(user) === userId);
+	const [isAuthor] = useState(Number(user) === userId);
 
 	// 토크 수정
-	const { mutate: talkUpdateMu, response: talkUpdateRes } = usePatch(
+	const { mutate: talkUpdateMu } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talkId}`,
 	);
 
 	// 토크 삭제
-	const { mutate: talkDeleteMu, response: talkDeleteRes } = useDelete(
+	const { mutate: talkDeleteMu } = useDelete(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/${talkId}`,
 	);
 
 	// 리토크 삭제
-	const { mutate: reTalkDeleteMu, response: reTalkDeleteRes } = useDelete(
+	const { mutate: reTalkDeleteMu } = useDelete(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkCommentId}`,
 	);
 
 	// 리토크 작성
-	const { mutate: reTalkCreateMu, response: reTalkCreateRes } = usePost(
+	const { mutate: reTalkCreateMu } = usePost(
 		`	http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkId}?itemId=${itemId}`,
 	);
 
 	// 리토크 수정
-	const { mutate: reTalkUpdateMu, response: reTalkUpdateRes } = usePatch(
+	const { mutate: reTalkUpdateMu } = usePatch(
 		`http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/talks/comments/${talkCommentId}`,
 	);
 
@@ -60,7 +60,6 @@ function DetailTalkList({
 	const handleNewContent = useCallback(
 		(e) => {
 			setNewContent(e.target.value);
-			console.log('내용:', e.target.value);
 		},
 		[newContent],
 	);
@@ -69,44 +68,36 @@ function DetailTalkList({
 	const handleReContent = useCallback(
 		(e) => {
 			setReContent(e.target.value);
-			console.log('내용:', e.target.value);
 		},
 		[reContent],
 	);
 
 	// 리토크 작성! (답글)
-	const handleReTalkCreate = useCallback(
-		(e) => {
-			if (reContent.length < 20) {
-				toast.error('20자 이상 작성해주세요.');
-				return;
-			}
-			reTalkCreateMu({ content: reContent });
+	const handleReTalkCreate = useCallback(() => {
+		if (reContent.length < 20) {
+			toast.error('20자 이상 작성해주세요.');
+			return;
+		}
+		reTalkCreateMu({ content: reContent });
 
-			console.log('리토크 작성');
-			setWriteReply(!writeReply);
-		},
-		[reContent],
-	);
+		setWriteReply(false);
+	}, [reContent]);
 
 	// 토크 수정!
-	const handleTalkUpdate = useCallback(
-		(e) => {
-			if (newContent.length < 20) {
-				toast.error('20자 이상 작성해주세요.');
-				return;
-			}
+	const handleTalkUpdate = useCallback(() => {
+		if (newContent.length < 20) {
+			toast.error('20자 이상 작성해주세요.');
+			return;
+		}
 
-			// 리토크
-			if (isReply) {
-				reTalkUpdateMu({ content: newContent });
-			} else {
-				talkUpdateMu({ content: newContent });
-			}
-			setWritable(false);
-		},
-		[newContent],
-	);
+		// 리토크
+		if (isReply) {
+			reTalkUpdateMu({ content: newContent });
+		} else {
+			talkUpdateMu({ content: newContent });
+		}
+		setWritable(false);
+	}, [newContent]);
 
 	const handleFormOpen = useCallback(
 		(e) => {
@@ -115,12 +106,12 @@ function DetailTalkList({
 				return;
 			}
 			if (e.target.innerText === '수정') {
-				setWritable(!writable);
+				setWritable(!writable); // 수정을 눌렀을 때
 			} else {
-				setWriteReply(!writeReply);
+				setWriteReply(!writeReply); // 답변작성을 눌렀을 때
 			}
 		},
-		[writable],
+		[writable, writeReply],
 	);
 
 	const handleDeleteClick = useCallback(() => {
@@ -222,7 +213,6 @@ const TalkContainer = styled.li`
 `;
 
 const TopContainer = styled.div`
-	/* border-bottom: 1px solid rgb(235, 235, 235); */
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -268,10 +258,6 @@ const InfoContainer = styled.div`
 `;
 
 const Talk = styled.div`
-	/* border: 1px solid black; */
-
-	/* height: 100px; */
-	/* text-align: left; */
 	align-self: start;
 	padding-top: 20px;
 	color: var(--gray-400);
@@ -279,15 +265,9 @@ const Talk = styled.div`
 	line-height: 1.5;
 	width: 100%;
 	height: 100%;
-	/* margin-bottom: 20px; */
 `;
 
 const ButtonContainer = styled.div`
-	/* width: 80px;
-	height: 20px; */
-	/* position: relative; */
-	/* left: 580px;
-	bottom: 80px; */
 	display: flex;
 	align-items: center;
 	color: var(--gray-300);
