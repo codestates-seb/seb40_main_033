@@ -1,11 +1,12 @@
 import styled from 'styled-components';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 function Search() {
 	const [click, setClick] = useState(false);
 	const navigate = useNavigate();
+	const searchRef = useRef();
 
 	const handleSearch = useCallback(async (e) => {
 		if (e.key === 'Enter') {
@@ -13,20 +14,34 @@ function Search() {
 		}
 	}, []);
 
-	const clickBtn = () => {
-		setClick(!click);
+	const handleclickSearch = useCallback(() => {
+		setClick(true);
+	}, [click]);
+
+	const clickOutside = (e) => {
+		if (!searchRef.current.contains(e.target)) {
+			setClick(false);
+		}
 	};
 
+	useEffect(() => {
+		document.addEventListener('mousedown', clickOutside);
+
+		return () => {
+			document.removeEventListener('mousedown', clickOutside);
+		};
+	});
+
 	return (
-		<Box>
+		<Box ref={searchRef}>
 			<Input
 				placeholder="검색어를 입력하세요"
 				className={click ? 'search' : null}
-				onClick={clickBtn}
+				onClick={handleclickSearch}
 				onKeyDown={handleSearch}
 			/>
-			<Icon type="submit">
-				<AiOutlineSearch />
+			<Icon>
+				<AiOutlineSearch className={click ? 'search' : null} />
 			</Icon>
 		</Box>
 	);
@@ -49,10 +64,17 @@ const Input = styled.input`
 	height: 40px;
 	text-indent: 24px;
 	:focus {
-		outline-color: var(--green-100);
+		outline: none;
 	}
 	::placeholder {
 		text-indent: 24px;
+	}
+
+	&.search {
+		border: none;
+		outline: 2px solid var(--green-100);
+		height: 38px;
+		width: 282px;
 	}
 `;
 
@@ -62,21 +84,22 @@ const Icon = styled.button`
 	background: none;
 	border: none;
 
-	& > svg {
+	svg {
 		cursor: pointer;
 		margin: 15px 0;
 		position: relative;
 		font-size: 24px;
-		color: var(--purple-200);
 		left: 110px;
+
+		&.search {
+			path {
+				color: var(--green-100);
+			}
+		}
 	}
-	.search {
-		color: var(--green-100);
-	}
+
 	path {
 		color: var(--purple-200);
-		stroke-width: 10;
-		transition: color 0.1s;
 	}
 `;
 
