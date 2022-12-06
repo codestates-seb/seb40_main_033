@@ -13,19 +13,18 @@ function SmallListCards({ item }) {
 	};
 
 	return (
-		<EntireContainer id="이거임">
+		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
 					<ContentContainer />
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
-					<ContentContainer buttom onClick={handleItemClick}>
+					<ContentContainer bottom onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
 						<NamePriceBox>
 							<div className="title itemName">{item.title}</div>
 							<Price
-								className="itemPrice"
 								nowPrice={item.discountPrice}
 								beforePrice={item.price}
 								discountRate={item.discountRate}
@@ -42,6 +41,9 @@ function SmallListCards({ item }) {
 							starAvg={item.starAvg}
 							reviewCount={item.reviewSize}
 						/>
+						<Ingredient>
+							{item.nutritionFacts.map((fact) => `${fact.ingredient} `)}
+						</Ingredient>
 					</ContentContainer>
 					<ContentContainer middle>
 						<ItemDescription>{item.content}</ItemDescription>
@@ -84,8 +86,7 @@ const DefaultContainer = styled.div`
 	width: 245px;
 	height: 387px;
 	border-radius: 10px;
-	box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
-	transition: 0.25s;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	background-color: white;
 	${(props) =>
 		props.hover // hover라는 프롭스가 들어간 디폴트 컨테이너
@@ -111,24 +112,29 @@ const ContentBox = styled.div`
 const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
-	margin-top: 10px;
 	${(props) =>
 		props.middle
 			? css`
-					padding-top: 23px;
 					justify-content: center;
-					padding-bottom: 60px;
+					padding-bottom: 26px;
 			  `
-			: props.buttom
+			: props.bottom
 			? css`
+					margin-top: 12px;
 					z-index: 1;
 					flex-direction: column;
 					justify-content: none;
 			  `
 			: props.star
 			? css`
-					flex-direction: row;
-					margin-top: 5px;
+					flex-direction: column;
+					margin-top: 6.5px;
+			  `
+			: props.wishBtn
+			? css`
+					position: absolute;
+					left: 196px;
+					top: 29px;
 			  `
 			: null}
 
@@ -140,8 +146,8 @@ const ContentContainer = styled.div`
 	.itemName {
 		font-weight: var(--extraBold);
 		font-size: 16px;
-		/* padding-bottom: 27.5px; */
 		word-break: keep-all;
+		line-height: 1.1;
 	}
 	.itemPrice {
 		font-size: 16px;
@@ -149,24 +155,33 @@ const ContentContainer = styled.div`
 	}
 `;
 
+const ItemImg = styled.img`
+	width: 100%;
+	height: 100%;
+`;
+
 const NamePriceBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 60px;
-`;
-
-const ItemImg = styled.img`
-	width: 140px;
-	height: 140px;
+	height: 66px;
 `;
 
 const ItemDescription = styled.p`
+	width: 100%;
 	color: white;
-	font-size: 20px;
-	line-height: 25px;
+	font-size: 13px;
+	line-height: 1.4;
 	letter-spacing: -0.04em;
+	margin-top: 50px;
 	word-break: keep-all;
+`;
+const Ingredient = styled.p`
+	display: flex;
+	color: var(--purple-100);
+	margin-top: 12px;
+	word-break: keep-all;
+	font-size: 9px;
 `;
 
 export default SmallListCards;
