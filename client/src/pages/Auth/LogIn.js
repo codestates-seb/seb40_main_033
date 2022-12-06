@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import useLogIn from '../../hooks/useLogIn';
 import AuthTitle from '../../components/Etc/AuthTitle';
@@ -15,19 +14,7 @@ import { Logo } from '../../assets/Icons';
 
 // 로그인 페이지
 function LogIn() {
-	// 다른 페이지로 이동 후 뒤로가기 시 로그인 페이지로 이동하지 않도록 함
 	const { mutate } = useLogIn();
-	const { loginStatus, accessToken, email } = useSelector(
-		(store) => store.user,
-	);
-	console.log(
-		'email',
-		email,
-		'loginStatus',
-		loginStatus,
-		'accessToken',
-		accessToken,
-	);
 
 	const handleLogIn = (data) => {
 		mutate({ email: data.이메일, password: data.비밀번호 });
