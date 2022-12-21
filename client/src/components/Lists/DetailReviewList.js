@@ -6,9 +6,9 @@ import { LongTextStar } from '../Stars/TextStar';
 import OrderDetailList from './MyPageLists/OrderDetailList';
 import ReviewModal from '../Modals/ReviewModal';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
+import { useDelete } from '../../hooks/useFetch';
 
 function DetailReviewList({
-	itemId,
 	star,
 	displayName,
 	createdAt,
@@ -21,6 +21,10 @@ function DetailReviewList({
 	const user = localStorage.getItem('userId');
 	const [isAuthor] = useState(Number(user) === userId);
 
+	const { mutate: reviewDeleteMu } = useDelete(
+		`/reviews/${review.item.reviewId}`,
+	);
+
 	const handleFormOpen = () => {
 		setOpenForm(!openForm);
 	};
@@ -30,7 +34,8 @@ function DetailReviewList({
 	}, []);
 
 	// review 삭제 요청!
-	const handleDeleteTalk = useCallback(() => {
+	const handleDeleteReview = useCallback(() => {
+		reviewDeleteMu();
 		setOpenDeleteModal(false);
 	}, []);
 
@@ -64,7 +69,7 @@ function DetailReviewList({
 			<DeleteNotesModal
 				openDeleteModal={openDeleteModal}
 				setOpenDeleteModal={setOpenDeleteModal}
-				handleDelete={handleDeleteTalk}
+				handleDelete={handleDeleteReview}
 			/>
 		</Box>
 	);
