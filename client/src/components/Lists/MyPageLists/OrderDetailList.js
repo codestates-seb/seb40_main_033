@@ -50,8 +50,6 @@ function OrderDetailList({
 		},
 	};
 
-	console.log('itemId,', itemId);
-
 	return (
 		<Box className={inModal && 'in-modal'}>
 			<ImageContainer onClick={handlePageMove}>

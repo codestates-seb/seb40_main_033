@@ -243,7 +243,6 @@ const ValueDescription = styled.div`
 const SliderValue = styled.div`
 	color: var(--gray-400);
 	font-size: 13px;
-	//위의 3개는 보여주는 값의 설정입니다. 밑의 RightValue에도 똑같은 설정 있습니다.
 `;
 
 const IconBox = styled.div`

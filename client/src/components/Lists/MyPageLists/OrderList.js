@@ -3,7 +3,6 @@ import { IoIosArrowForward, IoMdClose } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
-import { BsListStars } from 'react-icons/bs';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import { DotDate } from '../../Etc/ListDate';
 import Price from '../../Etc/Price';
@@ -26,10 +25,6 @@ function OrderList({ list }) {
 		navigate(`/mypage/order/${list.orderId}`);
 	}, []);
 
-	const handleItemClick = () => {
-		navigate(`/detail/${list.item.itemId}`);
-	};
-
 	// 취소 모달
 	const handleCancelClick = useCallback(() => {
 		setOpenCancel(true);
@@ -50,7 +45,7 @@ function OrderList({ list }) {
 			<Image
 				src={list.item.thumbnail}
 				alt="상품 이미지"
-				onClick={handleItemClick}
+				onClick={handlePageMove}
 			/>
 			<MainContainer>
 				<InfoContainer>
@@ -58,7 +53,7 @@ function OrderList({ list }) {
 						<DeliveryStatus>{status}</DeliveryStatus>
 						<DotDate date={list.createdAt} />
 					</ShoppingInfo>
-					<Name onClick={handleItemClick}>
+					<Name onClick={handlePageMove}>
 						{`${list.item.brand}, ${list.item.title}, ${list.item.capacity}정 
 						${totalNum > 1 ? `외 ${totalNum - 1}개` : ''}`}
 					</Name>
