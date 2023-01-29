@@ -9,8 +9,9 @@
 	"extends": [
 		"airbnb",
 		"airbnb-typescript",
-		"plugin:react/recommended",
-		"plugin:prettier/recommended"
+		"plugin:prettier/recommended",
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended"
 	],
 	"rules": {
 		"import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
@@ -19,7 +20,6 @@
 			{ "extensions": [".js", ".jsx", ".ts", ".tsx"] }
 		],
 		"react/react-in-jsx-scope": 0,
-		"no-unused-vars": 1,
 		"react/prop-types": 0,
 		"react/jsx-props-no-spreading": 0,
 		"@typescript-eslint/no-use-before-define": 0
@@ -33,6 +33,6 @@
 	},
 	"parserOptions": {
 		"ecmaVersion": 2020,
-		"project": ["./tsconfig.json"]
+		"project": ["**/tsconfig.json"]
 	}
 }
