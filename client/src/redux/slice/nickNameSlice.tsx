@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
 	nickName: '-',
@@ -8,9 +8,9 @@ const nickNameSlice = createSlice({
 	name: 'nickName',
 	initialState,
 	reducers: {
-		change: (state, action) => {
-			Object.assign(state, { nickName: action.payload });
-			localStorage.setItem('nickName', action.payload);
+		change: (state, { payload }: PayloadAction<string>) => {
+			Object.assign(state, { nickName: payload });
+			localStorage.setItem('nickName', payload);
 		},
 	},
 });

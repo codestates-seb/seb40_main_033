@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
 	sort: '',
@@ -13,26 +13,25 @@ const filterSlice = createSlice({
 	name: 'filter',
 	initialState,
 	reducers: {
-		// 리듀서의 액션타입이 setSort일때, 함수가 실행됨
-		setSort: (state, action) => {
-			Object.assign(state, { sort: action.payload });
+		setSort: (state, { payload }: PayloadAction<string>) => {
+			state.sort = payload;
 		},
-		setPrice: (state, action) => {
-			Object.assign(state, { price: action.payload });
+		setPrice: (state, { payload }: PayloadAction<string>) => {
+			state.price = payload;
 		},
-		setKeyword: (state, action) => {
-			Object.assign(state, { key: action.payload });
+		setKeyword: (state, { payload }: PayloadAction<string>) => {
+			state.keyWord = payload;
 		},
-		setBrand: (state, { payload }) => {
+		setBrand: (state, { payload }: PayloadAction<string>) => {
 			state.brand = payload;
 		},
-		setOnSale: (state, { payload }) => {
+		setOnSale: (state, { payload }: PayloadAction<boolean>) => {
 			state.onSale = payload;
 		},
 		setClear: (state) => {
 			state.sort = '';
 			state.price = '';
-			state.key = '';
+			state.keyWord = '';
 			state.brand = '';
 			state.onSale = false;
 		},
