@@ -71,11 +71,16 @@ const InfoContent = styled.pre`
 	color: var(--gray-400);
 `;
 
-const constants = {
+export const payConstants = {
 	firstPayClause:
 		'환불 받으신 날짜 기준으로 3~5일(주말 제외) 후 결제대행사에서 직접 고객님의 계좌로 환불 처리됩니다.',
 	secondPayClause:
 		'회원 본인은 구매 조건, 주문 내용 확인 및 결제에 동의합니다.',
 };
 
-export default constants;
+export const footerConstants = {
+	info: '서울특별시 강남구 영양대로 필리길 305, 3355호, 대표자: 김필리\n사업자 번호: 123-45-678900, 통신판매업 신고번호: 2022-서울강남-221204\n고객센터: 1234-1234\nE-mail: pillivery@pillivery.com',
+	copyright: '© Copyright ⓒ 2022 Pillivery',
+	brandName: 'Pillivery',
+	slogan: 'With Pillivery Subscribe Health',
+};

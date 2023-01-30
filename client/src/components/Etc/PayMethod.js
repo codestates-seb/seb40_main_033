@@ -6,7 +6,7 @@ import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
 import AddressModal from '../Modals/AddressModal';
-import constants from './Constants';
+import { payConstants } from './Constants';
 import axiosInstance from '../../utils/axiosInstance';
 
 export default function PayMethod({ payData }) {
@@ -60,8 +60,8 @@ export default function PayMethod({ payData }) {
 				</KakaoPayButton>
 			</ButtonBox>
 			<ClauseContainer>
-				<Clauses>{constants.firstPayClause}</Clauses>
-				<Clauses>{constants.secondPayClause}</Clauses>
+				<Clauses>{payConstants.firstPayClause}</Clauses>
+				<Clauses>{payConstants.secondPayClause}</Clauses>
 			</ClauseContainer>
 			{isPayModal && (
 				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
