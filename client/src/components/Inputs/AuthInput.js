@@ -46,6 +46,7 @@ export default function AuthInput({
 			<label htmlFor={label} className="placeholder">
 				{label}
 			</label>
+			<EnterDiv>⏎</EnterDiv>
 			<ErrorDiv className={showError ? 'showError' : null}>{errors}</ErrorDiv>
 		</InputBox>
 	);
@@ -135,4 +136,13 @@ const ErrorDiv = styled.div`
 	font-size: 11px;
 	margin-top: 5px;
 	min-height: 15px;
+`;
+
+const EnterDiv = styled.div`
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: translateY(-100%);
+	font-size: 13px;
+	color: var(--gray-200);
 `;

@@ -1,12 +1,12 @@
-/* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from '../../types/auth';
 
 // 로컬스토리지에 저장된 토큰을 가져온다.
 const storageAccessToken = localStorage.getItem('accessToken');
 const storageLoginStatus = localStorage.getItem('loginStatus');
 
-const initialState = {
-	loginStatus: !!storageLoginStatus,
+const initialState: User = {
+	loginStatus: storageLoginStatus === 'true',
 	keepLoggedIn: false,
 	accessToken: storageAccessToken,
 	refreshToken: '',
@@ -19,7 +19,7 @@ const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		login: (state, { payload }) => {
+		login: (state, { payload }: PayloadAction<User>) => {
 			const {
 				accessToken,
 				refreshToken,
@@ -34,7 +34,7 @@ const userSlice = createSlice({
 			}
 			if (accessToken) {
 				state.loginStatus = true;
-				localStorage.setItem('loginStatus', true);
+				localStorage.setItem('loginStatus', 'true');
 				state.accessToken = accessToken;
 				localStorage.setItem('accessToken', accessToken);
 				state.userId = userId;
