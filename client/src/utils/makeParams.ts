@@ -1,5 +1,10 @@
 // path 를 생성해주는 함수
-export default function paramsMaker(sort, price, brand, onSale) {
+const paramsMaker = (
+	sort: string,
+	price: string,
+	brand: string,
+	onSale: string,
+) => {
 	let path = '';
 	let query = '';
 	if (brand) {
@@ -17,4 +22,6 @@ export default function paramsMaker(sort, price, brand, onSale) {
 		query += `&sort=${sort}`;
 	}
 	return { path, query };
-}
+};
+
+export default paramsMaker;

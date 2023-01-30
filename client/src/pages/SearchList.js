@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
-import paramsMaker from '../utils/paramsMaker';
+import paramsMaker from '../utils/makeParams';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 import { useGetSearchList } from '../hooks/useGetList';
 import { setClear } from '../redux/slice/filterSlice';

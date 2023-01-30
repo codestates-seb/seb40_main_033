@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
-import paramsMaker from '../utils/paramsMaker';
+import paramsMaker from '../utils/makeParams';
 import BrandsWindow from '../components/Etc/BrandsWindow';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 import { setClear } from '../redux/slice/filterSlice';
