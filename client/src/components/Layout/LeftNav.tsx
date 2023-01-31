@@ -26,22 +26,22 @@ function LeftNav() {
 		<AiOutlinePlusCircle className="small bold-stroke" key="10-icons" />,
 	];
 
-	const handleCategoriesOpen: React.MouseEventHandler<HTMLDivElement> =
+	const handleMenuOpen: React.MouseEventHandler<HTMLDivElement> =
 		useCallback(() => {
 			setIsMenuOpen(!isMenuOpen);
 		}, [isMenuOpen]);
 
 	// 호버 시 아이콘이 나오도록
-	const handleBtnHover: React.MouseEventHandler<HTMLLIElement> = useCallback(
+	const handleHover: React.MouseEventHandler<HTMLLIElement> = useCallback(
 		(e) => {
-			const target = e.target as HTMLElement;
-			setHoverTarget(target.innerText);
+			const { innerText } = e.target as HTMLLIElement;
+			setHoverTarget(innerText);
 		},
 		[],
 	);
 
 	// 마우스가 카테고리를 떠났을 때 hoverTarget 초기화
-	const handleBtnLeave: React.MouseEventHandler<HTMLLIElement> =
+	const handleLeave: React.MouseEventHandler<HTMLLIElement> =
 		useCallback(() => {
 			setHoverTarget('');
 		}, []);
@@ -52,7 +52,7 @@ function LeftNav() {
 				<Link to="/">
 					<Logo />
 				</Link>
-				<Hamburger onClick={handleCategoriesOpen} isMenuOpen={isMenuOpen}>
+				<Hamburger onClick={handleMenuOpen} isMenuOpen={isMenuOpen}>
 					<div id="bar-1" />
 					<div id="bar-2" />
 					<div id="bar-3" />
@@ -67,8 +67,8 @@ function LeftNav() {
 								key={`${i.toString()}-${el}`}
 							>
 								<ListContainer
-									onMouseEnter={handleBtnHover}
-									onMouseLeave={handleBtnLeave}
+									onMouseEnter={handleHover}
+									onMouseLeave={handleLeave}
 								>
 									{hoverTarget === el && icons[i]}
 									<Category>{el}</Category>
