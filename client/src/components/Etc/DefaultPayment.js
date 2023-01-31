@@ -1,9 +1,8 @@
 import styled, { css } from 'styled-components';
 import PageTitle from './PageTitle';
 import PayItemInformation from './PayItemInformation';
-import PayDestination from './PayDestination';
+import { DestinationInfo, PaymentInfo } from './PayInfo';
 import PayMethod from './PayMethod';
-import { PaymentInfo } from './PayInfo';
 import PayPageContainer from './PayPageContainer';
 
 function DefaultPayment({ payData, titleName, isSub }) {
@@ -12,7 +11,9 @@ function DefaultPayment({ payData, titleName, isSub }) {
 			<PageTitle title={titleName} />
 			<PaymentContainer>
 				<PayInfoBox left>
-					<PayDestination payData={payData} />
+					<PayPageContainer>
+						<DestinationInfo payData={payData} />
+					</PayPageContainer>
 					<PayMethod payData={payData} />
 				</PayInfoBox>
 				<PayInfoBox right>

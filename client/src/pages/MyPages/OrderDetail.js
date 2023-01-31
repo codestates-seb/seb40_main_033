@@ -35,12 +35,7 @@ function OrderDetail() {
 	return (
 		<Box>
 			<LeftContainer>
-				<DestinationInfo
-					name={info.name}
-					phone={info.phone}
-					address={info.address}
-					detailAddress={info.detailAddress}
-				/>
+				<DestinationInfo payData={info} />
 				<span />
 				<PaymentInfo options payData={payData} />
 			</LeftContainer>

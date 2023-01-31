@@ -1,28 +1,24 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export default function PayPageContainer({ children, Info, payment }) {
 	return (
 		<PayItemInfoContainer payment={payment}>
-			<InfoHeading>{Info}</InfoHeading>
+			{Info && <InfoHeading>{Info}</InfoHeading>}
 			{children}
 		</PayItemInfoContainer>
 	);
 }
 
 const PayItemInfoContainer = styled.section`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	width: 539px;
 	background-color: white;
 	border-radius: 10px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	margin-bottom: 24px;
-	${(props) =>
-		props.payment
-			? css`
-					padding: 20px 40px;
-			  `
-			: css`
-					padding: 60px 40px;
-			  `}
+	padding: 60px 40px;
 `;
 
 const InfoHeading = styled.h2`
