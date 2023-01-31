@@ -3,7 +3,7 @@ const paramsMaker = (
 	sort: string,
 	price: string,
 	brand: string,
-	onSale: string,
+	onSale: boolean,
 ) => {
 	let path = '';
 	let query = '';
