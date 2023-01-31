@@ -138,7 +138,7 @@ const EntireContainer = styled.div<{ isOpen: boolean }>`
 	align-items: flex-end;
 	margin-right: 60px;
 	margin: 16px 60px 4px 8px;
-	animation: ${({ isOpen }) =>
+	animation: ${(isOpen) =>
 		isOpen
 			? 'slide-fade-in-dropdown-animation 0.4s ease'
 			: 'slide-fade-out-dropdown-animation 0.4s ease'};
