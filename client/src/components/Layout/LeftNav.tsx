@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { HiOutlineEye } from 'react-icons/hi';
 import { useCallback, useState } from 'react';
 import { BiBone } from 'react-icons/bi';
@@ -6,30 +6,12 @@ import { GrPowerCycle } from 'react-icons/gr';
 import { RiHeartAddLine } from 'react-icons/ri';
 import { AiOutlinePlusCircle, AiOutlineThunderbolt } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import {
-	Skin,
-	Brain,
-	Intestine,
-	TempLogo,
-	Liver,
-	Logo,
-} from '../../assets/Icons';
+import { Skin, Brain, Intestine, Liver, Logo } from '../../assets/Icons';
+import { CATEGORIES } from '../Etc/Constants';
 
 function LeftNav() {
-	const [openCategories, setOpenCategories] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [hoverTarget, setHoverTarget] = useState('');
-	const categories = [
-		'눈 건강',
-		'관절/뼈 건강',
-		'장 건강',
-		'간 건강',
-		'뇌 건강',
-		'피부',
-		'항산화',
-		'피로',
-		'혈행개선',
-		'기타',
-	];
 
 	const icons = [
 		<HiOutlineEye key="1-icons" />,
@@ -44,37 +26,42 @@ function LeftNav() {
 		<AiOutlinePlusCircle className="small bold-stroke" key="10-icons" />,
 	];
 
-	const handleCategoriesOpen = useCallback(() => {
-		setOpenCategories(!openCategories);
-	}, [openCategories]);
+	const handleCategoriesOpen: React.MouseEventHandler<HTMLDivElement> =
+		useCallback(() => {
+			setIsMenuOpen(!isMenuOpen);
+		}, [isMenuOpen]);
 
 	// 호버 시 아이콘이 나오도록
-	const handleBtnHover = useCallback((e) => {
-		setHoverTarget(e.target.innerText);
-	}, []);
+	const handleBtnHover: React.MouseEventHandler<HTMLLIElement> = useCallback(
+		(e) => {
+			const target = e.target as HTMLElement;
+			setHoverTarget(target.innerText);
+		},
+		[],
+	);
 
 	// 마우스가 카테고리를 떠났을 때 hoverTarget 초기화
-	const handleBtnLeave = useCallback(() => {
-		setHoverTarget('');
-	}, []);
+	const handleBtnLeave: React.MouseEventHandler<HTMLLIElement> =
+		useCallback(() => {
+			setHoverTarget('');
+		}, []);
 
-	// TempLogo는 로고 자리 확인용 임시 아이콘
 	return (
 		<Container>
 			<Nav>
 				<Link to="/">
 					<Logo />
 				</Link>
-				<Hamburger onClick={handleCategoriesOpen}>
-					<div className={openCategories ? 'bar1' : null} />
-					<div className={openCategories ? 'bar2' : null} />
-					<div className={openCategories ? 'bar3' : null} />
+				<Hamburger onClick={handleCategoriesOpen} isMenuOpen={isMenuOpen}>
+					<div id="bar-1" />
+					<div id="bar-2" />
+					<div id="bar-3" />
 				</Hamburger>
-				{openCategories && (
+				{isMenuOpen && (
 					<CategoryContainer>
-						{categories.map((el, i) => (
+						{CATEGORIES.map((el, i) => (
 							<Link
-								to={`/list?categoryName=${categories[i]
+								to={`/list?categoryName=${CATEGORIES[i]
 									.replaceAll(' ', '_')
 									.replaceAll('/', '_')}`}
 								key={`${i.toString()}-${el}`}
@@ -211,7 +198,7 @@ const Category = styled.div`
 	white-space: nowrap;
 `;
 
-const Hamburger = styled.div`
+const Hamburger = styled.div<{ isMenuOpen: boolean }>`
 	margin: 45px 0 20px 0;
 	cursor: pointer;
 
@@ -225,19 +212,21 @@ const Hamburger = styled.div`
 		transition: 0.5s;
 	}
 
-	.bar1 {
-		-webkit-transform: translateY(6.5px) rotate(-315deg);
-		transform: translateY(6.5px) rotate(-315deg);
-	}
-
-	.bar2 {
-		opacity: 0;
-	}
-
-	.bar3 {
-		-webkit-transform: translateY(-6.5px) rotate(315deg);
-		transform: translateY(-6.5px) rotate(315deg);
-	}
+	${({ isMenuOpen }) =>
+		isMenuOpen &&
+		css`
+			#bar-1 {
+				-webkit-transform: translateY(6.5px) rotate(-315deg);
+				transform: translateY(6.5px) rotate(-315deg);
+			}
+			#bar-2 {
+				opacity: 0;
+			}
+			#bar-3 {
+				-webkit-transform: translateY(-6.5px) rotate(315deg);
+				transform: translateY(-6.5px) rotate(315deg);
+			}
+		`}
 `;
 
 export default LeftNav;
