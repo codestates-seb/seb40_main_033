@@ -1,14 +1,20 @@
-import { configureStore } from '@reduxjs/toolkit';
-import userSlice from '../slice/userSlice';
-import filterSlice from '../slice/filterSlice';
-import nickNameSlice from '../slice/nickNameSlice';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { nickNameReducer } from '../slice/nickNameSlice';
+import { filterReducer } from '../slice/filterSlice';
+import { userReducer } from '../slice/userSlice';
+
+const rootReducer = combineReducers({
+	user: userReducer,
+	filter: filterReducer,
+	nickName: nickNameReducer,
+});
 
 const store = configureStore({
 	reducer: {
-		user: userSlice.reducer,
-		filter: filterSlice.reducer,
-		nickName: nickNameSlice.reducer,
+		reducer: rootReducer,
 	},
 });
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 export default store;

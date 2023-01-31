@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
 import { User } from '../../types/auth';
 
 // 로컬스토리지에 저장된 토큰을 가져온다.
@@ -52,4 +52,4 @@ const userSlice = createSlice({
 });
 
 export const { login, logout } = userSlice.actions;
-export default userSlice;
+export const userReducer: Reducer<typeof initialState> = userSlice.reducer;
