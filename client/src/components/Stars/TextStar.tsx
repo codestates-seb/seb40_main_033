@@ -2,7 +2,20 @@ import styled from 'styled-components';
 import { FaStar } from 'react-icons/fa';
 
 // 별 다섯개
-export function LongTextStar({ noText, star, average, count, onClick }) {
+interface LongTextStarProps {
+	star: number;
+	noText?: boolean;
+	average?: number;
+	count?: number;
+	onClick?: () => void;
+}
+export function LongTextStar({
+	noText,
+	star,
+	average,
+	count,
+	onClick,
+}: LongTextStarProps) {
 	const starData = star || 0;
 
 	return (
@@ -17,16 +30,24 @@ export function LongTextStar({ noText, star, average, count, onClick }) {
 			</Icon>
 			{!noText && (
 				<>
-					<Score>{average.toFixed(1)}</Score>
+					<Score>{typeof average === 'number' && average.toFixed(1)}</Score>
 					<Count>{`(${count})`}</Count>
 				</>
 			)}
 		</StarContainer>
 	);
 }
-
+interface ShortTextStarProps {
+	starAvg: number;
+	reviewCount: number;
+	main?: string;
+}
 // 별 하나
-export function ShortTextStar({ starAvg, reviewCount, main }) {
+export function ShortTextStar({
+	starAvg,
+	reviewCount,
+	main,
+}: ShortTextStarProps) {
 	const starData = starAvg.toFixed(1) || 0;
 	const reviewCountData = reviewCount || 0;
 
