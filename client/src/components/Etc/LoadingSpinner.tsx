@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -41,7 +42,7 @@ export const Container = styled.div`
 	}
 `;
 
-export function LoadingSpinner({ className }) {
+export function LoadingSpinner({ className }: { className?: string }) {
 	return (
 		<Container className={`lds-ring ${className}`}>
 			<div />
