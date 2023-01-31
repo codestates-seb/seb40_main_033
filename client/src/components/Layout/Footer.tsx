@@ -1,16 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Logo } from '../../assets/Icons';
-import { footerConstants } from '../Etc/Constants';
-
-const members = [
-	{ id: 1, name: '도현수', account: 'dohyeons' },
-	{ id: 2, name: '김세연', account: 'uxolrv' },
-	{ id: 3, name: '방기현', account: 'kihyeoon' },
-	{ id: 4, name: '안지환', account: 'jihwanAn' },
-	{ id: 5, name: '김지효', account: 'zirryo' },
-	{ id: 6, name: '김지수', account: 'jisoo27' },
-	{ id: 7, name: '최민석', account: 'choizz156' },
-];
+import { FOOTER_INFO } from '../Etc/Constants';
 
 function Footer() {
 	return (
@@ -28,9 +18,9 @@ function Footer() {
 			</Top>
 			<Body>
 				<BoxLeft>
-					<Info>{footerConstants.info}</Info>
+					<Info>{FOOTER_INFO.BUSINESS}</Info>
 					<MemberContainer>
-						{members.map((member, idx) => (
+						{FOOTER_INFO.MEMBERS.map((member, idx) => (
 							<Member
 								key={member.id}
 								href={`https://github.com/${member.account}`}
@@ -40,12 +30,12 @@ function Footer() {
 							</Member>
 						))}
 					</MemberContainer>
-					<Info Copyright>{footerConstants.copyright}</Info>
+					<Info Copyright>{FOOTER_INFO.COPYRIGHT}</Info>
 				</BoxLeft>
 				<BoxRight>
 					<Logo />
-					<Title brand>{footerConstants.brandName}</Title>
-					<Slogan>{footerConstants.slogan}</Slogan>
+					<Title brand>{FOOTER_INFO.BRAND_NAME}</Title>
+					<Slogan>{FOOTER_INFO.SLOGAN}</Slogan>
 				</BoxRight>
 			</Body>
 		</FooterContainer>
