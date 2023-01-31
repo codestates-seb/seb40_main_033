@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 interface StarProps {
 	star: string;
-	handleStar: (e: React.MouseEvent<SVGElement, MouseEvent>) => void;
+	handleStar: React.MouseEventHandler<SVGElement>;
 }
 
 function BtnStar({ star, handleStar }: StarProps) {
@@ -17,15 +17,15 @@ function BtnStar({ star, handleStar }: StarProps) {
 
 	const handleStarClick = useCallback(
 		(e: React.MouseEvent<SVGElement, MouseEvent>) => {
-			const eventTarget = e.target as HTMLButtonElement;
-			if (eventTarget.localName === 'path') {
+			const { localName, id } = e.target as HTMLButtonElement;
+			if (localName === 'path') {
 				return;
 			}
 
-			if (eventTarget.id === clickedStar) {
+			if (id === clickedStar) {
 				setClickedStar(''); // 현재 누른 게 아까 누른 점수와 동일하다면 점수 초기화(0)
 			} else {
-				setClickedStar(eventTarget.id);
+				setClickedStar(id);
 			}
 			handleStar(e);
 		},

@@ -7,7 +7,7 @@ interface LongTextStarProps {
 	noText?: boolean;
 	average?: number;
 	count?: number;
-	onClick?: () => void;
+	onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 export function LongTextStar({
 	noText,
