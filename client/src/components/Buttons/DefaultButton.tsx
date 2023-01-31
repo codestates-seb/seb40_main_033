@@ -1,4 +1,27 @@
+import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
+
+export interface DefaultButtonProps {
+	color?: string;
+	colorCode?: string;
+	borderCode?: string;
+	bgColor?: string;
+	bgCode?: string;
+	hoverBgCode?: string;
+	width?: string;
+	height?: string;
+	borderRadius?: string;
+	hoverColor?: string;
+	hoverColorCode?: string;
+	fontSize?: string;
+	fontWeight?: string;
+	disable?: boolean;
+	none?: boolean;
+	letter?: boolean;
+	children: ReactNode;
+	onClick?: () => void;
+	black?: boolean;
+}
 
 const DefaultButton = styled.button`
 	display: flex;
@@ -24,7 +47,7 @@ const DefaultButton = styled.button`
 		fontSize,
 		fontWeight,
 		disable,
-	}) => css`
+	}: DefaultButtonProps) => css`
 		-webkit-user-select: none; // 글씨 드래그 방지
 		border: 0.5px solid ${`var(--${color}-${borderCode})`};
 		border-radius: ${borderRadius};
@@ -34,7 +57,7 @@ const DefaultButton = styled.button`
 		height: ${height};
 		font-size: ${fontSize};
 		font-weight: ${`var(--${fontWeight})`};
-		${(props) =>
+		${(props: DefaultButtonProps) =>
 			!props.letter
 				? css`
 						&:hover {

@@ -4,7 +4,13 @@ import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import { usePost } from '../../hooks/useFetch';
 
-function WishlistButton({ isChecked, itemId, setIsChecked }) {
+interface WishlistBtnProps {
+	isChecked: boolean;
+	itemId: number;
+	setIsChecked: (isChecked: number) => void;
+}
+
+function WishlistButton({ isChecked, itemId, setIsChecked }: WishlistBtnProps) {
 	const [request, setRequest] = useState(isChecked ? 0 : 1);
 	const token = localStorage.getItem('accessToken');
 	const { mutate } = usePost(`/wishes/${itemId}?wish=${request}`);
@@ -24,7 +30,7 @@ function WishlistButton({ isChecked, itemId, setIsChecked }) {
 		<WishBox>
 			<FaHeart
 				onClick={handleHeartClick}
-				className={isChecked && 'red-heart'}
+				className={isChecked ? 'red-heart' : ''}
 			/>
 		</WishBox>
 	);

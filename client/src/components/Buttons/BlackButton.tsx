@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
+import { DefaultButtonProps } from './DefaultButton';
 
-export function BlackButton({ children, onClick }) {
+export function BlackButton({ children, onClick }: DefaultButtonProps) {
 	return (
 		<DefaultButton black onClick={onClick}>
 			{children}
@@ -8,11 +9,11 @@ export function BlackButton({ children, onClick }) {
 	);
 }
 
-export function WhiteButton({ children, onClick }) {
+export function WhiteButton({ children, onClick }: DefaultButtonProps) {
 	return <DefaultButton onClick={onClick}>{children}</DefaultButton>;
 }
 
-const DefaultButton = styled.button`
+const DefaultButton = styled.button<{ black?: boolean }>`
 	display: flex;
 	justify-content: center;
 	align-items: center;
