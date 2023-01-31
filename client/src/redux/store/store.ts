@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { nickNameReducer } from '../slice/nickNameSlice';
-import { filterReducer } from '../slice/filterSlice';
-import { userReducer } from '../slice/userSlice';
+import { nickNameSlice, nickNameReducer } from '../slice/nickNameSlice';
+import { filterSlice, filterReducer } from '../slice/filterSlice';
+import { userSlice, userReducer } from '../slice/userSlice';
 
 const rootReducer = combineReducers({
 	user: userReducer,
@@ -9,9 +9,16 @@ const rootReducer = combineReducers({
 	nickName: nickNameReducer,
 });
 
+// const store = configureStore({
+// 	reducer: {
+// 		reducer: rootReducer,
+// 	},
+// });
 const store = configureStore({
 	reducer: {
-		reducer: rootReducer,
+		user: userSlice.reducer,
+		filter: filterSlice.reducer,
+		nickName: nickNameSlice.reducer,
 	},
 });
 

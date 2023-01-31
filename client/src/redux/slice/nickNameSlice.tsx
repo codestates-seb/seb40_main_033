@@ -4,7 +4,7 @@ const initialState = {
 	nickName: '-',
 };
 
-const nickNameSlice = createSlice({
+export const nickNameSlice = createSlice({
 	name: 'nickName',
 	initialState,
 	reducers: {
