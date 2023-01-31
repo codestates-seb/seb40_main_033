@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
-import { User } from '../../types/auth';
+import { User } from '../../types/auth.type';
 
 // 로컬스토리지에 저장된 토큰을 가져온다.
 const storageAccessToken = localStorage.getItem('accessToken');

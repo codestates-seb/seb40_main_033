@@ -2,7 +2,7 @@ import {
 	IFetchCathgoryItems,
 	IFetchSearchItems,
 	IInfiniteQueryPromise,
-} from '../types/itemList';
+} from '../types/itemList.type';
 import axiosInstance from '../utils/axiosInstance';
 
 export const fetchCathgoryItems = async ({

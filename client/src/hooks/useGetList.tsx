@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from 'react-query';
 import { fetchCathgoryItems, fetchSearchItems } from '../apis/itemApis';
-import { IUseGetList, IUseGetSearchList } from '../types/itemList';
+import { IUseGetList, IUseGetSearchList } from '../types/itemList.type';
 
 export const useGetList = ({
 	pathname,
