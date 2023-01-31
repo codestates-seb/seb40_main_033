@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
-
-interface CounterBtnProps {
-	quantity: number;
-	onPlusClick: () => void;
-	onMinusClick: () => void;
-}
+import { CounterBtnProps } from '../../types/button.type';
 
 function CounterBtn({ quantity, onPlusClick, onMinusClick }: CounterBtnProps) {
 	return (

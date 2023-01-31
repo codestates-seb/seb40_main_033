@@ -1,27 +1,5 @@
-import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
-
-export interface DefaultButtonProps {
-	color?: string;
-	colorCode?: string;
-	borderCode?: string;
-	bgColor?: string;
-	bgCode?: string;
-	hoverBgCode?: string;
-	width?: string;
-	height?: string;
-	borderRadius?: string;
-	hoverColor?: string;
-	hoverColorCode?: string;
-	fontSize?: string;
-	fontWeight?: string;
-	disable?: boolean;
-	none?: boolean;
-	letter?: boolean;
-	children: ReactNode;
-	onClick?: () => void;
-	black?: boolean;
-}
+import { DefaultButtonProps } from '../../types/button.type';
 
 const DefaultButton = styled.button`
 	display: flex;

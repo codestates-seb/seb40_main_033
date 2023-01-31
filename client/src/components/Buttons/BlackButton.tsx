@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { DefaultButtonProps } from './DefaultButton';
+import { DefaultButtonProps } from '../../types/button.type';
 
 export function BlackButton({ children, onClick }: DefaultButtonProps) {
 	return (

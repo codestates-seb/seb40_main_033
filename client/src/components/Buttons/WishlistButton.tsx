@@ -3,12 +3,7 @@ import { FaHeart } from 'react-icons/fa';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import { usePost } from '../../hooks/useFetch';
-
-interface WishlistBtnProps {
-	isChecked: boolean;
-	itemId: number;
-	setIsChecked: (isChecked: number) => void;
-}
+import { WishlistBtnProps } from '../../types/button.type';
 
 function WishlistButton({ isChecked, itemId, setIsChecked }: WishlistBtnProps) {
 	const [request, setRequest] = useState(isChecked ? 0 : 1);

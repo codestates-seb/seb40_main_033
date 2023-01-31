@@ -1,4 +1,5 @@
-import DefaultButton, { DefaultButtonProps } from './DefaultButton';
+import DefaultButton from './DefaultButton';
+import { DefaultButtonProps } from '../../types/button.type';
 
 export function LetterButton({
 	children,

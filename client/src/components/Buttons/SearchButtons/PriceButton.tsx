@@ -5,12 +5,7 @@ import { BsDash } from 'react-icons/bs';
 import { LightPurpleButton } from '../PurpleButton';
 import { setPrice } from '../../../redux/slice/filterSlice';
 import { RootState } from '../../../redux/store/store';
-
-interface PriceButtonProps {
-	min: number;
-	max: number;
-	isOpen: boolean;
-}
+import { PriceButtonProps } from '../../../types/button.type';
 
 export default function PriceButton({ min, max, isOpen }: PriceButtonProps) {
 	// 리덕스에 price값이 있으면 기본값으로 설정한다.
