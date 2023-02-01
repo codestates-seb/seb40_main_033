@@ -9,10 +9,13 @@ import paramsMaker from '../utils/makeParams';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 import { useGetSearchList } from '../hooks/useGetList';
 import { setClear } from '../redux/slice/filterSlice';
+import { RootState } from '../redux/store/store';
 
 // 목록 페이지
 function SearchList() {
-	const { sort, price, brand, onSale } = useSelector((state) => state.filter);
+	const { sort, price, brand, onSale } = useSelector(
+		(state: RootState) => state.filter,
+	);
 
 	// uri에 붙일 파람스 생성
 	const { path, query } = paramsMaker(sort, price, brand, onSale);
@@ -54,7 +57,7 @@ function SearchList() {
 		refetch();
 	}, [price, sort, brand, onSale]);
 
-	if (status === 'Loading') {
+	if (status === 'loading') {
 		return <LoadingSpinner />;
 	}
 	if (status === 'error') {
@@ -63,7 +66,7 @@ function SearchList() {
 
 	return (
 		<Box>
-			<PageTitle />
+			<PageTitle title={null} />
 			<Mesage>
 				<Text>{`"${keyword.replaceAll(
 					'_',
