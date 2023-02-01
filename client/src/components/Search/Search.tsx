@@ -25,9 +25,8 @@ function Search({ rightNav }: SearchProps) {
 				const { value } = e.target as HTMLInputElement;
 				setSearchWord(value);
 
-				if ((e as React.KeyboardEvent).key === 'Enter') {
+				if (isActive && (e as React.KeyboardEvent).key === 'Enter') {
 					handleIconClick(e);
-					setIsActive(false);
 				}
 			},
 			[searchWord],
