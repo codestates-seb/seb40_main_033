@@ -1,6 +1,12 @@
 import DefaultButton from './DefaultButton';
+import { DefaultButtonProps } from '../../types/button.type';
 
-export function LetterButton({ children, width, height, onClick }) {
+export function LetterButton({
+	children,
+	width,
+	height,
+	onClick,
+}: DefaultButtonProps) {
 	return (
 		<DefaultButton
 			onClick={onClick}
@@ -24,7 +30,7 @@ export function GrayLetterButton({
 	height,
 	onClick,
 	fontSize = '11px',
-}) {
+}: DefaultButtonProps) {
 	return (
 		<DefaultButton
 			onClick={onClick}
@@ -53,7 +59,7 @@ export function LetterButtonColor({
 	hoverColorCode,
 	fontSize,
 	fontWeight,
-}) {
+}: DefaultButtonProps) {
 	return (
 		<DefaultButton
 			onClick={onClick}

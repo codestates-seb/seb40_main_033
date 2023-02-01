@@ -41,9 +41,9 @@ export const Container = styled.div`
 	}
 `;
 
-export function LoadingSpinner({ className }) {
+export function LoadingSpinner() {
 	return (
-		<Container className={`lds-ring ${className}`}>
+		<Container>
 			<div />
 			<div />
 			<div />
