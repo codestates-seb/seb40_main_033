@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
-import paramsMaker from '../utils/paramsMaker';
+import paramsMaker from '../utils/makeParams';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 import { useGetSearchList } from '../hooks/useGetList';
 import { setClear } from '../redux/slice/filterSlice';
@@ -19,14 +19,14 @@ function SearchList() {
 
 	// 카테고리에 따라서 아이템 목록 불러오기
 	const [searchParams] = useSearchParams();
-	const keyword = searchParams.get('keyword');
+	const keyword = searchParams.get('keyword') ?? '';
 
 	// API 요청 (무한 스크롤)
 	const { pathname } = useLocation();
 
 	const { ref, inView } = useInView();
 	const { data, status, fetchNextPage, isFetchingNextPage, refetch } =
-		useGetSearchList(pathname, keyword, path, query);
+		useGetSearchList({ pathname, keyword, path, query });
 
 	// 최하단 div가 보이면 다음 페이지를 불러옴
 	useEffect(() => {

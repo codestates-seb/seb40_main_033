@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../../types/auth';
+import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
+import { User } from '../../types/auth.type';
 
 // 로컬스토리지에 저장된 토큰을 가져온다.
 const storageAccessToken = localStorage.getItem('accessToken');
@@ -15,7 +15,7 @@ const initialState: User = {
 	userId: '',
 };
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
@@ -52,4 +52,4 @@ const userSlice = createSlice({
 });
 
 export const { login, logout } = userSlice.actions;
-export default userSlice;
+export const userReducer: Reducer<typeof initialState> = userSlice.reducer;

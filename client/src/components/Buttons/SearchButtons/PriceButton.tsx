@@ -1,19 +1,24 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { BsDash } from 'react-icons/bs';
 import { LightPurpleButton } from '../PurpleButton';
 import { setPrice } from '../../../redux/slice/filterSlice';
+import { RootState } from '../../../redux/store/store';
+import { PriceButtonProps } from '../../../types/button.type';
 
-export default function PriceButton({ min, max, isOpen }) {
+export default function PriceButton({ min, max, isOpen }: PriceButtonProps) {
 	// 리덕스에 price값이 있으면 기본값으로 설정한다.
-	const { price } = useSelector((state) => state.filter);
-	const [reduxMin, reduxMax] = price.split('&').map((el) => el.split('=')[1]);
+	const { price } = useSelector((state: RootState) => state.filter);
+	const [reduxMin, reduxMax] = price
+		.split('&')
+		.map((el) => el.split('=')[1])
+		.map(Number);
 	const [minVal, setMinVal] = useState(reduxMin || min);
 	const [maxVal, setMaxVal] = useState(reduxMax || max);
 	const minValRef = useRef(min);
 	const maxValRef = useRef(max);
-	const range = useRef(null);
+	const range = useRef<HTMLInputElement>(null);
 	const dispatch = useDispatch();
 
 	// 이미 마운트 된 상태에서 리덕스 상태값이 변경되면 최소값과 최대값을 초기화한다.
@@ -28,7 +33,7 @@ export default function PriceButton({ min, max, isOpen }) {
 
 	// Convert to percentage
 	const getPercent = useCallback(
-		(value) => Math.round(((value - min) / (max - min)) * 100),
+		(value: number) => Math.round(((value - min) / (max - min)) * 100),
 		[min, max],
 	);
 
@@ -108,7 +113,7 @@ export default function PriceButton({ min, max, isOpen }) {
 					<SliderValue>{maxVal.toLocaleString('ko-KR')} 원</SliderValue>
 				</ValueBox>
 				<LightPurpleButton
-					className="apply"
+					// className="apply"
 					fontWeight="bold"
 					fontSize="12px"
 					width="65px"
@@ -121,7 +126,7 @@ export default function PriceButton({ min, max, isOpen }) {
 	);
 }
 
-const EntireContainer = styled.div`
+const EntireContainer = styled.div<{ isOpen: boolean }>`
 	display: inline-flex;
 	flex-direction: column;
 	justify-content: center;

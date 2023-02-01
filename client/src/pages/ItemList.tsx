@@ -5,16 +5,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import SmallListCards from '../components/Lists/SmallListCards';
 import PageTitle from '../components/Etc/PageTitle';
-import paramsMaker from '../utils/paramsMaker';
+import paramsMaker from '../utils/makeParams';
 import BrandsWindow from '../components/Etc/BrandsWindow';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 import { setClear } from '../redux/slice/filterSlice';
 import { useGetList } from '../hooks/useGetList';
+import { RootState } from '../redux/store/store';
 
 // 목록 페이지
 function ItemList() {
 	// uri에 사용할 정보들을 리덕스에서 가지고옴
-	const { sort, price, brand, onSale } = useSelector((state) => state.filter);
+	const { sort, price, brand, onSale } = useSelector(
+		(state: RootState) => state.filter,
+	);
 
 	// uri에 붙일 파람스 생성
 	const { path, query } = paramsMaker(sort, price, brand, onSale);
@@ -28,7 +31,7 @@ function ItemList() {
 
 	const { ref, inView } = useInView();
 	const { data, status, fetchNextPage, isFetchingNextPage, refetch } =
-		useGetList(pathname, category, path, query);
+		useGetList({ pathname, category, path, query });
 
 	// 최하단 div가 보이면 다음 페이지를 불러옴
 	useEffect(() => {
@@ -56,7 +59,7 @@ function ItemList() {
 		refetch();
 	}, [price, sort, brand, onSale]);
 
-	if (status === 'Loading') {
+	if (status === 'loading') {
 		return <LoadingSpinner />;
 	}
 	if (status === 'error') {
@@ -71,6 +74,7 @@ function ItemList() {
 						? '관절/뼈 건강'
 						: category.split('_').join(' ')
 				}
+				handleSearch={undefined}
 			/>
 			<Brand>
 				<BrandsWindow />

@@ -1,4 +1,5 @@
 import DefaultButton from './DefaultButton';
+import { DefaultButtonProps } from '../../types/button.type';
 
 export function PurpleButton({
 	children,
@@ -9,7 +10,7 @@ export function PurpleButton({
 	fontSize,
 	fontWeight = 'bold',
 	disable,
-}) {
+}: DefaultButtonProps) {
 	return (
 		<DefaultButton
 			color="purple"
@@ -38,7 +39,7 @@ export function LightPurpleButton({
 	borderRadius = '6px',
 	fontSize,
 	fontWeight,
-}) {
+}: DefaultButtonProps) {
 	return (
 		<DefaultButton
 			onClick={onClick}
@@ -65,7 +66,7 @@ export function ColoredButton({
 	onClick,
 	borderRadius = '100px',
 	bgColor = '#6256e5',
-}) {
+}: DefaultButtonProps) {
 	return (
 		<DefaultButton
 			onClick={onClick}

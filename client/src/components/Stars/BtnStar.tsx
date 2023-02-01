@@ -2,7 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import styled from 'styled-components';
 
-function BtnStar({ star, handleStar }) {
+interface StarProps {
+	star: string;
+	handleStar: React.MouseEventHandler<SVGElement>;
+}
+
+function BtnStar({ star, handleStar }: StarProps) {
 	const [clickedStar, setClickedStar] = useState('');
 	const [hoveredStar, setHoveredStar] = useState('');
 
@@ -10,22 +15,29 @@ function BtnStar({ star, handleStar }) {
 		setClickedStar(star);
 	}, []);
 
-	const handleStarClick = useCallback((e) => {
-		if (e.target.localName === 'path') {
-			return;
-		}
+	const handleStarClick = useCallback(
+		(e: React.MouseEvent<SVGElement, MouseEvent>) => {
+			const { localName, id } = e.target as HTMLButtonElement;
+			if (localName === 'path') {
+				return;
+			}
 
-		if (e.target.id === clickedStar) {
-			setClickedStar(''); // 현재 누른 게 아까 누른 점수와 동일하다면 점수 초기화(0)
-		} else {
-			setClickedStar(e.target.id);
-		}
-		handleStar(e);
-	}, []);
+			if (id === clickedStar) {
+				setClickedStar(''); // 현재 누른 게 아까 누른 점수와 동일하다면 점수 초기화(0)
+			} else {
+				setClickedStar(id);
+			}
+			handleStar(e);
+		},
+		[],
+	);
 
-	const handleStarHover = useCallback((e) => {
-		setHoveredStar(e.target.id);
-	}, []);
+	const handleStarHover = useCallback(
+		(e: React.MouseEvent<SVGElement, MouseEvent>) => {
+			setHoveredStar((e.target as HTMLButtonElement).id);
+		},
+		[],
+	);
 
 	return (
 		<StarContainer>
@@ -38,7 +50,7 @@ function BtnStar({ star, handleStar }) {
 						onClick={handleStarClick}
 						onMouseLeave={handleStarHover}
 						className={
-							clickedStar >= el || hoveredStar >= el ? 'yellow-star' : null
+							clickedStar >= el || hoveredStar >= el ? 'yellow-star' : ''
 						}
 					/>
 				))}

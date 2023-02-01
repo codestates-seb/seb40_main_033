@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
 
 const initialState = {
 	nickName: '-',
 };
 
-const nickNameSlice = createSlice({
+export const nickNameSlice = createSlice({
 	name: 'nickName',
 	initialState,
 	reducers: {
@@ -16,4 +16,5 @@ const nickNameSlice = createSlice({
 });
 
 export const { change } = nickNameSlice.actions;
-export default nickNameSlice;
+export const nickNameReducer: Reducer<typeof initialState> =
+	nickNameSlice.reducer;

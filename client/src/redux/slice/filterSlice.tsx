@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
 
 const initialState = {
 	sort: '',
@@ -9,7 +9,7 @@ const initialState = {
 	onSale: false,
 };
 
-const filterSlice = createSlice({
+export const filterSlice = createSlice({
 	name: 'filter',
 	initialState,
 	reducers: {
@@ -40,4 +40,4 @@ const filterSlice = createSlice({
 
 export const { setSort, setPrice, setKeyword, setOnSale, setBrand, setClear } =
 	filterSlice.actions;
-export default filterSlice;
+export const filterReducer: Reducer<typeof initialState> = filterSlice.reducer;
