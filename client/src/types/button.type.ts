@@ -39,4 +39,3 @@ export interface WishlistBtnProps {
 	itemId: number;
 	setIsChecked: (isChecked: number) => void;
 }
-
