@@ -60,7 +60,7 @@ function ItemList() {
 	}, [price, sort, brand, onSale]);
 
 	if (status === 'loading') {
-		return <LoadingSpinner className={undefined} />;
+		return <LoadingSpinner />;
 	}
 	if (status === 'error') {
 		return <ItemListBox> error </ItemListBox>;
