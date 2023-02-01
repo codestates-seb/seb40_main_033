@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { IoIosArrowBack } from 'react-icons/io';
 import { BsToggles } from 'react-icons/bs';
 import { FiFilter } from 'react-icons/fi';
-import PriceButton from './PriceButton';
+import PriceButton from './PriceFilterButton';
 import { LetterButtonColor } from '../LetterButton';
 import { LightPurpleButton } from '../PurpleButton';
 import { setSort, setOnSale } from '../../../redux/slice/filterSlice';
