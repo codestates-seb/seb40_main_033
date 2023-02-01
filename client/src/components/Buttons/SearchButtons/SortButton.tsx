@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -8,8 +8,9 @@ import PriceButton from './PriceButton';
 import { LetterButtonColor } from '../LetterButton';
 import { LightPurpleButton } from '../PurpleButton';
 import { setSort, setOnSale } from '../../../redux/slice/filterSlice';
+import { RootState } from '../../../redux/store/store';
 
-export function SortButton({ children }) {
+export function SortButton({ children }: { children: ReactNode }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const dispatch = useDispatch();
 
@@ -19,14 +20,14 @@ export function SortButton({ children }) {
 	const menus = ['최신순', '조회순', '판매순', '높은가격순', '낮은가격순'];
 	const path = ['', 'view', 'sales', 'priceH', 'priceL'];
 
-	const clickMenus = (e) => {
-		const target = e.target.innerText;
+	const clickMenus = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+		const target = (e.target as HTMLLIElement).innerText;
 		const index = menus.indexOf(target);
 		dispatch(setSort(path[index]));
 	};
 
 	// 리덕스에서 sort를 가져서와서 동일한 값이면 active 색을 준다.
-	const sort = useSelector((state) => state.filter.sort);
+	const sort = useSelector((state: RootState) => state.filter.sort);
 
 	return (
 		<ButtonContainer isOpen={isOpen}>
@@ -64,9 +65,9 @@ export function SortButton({ children }) {
 	);
 }
 
-export function PriceSortButton({ children }) {
+export function PriceSortButton({ children }: { children: ReactNode }) {
 	const [isOpen, setIsOpen] = useState(false);
-	const { onSale } = useSelector((state) => state.filter);
+	const { onSale } = useSelector((state: RootState) => state.filter);
 	const dispatch = useDispatch();
 
 	const handleOpenClick = () => {
@@ -107,7 +108,14 @@ export function PriceSortButton({ children }) {
 	);
 }
 
-const ButtonContainer = styled.div`
+interface IsOpenProps {
+	isOpen: boolean;
+}
+interface ButtonContainerProps extends IsOpenProps {
+	price?: boolean;
+}
+
+const ButtonContainer = styled.div<ButtonContainerProps>`
 	position: relative;
 	display: inline-flex;
 	align-items: center;
@@ -134,7 +142,7 @@ const ButtonContainer = styled.div`
 	}
 `;
 
-const OpenButton = styled.button`
+const OpenButton = styled.button<IsOpenProps>`
 	z-index: 1;
 	display: flex;
 	flex-direction: row;
@@ -166,7 +174,7 @@ const MainBox = styled.div`
 	align-items: center;
 `;
 
-const RightContainer = styled.div`
+const RightContainer = styled.div<IsOpenProps>`
 	display: flex;
 	flex-direction: column;
 	button {
@@ -196,7 +204,7 @@ const NameBox = styled.div`
 	}
 `;
 
-const MenuBox = styled.ul`
+const MenuBox = styled.ul<IsOpenProps>`
 	list-style-type: none;
 	margin-right: 20px;
 	margin-left: 23px;

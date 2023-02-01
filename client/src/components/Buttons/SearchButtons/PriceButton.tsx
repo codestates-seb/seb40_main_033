@@ -126,7 +126,7 @@ export default function PriceButton({ min, max, isOpen }: PriceButtonProps) {
 	);
 }
 
-const EntireContainer = styled.div<{ isOpen: boolean }>`
+const EntireContainer = styled.div<{ isOpen?: boolean }>`
 	display: inline-flex;
 	flex-direction: column;
 	justify-content: center;
