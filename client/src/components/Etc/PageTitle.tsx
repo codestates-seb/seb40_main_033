@@ -24,7 +24,7 @@ function PageTitle({ title }: { title: string | null }) {
 		<Container>
 			<TitleContainer>
 				{showSearchBar ? (
-					<Search />
+					<Search rightNav={false} />
 				) : (
 					<>
 						<TempLogo />
