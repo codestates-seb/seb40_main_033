@@ -44,20 +44,20 @@ function Home() {
 	return (
 		<div>
 			<MainCaroucel />
-			{isLoading ? (
+			{isLoading || !list ? (
 				<LoadingSpinner />
 			) : (
 				<>
 					<MainSection
-						items={list?.data.bestItem.data}
+						items={list.data.bestItem.data}
 						sectionTitle={sectionTitle[0]}
 					/>
 					<MainSection
-						items={list?.data.saleItem.data}
+						items={list.data.saleItem.data}
 						sectionTitle={sectionTitle[1]}
 					/>
 					<MainSection
-						items={list?.data.mdPickItem.data}
+						items={list.data.mdPickItem.data}
 						sectionTitle={sectionTitle[2]}
 					/>
 				</>

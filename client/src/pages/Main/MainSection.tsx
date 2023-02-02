@@ -5,7 +5,7 @@ import RecommendedTitle from '../../components/Etc/RecommendedTitle';
 import { IMainPageItem } from '../../types/main.type';
 
 interface IMainSection {
-	items?: IMainPageItem[];
+	items: IMainPageItem[];
 	sectionTitle: string[];
 }
 
