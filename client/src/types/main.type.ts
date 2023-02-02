@@ -13,17 +13,7 @@ export interface IMainPageItem {
 	reviewSize: number;
 }
 
-export interface BestItem {
-	data: IMainPageItem[];
-	pageInfo?: null;
-}
-
-export interface SaleItem {
-	data: IMainPageItem[];
-	pageInfo?: null;
-}
-
-export interface MDpickItem {
+export interface ISection {
 	data: IMainPageItem[];
 	pageInfo?: null;
 }
@@ -31,9 +21,9 @@ export interface MDpickItem {
 export interface IMainPage {
 	data: {
 		data: {
-			bestItem: BestItem;
-			saleItem: SaleItem;
-			mdPickItem: MDpickItem;
+			bestItem: ISection;
+			saleItem: ISection;
+			mdPickItem: ISection;
 		};
 	};
 }
