@@ -53,9 +53,9 @@ function LeftNav() {
 					<Logo />
 				</Link>
 				<Hamburger onClick={handleMenuOpen} isMenuOpen={isMenuOpen}>
-					<div id="bar-1" />
-					<div id="bar-2" />
-					<div id="bar-3" />
+					<div />
+					<div />
+					<div />
 				</Hamburger>
 				{isMenuOpen && (
 					<CategoryContainer>
@@ -215,14 +215,14 @@ const Hamburger = styled.div<{ isMenuOpen: boolean }>`
 	${({ isMenuOpen }) =>
 		isMenuOpen &&
 		css`
-			#bar-1 {
+			> :first-child {
 				-webkit-transform: translateY(6.5px) rotate(-315deg);
 				transform: translateY(6.5px) rotate(-315deg);
 			}
-			#bar-2 {
+			> :nth-child(2) {
 				opacity: 0;
 			}
-			#bar-3 {
+			> :last-child {
 				-webkit-transform: translateY(-6.5px) rotate(315deg);
 				transform: translateY(-6.5px) rotate(315deg);
 			}
