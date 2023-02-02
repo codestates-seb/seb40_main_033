@@ -71,11 +71,37 @@ const InfoContent = styled.pre`
 	color: var(--gray-400);
 `;
 
-const constants = {
-	firstPayClause:
-		'환불 받으신 날짜 기준으로 3~5일(주말 제외) 후 결제대행사에서 직접 고객님의 계좌로 환불 처리됩니다.',
-	secondPayClause:
-		'회원 본인은 구매 조건, 주문 내용 확인 및 결제에 동의합니다.',
+export const PAY_GUIDE = `회원 본인은 구매 조건, 주문 내용 확인 및 결제에 동의합니다.
+환불 받으신 날짜 기준으로 3~5일(주말 제외) 후 결제대행사에서 직접 고객님의 계좌로 환불 처리됩니다.`;
+
+export const FOOTER_INFO = {
+	BUSINESS: `서울특별시 강남구 영양대로 필리길 305, 3355호, 대표자: 김필리
+사업자 번호: 123-45-678900, 통신판매업 신고번호: 2022-서울강남-221204
+고객센터: 1234-1234
+E-mail: pillivery@pillivery.com`,
+	COPYRIGHT: '© Copyright ⓒ 2022 Pillivery',
+	BRAND_NAME: 'Pillivery',
+	SLOGAN: 'With Pillivery Subscribe Health',
+	MEMBERS: [
+		{ id: 1, name: '도현수', account: 'dohyeons' },
+		{ id: 2, name: '김세연', account: 'uxolrv' },
+		{ id: 3, name: '방기현', account: 'kihyeoon' },
+		{ id: 4, name: '안지환', account: 'jihwanAn' },
+		{ id: 5, name: '김지효', account: 'zirryo' },
+		{ id: 6, name: '김지수', account: 'jisoo27' },
+		{ id: 7, name: '최민석', account: 'choizz156' },
+	],
 };
 
-export default constants;
+export const CATEGORIES = [
+	'눈 건강',
+	'관절/뼈 건강',
+	'장 건강',
+	'간 건강',
+	'뇌 건강',
+	'피부',
+	'항산화',
+	'피로',
+	'혈행개선',
+	'기타',
+];

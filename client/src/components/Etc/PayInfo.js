@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Price from './Price';
 
-export function DestinationInfo({ name, phone, address, detailAddress }) {
+export function DestinationInfo({ payData }) {
 	return (
 		<InfoContainer className="top">
 			<Title>배송지 정보</Title>
@@ -9,15 +9,15 @@ export function DestinationInfo({ name, phone, address, detailAddress }) {
 				<LabelContainer />
 				<Destination>
 					<Label>이름</Label>
-					<div>{name}</div>
+					<div>{payData.name}</div>
 				</Destination>
 				<Destination>
 					<Label>전화번호</Label>
-					<div>{phone}</div>
+					<div>{payData.phone}</div>
 				</Destination>
 				<Destination>
 					<Label>주소</Label>
-					<div className="address">{`${address}, ${detailAddress}`}</div>
+					<div className="address">{`${payData.address},\n${payData.detailAddress}`}</div>
 				</Destination>
 			</Contents>
 		</InfoContainer>
@@ -69,6 +69,7 @@ const InfoContainer = styled.div`
 const Contents = styled.div`
 	display: flex;
 	flex-direction: column;
+	margin-left: 20px;
 `;
 
 const Destination = styled.div`
@@ -84,7 +85,8 @@ const Destination = styled.div`
 
 	.address {
 		width: 300px;
-		line-height: 1.3;
+		white-space: pre-wrap;
+		line-height: 1.5;
 	}
 
 	& {

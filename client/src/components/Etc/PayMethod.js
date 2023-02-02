@@ -6,7 +6,7 @@ import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
 import AddressModal from '../Modals/AddressModal';
-import constants from './Constants';
+import { PAY_GUIDE } from './Constants';
 import axiosInstance from '../../utils/axiosInstance';
 
 export default function PayMethod({ payData }) {
@@ -59,10 +59,7 @@ export default function PayMethod({ payData }) {
 					카카오페이
 				</KakaoPayButton>
 			</ButtonBox>
-			<ClauseContainer>
-				<Clauses>{constants.firstPayClause}</Clauses>
-				<Clauses>{constants.secondPayClause}</Clauses>
-			</ClauseContainer>
+			<Clauses>{PAY_GUIDE}</Clauses>
 			{isPayModal && (
 				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
 					<PayFrame src={url} title="결제창" />
@@ -126,18 +123,12 @@ const KakaoPayImg = styled.img.attrs({
 	width: 40px;
 	padding: 9px 7px 7px 8px;
 `;
-const ClauseContainer = styled.section`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 100%;
-	height: 44px;
-`;
 
 const Clauses = styled.p`
 	color: var(--gray-300);
-	font-size: 11px;
-	line-height: 13px;
+	font-size: 13px;
+	white-space: pre-wrap;
+	line-height: 1.5;
 `;
 
 const PayFrame = styled.iframe`
