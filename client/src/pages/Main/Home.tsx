@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import MainCaroucel from '../../components/Caroucel/MainCaroucel';
 import { login } from '../../redux/slice/userSlice';
 import MainSection from './MainSection';
-import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
+import axiosInstance from '../../utils/axiosInstance';
+import { IMainPage } from '../../types/main.type';
 
 const sectionTitle = [
 	['Best', '인기 많은 상품만 모았어요!'],
@@ -26,11 +28,13 @@ function Home() {
 	}, []);
 
 	const { pathname } = useLocation();
-	const { isLoading, isError, data, error } = useGet('/main', pathname);
+	const { isLoading, data, error } = useQuery<IMainPage>([pathname], () =>
+		axiosInstance.get('/main'),
+	);
 
 	const list = data?.data;
 
-	if (isError)
+	if (error instanceof Error)
 		return (
 			<>
 				<MainCaroucel />
@@ -45,15 +49,15 @@ function Home() {
 			) : (
 				<>
 					<MainSection
-						items={list.data.bestItem.data}
+						items={list?.data.bestItem.data}
 						sectionTitle={sectionTitle[0]}
 					/>
 					<MainSection
-						items={list.data.saleItem.data}
+						items={list?.data.saleItem.data}
 						sectionTitle={sectionTitle[1]}
 					/>
 					<MainSection
-						items={list.data.mdPickItem.data}
+						items={list?.data.mdPickItem.data}
 						sectionTitle={sectionTitle[2]}
 					/>
 				</>
