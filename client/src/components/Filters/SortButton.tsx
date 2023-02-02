@@ -5,10 +5,17 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { BsToggles } from 'react-icons/bs';
 import { FiFilter } from 'react-icons/fi';
 import PriceButton from './PriceFilterButton';
-import { LetterButtonColor } from '../LetterButton';
-import { LightPurpleButton } from '../PurpleButton';
-import { setSort, setOnSale } from '../../../redux/slice/filterSlice';
-import { RootState } from '../../../redux/store/store';
+import { LetterButtonColor } from '../Buttons/LetterButton';
+import { LightPurpleButton } from '../Buttons/PurpleButton';
+import { setSort, setOnSale } from '../../redux/slice/filterSlice';
+import { RootState } from '../../redux/store/store';
+
+interface IsOpenProps {
+	isOpen: boolean;
+}
+interface ButtonContainerProps extends IsOpenProps {
+	price?: boolean;
+}
 
 export function SortButton({ children }: { children: ReactNode }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -106,13 +113,6 @@ export function PriceSortButton({ children }: { children: ReactNode }) {
 			</MainBox>
 		</ButtonContainer>
 	);
-}
-
-interface IsOpenProps {
-	isOpen: boolean;
-}
-interface ButtonContainerProps extends IsOpenProps {
-	price?: boolean;
 }
 
 const ButtonContainer = styled.div<ButtonContainerProps>`

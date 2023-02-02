@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { TempLogo } from '../../assets/Icons';
 import { ToggleTab } from '../Tabs/TabButtons';
-import SortAndPriceFilter from '../Buttons/Filters/SortAndPriceFilter';
+import SortAndPriceFilter from '../Filters/SortAndPriceFilter';
 import Search from '../Search/Search';
 
 const togglePath = ['/cart/normal', '/cart/subscription'];
