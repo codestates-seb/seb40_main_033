@@ -18,7 +18,7 @@ function DefaultPayment({ payData, titleName, isSub }) {
 				</PayInfoBox>
 				<PayInfoBox right>
 					<PayItemInformation payData={payData} isSub={isSub} />
-					<PayPageContainer payment>
+					<PayPageContainer>
 						<PaymentInfo payData={payData} />
 					</PayPageContainer>
 				</PayInfoBox>

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-export default function PayPageContainer({ children, Info, payment }) {
+export default function PayPageContainer({ children, Info }) {
 	return (
-		<PayItemInfoContainer payment={payment}>
+		<PayItemInfoContainer>
 			{Info && <InfoHeading>{Info}</InfoHeading>}
 			{children}
 		</PayItemInfoContainer>
