@@ -1,33 +1,40 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Outlet, useLocation } from 'react-router-dom';
+import { useLayoutEffect, useState } from 'react';
 import LeftNav from './LeftNav';
 import RightNav from './RightNav';
 import Footer from './Footer';
 
-const hideURL = ['/login', '/signup'];
+const hiddenPath = ['/login', '/signup'];
 
 function Layout() {
 	const { pathname } = useLocation();
-	const hide = hideURL.includes(pathname);
+	const [isHiddenPath, setIsHiddenPath] = useState(
+		hiddenPath.includes(pathname),
+	);
 	const firstPathname = pathname.split('/')[1];
+
+	useLayoutEffect(() => {
+		setIsHiddenPath(hiddenPath.includes(pathname));
+	}, [pathname]);
 
 	return (
 		<Container pathname={firstPathname}>
 			<TopContainer>
-				{hide || <LeftNav />}
-				<MainContainer className={hide ? 'noMargin' : null}>
+				{isHiddenPath || <LeftNav />}
+				<MainContainer isHiddenPath={isHiddenPath}>
 					<Outlet />
 				</MainContainer>
-				{hide || <RightNav />}
+				{isHiddenPath || <RightNav />}
 			</TopContainer>
-			{hide || <Footer />}
+			{isHiddenPath || <Footer />}
 		</Container>
 	);
 }
 
 export default Layout;
 
-const Container = styled.div`
+const Container = styled.div<{ pathname: string }>`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -57,22 +64,27 @@ const Container = styled.div`
 
 const TopContainer = styled.div`
 	display: flex;
+	justify-content: space-between;
 	width: 100%;
 	height: 100%;
-	justify-content: space-between;
 `;
 
-const MainContainer = styled.div`
+const MainContainer = styled.div<{ isHiddenPath: boolean }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 120px;
-	padding-bottom: 180px;
-	max-width: 1240px;
 	width: 100%;
-	&.noMargin {
-		margin: 0;
-		max-width: none;
-		padding-bottom: 0;
-	}
+
+	${({ isHiddenPath }) =>
+		isHiddenPath
+			? css`
+					margin: 0;
+					padding-bottom: 0;
+					max-width: none;
+			  `
+			: css`
+					margin-top: 120px;
+					padding-bottom: 180px;
+					max-width: 1240px;
+			  `}
 `;
