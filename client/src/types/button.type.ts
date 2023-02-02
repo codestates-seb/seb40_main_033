@@ -31,7 +31,7 @@ export interface CounterBtnProps {
 export interface PriceButtonProps {
 	min: number;
 	max: number;
-	isOpen: boolean;
+	isOpen?: boolean;
 }
 
 export interface WishlistBtnProps {
@@ -39,4 +39,3 @@ export interface WishlistBtnProps {
 	itemId: number;
 	setIsChecked: (isChecked: number) => void;
 }
-

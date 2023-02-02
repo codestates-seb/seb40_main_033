@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { TempLogo } from '../../assets/Icons';
 import { ToggleTab } from '../Tabs/TabButtons';
-import SortAndSearchButtons from '../Buttons/SearchButtons/SortAndSearchButtons';
+import SortAndPriceFilter from '../Filters/SortAndPriceFilter';
 import Search from '../Search/Search';
 
 const togglePath = ['/cart/normal', '/cart/subscription'];
@@ -39,7 +39,7 @@ function PageTitle({ title, handleSearch }) {
 						highlightLeftValue={highlightLeftValue}
 					/>
 				)}
-				{showBtn && <SortAndSearchButtons />}
+				{showBtn && <SortAndPriceFilter />}
 			</TabContainer>
 		</Container>
 	);
