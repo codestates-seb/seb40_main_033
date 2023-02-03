@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { setBrand } from '../../redux/slice/filterSlice';
+import { RootState } from '../../redux/store/store';
 
 function BrandsWindow() {
 	const dispatch = useDispatch();
-	const { brand } = useSelector((state) => state.filter);
+	const { brand } = useSelector((state: RootState) => state.filter);
 
 	const brandList = [
 		{
@@ -76,7 +77,7 @@ const WindowContainer = styled.div`
 	flex-wrap: wrap;
 `;
 
-const BrandList = styled.div`
+const BrandList = styled.div<{ active: boolean }>`
 	margin-right: 30px;
 	font-size: 14px;
 	font-weight: var(--bold);
