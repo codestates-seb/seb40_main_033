@@ -65,10 +65,18 @@ const IconContainer = styled.li`
 	user-select: none;
 	position: relative;
 
+	// search 위치 조절
+	> :nth-child(2) {
+		top: 65px;
+	}
+
+	& > a {
+		margin: 16px 0 73px 0;
+	}
+
 	// 유저, 카트 아이콘
 	& > * svg {
 		cursor: pointer;
-		margin: 16px 0;
 		font-size: 24px;
 
 		:hover {
