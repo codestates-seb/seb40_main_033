@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { BsDash } from 'react-icons/bs';
-import { LightPurpleButton } from '../PurpleButton';
-import { setPrice } from '../../../redux/slice/filterSlice';
-import { RootState } from '../../../redux/store/store';
-import { PriceButtonProps } from '../../../types/button.type';
+import { LightPurpleButton } from '../Buttons/PurpleButton';
+import { setPrice } from '../../redux/slice/filterSlice';
+import { RootState } from '../../redux/store/store';
+import { PriceButtonProps } from '../../types/button.type';
 
 export default function PriceButton({ min, max, isOpen }: PriceButtonProps) {
 	// 리덕스에 price값이 있으면 기본값으로 설정한다.
@@ -126,7 +126,7 @@ export default function PriceButton({ min, max, isOpen }: PriceButtonProps) {
 	);
 }
 
-const EntireContainer = styled.div<{ isOpen: boolean }>`
+const EntireContainer = styled.div<{ isOpen?: boolean }>`
 	display: inline-flex;
 	flex-direction: column;
 	justify-content: center;
