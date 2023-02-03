@@ -1,10 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import { IMainPageItem } from '../../types/main.type';
 import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
 
-function MainListCard({ item }) {
+function MainListCard({ item }: { item: IMainPageItem }) {
 	const navigate = useNavigate();
 
 	const handleItemClick = () => {
@@ -81,7 +82,7 @@ const EntireContainer = styled.div`
 	}
 `;
 
-const DefaultContainer = styled.div`
+const DefaultContainer = styled.div<{ hover?: boolean }>`
 	width: 297px;
 	height: 469px;
 	border-radius: 10px;
@@ -89,18 +90,17 @@ const DefaultContainer = styled.div`
 	box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
 	transition: 0.25s;
 	${(props) =>
-		props.hover // hover라는 프롭스가 들어간 디폴트 컨테이너
-			? css`
-					position: absolute;
-					top: 0px;
-					background-color: rgba(0, 0, 0, 0.4);
-					backdrop-filter: blur(2px);
-					opacity: 0;
-					&:hover {
-						opacity: 1;
-					}
-			  `
-			: null}
+		props.hover && // hover라는 프롭스가 들어간 디폴트 컨테이너
+		css`
+			position: absolute;
+			top: 0px;
+			background-color: rgba(0, 0, 0, 0.4);
+			backdrop-filter: blur(2px);
+			opacity: 0;
+			&:hover {
+				opacity: 1;
+			}
+		`}
 `;
 
 const ContentBox = styled.div`
@@ -109,7 +109,11 @@ const ContentBox = styled.div`
 	padding: 25px 25px 33px 25px;
 `;
 
-const ContentContainer = styled.div`
+const ContentContainer = styled.div<{
+	middle?: boolean;
+	bottom?: boolean;
+	star?: boolean;
+}>`
 	display: flex;
 	flex-direction: row-reverse;
 	${(props) =>

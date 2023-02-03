@@ -11,6 +11,8 @@ export interface IMainPageItem {
 	nutritionFacts: NutritionFact[];
 	starAvg: number;
 	reviewSize: number;
+	discountPrice: number;
+	discountRate: number;
 }
 
 export interface ISection {
