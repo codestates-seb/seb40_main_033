@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { MdPlayArrow, MdPause } from 'react-icons/md';
 import { IoIosArrowBack } from 'react-icons/io';
 import CaroucelInfo from './Caroucel-Info';
-import MAINCAROUCELINFO from '../../assets/constants/MainCaroucelInfo';
+import MAINCAROUCELINFO from '../../assets/constants/MainCaroucel-Info';
 import { ICustomArrowProps } from '../../types/main.type';
 
 const ArrowButton = styled.button<ICustomArrowProps>`
