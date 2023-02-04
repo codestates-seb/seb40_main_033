@@ -74,7 +74,6 @@ function ItemList() {
 						? '관절/뼈 건강'
 						: category.split('_').join(' ')
 				}
-				handleSearch={undefined}
 			/>
 			<Brand>
 				<BrandsWindow />

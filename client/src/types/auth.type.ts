@@ -1,9 +1,9 @@
 export interface User {
-	loginStatus: boolean;
-	keepLoggedIn: boolean;
+	loginStatus?: boolean;
+	keepLoggedIn?: boolean;
 	accessToken: string | null;
-	refreshToken: string;
-	email: string;
+	refreshToken?: string | null;
+	email?: string;
 	isSocial: boolean;
-	userId: string;
+	userId: string | null;
 }

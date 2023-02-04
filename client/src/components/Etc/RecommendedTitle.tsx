@@ -1,11 +1,17 @@
 import styled from 'styled-components';
 import { TempLogo } from '../../assets/Icons';
 
-function RecommendedTitle({ title, description }) {
+function RecommendedTitle({
+	title,
+	description,
+}: {
+	title: string;
+	description: string;
+}) {
 	return (
 		<Container>
-			<Title>{title || 'BEST'}</Title>
-			<Description>{description || '인기많은 상품만 모았어요!'}</Description>
+			<Title>{title}</Title>
+			<Description>{description}</Description>
 			<TempLogo />
 		</Container>
 	);
