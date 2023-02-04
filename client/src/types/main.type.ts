@@ -35,3 +35,11 @@ export interface ICustomArrowProps extends CustomArrowProps {
 	left?: boolean;
 	right?: boolean;
 }
+
+export interface IMainCaroucelInfo {
+	type: string;
+	title: string[];
+	description: string[];
+	color: string;
+	link: string;
+}
