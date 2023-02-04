@@ -1,6 +1,29 @@
 import DefaultTabButton from './DefaultTabButton';
 
-export function DayControlTab({ onClick, currentIdx, orderId, itemOrderId }) {
+interface ToggleTabProps {
+	currentIdx: number;
+	highlightLeftValue: number;
+}
+
+interface DayShowTabProps {
+	fontSize: string;
+	onClick: React.MouseEventHandler<HTMLElement>;
+	currentIdx: number;
+}
+
+interface DayControlTabProps {
+	onClick: React.MouseEventHandler<HTMLElement>;
+	currentIdx: number;
+	orderId: number;
+	itemOrderId: number;
+}
+
+export function DayControlTab({
+	onClick,
+	currentIdx,
+	orderId,
+	itemOrderId,
+}: DayControlTabProps) {
 	const menuArr = [
 		{ name: '30일', index: 0 },
 		{ name: '60일', index: 1 },
@@ -23,7 +46,7 @@ export function DayControlTab({ onClick, currentIdx, orderId, itemOrderId }) {
 	);
 }
 
-export function ToggleTab({ currentIdx, highlightLeftValue }) {
+export function ToggleTab({ currentIdx, highlightLeftValue }: ToggleTabProps) {
 	const menuArr = [
 		{ name: '일반', index: 0 },
 		{ name: '정기', index: 1 },
@@ -40,7 +63,10 @@ export function ToggleTab({ currentIdx, highlightLeftValue }) {
 	);
 }
 
-export function NoteToggleTab({ currentIdx, highlightLeftValue }) {
+export function NoteToggleTab({
+	currentIdx,
+	highlightLeftValue,
+}: ToggleTabProps) {
 	const menuArr = [
 		{ name: '리뷰', index: 0 },
 		{ name: '토크', index: 1 },
@@ -57,7 +83,7 @@ export function NoteToggleTab({ currentIdx, highlightLeftValue }) {
 	);
 }
 
-export function DayShowTab({ fonSize, onClick, currentIdx }) {
+export function DayShowTab({ fontSize, onClick, currentIdx }: DayShowTabProps) {
 	const menuArr = [
 		{ name: '30일', index: 0 },
 		{ name: '60일', index: 1 },
@@ -71,7 +97,7 @@ export function DayShowTab({ fonSize, onClick, currentIdx }) {
 	return (
 		<DefaultTabButton
 			menuArr={menuArr}
-			fontSize={fonSize}
+			fontSize={fontSize}
 			onClick={onClick}
 			currentIdx={currentIdx}
 			highlightLeftValue={highlightValue}
