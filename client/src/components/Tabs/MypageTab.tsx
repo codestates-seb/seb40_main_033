@@ -28,19 +28,24 @@ export default function MypageTab() {
 	}
 
 	const [seletedTab, setSeletedTab] = useState(pathIdx === -1 ? 0 : pathIdx);
-	const handleTabClick = useCallback((e) => {
-		setSeletedTab(Number(e.target.id));
-	}, []);
+
+	const handleTabClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
+		(e) => {
+			const { id } = e.target as HTMLDivElement;
+			setSeletedTab(Number(id));
+		},
+		[],
+	);
 
 	return (
 		<Tab>
-			{TabName.map((name, index) => (
-				<Link to={link[index]} key={`${index.toString()}-${name}`}>
+			{TabName.map((name, i) => (
+				<Link to={link[i]} key={`${i.toString()}-${name}`}>
 					<TabItem
-						id={index}
+						id={`${i}`}
 						// onClick={handleTabClick}
 						onClick={handleTabClick}
-						isSelected={seletedTab === index}
+						isSelected={seletedTab === i}
 					>
 						{name}
 					</TabItem>
@@ -74,14 +79,14 @@ const Tab = styled.nav`
 	}
 `;
 
-const TabItem = styled.div`
+const TabItem = styled.div<{ isSelected: boolean }>`
 	color: var(--gray-300);
 	font-weight: var(--bold);
 	font-size: 16px;
 	/* & > * {
 	} */
-	${(props) =>
-		props.isSelected &&
+	${(isSelected) =>
+		isSelected &&
 		css`
 			color: var(--gray-500);
 			background-color: var(--gray-100);
