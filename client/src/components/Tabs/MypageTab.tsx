@@ -1,16 +1,7 @@
 import { useState, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-
-const TabName = [
-	'회원정보',
-	'주문내역 조회',
-	'정기구독 관리',
-	'위시리스트',
-	'작성글 관리',
-];
-
-const link = ['user-info', 'order/normal', 'sub-manage', 'wish', 'note/review'];
+import { MYPAGE_TAB } from '../Etc/Constants';
 
 export default function MypageTab() {
 	const { pathname } = useLocation();
@@ -24,7 +15,7 @@ export default function MypageTab() {
 	} else if (pathname.includes('note')) {
 		pathIdx = 4;
 	} else {
-		pathIdx = link.indexOf(splitedPathname[1]);
+		pathIdx = MYPAGE_TAB.PATH.indexOf(splitedPathname[1]);
 	}
 
 	const [seletedTab, setSeletedTab] = useState(pathIdx === -1 ? 0 : pathIdx);
@@ -39,11 +30,10 @@ export default function MypageTab() {
 
 	return (
 		<Tab>
-			{TabName.map((name, i) => (
-				<Link to={link[i]} key={`${i.toString()}-${name}`}>
+			{MYPAGE_TAB.NAME.map((name, i) => (
+				<Link to={MYPAGE_TAB.PATH[i]} key={`${i.toString()}-${name}`}>
 					<TabItem
 						id={`${i}`}
-						// onClick={handleTabClick}
 						onClick={handleTabClick}
 						isSelected={seletedTab === i}
 					>
