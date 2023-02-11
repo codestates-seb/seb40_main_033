@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { TempLogo } from '../../assets/Icons';
-import { ToggleTab } from '../Tabs/TabButtons';
+import { OrderToggleTab } from '../Tabs/ToggleTabs';
 import SortAndPriceFilter from '../Filters/SortAndPriceFilter';
 import Search from '../Search/Search';
 
@@ -34,7 +34,7 @@ function PageTitle({ title, handleSearch }) {
 			</TitleContainer>
 			<TabContainer>
 				{showToggle && (
-					<ToggleTab
+					<OrderToggleTab
 						currentIdx={currentIdx}
 						highlightLeftValue={highlightLeftValue}
 					/>

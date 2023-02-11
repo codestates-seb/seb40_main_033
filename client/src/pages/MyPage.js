@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { useEffect } from 'react';
 import MypageTab from '../components/Tabs/MypageTab';
 import MyPageHeader from '../components/Etc/MyPageHeader';
-import { ToggleTab, NoteToggleTab } from '../components/Tabs/TabButtons';
+import { OrderToggleTab, NoteToggleTab } from '../components/Tabs/ToggleTabs';
 
 const togglePath = ['/mypage/order/normal', '/mypage/order/subscription'];
 const togglePath2 = ['/mypage/note/review', '/mypage/note/talk'];
@@ -41,7 +41,7 @@ function MyPage() {
 			<MyPageHeader />
 			<MypageTab />
 			{show && (
-				<ToggleTab
+				<OrderToggleTab
 					currentIdx={currentIdx}
 					highlightLeftValue={highlightLeftValue}
 				/>

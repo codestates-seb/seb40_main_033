@@ -5,7 +5,7 @@ import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import CounterBtn from '../../Buttons/CounterButton';
-import { DayShowTab } from '../../Tabs/TabButtons';
+import { PeriodChoiceTab } from '../../Tabs/ToggleTabs';
 import Price from '../../Etc/Price';
 import CancelModal from '../../Modals/CancelModal';
 import { useDelete, usePatch } from '../../../hooks/useFetch';
@@ -90,7 +90,7 @@ function CartList({ data, item, sub }) {
 				{sub && (
 					<>
 						<Label>구독 주기</Label>
-						<DayShowTab
+						<PeriodChoiceTab
 							onClick={handlePeriodClick}
 							currentIdx={data.period / 30 - 1}
 						/>

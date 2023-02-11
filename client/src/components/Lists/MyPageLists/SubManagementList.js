@@ -4,7 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import CounterBtn from '../../Buttons/CounterButton';
-import { DayControlTab } from '../../Tabs/TabButtons';
+import { PeriodChangeTab } from '../../Tabs/ToggleTabs';
 import Price from '../../Etc/Price';
 import { KrDate } from '../../Etc/ListDate';
 import CancelModal from '../../Modals/CancelModal';
@@ -69,7 +69,7 @@ function SubManagementList({ subManageData }) {
 			/>
 			<SubContainer>
 				<Label>구독 주기</Label>
-				<DayControlTab
+				<PeriodChangeTab
 					orderId={subManageData.orderId}
 					itemOrderId={subManageData.itemOrderId}
 					onClick={handleModifyPeriod}
