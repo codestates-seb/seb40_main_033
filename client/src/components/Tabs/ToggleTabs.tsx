@@ -1,29 +1,29 @@
-import DefaultTabButton from './DefaultTabButton';
+import DefaultToggleTab from './DefaultToggleTab';
 
 interface ToggleTabProps {
 	currentIdx: number;
-	highlightLeftValue: number;
 }
 
-interface DayShowTabProps {
+interface PeriodChoiceTabProps {
 	fontSize: string;
 	onClick: React.MouseEventHandler<HTMLElement>;
 	currentIdx: number;
 }
 
-interface DayControlTabProps {
+interface PeriodChangeTabProps {
 	onClick: React.MouseEventHandler<HTMLElement>;
 	currentIdx: number;
 	orderId: number;
 	itemOrderId: number;
 }
 
-export function DayControlTab({
+// 마이페이지 - 정기구독 관리 시 주기 선택하는 탭
+export function PeriodChangeTab({
 	onClick,
 	currentIdx,
 	orderId,
 	itemOrderId,
-}: DayControlTabProps) {
+}: PeriodChangeTabProps) {
 	const menuArr = [
 		{ name: '30일', index: 0 },
 		{ name: '60일', index: 1 },
@@ -34,56 +34,57 @@ export function DayControlTab({
 	const highlightValue = 73 * currentIdx;
 
 	return (
-		<DefaultTabButton
-			delayButton
+		<DefaultToggleTab
 			menuArr={menuArr}
 			onClick={onClick}
 			currentIdx={currentIdx}
-			highlightLeftValue={highlightValue}
 			orderId={orderId}
 			itemOrderId={itemOrderId}
+			purpose="period-change"
 		/>
 	);
 }
 
-export function ToggleTab({ currentIdx, highlightLeftValue }: ToggleTabProps) {
+export function OrderToggleTab({ currentIdx }: ToggleTabProps) {
 	const menuArr = [
 		{ name: '일반', index: 0 },
 		{ name: '정기', index: 1 },
 	];
 
 	return (
-		<DefaultTabButton
+		<DefaultToggleTab
 			currentIdx={currentIdx}
-			highlightLeftValue={highlightLeftValue}
 			menuArr={menuArr}
 			toggle
 			order
+			purpose="order"
 		/>
 	);
 }
 
-export function NoteToggleTab({
-	currentIdx,
-	highlightLeftValue,
-}: ToggleTabProps) {
+export function NoteToggleTab({ currentIdx }: ToggleTabProps) {
 	const menuArr = [
 		{ name: '리뷰', index: 0 },
 		{ name: '토크', index: 1 },
 	];
 
 	return (
-		<DefaultTabButton
+		<DefaultToggleTab
 			currentIdx={currentIdx}
-			highlightLeftValue={highlightLeftValue}
 			menuArr={menuArr}
 			toggle
 			note
+			purpose="note"
 		/>
 	);
 }
 
-export function DayShowTab({ fontSize, onClick, currentIdx }: DayShowTabProps) {
+// 상세페이지 - 정기구독 구매 시 주기 선택하는 탭
+export function PeriodChoiceTab({
+	fontSize,
+	onClick,
+	currentIdx,
+}: PeriodChoiceTabProps) {
 	const menuArr = [
 		{ name: '30일', index: 0 },
 		{ name: '60일', index: 1 },
@@ -95,12 +96,12 @@ export function DayShowTab({ fontSize, onClick, currentIdx }: DayShowTabProps) {
 	const highlightValue = 73 * currentIdx;
 
 	return (
-		<DefaultTabButton
+		<DefaultToggleTab
 			menuArr={menuArr}
 			fontSize={fontSize}
 			onClick={onClick}
 			currentIdx={currentIdx}
-			highlightLeftValue={highlightValue}
+			purpose="period-chioce"
 		/>
 	);
 }
