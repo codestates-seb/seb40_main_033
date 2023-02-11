@@ -2,8 +2,14 @@
 import styled from 'styled-components';
 import CardCaroucel from '../../components/Caroucel/CardCaroucel';
 import RecommendedTitle from '../../components/Etc/RecommendedTitle';
+import { IMainPageItem } from '../../types/main.type';
 
-export default function MainSection({ items, sectionTitle }) {
+interface IMainSection {
+	items: IMainPageItem[];
+	sectionTitle: string[];
+}
+
+export default function MainSection({ items, sectionTitle }: IMainSection) {
 	return (
 		<SectionContainer>
 			<RecommendedTitle title={sectionTitle[0]} description={sectionTitle[1]} />

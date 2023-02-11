@@ -38,7 +38,7 @@ export const userSlice = createSlice({
 				state.accessToken = accessToken;
 				localStorage.setItem('accessToken', accessToken);
 				state.userId = userId;
-				localStorage.setItem('userId', userId);
+				if (userId) localStorage.setItem('userId', userId);
 			}
 			state.refreshToken = refreshToken;
 			state.email = email;

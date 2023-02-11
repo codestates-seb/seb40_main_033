@@ -4,8 +4,9 @@ import './slick.css';
 import './slick-theme.css';
 import { IoIosArrowBack } from 'react-icons/io';
 import MainListCard from '../Lists/MainListCard';
+import { IMainPageItem } from '../../types/main.type';
 
-const ArrowButton = styled.button`
+const ArrowButton = styled.button<{ right?: boolean; left?: boolean }>`
 	width: 40px;
 	height: 40px;
 	background-color: white;
@@ -51,7 +52,7 @@ const settings = {
 	),
 };
 
-function CardCaroucel({ items }) {
+function CardCaroucel({ items }: { items: IMainPageItem[] }) {
 	return (
 		<SlideContainer>
 			<Slider {...settings}>
