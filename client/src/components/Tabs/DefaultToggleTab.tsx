@@ -9,20 +9,19 @@ interface DefaultTabProps {
 		name: string;
 		index: number;
 	}[];
-	delayButton: boolean;
-	toggle: boolean;
-	fontSize: string; // 기본값 16
+	toggle?: boolean;
+	fontSize?: string; // 기본값 16
 	currentIdx: number;
-	highlightLeftValue: number;
-	order: boolean;
-	note: boolean;
-	onClick: React.MouseEventHandler<HTMLElement>;
-	orderId: number;
-	itemOrderId: number;
+	purpose: string;
+	order?: boolean;
+	note?: boolean;
+	onClick?: React.MouseEventHandler<HTMLElement>;
+	orderId?: number;
+	itemOrderId?: number;
 }
 
 interface Toggle {
-	toggle: boolean;
+	toggle?: boolean;
 }
 
 interface HighlightProps extends Toggle {
@@ -34,11 +33,10 @@ interface HighlightProps extends Toggle {
 // highlightValue ==> 지금 선택한 탭의 left 위치 (0번째: 0, 1번째: 68, 2번째: 136 ... => 68씩 증가!)
 function DefaultTabButton({
 	menuArr,
-	delayButton,
 	toggle,
 	fontSize = '16px',
 	currentIdx,
-	highlightLeftValue,
+	purpose,
 	order,
 	note,
 	onClick,
@@ -48,16 +46,18 @@ function DefaultTabButton({
 	const { mutate: postponeSub } = usePatch(
 		`/schedule/delay?orderId=${orderId}&delay=7&itemOrderId=${itemOrderId}`,
 	);
-	const highlightWidth = toggle ? 68 : 73;
+	const menuEl = useRef<HTMLUListElement>(null);
 	const { pathname } = useLocation();
-	const [currentTab, setCurrentTab] = useState(currentIdx || 0);
+	const [currentTab, setCurrentTab] = useState(currentIdx);
+
+	const isTwoButton = ['order', 'note'].includes(purpose);
+	const highlightValue = isTwoButton ? 68 : 73;
+
 	const [highlight, setHighlight] = useState({
-		left: highlightLeftValue || 0,
-		width: currentIdx === 3 ? 82 : highlightWidth,
+		left: currentTab * highlightValue,
+		width: currentTab === 3 ? 82 : highlightValue,
 	});
 
-	const [delayOpen, setDelayOpen] = useState(false);
-	const menuEl = useRef<HTMLUListElement>(null);
 	const navigate = useNavigate();
 
 	const splitedPath = pathname.split('/');
@@ -75,55 +75,14 @@ function DefaultTabButton({
 			const width = (menuEl.current?.children[index] as HTMLElement)
 				.offsetWidth;
 
-			switch (index) {
-				case 0:
-					setHighlight({
-						left,
-						width,
-					});
-					break;
-				case 1:
-					setHighlight({
-						left,
-						width,
-					});
-					break;
-				case 2:
-					setHighlight({
-						left,
-						width,
-					});
-					break;
-				case 3:
-					setHighlight({
-						left,
-						width,
-					});
-					break;
-				default:
-					break;
-			}
+			setHighlight({
+				left,
+				width,
+			});
 
 			if (onClick) {
 				onClick(e);
 			}
-
-			/*
-		! 위에 onClick 이거 뭐지? 싶으신 분들 ~~!!
-	  * 토글을 눌렀을 때 실행되었으면 하는 함수를 onClick으로 넘겨주시면 됩니다 (없으면 X)
-		<DayShowTab onClick={handlePeriodClick}>
-
-		! 만약 유저가 클릭한 기간이 필요하시다면 e.target.innerText로 꺼내다 쓰시면 됩니다!
-		* 사용예시 * 제 경우에는 이렇게 사용하는데 그냥 참고만 하세요!
-		const handlePeriodClick = useCallback((e) => {
-			setOrdertList({
-				...orderList,
-				period: e.target.innerText.replace('일', ''),      ==> 30, 60, 90 ...
-			});
-		},
-		[orderList.period],
-	);
-		*/
 
 			// 일반/정기 토글 클릭 시 해당 페이지의 일반/정기 페이지로 이동
 			if (order) {
@@ -143,13 +102,12 @@ function DefaultTabButton({
 				}
 			}
 		},
-		[],
+		[highlight],
 	);
 
 	const delayButtonClick: React.MouseEventHandler<HTMLLIElement> =
 		useCallback(() => {
 			postponeSub();
-			setDelayOpen((prev) => !prev);
 			toast.success('주기를 미뤘습니다!');
 		}, []);
 
@@ -172,12 +130,8 @@ function DefaultTabButton({
 						{name}
 					</li>
 				))}
-				{delayButton && (
-					<li
-						className={`submenu red ${delayOpen ? 'open' : ''}`}
-						onClick={delayButtonClick}
-						role="presentation"
-					>
+				{purpose === 'period-change' && (
+					<li className="delay" onClick={delayButtonClick} role="none">
 						미루기
 					</li>
 				)}
