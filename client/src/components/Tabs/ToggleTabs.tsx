@@ -1,19 +1,11 @@
 import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import DefaultToggleTab from './DefaultToggleTab';
-
-interface ToggleTabProps {
-	currentIdx: number;
-}
-
-interface PeriodChoiceTabProps extends ToggleTabProps {
-	onClick: React.MouseEventHandler<HTMLLIElement>;
-}
-
-interface PeriodChangeTabProps extends PeriodChoiceTabProps {
-	orderId: number;
-	itemOrderId: number;
-}
+import {
+	PeriodChangeTabProps,
+	PeriodChoiceTabProps,
+	ToggleTabProps,
+} from '../../types/toggle.type';
 
 export function OrderToggleTab({ currentIdx }: ToggleTabProps) {
 	const navigate = useNavigate();

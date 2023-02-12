@@ -2,27 +2,13 @@ import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { usePatch } from '../../hooks/useFetch';
-
-interface DefaultTabProps {
-	menuArr: string[];
-	currentIdx: number;
-	purpose: string;
-	onClick: React.MouseEventHandler<HTMLLIElement>;
-	orderId?: number;
-	itemOrderId?: number;
-}
-
-interface ToggleStyleProps {
-	isTwoButton: boolean;
-}
-
-interface HighlightProps extends ToggleStyleProps {
-	left: number;
-	width: number;
-}
+import {
+	DefaultTabProps,
+	ToggleStyleProps,
+	HighlightProps,
+} from '../../types/toggle.type';
 
 // currentIdx ==> 지금 선택한 탭의 index
-// highlightValue ==> 지금 선택한 탭의 left 위치 (0번째: 0, 1번째: 68, 2번째: 136 ... => 68씩 증가!)
 function DefaultToggleTab({
 	menuArr,
 	currentIdx,
