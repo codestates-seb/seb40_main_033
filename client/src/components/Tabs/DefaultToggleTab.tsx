@@ -1,44 +1,32 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { usePatch } from '../../hooks/useFetch';
 
 interface DefaultTabProps {
-	menuArr: {
-		name: string;
-		index: number;
-	}[];
-	toggle?: boolean;
-	fontSize?: string; // 기본값 16
+	menuArr: string[];
 	currentIdx: number;
 	purpose: string;
-	order?: boolean;
-	note?: boolean;
-	onClick?: React.MouseEventHandler<HTMLElement>;
+	onClick: React.MouseEventHandler<HTMLLIElement>;
 	orderId?: number;
 	itemOrderId?: number;
 }
 
-interface Toggle {
-	toggle?: boolean;
+interface ToggleStyleProps {
+	isTwoButton: boolean;
 }
 
-interface HighlightProps extends Toggle {
+interface HighlightProps extends ToggleStyleProps {
 	left: number;
 	width: number;
 }
 
 // currentIdx ==> 지금 선택한 탭의 index
 // highlightValue ==> 지금 선택한 탭의 left 위치 (0번째: 0, 1번째: 68, 2번째: 136 ... => 68씩 증가!)
-function DefaultTabButton({
+function DefaultToggleTab({
 	menuArr,
-	toggle,
-	fontSize = '16px',
 	currentIdx,
 	purpose,
-	order,
-	note,
 	onClick,
 	orderId,
 	itemOrderId,
@@ -47,7 +35,6 @@ function DefaultTabButton({
 		`/schedule/delay?orderId=${orderId}&delay=7&itemOrderId=${itemOrderId}`,
 	);
 	const menuEl = useRef<HTMLUListElement>(null);
-	const { pathname } = useLocation();
 	const [currentTab, setCurrentTab] = useState(currentIdx);
 
 	const isTwoButton = ['order', 'note'].includes(purpose);
@@ -57,12 +44,6 @@ function DefaultTabButton({
 		left: currentTab * highlightValue,
 		width: currentTab === 3 ? 82 : highlightValue,
 	});
-
-	const navigate = useNavigate();
-
-	const splitedPath = pathname.split('/');
-	// /normal, /subscription을 제외한 path
-	const joinPath = splitedPath.slice(0, splitedPath.length - 1).join('/');
 
 	const handleBtnClick: React.MouseEventHandler<HTMLLIElement> = useCallback(
 		(e) => {
@@ -80,27 +61,7 @@ function DefaultTabButton({
 				width,
 			});
 
-			if (onClick) {
-				onClick(e);
-			}
-
-			// 일반/정기 토글 클릭 시 해당 페이지의 일반/정기 페이지로 이동
-			if (order) {
-				if (index === 1) {
-					navigate(`${joinPath}/subscription`);
-				} else if (index === 0) {
-					navigate(`${joinPath}/normal`);
-				}
-			}
-
-			// 리뷰/토크 토글 클릭 시 해당 페이지의 리뷰/토크 페이지로 이동
-			if (note) {
-				if (index === 1) {
-					navigate(`${joinPath}/talk`);
-				} else if (index === 0) {
-					navigate(`${joinPath}/review`);
-				}
-			}
+			onClick(e);
 		},
 		[highlight],
 	);
@@ -112,20 +73,20 @@ function DefaultTabButton({
 		}, []);
 
 	return (
-		<TabContainer toggle={toggle}>
+		<TabContainer isTwoButton={isTwoButton}>
 			<Highlight
 				left={highlight.left}
 				width={highlight.width}
-				toggle={toggle}
+				isTwoButton={isTwoButton}
 			/>
-			<TabMenu ref={menuEl} fontSize={fontSize}>
-				{menuArr.map(({ name, index }) => (
+			<TabMenu ref={menuEl} purpose={purpose}>
+				{menuArr.map((name, idx) => (
 					<li
-						key={`${index}-${name}`}
-						id={`${index}`}
-						className={currentTab === index ? 'submenu focused' : 'submenu'}
+						key={`${idx.toString()}-${name}`}
+						id={`${idx}`}
+						className={currentTab === idx ? 'focused' : ''}
 						onClick={handleBtnClick}
-						role="presentation"
+						role="none"
 					>
 						{name}
 					</li>
@@ -140,10 +101,11 @@ function DefaultTabButton({
 	);
 }
 
-export default React.memo(DefaultTabButton);
+export default React.memo(DefaultToggleTab);
 
-const TabContainer = styled.div<Toggle>`
-	background-color: ${({ toggle }) => (toggle ? 'white' : 'var(--gray-100)')};
+const TabContainer = styled.div<ToggleStyleProps>`
+	background-color: ${({ isTwoButton }) =>
+		isTwoButton ? 'white' : 'var(--gray-100)'};
 	position: relative;
 	width: fit-content;
 	padding-left: 8px;
@@ -152,49 +114,46 @@ const TabContainer = styled.div<Toggle>`
 	border-radius: 50px;
 `;
 
-const TabMenu = styled.ul<{ fontSize: string }>`
+const TabMenu = styled.ul<{ purpose: string }>`
 	display: flex;
 	justify-items: center;
 	align-items: center;
 	list-style: none;
-	cursor: pointer;
 	position: relative;
-
-	.submenu {
-		font-size: ${(props) => props.fontSize};
+	li {
+		white-space: nowrap;
+		font-size: ${({ purpose }) =>
+			purpose === 'period-chioce' ? '15px' : '16px'};
 		color: var(--gray-300);
 		text-align: center;
-		padding: 20px 20px;
+		padding: 20px;
 		cursor: pointer;
 		transition: all 0.4s ease-in-out;
 	}
-
 	.focused {
 		color: var(--gray-500);
-		transition: all 0.4s ease-in-out;
 	}
-
-	.red {
+	.delay {
 		color: var(--red-100);
-	}
-
-	.open {
-		box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
-		background: white;
-		border-radius: 50px;
-		padding: 14px 20px;
+		:hover {
+			box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
+			background: rgba(230, 0, 30, 0.09);
+			border-radius: 50px;
+			padding: 14px 20px;
+		}
 	}
 `;
 
 const Highlight = styled.span<HighlightProps>`
-	background: ${({ toggle }) => (toggle ? 'var(--gray-100)' : 'white')};
+	background: ${({ isTwoButton }) =>
+		isTwoButton ? 'var(--gray-100)' : 'white'};
 	position: absolute;
-	width: ${(props) => props.width}px;
+	width: ${({ width }) => `${width}px`};
 	top: 6px;
 	bottom: 6px;
 	transition: 0.4s cubic-bezier(0.65, 0, 0.35, 1);
-	left: ${(props) => props.left + 8}px;
+	left: ${({ left }) => `${left + 8}px`};
 	border-radius: 50px;
-	box-shadow: ${({ toggle }) => (toggle ? 'inset' : '')} 0px 1px 8px
+	box-shadow: ${({ isTwoButton }) => (isTwoButton ? 'inset' : '')} 0px 1px 8px
 		rgba(0, 0, 0, 0.07);
 `;
