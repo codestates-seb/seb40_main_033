@@ -4,8 +4,7 @@ export interface DefaultTabProps {
 	currentIdx: number;
 	purpose: string;
 	onClick: React.MouseEventHandler<HTMLLIElement>;
-	orderId?: number;
-	itemOrderId?: number;
+	OnDelayClick?: React.MouseEventHandler<HTMLLIElement>;
 }
 
 export interface ToggleStyleProps {

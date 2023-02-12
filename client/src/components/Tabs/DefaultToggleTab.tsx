@@ -1,7 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { toast } from 'react-toastify';
-import { usePatch } from '../../hooks/useFetch';
 import {
 	DefaultTabProps,
 	ToggleStyleProps,
@@ -14,12 +12,8 @@ function DefaultToggleTab({
 	currentIdx,
 	purpose,
 	onClick,
-	orderId,
-	itemOrderId,
+	OnDelayClick,
 }: DefaultTabProps) {
-	const { mutate: postponeSub } = usePatch(
-		`/schedule/delay?orderId=${orderId}&delay=7&itemOrderId=${itemOrderId}`,
-	);
 	const menuEl = useRef<HTMLUListElement>(null);
 	const [currentTab, setCurrentTab] = useState(currentIdx);
 
@@ -52,12 +46,6 @@ function DefaultToggleTab({
 		[highlight],
 	);
 
-	const delayButtonClick: React.MouseEventHandler<HTMLLIElement> =
-		useCallback(() => {
-			postponeSub();
-			toast.success('주기를 미뤘습니다!');
-		}, []);
-
 	return (
 		<TabContainer isTwoButton={isTwoButton}>
 			<Highlight
@@ -78,7 +66,7 @@ function DefaultToggleTab({
 					</li>
 				))}
 				{purpose === 'period-change' && (
-					<li className="delay" onClick={delayButtonClick} role="none">
+					<li className="delay" onClick={OnDelayClick} role="none">
 						미루기
 					</li>
 				)}

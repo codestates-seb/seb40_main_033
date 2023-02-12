@@ -1,12 +1,15 @@
 import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import DefaultToggleTab from './DefaultToggleTab';
+import { usePatch } from '../../hooks/useFetch';
 import {
 	PeriodChangeTabProps,
 	PeriodChoiceTabProps,
 	ToggleTabProps,
 } from '../../types/toggle.type';
 
+// 일반/정기 토글
 export function OrderToggleTab({ currentIdx }: ToggleTabProps) {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
@@ -40,6 +43,7 @@ export function OrderToggleTab({ currentIdx }: ToggleTabProps) {
 	);
 }
 
+// 리뷰/토크 토글
 export function NoteToggleTab({ currentIdx }: ToggleTabProps) {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
@@ -82,13 +86,22 @@ export function PeriodChangeTab({
 }: PeriodChangeTabProps) {
 	const menuArr = ['30일', '60일', '90일', '120일'];
 
+	const { mutate: postponeSub } = usePatch(
+		`/schedule/delay?orderId=${orderId}&delay=7&itemOrderId=${itemOrderId}`,
+	);
+
+	const delayButtonClick: React.MouseEventHandler<HTMLLIElement> =
+		useCallback(() => {
+			postponeSub();
+			toast.success('주기를 미뤘습니다!');
+		}, []);
+
 	return (
 		<DefaultToggleTab
 			menuArr={menuArr}
 			onClick={onClick}
+			OnDelayClick={delayButtonClick}
 			currentIdx={currentIdx}
-			orderId={orderId}
-			itemOrderId={itemOrderId}
 			purpose="period-change"
 		/>
 	);
