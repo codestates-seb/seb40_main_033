@@ -1,16 +1,7 @@
 import { useState, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-
-const TabName = [
-	'회원정보',
-	'주문내역 조회',
-	'정기구독 관리',
-	'위시리스트',
-	'작성글 관리',
-];
-
-const link = ['user-info', 'order/normal', 'sub-manage', 'wish', 'note/review'];
+import { MYPAGE_TAB } from '../Etc/Constants';
 
 export default function MypageTab() {
 	const { pathname } = useLocation();
@@ -24,23 +15,27 @@ export default function MypageTab() {
 	} else if (pathname.includes('note')) {
 		pathIdx = 4;
 	} else {
-		pathIdx = link.indexOf(splitedPathname[1]);
+		pathIdx = MYPAGE_TAB.PATH.indexOf(splitedPathname[1]);
 	}
 
 	const [seletedTab, setSeletedTab] = useState(pathIdx === -1 ? 0 : pathIdx);
-	const handleTabClick = useCallback((e) => {
-		setSeletedTab(Number(e.target.id));
-	}, []);
+
+	const handleTabClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
+		(e) => {
+			const { id } = e.target as HTMLDivElement;
+			setSeletedTab(Number(id));
+		},
+		[],
+	);
 
 	return (
 		<Tab>
-			{TabName.map((name, index) => (
-				<Link to={link[index]} key={`${index.toString()}-${name}`}>
+			{MYPAGE_TAB.NAME.map((name, i) => (
+				<Link to={MYPAGE_TAB.PATH[i]} key={`${i.toString()}-${name}`}>
 					<TabItem
-						id={index}
-						// onClick={handleTabClick}
+						id={`${i}`}
 						onClick={handleTabClick}
-						isSelected={seletedTab === index}
+						isSelected={seletedTab === i}
 					>
 						{name}
 					</TabItem>
@@ -74,14 +69,14 @@ const Tab = styled.nav`
 	}
 `;
 
-const TabItem = styled.div`
+const TabItem = styled.div<{ isSelected: boolean }>`
 	color: var(--gray-300);
 	font-weight: var(--bold);
 	font-size: 16px;
 	/* & > * {
 	} */
-	${(props) =>
-		props.isSelected &&
+	${(isSelected) =>
+		isSelected &&
 		css`
 			color: var(--gray-500);
 			background-color: var(--gray-100);
