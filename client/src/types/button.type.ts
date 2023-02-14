@@ -18,7 +18,7 @@ export interface DefaultButtonProps {
 	none?: boolean;
 	letter?: boolean;
 	children: ReactNode;
-	onClick?: () => void;
+	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 	black?: boolean;
 }
 
