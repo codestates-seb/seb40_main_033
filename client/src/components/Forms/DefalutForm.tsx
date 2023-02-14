@@ -1,14 +1,7 @@
 import styled, { css } from 'styled-components';
 import { LetterButton } from '../Buttons/LetterButton';
 import { PurpleButton } from '../Buttons/PurpleButton';
-import { BasicFormProps } from '../../types/form.type';
-
-interface DefaultFormProps extends BasicFormProps {
-	placeholder: string;
-	maxLength: number;
-	height: number;
-	target: string;
-}
+import { DefaultFormProps } from '../../types/form.type';
 
 interface InputProps {
 	height: number;
