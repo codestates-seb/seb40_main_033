@@ -1,20 +1,80 @@
+import { useCallback, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import DefaultToggleTab from './DefaultToggleTab';
+import { usePatch } from '../../hooks/useFetch';
+import {
+	PeriodChangeTabProps,
+	PeriodChoiceTabProps,
+	ToggleTabProps,
+} from '../../types/toggle.type';
 
-interface ToggleTabProps {
-	currentIdx: number;
+// 일반/정기 토글
+export function OrderToggleTab({ currentIdx }: ToggleTabProps) {
+	const navigate = useNavigate();
+	const { pathname } = useLocation();
+	const [path] = useState(pathname.slice(0, pathname.lastIndexOf('/')));
+
+	const menu = {
+		list: ['일반', '정기'],
+		link: ['/normal', '/subscription'],
+	};
+
+	const handleToggleClick: React.MouseEventHandler<HTMLLIElement> = useCallback(
+		(e) => {
+			const { id } = e.target as HTMLLIElement;
+
+			if (id === '1') {
+				navigate(`${path}${menu.link[1]}`);
+			} else if (id === '0') {
+				navigate(`${path}${menu.link[0]}`);
+			}
+		},
+		[],
+	);
+
+	return (
+		<DefaultToggleTab
+			currentIdx={currentIdx}
+			onClick={handleToggleClick}
+			menuArr={menu.list}
+			purpose="order"
+		/>
+	);
 }
 
-interface PeriodChoiceTabProps {
-	fontSize: string;
-	onClick: React.MouseEventHandler<HTMLElement>;
-	currentIdx: number;
-}
+// 리뷰/토크 토글
+export function NoteToggleTab({ currentIdx }: ToggleTabProps) {
+	const navigate = useNavigate();
+	const { pathname } = useLocation();
+	const [path] = useState(pathname.slice(0, pathname.lastIndexOf('/')));
 
-interface PeriodChangeTabProps {
-	onClick: React.MouseEventHandler<HTMLElement>;
-	currentIdx: number;
-	orderId: number;
-	itemOrderId: number;
+	const menu = {
+		list: ['리뷰', '토크'],
+		link: ['/review', '/talk'],
+	};
+
+	const handleToggleClick: React.MouseEventHandler<HTMLLIElement> = useCallback(
+		(e) => {
+			const { id } = e.target as HTMLLIElement;
+
+			if (id === '1') {
+				navigate(`${path}${menu.link[1]}`);
+			} else if (id === '0') {
+				navigate(`${path}${menu.link[0]}`);
+			}
+		},
+		[],
+	);
+
+	return (
+		<DefaultToggleTab
+			currentIdx={currentIdx}
+			onClick={handleToggleClick}
+			menuArr={menu.list}
+			purpose="note"
+		/>
+	);
 }
 
 // 마이페이지 - 정기구독 관리 시 주기 선택하는 탭
@@ -24,81 +84,36 @@ export function PeriodChangeTab({
 	orderId,
 	itemOrderId,
 }: PeriodChangeTabProps) {
-	const menuArr = [
-		{ name: '30일', index: 0 },
-		{ name: '60일', index: 1 },
-		{ name: '90일', index: 2 },
-		{ name: '120일', index: 3 },
-	];
-	// highlightValue ==> 지금 선택한 탭의 left 위치 (0번째: 0, 1번째: 68, 2번째: 136 ... => 68씩 증가!)
-	const highlightValue = 73 * currentIdx;
+	const menuArr = ['30일', '60일', '90일', '120일'];
+
+	const { mutate: postponeSub } = usePatch(
+		`/schedule/delay?orderId=${orderId}&delay=7&itemOrderId=${itemOrderId}`,
+	);
+
+	const delayButtonClick: React.MouseEventHandler<HTMLLIElement> =
+		useCallback(() => {
+			postponeSub();
+			toast.success('주기를 미뤘습니다!');
+		}, []);
 
 	return (
 		<DefaultToggleTab
 			menuArr={menuArr}
 			onClick={onClick}
+			OnDelayClick={delayButtonClick}
 			currentIdx={currentIdx}
-			orderId={orderId}
-			itemOrderId={itemOrderId}
 			purpose="period-change"
 		/>
 	);
 }
 
-export function OrderToggleTab({ currentIdx }: ToggleTabProps) {
-	const menuArr = [
-		{ name: '일반', index: 0 },
-		{ name: '정기', index: 1 },
-	];
-
-	return (
-		<DefaultToggleTab
-			currentIdx={currentIdx}
-			menuArr={menuArr}
-			toggle
-			order
-			purpose="order"
-		/>
-	);
-}
-
-export function NoteToggleTab({ currentIdx }: ToggleTabProps) {
-	const menuArr = [
-		{ name: '리뷰', index: 0 },
-		{ name: '토크', index: 1 },
-	];
-
-	return (
-		<DefaultToggleTab
-			currentIdx={currentIdx}
-			menuArr={menuArr}
-			toggle
-			note
-			purpose="note"
-		/>
-	);
-}
-
 // 상세페이지 - 정기구독 구매 시 주기 선택하는 탭
-export function PeriodChoiceTab({
-	fontSize,
-	onClick,
-	currentIdx,
-}: PeriodChoiceTabProps) {
-	const menuArr = [
-		{ name: '30일', index: 0 },
-		{ name: '60일', index: 1 },
-		{ name: '90일', index: 2 },
-		{ name: '120일', index: 3 },
-	];
-
-	// highlightValue ==> 지금 선택한 탭의 left 위치 (0번째: 0, 1번째: 68, 2번째: 136 ... => 68씩 증가!)
-	const highlightValue = 73 * currentIdx;
+export function PeriodChoiceTab({ onClick, currentIdx }: PeriodChoiceTabProps) {
+	const menuArr = ['30일', '60일', '90일', '120일'];
 
 	return (
 		<DefaultToggleTab
 			menuArr={menuArr}
-			fontSize={fontSize}
 			onClick={onClick}
 			currentIdx={currentIdx}
 			purpose="period-chioce"

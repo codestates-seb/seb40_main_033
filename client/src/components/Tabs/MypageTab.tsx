@@ -1,24 +1,23 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { MYPAGE_TAB } from '../Etc/Constants';
 
 export default function MypageTab() {
 	const { pathname } = useLocation();
-	const splitedPathname = pathname.split('/mypage/');
-	let pathIdx;
+	const path = pathname.split('/')[2];
+	const [seletedTab, setSeletedTab] = useState(MYPAGE_TAB.PATH.indexOf(path));
 
-	// order가 포함되면 pathIdx는 무조건 1
-	if (pathname.includes('order')) {
-		pathIdx = 1;
-		// note가 포함되면 pathIdx는 무조건 4
-	} else if (pathname.includes('note')) {
-		pathIdx = 4;
-	} else {
-		pathIdx = MYPAGE_TAB.PATH.indexOf(splitedPathname[1]);
-	}
+	useEffect(() => {
+		// /normal, /subscription 세부 경로로 진입해도 order
+		if (path === 'order') {
+			setSeletedTab(1);
 
-	const [seletedTab, setSeletedTab] = useState(pathIdx === -1 ? 0 : pathIdx);
+			// /review, /talk 세부 경로로 진입해도 note
+		} else if (path === 'note') {
+			setSeletedTab(4);
+		}
+	}, []);
 
 	const handleTabClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
 		(e) => {
@@ -54,14 +53,11 @@ const Tab = styled.nav`
 	align-items: center;
 	background-color: #fff;
 	margin: 5px 0 40px 0;
-	/* margin-bottom: 40px; */
-
 	* {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		width: 100%;
-		/* width: 140px; */
 		height: inherit;
 		background-color: #fff;
 		border-radius: 5px 5px 0 0;
@@ -73,9 +69,7 @@ const TabItem = styled.div<{ isSelected: boolean }>`
 	color: var(--gray-300);
 	font-weight: var(--bold);
 	font-size: 16px;
-	/* & > * {
-	} */
-	${(isSelected) =>
+	${({ isSelected }) =>
 		isSelected &&
 		css`
 			color: var(--gray-500);
