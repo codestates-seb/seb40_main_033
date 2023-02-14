@@ -4,122 +4,112 @@ import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { usePatch } from '../../hooks/useFetch';
 
+interface DefaultTabProps {
+	menuArr: {
+		name: string;
+		index: number;
+	}[];
+	toggle?: boolean;
+	fontSize?: string; // 기본값 16
+	currentIdx: number;
+	purpose: string;
+	order?: boolean;
+	note?: boolean;
+	onClick?: React.MouseEventHandler<HTMLElement>;
+	orderId?: number;
+	itemOrderId?: number;
+}
+
+interface Toggle {
+	toggle?: boolean;
+}
+
+interface HighlightProps extends Toggle {
+	left: number;
+	width: number;
+}
+
 // currentIdx ==> 지금 선택한 탭의 index
 // highlightValue ==> 지금 선택한 탭의 left 위치 (0번째: 0, 1번째: 68, 2번째: 136 ... => 68씩 증가!)
 function DefaultTabButton({
 	menuArr,
-	delayButton,
 	toggle,
 	fontSize = '16px',
 	currentIdx,
-	highlightLeftValue,
+	purpose,
 	order,
 	note,
 	onClick,
 	orderId,
 	itemOrderId,
-}) {
+}: DefaultTabProps) {
 	const { mutate: postponeSub } = usePatch(
 		`/schedule/delay?orderId=${orderId}&delay=7&itemOrderId=${itemOrderId}`,
 	);
-	const highlightWidth = toggle ? 68 : 73;
+	const menuEl = useRef<HTMLUListElement>(null);
 	const { pathname } = useLocation();
-	const [currentTab, setCurrentTab] = useState(currentIdx || 0);
+	const [currentTab, setCurrentTab] = useState(currentIdx);
+
+	const isTwoButton = ['order', 'note'].includes(purpose);
+	const highlightValue = isTwoButton ? 68 : 73;
+
 	const [highlight, setHighlight] = useState({
-		left: highlightLeftValue || 0,
-		width: currentIdx === 3 ? 82 : highlightWidth,
+		left: currentTab * highlightValue,
+		width: currentTab === 3 ? 82 : highlightValue,
 	});
 
-	const [delayOpen, setDelayOpen] = useState(false);
-	const menuEl = useRef(null);
 	const navigate = useNavigate();
 
 	const splitedPath = pathname.split('/');
 	// /normal, /subscription을 제외한 path
 	const joinPath = splitedPath.slice(0, splitedPath.length - 1).join('/');
 
-	const handleBtnClick = useCallback((e) => {
-		const index = Number(e.target.id);
-		setCurrentTab(index);
+	const handleBtnClick: React.MouseEventHandler<HTMLLIElement> = useCallback(
+		(e) => {
+			const { id } = e.target as HTMLLIElement;
+			const index = Number(id);
+			setCurrentTab(index);
 
-		// 선택된 Tab Menu에 따라 하이라이트가 이동
-		const left = menuEl.current.children[index].offsetLeft;
-		const width = menuEl.current.children[index].offsetWidth;
+			// 선택된 Tab Menu에 따라 하이라이트가 이동
+			const left = (menuEl.current?.children[index] as HTMLElement).offsetLeft;
+			const width = (menuEl.current?.children[index] as HTMLElement)
+				.offsetWidth;
 
-		switch (index) {
-			case 0:
-				setHighlight({
-					left,
-					width,
-				});
-				break;
-			case 1:
-				setHighlight({
-					left,
-					width,
-				});
-				break;
-			case 2:
-				setHighlight({
-					left,
-					width,
-				});
-				break;
-			case 3:
-				setHighlight({
-					left,
-					width,
-				});
-				break;
-			default:
-				break;
-		}
-
-		if (onClick) {
-			onClick(e);
-		}
-
-		/*
-		! 위에 onClick 이거 뭐지? 싶으신 분들 ~~!!
-	  * 토글을 눌렀을 때 실행되었으면 하는 함수를 onClick으로 넘겨주시면 됩니다 (없으면 X)
-		<DayShowTab onClick={handlePeriodClick}>
-
-		! 만약 유저가 클릭한 기간이 필요하시다면 e.target.innerText로 꺼내다 쓰시면 됩니다!
-		* 사용예시 * 제 경우에는 이렇게 사용하는데 그냥 참고만 하세요!
-		const handlePeriodClick = useCallback((e) => {
-			setOrdertList({
-				...orderList,
-				period: e.target.innerText.replace('일', ''),      ==> 30, 60, 90 ...
+			setHighlight({
+				left,
+				width,
 			});
+
+			if (onClick) {
+				onClick(e);
+			}
+
+			// 일반/정기 토글 클릭 시 해당 페이지의 일반/정기 페이지로 이동
+			if (order) {
+				if (index === 1) {
+					navigate(`${joinPath}/subscription`);
+				} else if (index === 0) {
+					navigate(`${joinPath}/normal`);
+				}
+			}
+
+			// 리뷰/토크 토글 클릭 시 해당 페이지의 리뷰/토크 페이지로 이동
+			if (note) {
+				if (index === 1) {
+					navigate(`${joinPath}/talk`);
+				} else if (index === 0) {
+					navigate(`${joinPath}/review`);
+				}
+			}
 		},
-		[orderList.period],
+		[highlight],
 	);
-		*/
 
-		// 일반/정기 토글 클릭 시 해당 페이지의 일반/정기 페이지로 이동
-		if (order) {
-			if (index === 1) {
-				navigate(`${joinPath}/subscription`);
-			} else if (index === 0) {
-				navigate(`${joinPath}/normal`);
-			}
-		}
-
-		// 리뷰/토크 토글 클릭 시 해당 페이지의 리뷰/토크 페이지로 이동
-		if (note) {
-			if (index === 1) {
-				navigate(`${joinPath}/talk`);
-			} else if (index === 0) {
-				navigate(`${joinPath}/review`);
-			}
-		}
-	}, []);
-
-	const delayButtonClick = useCallback(() => {
-		postponeSub();
-		setDelayOpen((prev) => !prev);
-		toast.success('주기를 미뤘습니다!');
-	});
+	const delayButtonClick: React.MouseEventHandler<HTMLLIElement> =
+		useCallback(() => {
+			postponeSub();
+			toast.success('주기를 미뤘습니다!');
+		}, []);
 
 	return (
 		<TabContainer toggle={toggle}>
@@ -132,7 +122,7 @@ function DefaultTabButton({
 				{menuArr.map(({ name, index }) => (
 					<li
 						key={`${index}-${name}`}
-						id={index}
+						id={`${index}`}
 						className={currentTab === index ? 'submenu focused' : 'submenu'}
 						onClick={handleBtnClick}
 						role="presentation"
@@ -140,12 +130,8 @@ function DefaultTabButton({
 						{name}
 					</li>
 				))}
-				{delayButton && (
-					<li
-						className={`submenu red ${delayOpen ? 'open' : ''}`}
-						onClick={delayButtonClick}
-						role="presentation"
-					>
+				{purpose === 'period-change' && (
+					<li className="delay" onClick={delayButtonClick} role="none">
 						미루기
 					</li>
 				)}
@@ -156,7 +142,7 @@ function DefaultTabButton({
 
 export default React.memo(DefaultTabButton);
 
-const TabContainer = styled.div`
+const TabContainer = styled.div<Toggle>`
 	background-color: ${({ toggle }) => (toggle ? 'white' : 'var(--gray-100)')};
 	position: relative;
 	width: fit-content;
@@ -166,7 +152,7 @@ const TabContainer = styled.div`
 	border-radius: 50px;
 `;
 
-const TabMenu = styled.ul`
+const TabMenu = styled.ul<{ fontSize: string }>`
 	display: flex;
 	justify-items: center;
 	align-items: center;
@@ -200,7 +186,7 @@ const TabMenu = styled.ul`
 	}
 `;
 
-const Highlight = styled.span`
+const Highlight = styled.span<HighlightProps>`
 	background: ${({ toggle }) => (toggle ? 'var(--gray-100)' : 'white')};
 	position: absolute;
 	width: ${(props) => props.width}px;

@@ -6,7 +6,7 @@ import WishlistButton from '../Buttons/WishlistButton';
 import Tag from '../Etc/Tag';
 import { BlackButton, WhiteButton } from '../Buttons/BlackButton';
 import CounterBtn from '../Buttons/CounterButton';
-import { DayShowTab } from '../Tabs/TabButtons';
+import { PeriodChoiceTab } from '../Tabs/ToggleTabs';
 import { LongTextStar } from '../Stars/TextStar';
 import Price, { SummaryPrice } from '../Etc/Price';
 import CartModal from '../Modals/CartModal';
@@ -175,7 +175,7 @@ function Summary({
 				{showOptions && (
 					<HiddenContainer>
 						{orderList.subscription && (
-							<DayShowTab onClick={handlePeriodClick} fonSize="14px" />
+							<PeriodChoiceTab onClick={handlePeriodClick} fontSize="14px" />
 						)}
 						<CountBox>
 							<QuantityTextBox>수량</QuantityTextBox>

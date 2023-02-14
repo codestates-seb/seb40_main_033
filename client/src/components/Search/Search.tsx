@@ -97,7 +97,7 @@ const Box = styled.div<{ isActive: boolean }>`
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	position: relative;
+	position: absolute;
 `;
 
 const showSearchBar = keyframes`
