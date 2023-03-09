@@ -10,6 +10,7 @@ export interface DefaultFormProps extends BasicFormProps {
 	height: number;
 	target: string;
 }
+
 export interface TalkFormProps extends BasicFormProps {
 	placeholder: string;
 }
