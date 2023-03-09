@@ -1,3 +1,4 @@
+import { CustomArrowProps } from 'react-slick';
 import { NutritionFact } from './itemList.type';
 
 export interface IMainPageItem {
@@ -30,6 +31,15 @@ export interface IMainPage {
 	};
 }
 
-// export interface RootObject {
-// 	data: IMainPage;
-// }
+export interface ICustomArrowProps extends CustomArrowProps {
+	left?: boolean;
+	right?: boolean;
+}
+
+export interface IMainCaroucelInfo {
+	type: string;
+	title: string[];
+	description: string[];
+	color: string;
+	link: string;
+}
