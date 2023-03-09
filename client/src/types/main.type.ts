@@ -1,6 +1,6 @@
 import { NutritionFact } from './itemList.type';
 
-export interface IMainPageItem {
+export interface CardItem {
 	itemId: number;
 	thumbnail: string;
 	title: string;
@@ -16,7 +16,7 @@ export interface IMainPageItem {
 }
 
 export interface ISection {
-	data: IMainPageItem[];
+	data: CardItem[];
 	pageInfo?: null;
 }
 

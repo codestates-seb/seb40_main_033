@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import SmallListCards from '../components/Lists/SmallListCards';
+import SmallListCards from '../components/Cards/SmallListCard';
 import PageTitle from '../components/Etc/PageTitle';
 import paramsMaker from '../utils/makeParams';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
