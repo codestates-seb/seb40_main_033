@@ -2,10 +2,10 @@
 import styled from 'styled-components';
 import CardCaroucel from '../../components/Caroucel/CardCaroucel';
 import RecommendedTitle from '../../components/Etc/RecommendedTitle';
-import { IMainPageItem } from '../../types/main.type';
+import { CardItem } from '../../types/main.type';
 
 interface IMainSection {
-	items: IMainPageItem[];
+	items: CardItem[];
 	sectionTitle: string[];
 }
 

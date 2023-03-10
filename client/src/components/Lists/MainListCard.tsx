@@ -1,11 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { IMainPageItem } from '../../types/main.type';
+import { CardItem } from '../../types/main.type';
 import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
 
-function MainListCard({ item }: { item: IMainPageItem }) {
+function MainListCard({ item }: { item: CardItem }) {
 	const navigate = useNavigate();
 
 	const handleItemClick = () => {

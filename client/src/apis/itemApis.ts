@@ -1,7 +1,7 @@
 import {
-	IFetchCathgoryItems,
-	IFetchSearchItems,
-	IInfiniteQueryPromise,
+	FetchCathgoryItems,
+	FetchSearchItems,
+	InfiniteQueryPromise,
 } from '../types/itemList.type';
 import axiosInstance from '../utils/axiosInstance';
 
@@ -10,7 +10,7 @@ export const fetchCathgoryItems = async ({
 	path,
 	query,
 	pageParam,
-}: IFetchCathgoryItems): Promise<IInfiniteQueryPromise> => {
+}: FetchCathgoryItems): Promise<InfiniteQueryPromise> => {
 	const res = await axiosInstance.get(
 		`/category${path}?categoryName=${category}${query}&page=${pageParam}&size=12`,
 	);
@@ -29,7 +29,7 @@ export const fetchSearchItems = async ({
 	path,
 	query,
 	pageParam,
-}: IFetchSearchItems): Promise<IInfiniteQueryPromise> => {
+}: FetchSearchItems): Promise<InfiniteQueryPromise> => {
 	const res = await axiosInstance.get(
 		`/search${path}?keyword=${keyword}${query}&page=${pageParam}&size=12`,
 	);

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { IMainCaroucelInfo } from '../../types/main.type';
+import { MainCaroucelInfo } from '../../types/main.type';
 import { ColoredButton } from '../Buttons/PurpleButton';
 
 function CaroucelInfo({
@@ -9,7 +9,7 @@ function CaroucelInfo({
 	description,
 	color,
 	link,
-}: IMainCaroucelInfo) {
+}: MainCaroucelInfo) {
 	return (
 		<InfoContainer>
 			<Type>{type}</Type>

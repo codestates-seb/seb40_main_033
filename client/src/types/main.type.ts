@@ -1,7 +1,7 @@
 import { CustomArrowProps } from 'react-slick';
 import { NutritionFact } from './itemList.type';
 
-export interface IMainPageItem {
+export interface CardItem {
 	itemId: number;
 	thumbnail: string;
 	title: string;
@@ -16,27 +16,27 @@ export interface IMainPageItem {
 	discountRate: number;
 }
 
-export interface ISection {
-	data: IMainPageItem[];
+export interface Section {
+	data: CardItem[];
 	pageInfo?: null;
 }
 
-export interface IMainPage {
+export interface MainPage {
 	data: {
 		data: {
-			bestItem: ISection;
-			saleItem: ISection;
-			mdPickItem: ISection;
+			bestItem: Section;
+			saleItem: Section;
+			mdPickItem: Section;
 		};
 	};
 }
 
-export interface ICustomArrowProps extends CustomArrowProps {
+export interface CustomArrow extends CustomArrowProps {
 	left?: boolean;
 	right?: boolean;
 }
 
-export interface IMainCaroucelInfo {
+export interface MainCaroucelInfo {
 	type: string;
 	title: string[];
 	description: string[];
