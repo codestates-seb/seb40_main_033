@@ -1,16 +1,17 @@
-/* eslint-disable no-promise-executor-return */
+import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { fetchLogIn } from '../apis/userApis';
 import { login } from '../redux/slice/userSlice';
+import { LogInForm } from '../types/auth.type';
 
 export default function useLogIn() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
-		(form) => fetchLogIn(form),
+		(form: LogInForm) => fetchLogIn(form),
 		{
 			onSuccess: async ({ accessToken, refreshToken, userId }, { email }) => {
 				dispatch(login({ accessToken, refreshToken, email, userId }));
@@ -18,8 +19,9 @@ export default function useLogIn() {
 				// 다른 페이지로 이동 후 뒤로가기 시 로그인 페이지로 이동하지 않도록
 				navigate('/', { replace: true });
 			},
-			onError: async (data) => {
+			onError: async (data: AxiosError<{ message: string }>) => {
 				const { response } = data;
+				if (!response) return;
 				const { status, data: errorData } = response;
 
 				if (status === 401) {

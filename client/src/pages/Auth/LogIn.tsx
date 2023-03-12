@@ -12,11 +12,16 @@ import {
 import SocialLogIn from './SocialLogIn';
 import { Logo } from '../../assets/Icons';
 
+interface HandleLogIn {
+	이메일: string;
+	비밀번호: string;
+}
+
 // 로그인 페이지
 function LogIn() {
 	const { mutate } = useLogIn();
 
-	const handleLogIn = (data) => {
+	const handleLogIn = (data: HandleLogIn) => {
 		mutate({ email: data.이메일, password: data.비밀번호 });
 	};
 
