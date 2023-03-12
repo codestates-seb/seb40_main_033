@@ -8,9 +8,12 @@ export interface User {
 	userId?: string;
 }
 
-export interface UserFormValues {
+export interface LogInFormValue {
 	이메일: string;
 	비밀번호: string;
+}
+
+export interface UserFormValues extends LogInFormValue {
 	비밀번호확인: string;
 	닉네임: string;
 	주소: string;
@@ -20,10 +23,14 @@ export interface UserFormValues {
 	이름: string;
 }
 
+export type FormValue = LogInFormValue | UserFormValues;
+
+export const isSignUp = (form: FormValue): form is UserFormValues =>
+	'비밀번호확인' in form;
+
 export interface AuthFormProps {
 	signUp?: boolean;
-	handleSignUp?: (data: UserFormValues) => void;
-	handleLogIn?: (data: UserFormValues) => void;
+	handleSubmitForm: (data: FormValue) => void;
 	email?: string;
 }
 

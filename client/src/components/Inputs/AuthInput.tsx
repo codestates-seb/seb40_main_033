@@ -1,6 +1,52 @@
 /* eslint-disable no-param-reassign */
 import { useEffect, useState } from 'react';
+import { ChangeHandler } from 'react-hook-form/dist/types';
 import styled, { css } from 'styled-components';
+
+interface AuthInputProps {
+	refAddress: React.MutableRefObject<HTMLInputElement | undefined>;
+	onKeyDown: (
+		e: React.KeyboardEvent<HTMLInputElement>,
+		setShowError: React.Dispatch<React.SetStateAction<boolean>>,
+	) => void;
+	label:
+		| '상세주소'
+		| '주소'
+		| '이름'
+		| '닉네임'
+		| '비밀번호'
+		| '비밀번호확인'
+		| '이메일'
+		| '전화번호';
+	refHook: (e: HTMLInputElement) => void;
+	register: RestHookForm;
+	watch: {
+		이메일: string;
+		비밀번호: string;
+		닉네임: string;
+		이름: string;
+		전화번호: string;
+		주소: string;
+		상세주소: string;
+		비밀번호확인: string;
+	};
+	errors?: string;
+	onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+	readonly?: boolean;
+}
+
+interface RestHookForm {
+	onChange: ChangeHandler;
+	onBlur: ChangeHandler;
+	name: string;
+	min?: string | number | undefined;
+	max?: string | number | undefined;
+	maxLength?: number | undefined;
+	minLength?: number | undefined;
+	pattern?: string | undefined;
+	required?: boolean | undefined;
+	disabled?: boolean | undefined;
+}
 
 export default function AuthInput({
 	refAddress,
@@ -8,15 +54,11 @@ export default function AuthInput({
 	label,
 	register,
 	refHook,
-	watch = {
-		이메일: '',
-		비밀번호: '',
-		닉네임: '',
-	},
+	watch,
 	errors,
 	onFocus,
 	readonly,
-}) {
+}: AuthInputProps) {
 	const [showError, setShowError] = useState(false);
 
 	useEffect(() => {
@@ -36,10 +78,11 @@ export default function AuthInput({
 				{...register}
 				name={label}
 				ref={(e) => {
+					if (!e) return;
 					refHook(e);
 					refAddress.current = e;
 				}}
-				className={showError ? 'showError' : null}
+				className={showError ? 'showError' : ''}
 				onFocus={onFocus}
 				readOnly={readonly}
 			/>
@@ -47,12 +90,12 @@ export default function AuthInput({
 				{label}
 			</label>
 			<EnterDiv>⏎</EnterDiv>
-			<ErrorDiv className={showError ? 'showError' : null}>{errors}</ErrorDiv>
+			<ErrorDiv className={showError ? 'showError' : ''}>{errors}</ErrorDiv>
 		</InputBox>
 	);
 }
 
-const InputBox = styled.div`
+const InputBox = styled.div<{ isFilled: boolean }>`
 	width: 100%;
 	position: relative;
 	font-size: 18px;
