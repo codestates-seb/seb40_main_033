@@ -22,7 +22,7 @@ function Home() {
 		const accessToken = url.searchParams.get('access_token');
 		const refreshToken = url.searchParams.get('refresh_token');
 		const userId = url.searchParams.get('userId');
-		if (accessToken) {
+		if (accessToken && userId) {
 			dispatch(login({ accessToken, refreshToken, isSocial: true, userId }));
 		}
 	}, []);

@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import styled, { css } from 'styled-components';
 import { IoIosArrowBack } from 'react-icons/io';
-import { Price, SummaryPrice } from '../../types/price.type';
+import { PriceProps, SummaryPriceProps } from '../../types/price.type';
 
 // nowPrice가 언제나 판매가입니다!
 // 할인상품일 경우 nowPrice: 할인적용가, beforePrice: 할인 전 원래가격
@@ -16,7 +16,7 @@ function Price({
 	minus, // 앞에 -가 붙는 지 (결제 정보!)
 	fontSize,
 	fontWeight,
-}: Price) {
+}: PriceProps) {
 	return (
 		<PriceContainer
 			className={minus ? 'minus' : ''}
@@ -52,7 +52,7 @@ export function SummaryPrice({
 	discountRate, // 할인율이 ~%로 문자열로 들어와야 합니다.
 	fontSize,
 	fontWeight,
-}: SummaryPrice) {
+}: SummaryPriceProps) {
 	return (
 		<PriceContainer
 			className="summary"

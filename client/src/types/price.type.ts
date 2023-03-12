@@ -1,4 +1,4 @@
-export interface SummaryPrice {
+export interface SummaryPriceProps {
 	nowPrice: number;
 	beforePrice?: number;
 	discountRate?: number;
@@ -6,7 +6,7 @@ export interface SummaryPrice {
 	fontWeight?: string;
 }
 
-export interface Price extends SummaryPrice {
+export interface PriceProps extends SummaryPriceProps {
 	isTotal?: boolean;
 	quantity?: number;
 	minus?: boolean;
