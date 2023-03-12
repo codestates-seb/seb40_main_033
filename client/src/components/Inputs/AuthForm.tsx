@@ -1,5 +1,4 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable no-nested-ternary */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -11,9 +10,9 @@ import AddressModal from '../Modals/AddressModal';
 import {
 	AuthFormProps,
 	FormValue,
-	isSignUp,
 	UserFormValues,
 } from '../../types/auth.type';
+import isSignUp from '../../utils/typePredicates';
 
 export function AuthForm({ signUp, handleSubmitForm, email }: AuthFormProps) {
 	const [current, setCurrent] = useState(1);

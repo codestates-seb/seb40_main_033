@@ -25,9 +25,6 @@ export interface UserFormValues extends LogInFormValue {
 
 export type FormValue = LogInFormValue | UserFormValues;
 
-export const isSignUp = (form: FormValue): form is UserFormValues =>
-	'비밀번호확인' in form;
-
 export interface AuthFormProps {
 	signUp?: boolean;
 	handleSubmitForm: (data: FormValue) => void;
