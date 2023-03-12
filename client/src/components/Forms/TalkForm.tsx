@@ -1,7 +1,13 @@
 // 상세페이지의 talk 작성 form
 import DefalutForm from './DefalutForm';
+import { TalkFormProps } from '../../types/form.type';
 
-function TalkForm({ placeholder, content, handleContent, handleSubmit }) {
+function TalkForm({
+	placeholder,
+	content,
+	handleContent,
+	handleSubmit,
+}: TalkFormProps) {
 	return (
 		<DefalutForm
 			placeholder={placeholder || '보고 있는 상품에 대한 글을 남겨주세요.'}

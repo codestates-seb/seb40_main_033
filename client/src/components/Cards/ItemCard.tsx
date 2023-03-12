@@ -1,11 +1,19 @@
 /* eslint-disable no-nested-ternary */
-import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { CardItem } from '../../types/main.type';
+import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
+import WishlistButton from '../Buttons/WishlistButton';
+import { CardItem } from '../../types/main.type';
 
-function MainListCard({ item }: { item: CardItem }) {
+interface CardItemProps {
+	item: CardItem;
+	wishBtn?: boolean;
+	main?: boolean;
+	fontSize: string;
+}
+
+function ItemCard({ item, wishBtn, main, fontSize }: CardItemProps) {
 	const navigate = useNavigate();
 
 	const handleItemClick = () => {
@@ -16,6 +24,11 @@ function MainListCard({ item }: { item: CardItem }) {
 		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
+					{wishBtn && (
+						<ContentContainer wishBtn>
+							<WishlistButton isChecked itemId={item.itemId} />
+						</ContentContainer>
+					)}
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
@@ -27,7 +40,7 @@ function MainListCard({ item }: { item: CardItem }) {
 								nowPrice={item.discountPrice}
 								beforePrice={item.price}
 								discountRate={item.discountRate}
-								fontSize="16px"
+								fontSize={fontSize}
 							/>
 						</NamePriceBox>
 					</ContentContainer>
@@ -39,7 +52,7 @@ function MainListCard({ item }: { item: CardItem }) {
 						<ShortTextStar
 							starAvg={item.starAvg}
 							reviewCount={item.reviewSize}
-							main="main"
+							{...(main ? { main: 'main' } : {})}
 						/>
 						<Ingredient>
 							{String(
@@ -60,6 +73,8 @@ const EntireContainer = styled.div`
 	cursor: pointer;
 	display: inline-flex;
 	position: relative;
+	margin-right: 20px; // 밑에 둘은 wishList 에서 카드간 간격
+	margin-bottom: 30px; // wishList 에서 카드간 간격
 	&:hover {
 		.hover {
 			opacity: 1;
@@ -83,12 +98,12 @@ const EntireContainer = styled.div`
 `;
 
 const DefaultContainer = styled.div<{ hover?: boolean }>`
-	width: 297px;
-	height: 469px;
+	width: 245px;
+	height: 387px;
 	border-radius: 10px;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	background-color: white;
-	box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
-	transition: 0.25s;
+	transition: 300ms;
 	${(props) =>
 		props.hover && // hover라는 프롭스가 들어간 디폴트 컨테이너
 		css`
@@ -102,17 +117,18 @@ const DefaultContainer = styled.div<{ hover?: boolean }>`
 			}
 		`}
 `;
-
 const ContentBox = styled.div`
+	width: 245px;
+	height: 387px;
 	display: flex;
 	flex-direction: column;
-	padding: 25px 25px 33px 25px;
+	padding: 24px 24px 33px 24px;
 `;
-
 const ContentContainer = styled.div<{
 	middle?: boolean;
 	bottom?: boolean;
 	star?: boolean;
+	wishBtn?: boolean;
 }>`
 	display: flex;
 	flex-direction: row-reverse;
@@ -120,10 +136,11 @@ const ContentContainer = styled.div<{
 		props.middle
 			? css`
 					justify-content: center;
-					padding-bottom: 46px;
+					padding-bottom: 26px;
 			  `
 			: props.bottom
 			? css`
+					margin-top: 12px;
 					z-index: 1;
 					flex-direction: column;
 					justify-content: none;
@@ -131,28 +148,31 @@ const ContentContainer = styled.div<{
 			: props.star
 			? css`
 					flex-direction: column;
-					margin-top: 5px;
+					margin-top: 6.5px;
+			  `
+			: props.wishBtn
+			? css`
+					position: absolute;
+					left: 196px;
+					top: 29px;
 			  `
 			: null}
 
 	.brandName {
+		font-size: 13px;
 		color: var(--gray-400);
-		font-size: 15px;
 		padding-bottom: 10.5px;
 	}
 	.itemName {
 		font-weight: var(--extraBold);
-		font-size: 20px;
-		line-height: 1.1;
+		font-size: 16px;
 		word-break: keep-all;
+		line-height: 1.1;
 	}
-`;
-
-const NamePriceBox = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	height: 85px;
+	.itemPrice {
+		font-size: 16px;
+		font-weight: var(--regular);
+	}
 `;
 
 const ItemImg = styled.img`
@@ -160,24 +180,30 @@ const ItemImg = styled.img`
 	height: 100%;
 `;
 
+const NamePriceBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 66px;
+`;
+
 const ItemDescription = styled.p`
+	width: 100%;
 	color: white;
-	font-size: 18px;
+	font-size: 15px;
 	line-height: 1.4;
 	letter-spacing: -0.04em;
+	margin-top: 50px;
 	word-break: keep-all;
-	margin-top: 65px;
-	text-align: left;
-	width: 100%;
 `;
 
 const Ingredient = styled.p`
 	display: flex;
 	color: var(--gray-200);
 	margin-top: 12px;
-	font-size: 14px;
 	line-height: 1.3;
 	word-break: keep-all;
+	font-size: 12px;
 `;
 
-export default MainListCard;
+export default ItemCard;

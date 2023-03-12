@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import WishListCards from '../../components/Lists/WishListCards';
+import WishListCards from '../../components/Cards/WishListCard';
 import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 

@@ -1,9 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { LetterButton } from '../Buttons/LetterButton';
 import { PurpleButton } from '../Buttons/PurpleButton';
+import { DefaultFormProps } from '../../types/form.type';
 
-function DefalutForm({
+interface InputProps {
+	height: number;
+	target: string;
+}
+
+function DefaultForm({
 	placeholder,
 	maxLength,
 	height,
@@ -11,7 +16,7 @@ function DefalutForm({
 	content,
 	handleContent,
 	handleSubmit,
-}) {
+}: DefaultFormProps) {
 	return (
 		<Form>
 			<Input
@@ -23,7 +28,7 @@ function DefalutForm({
 				target={target}
 			/>
 			<Count>{content && `${content.length}/${maxLength}`}</Count>
-			<BottomContainer>
+			<ButtonContainer>
 				{content?.length >= maxLength ? (
 					<ErrMessage>{maxLength}자 이상 입력하실 수 없습니다.</ErrMessage>
 				) : (
@@ -33,9 +38,7 @@ function DefalutForm({
 				)}
 				{target === '토크' ? (
 					<TalkSubmitBtn>
-						<LetterButton className="talk-submit" onClick={handleSubmit}>
-							작성완료
-						</LetterButton>
+						<LetterButton onClick={handleSubmit}>작성완료</LetterButton>
 					</TalkSubmitBtn>
 				) : (
 					<PurpleButton
@@ -47,7 +50,7 @@ function DefalutForm({
 						작성완료
 					</PurpleButton>
 				)}
-			</BottomContainer>
+			</ButtonContainer>
 		</Form>
 	);
 }
@@ -61,7 +64,7 @@ const Form = styled.div`
 `;
 
 // Message & Button 컨테이너
-const BottomContainer = styled.div`
+const ButtonContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
 	position: relative;
@@ -74,7 +77,7 @@ const TalkSubmitBtn = styled.div`
 	right: 8px;
 `;
 
-const Input = styled.textarea`
+const Input = styled.textarea<InputProps>`
 	width: 545px;
 	${({ height }) => css`
 		height: ${`${height}px`};
@@ -115,4 +118,4 @@ const InfoMessage = styled.div`
 	color: var(--gray-300);
 `;
 
-export default DefalutForm;
+export default DefaultForm;

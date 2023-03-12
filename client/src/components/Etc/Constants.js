@@ -105,3 +105,14 @@ export const CATEGORIES = [
 	'혈행개선',
 	'기타',
 ];
+
+export const MYPAGE_TAB = {
+	NAME: [
+		'회원정보',
+		'주문내역 조회',
+		'정기구독 관리',
+		'위시리스트',
+		'작성글 관리',
+	],
+	PATH: ['user-info', 'order/normal', 'sub-manage', 'wish', 'note/review'],
+};

@@ -1,17 +1,15 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { TempLogo } from '../../assets/Icons';
-import { ToggleTab } from '../Tabs/TabButtons';
+import { OrderToggleTab } from '../Tabs/ToggleTabs';
 import SortAndPriceFilter from '../Filters/SortAndPriceFilter';
 import Search from '../Search/Search';
 
 const togglePath = ['/cart/normal', '/cart/subscription'];
-const leftValueArr = [0, 68];
 
 function PageTitle({ title }: { title: string | null }) {
 	const { pathname } = useLocation();
 	const currentIdx = togglePath.indexOf(pathname);
-	const highlightLeftValue = leftValueArr[currentIdx];
 
 	// 일반/정기 토글이 장바구니 페이지에서만 보이도록
 	const showToggle = pathname.includes('/cart');
@@ -33,12 +31,7 @@ function PageTitle({ title }: { title: string | null }) {
 				)}
 			</TitleContainer>
 			<TabContainer>
-				{showToggle && (
-					<ToggleTab
-						currentIdx={currentIdx}
-						highlightLeftValue={highlightLeftValue}
-					/>
-				)}
+				{showToggle && <OrderToggleTab currentIdx={currentIdx} />}
 				{showBtn && <SortAndPriceFilter />}
 			</TabContainer>
 		</Container>
