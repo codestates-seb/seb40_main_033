@@ -3,8 +3,17 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
 import { ShortTextStar } from '../Stars/TextStar';
+import WishlistButton from '../Buttons/WishlistButton';
+import { CardItem } from '../../types/main.type';
 
-function SmallListCards({ item }) {
+interface CardItemProps {
+	item: CardItem;
+	wishBtn?: boolean;
+	main?: boolean;
+	fontSize: string;
+}
+
+function ItemCard({ item, wishBtn, main, fontSize }: CardItemProps) {
 	const navigate = useNavigate();
 
 	const handleItemClick = () => {
@@ -15,7 +24,11 @@ function SmallListCards({ item }) {
 		<EntireContainer>
 			<DefaultContainer>
 				<ContentBox>
-					<ContentContainer />
+					{wishBtn && (
+						<ContentContainer wishBtn>
+							<WishlistButton isChecked itemId={item.itemId} />
+						</ContentContainer>
+					)}
 					<ContentContainer middle>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
@@ -27,7 +40,7 @@ function SmallListCards({ item }) {
 								nowPrice={item.discountPrice}
 								beforePrice={item.price}
 								discountRate={item.discountRate}
-								fontSize="14px"
+								fontSize={fontSize}
 							/>
 						</NamePriceBox>
 					</ContentContainer>
@@ -39,6 +52,7 @@ function SmallListCards({ item }) {
 						<ShortTextStar
 							starAvg={item.starAvg}
 							reviewCount={item.reviewSize}
+							{...(main ? { main: 'main' } : {})}
 						/>
 						<Ingredient>
 							{String(
@@ -59,8 +73,8 @@ const EntireContainer = styled.div`
 	cursor: pointer;
 	display: inline-flex;
 	position: relative;
-	margin-right: 20px;
-	margin-bottom: 30px;
+	margin-right: 20px; // 밑에 둘은 wishList 에서 카드간 간격
+	margin-bottom: 30px; // wishList 에서 카드간 간격
 	&:hover {
 		.hover {
 			opacity: 1;
@@ -83,25 +97,25 @@ const EntireContainer = styled.div`
 	}
 `;
 
-const DefaultContainer = styled.div`
+const DefaultContainer = styled.div<{ hover?: boolean }>`
 	width: 245px;
 	height: 387px;
 	border-radius: 10px;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	background-color: white;
+	transition: 300ms;
 	${(props) =>
-		props.hover // hover라는 프롭스가 들어간 디폴트 컨테이너
-			? css`
-					position: absolute;
-					top: 0px;
-					background-color: rgba(0, 0, 0, 0.4);
-					backdrop-filter: blur(2px);
-					opacity: 0;
-					&:hover {
-						opacity: 1;
-					}
-			  `
-			: null}
+		props.hover && // hover라는 프롭스가 들어간 디폴트 컨테이너
+		css`
+			position: absolute;
+			top: 0px;
+			background-color: rgba(0, 0, 0, 0.4);
+			backdrop-filter: blur(2px);
+			opacity: 0;
+			&:hover {
+				opacity: 1;
+			}
+		`}
 `;
 const ContentBox = styled.div`
 	width: 245px;
@@ -110,7 +124,12 @@ const ContentBox = styled.div`
 	flex-direction: column;
 	padding: 24px 24px 33px 24px;
 `;
-const ContentContainer = styled.div`
+const ContentContainer = styled.div<{
+	middle?: boolean;
+	bottom?: boolean;
+	star?: boolean;
+	wishBtn?: boolean;
+}>`
 	display: flex;
 	flex-direction: row-reverse;
 	${(props) =>
@@ -187,4 +206,4 @@ const Ingredient = styled.p`
 	font-size: 12px;
 `;
 
-export default SmallListCards;
+export default ItemCard;

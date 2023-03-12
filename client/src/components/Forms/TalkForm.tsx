@@ -1,10 +1,7 @@
 // 상세페이지의 talk 작성 form
 import DefalutForm from './DefalutForm';
-import { BasicFormProps } from '../../types/form.type';
+import { TalkFormProps } from '../../types/form.type';
 
-interface TalkFormProps extends BasicFormProps {
-	placeholder: string;
-}
 function TalkForm({
 	placeholder,
 	content,

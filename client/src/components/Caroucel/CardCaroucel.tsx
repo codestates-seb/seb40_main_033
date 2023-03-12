@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import './slick.css';
 import './slick-theme.css';
 import { IoIosArrowBack } from 'react-icons/io';
-import MainListCard from '../Lists/MainListCard';
-import { ICustomArrowProps, IMainPageItem } from '../../types/main.type';
+import { ICustomArrowProps, CardItem } from '../../types/main.type';
+import MainListCard from '../Cards/MainListCard';
 
 const ArrowButton = styled.button<ICustomArrowProps>`
 	width: 40px;
@@ -52,7 +52,7 @@ const settings: Settings = {
 	),
 };
 
-function CardCaroucel({ items }: { items: IMainPageItem[] }) {
+function CardCaroucel({ items }: { items: CardItem[] }) {
 	return (
 		<SlideContainer>
 			<Slider {...settings}>
