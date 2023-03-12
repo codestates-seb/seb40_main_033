@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { IMainCaroucelInfo } from '../../types/main.type';
 import { ColoredButton } from '../Buttons/PurpleButton';
 
-function CaroucelInfo({ type, title, description, color, link }) {
+function CaroucelInfo({
+	type,
+	title,
+	description,
+	color,
+	link,
+}: IMainCaroucelInfo) {
 	return (
 		<InfoContainer>
 			<Type>{type}</Type>
@@ -20,7 +27,7 @@ function CaroucelInfo({ type, title, description, color, link }) {
 			</DescriptionBox>
 			<Link to={link}>
 				<ColoredButton
-					type="submit"
+					// type="submit"
 					width="110px"
 					height="35px"
 					bgColor={color}

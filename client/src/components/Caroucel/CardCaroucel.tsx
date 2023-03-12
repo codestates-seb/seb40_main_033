@@ -1,12 +1,12 @@
-import Slider from 'react-slick';
+import Slider, { Settings } from 'react-slick';
 import styled from 'styled-components';
 import './slick.css';
 import './slick-theme.css';
 import { IoIosArrowBack } from 'react-icons/io';
-import { CardItem } from '../../types/main.type';
+import { ICustomArrowProps, CardItem } from '../../types/main.type';
 import MainListCard from '../Cards/MainListCard';
 
-const ArrowButton = styled.button<{ right?: boolean; left?: boolean }>`
+const ArrowButton = styled.button<ICustomArrowProps>`
 	width: 40px;
 	height: 40px;
 	background-color: white;
@@ -35,7 +35,7 @@ const ArrowButton = styled.button<{ right?: boolean; left?: boolean }>`
 	}
 `;
 
-const settings = {
+const settings: Settings = {
 	infinite: false,
 	speed: 500,
 	slidesToShow: 3,
