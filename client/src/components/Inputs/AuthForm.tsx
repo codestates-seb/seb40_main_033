@@ -9,10 +9,9 @@ import { PurpleButton } from '../Buttons/PurpleButton';
 import AddressModal from '../Modals/AddressModal';
 import {
 	AuthFormProps,
-	FormValue,
-	UserFormValues,
+	AuthFormValues,
+	SignUpFormValues,
 } from '../../types/auth.type';
-import isSignUp from '../../utils/typePredicates';
 
 export function AuthForm({ signUp, handleSubmitForm, email }: AuthFormProps) {
 	const [current, setCurrent] = useState(1);
@@ -33,7 +32,7 @@ export function AuthForm({ signUp, handleSubmitForm, email }: AuthFormProps) {
 		formState: { errors },
 		setValue,
 		setFocus,
-	} = useForm<UserFormValues>({
+	} = useForm<SignUpFormValues>({
 		mode: 'onChange',
 	});
 
@@ -195,12 +194,8 @@ export function AuthForm({ signUp, handleSubmitForm, email }: AuthFormProps) {
 	}, []);
 
 	// submit 되면 실행되는 함수.
-	const onValid = (data: FormValue) => {
-		if (isSignUp(data)) {
-			handleSubmitForm(data);
-		} else {
-			handleSubmitForm(data);
-		}
+	const onValid = (data: AuthFormValues) => {
+		handleSubmitForm(data);
 	};
 
 	return (

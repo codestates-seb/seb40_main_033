@@ -10,12 +10,12 @@ export interface User {
 	userId?: string;
 }
 
-export interface LogInFormValue {
+export interface LogInFormValues {
 	이메일: string;
 	비밀번호: string;
 }
 
-export interface UserFormValues extends LogInFormValue {
+export interface SignUpFormValues extends LogInFormValues {
 	비밀번호확인: string;
 	닉네임: string;
 	주소: string;
@@ -25,11 +25,11 @@ export interface UserFormValues extends LogInFormValue {
 	이름: string;
 }
 
-export type FormValue = LogInFormValue | UserFormValues;
+export type AuthFormValues = LogInFormValues | SignUpFormValues;
 
 export interface AuthFormProps {
 	signUp?: boolean;
-	handleSubmitForm: (data: FormValue) => void;
+	handleSubmitForm: (data: AuthFormValues) => void;
 	email?: string;
 }
 

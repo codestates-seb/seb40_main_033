@@ -11,13 +11,13 @@ import {
 } from './SignUp';
 import SocialLogIn from './SocialLogIn';
 import { Logo } from '../../assets/Icons';
-import { LogInFormValue } from '../../types/auth.type';
+import { LogInFormValues } from '../../types/auth.type';
 
 // 로그인 페이지
 function LogIn() {
 	const { mutate } = useLogIn();
 
-	const handleLogIn = (data: LogInFormValue) => {
+	const handleLogIn = (data: LogInFormValues) => {
 		mutate({ email: data.이메일, password: data.비밀번호 });
 	};
 

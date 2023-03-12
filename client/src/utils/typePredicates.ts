@@ -1,6 +1,13 @@
-import { FormValue, UserFormValues } from '../types/auth.type';
+import {
+	AuthFormValues,
+	LogInFormValues,
+	SignUpFormValues,
+} from '../types/auth.type';
 
-const isSignUp = (form: FormValue): form is UserFormValues =>
+const isSignUp = (form: AuthFormValues): form is SignUpFormValues =>
 	'비밀번호확인' in form;
 
-export default isSignUp;
+const isLogIn = (form: AuthFormValues): form is LogInFormValues =>
+	!('비밀번호확인' in form);
+
+export { isSignUp, isLogIn };

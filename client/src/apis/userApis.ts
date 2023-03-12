@@ -1,4 +1,4 @@
-import { LogInForm, UserFormValues } from '../types/auth.type';
+import { LogInForm, SignUpFormValues } from '../types/auth.type';
 import axiosInstance from '../utils/axiosInstance';
 
 export const fetchSignUp = async ({
@@ -9,7 +9,7 @@ export const fetchSignUp = async ({
 	전화번호,
 	이메일,
 	비밀번호,
-}: UserFormValues) => {
+}: SignUpFormValues) => {
 	const { data } = await axiosInstance.post('/users', {
 		displayName: 닉네임,
 		address: 주소,
@@ -29,7 +29,7 @@ export const fetchMoreInfo = async ({
 	이름,
 	전화번호,
 	이메일,
-}: UserFormValues) => {
+}: SignUpFormValues) => {
 	const { data } = await axiosInstance.post('/users/more-info', {
 		email: 이메일,
 		displayName: 닉네임,

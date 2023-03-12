@@ -9,8 +9,8 @@ import { AuthForm } from '../../components/Inputs/AuthForm';
 import { fetchMoreInfo, fetchSignUp } from '../../apis/userApis';
 import { login } from '../../redux/slice/userSlice';
 import { Logo } from '../../assets/Icons';
-import { FormValue, UserFormValues } from '../../types/auth.type';
-import isSignUp from '../../utils/typePredicates';
+import { AuthFormValues, SignUpFormValues } from '../../types/auth.type';
+import { isSignUp } from '../../utils/typePredicates';
 
 // 회원가입 페이지
 function SignUp() {
@@ -20,7 +20,7 @@ function SignUp() {
 	const dispatch = useDispatch();
 
 	const { mutate } = useMutation(
-		(form: UserFormValues) =>
+		(form: SignUpFormValues) =>
 			emailParams ? fetchMoreInfo(form) : fetchSignUp(form),
 		{
 			onSuccess: async (_, { 이메일: email }) => {
@@ -37,7 +37,7 @@ function SignUp() {
 		},
 	);
 
-	const handleSignUp = (data: FormValue) => {
+	const handleSignUp = (data: AuthFormValues) => {
 		if (isSignUp(data)) mutate(data);
 	};
 
