@@ -1,6 +1,6 @@
-/* eslint-disable no-param-reassign */
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { AuthInputProps } from '../../types/auth.type';
 
 export default function AuthInput({
 	refAddress,
@@ -8,15 +8,11 @@ export default function AuthInput({
 	label,
 	register,
 	refHook,
-	watch = {
-		이메일: '',
-		비밀번호: '',
-		닉네임: '',
-	},
+	watch,
 	errors,
 	onFocus,
 	readonly,
-}) {
+}: AuthInputProps) {
 	const [showError, setShowError] = useState(false);
 
 	useEffect(() => {
@@ -36,10 +32,11 @@ export default function AuthInput({
 				{...register}
 				name={label}
 				ref={(e) => {
+					if (!e) return;
 					refHook(e);
 					refAddress.current = e;
 				}}
-				className={showError ? 'showError' : null}
+				className={showError ? 'showError' : ''}
 				onFocus={onFocus}
 				readOnly={readonly}
 			/>
@@ -47,12 +44,12 @@ export default function AuthInput({
 				{label}
 			</label>
 			<EnterDiv>⏎</EnterDiv>
-			<ErrorDiv className={showError ? 'showError' : null}>{errors}</ErrorDiv>
+			<ErrorDiv className={showError ? 'showError' : ''}>{errors}</ErrorDiv>
 		</InputBox>
 	);
 }
 
-const InputBox = styled.div`
+const InputBox = styled.div<{ isFilled: boolean }>`
 	width: 100%;
 	position: relative;
 	font-size: 18px;

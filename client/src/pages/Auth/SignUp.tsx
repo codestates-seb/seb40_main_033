@@ -1,40 +1,44 @@
-/* eslint-disable no-shadow */
 import styled from 'styled-components';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
+import { AxiosError } from 'axios';
 import AuthTitle from '../../components/Etc/AuthTitle';
 import { AuthForm } from '../../components/Inputs/AuthForm';
 import { fetchMoreInfo, fetchSignUp } from '../../apis/userApis';
 import { login } from '../../redux/slice/userSlice';
 import { Logo } from '../../assets/Icons';
+import { AuthFormValues, SignUpFormValues } from '../../types/auth.type';
+import { isSignUp } from '../../utils/typePredicates';
 
 // 회원가입 페이지
 function SignUp() {
 	const [searchParams] = useSearchParams();
-	const email = searchParams.get('email') || '';
+	const emailParams = searchParams.get('email') || '';
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const { mutate } = useMutation(
-		(form) => (email ? fetchMoreInfo(form) : fetchSignUp(form)),
+		(form: SignUpFormValues) =>
+			emailParams ? fetchMoreInfo(form) : fetchSignUp(form),
 		{
-			onSuccess: async (_, { email }) => {
+			onSuccess: async (_, { 이메일: email }) => {
 				toast.success('회원가입을 축하합니다 !');
 				dispatch(login({ email }));
 				navigate('/login');
 			},
-			onError: async (data) => {
+			onError: async (data: AxiosError<{ message: string }>) => {
 				const { response } = data;
+				if (!response) return;
 				const { data: errorData } = response;
 				toast.error(errorData.message);
 			},
 		},
 	);
 
-	const handleSignUp = (data) => {
-		mutate(data);
+	const handleSignUp = (data: AuthFormValues) => {
+		if (isSignUp(data)) mutate(data);
 	};
 
 	return (
@@ -44,7 +48,7 @@ function SignUp() {
 					<Logo />
 				</Link>
 				<AuthTitle title="회원가입" />
-				<AuthForm signUp handleSignUp={handleSignUp} email={email} />
+				<AuthForm signUp handleSubmitForm={handleSignUp} email={emailParams} />
 				<LinkContainer>
 					이미 계정이 있으신가요? <Link to="/login">로그인</Link>
 				</LinkContainer>

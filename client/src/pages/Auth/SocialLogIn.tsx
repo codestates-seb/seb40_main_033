@@ -25,7 +25,7 @@ const SSection = styled.section`
 	width: 166px;
 `;
 
-const SocialButton = styled.button`
+const SocialButton = styled.button<{ socialType: 'kakao' | 'google' }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -36,8 +36,8 @@ const SocialButton = styled.button`
 	border-radius: 50px;
 	border: none;
 	background-color: white;
-	${({ kakao }) =>
-		kakao &&
+	${({ socialType }) =>
+		socialType === 'kakao' &&
 		`background-color: #FEE500;
   	padding-right: 10px;
   `}
@@ -66,17 +66,23 @@ const SocialButton = styled.button`
 export default function SocialLogIn() {
 	const URI =
 		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization';
-	const loginRequestHandler = (type) => {
-		window.location.assign((window.location.href = `${URI}/${type}`));
+	const loginRequestHandler = (socialType: 'google' | 'kakao') => {
+		window.location.assign((window.location.href = `${URI}/${socialType}`));
 	};
 
 	return (
 		<SSection>
-			<SocialButton onClick={() => loginRequestHandler('google')} google>
+			<SocialButton
+				onClick={() => loginRequestHandler('google')}
+				socialType="google"
+			>
 				<GoogleSVG viewBox="4 4 38 38" />
 				<p>구글 로그인</p>
 			</SocialButton>
-			<SocialButton onClick={() => loginRequestHandler('kakao')} kakao>
+			<SocialButton
+				onClick={() => loginRequestHandler('kakao')}
+				socialType="kakao"
+			>
 				<KakaoImg />
 				<p>카카오 로그인</p>
 			</SocialButton>

@@ -1,4 +1,4 @@
-/* eslint-disable no-nested-ternary */
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -7,19 +7,24 @@ import { toast } from 'react-toastify';
 import AuthInput from './AuthInput';
 import { PurpleButton } from '../Buttons/PurpleButton';
 import AddressModal from '../Modals/AddressModal';
+import {
+	AuthFormProps,
+	AuthFormValues,
+	SignUpFormValues,
+} from '../../types/auth.type';
 
-export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
+export function AuthForm({ signUp, handleSubmitForm, email }: AuthFormProps) {
 	const [current, setCurrent] = useState(1);
 	const [currentChange, setCurrentChange] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const firstRef = useRef(null);
-	const secondRef = useRef(null);
-	const thirdRef = useRef(null);
-	const fourthRef = useRef(null);
-	const fifthRef = useRef(null);
-	const sixthRef = useRef(null);
-	const seventhRef = useRef(null);
-	const eighthRef = useRef(null);
+	const firstRef = useRef<HTMLInputElement>();
+	const secondRef = useRef<HTMLInputElement>();
+	const thirdRef = useRef<HTMLInputElement>();
+	const fourthRef = useRef<HTMLInputElement>();
+	const fifthRef = useRef<HTMLInputElement>();
+	const sixthRef = useRef<HTMLInputElement>();
+	const seventhRef = useRef<HTMLInputElement>();
+	const eighthRef = useRef<HTMLInputElement>();
 	const {
 		register,
 		handleSubmit,
@@ -27,7 +32,7 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 		formState: { errors },
 		setValue,
 		setFocus,
-	} = useForm({
+	} = useForm<SignUpFormValues>({
 		mode: 'onChange',
 	});
 
@@ -55,22 +60,26 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 			value: 5,
 			message: '비밀번호가 너무 짧습니다.',
 		},
-		validate: !email && {
-			no1234: (value) =>
-				value.includes('1234') ? '1234는 포함할 수 없습니다.' : true,
-			no0000: (value) =>
-				value.includes('0000') ? '0000은 포함할 수 없습니다.' : true,
-		},
+		validate: !email
+			? {
+					no1234: (value) =>
+						value.includes('1234') ? '1234는 포함할 수 없습니다.' : true,
+					no0000: (value) =>
+						value.includes('0000') ? '0000은 포함할 수 없습니다.' : true,
+			  }
+			: undefined,
 	});
 	const { ref: ref3, ...rest3 } = register('비밀번호확인', {
 		required: !email && signUp && '비밀번호를 다시 입력해주세요.',
-		validate: !email &&
-			signUp && {
-				matchPreviousPassword: (value) => {
-					const { 비밀번호 } = watch();
-					return 비밀번호 === value || '비밀번호가 일치하지 않습니다.';
-				},
-			},
+		validate:
+			!email && signUp
+				? {
+						matchPreviousPassword: (value) => {
+							const { 비밀번호 } = watch();
+							return 비밀번호 === value || '비밀번호가 일치하지 않습니다.';
+						},
+				  }
+				: undefined,
 	});
 	const { ref: ref4, ...rest4 } = register('닉네임', {
 		required: signUp && '작성해주세요.',
@@ -101,8 +110,11 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 	});
 
 	// current가 바뀔 때마다 input에 포커스를 준다.
-	const ifEmail = email ? '2' : '';
-	const handleInput = (event, setShowError) => {
+	const ifEmail = email ? 2 : 0;
+	const handleInput = (
+		event: React.KeyboardEvent<HTMLInputElement>,
+		setShowError: React.Dispatch<React.SetStateAction<boolean>>,
+	) => {
 		if (event.key === 'Enter') {
 			setShowError(true);
 			if (event.target === firstRef.current && errors.이메일 === undefined) {
@@ -182,17 +194,13 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 	}, []);
 
 	// submit 되면 실행되는 함수.
-	const onValid = (data) => {
-		if (signUp) {
-			handleSignUp(data);
-		} else {
-			handleLogIn(data);
-		}
+	const onValid = (data: AuthFormValues) => {
+		handleSubmitForm(data);
 	};
 
 	return (
 		<SForm
-			className={currentChange ? 'pull' : null}
+			className={currentChange ? 'pull' : ''}
 			current={current}
 			onSubmit={handleSubmit(onValid)}
 		>
@@ -214,7 +222,7 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 						register={rest7}
 						refHook={ref7}
 						watch={watch()}
-						errors={errors?.주소?.message}
+						errors={errors.주소?.message}
 						onFocus={setIsModalOpenCallback}
 					/>
 					<AuthInput
@@ -281,15 +289,7 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 			<PurpleButton
 				width={signUp ? '110px' : '134px'}
 				borderRadius="50px"
-				disable={
-					signUp
-						? !{ ...watch() }.상세주소
-							? true
-							: null
-						: !{ ...watch() }.비밀번호
-						? true
-						: null
-				}
+				disable={signUp ? !{ ...watch() }.상세주소 : !{ ...watch() }.비밀번호}
 			>
 				{signUp ? '계정 만들기' : '로그인'}
 			</PurpleButton>
@@ -303,6 +303,9 @@ export function AuthForm({ signUp, handleSignUp, handleLogIn, email }) {
 							setValue('주소', `(${data.zonecode})${data.address}`);
 							setCurrent(8);
 							setFocus('상세주소');
+						}}
+						onError={() => {
+							toast.error('주소를 불러올 수 없습니다.');
 						}}
 					/>
 				</AddressModal>
@@ -330,7 +333,7 @@ export const pullInput = keyframes`
   }
 `;
 
-const SForm = styled.form`
+const SForm = styled.form<{ current: number }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;

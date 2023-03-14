@@ -1,13 +1,8 @@
 import { useInfiniteQuery } from 'react-query';
 import { fetchCathgoryItems, fetchSearchItems } from '../apis/itemApis';
-import { IUseGetList, IUseGetSearchList } from '../types/itemList.type';
+import { UseGetList, UseGetSearchList } from '../types/itemList.type';
 
-export const useGetList = ({
-	pathname,
-	category,
-	path,
-	query,
-}: IUseGetList) => {
+export const useGetList = ({ pathname, category, path, query }: UseGetList) => {
 	return useInfiniteQuery(
 		pathname,
 		({ pageParam = 1 }) =>
@@ -24,7 +19,7 @@ export const useGetSearchList = ({
 	keyword,
 	path,
 	query,
-}: IUseGetSearchList) => {
+}: UseGetSearchList) => {
 	return useInfiniteQuery(
 		pathname,
 		({ pageParam = 1 }) =>

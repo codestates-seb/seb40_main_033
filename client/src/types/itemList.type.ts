@@ -3,7 +3,7 @@ export interface NutritionFact {
 	volume: string;
 }
 
-export interface IItem {
+export interface Item {
 	itemId: number;
 	thumbnail: string;
 	title: string;
@@ -20,32 +20,32 @@ export interface IItem {
 
 // for hooks & APIs
 
-export interface IGetList {
+export interface GetList {
 	path: string;
 	query: string;
 }
 
-export interface IUseGetList extends IGetList {
+export interface UseGetList extends GetList {
 	pathname: string;
 	category: string;
 }
-export interface IUseGetSearchList extends IGetList {
+export interface UseGetSearchList extends GetList {
 	pathname: string;
 	keyword: string;
 }
 
-export interface IFetchCathgoryItems extends IGetList {
+export interface FetchCathgoryItems extends GetList {
 	pageParam: number;
 	category: string;
 }
 
-export interface IFetchSearchItems extends IGetList {
+export interface FetchSearchItems extends GetList {
 	pageParam: number;
 	keyword: string;
 }
 
-export interface IInfiniteQueryPromise {
-	data: IItem[];
+export interface InfiniteQueryPromise {
+	data: Item[];
 	nextPage: number;
 	isLast: boolean;
 }

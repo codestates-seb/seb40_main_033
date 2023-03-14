@@ -11,12 +11,13 @@ import {
 } from './SignUp';
 import SocialLogIn from './SocialLogIn';
 import { Logo } from '../../assets/Icons';
+import { LogInFormValues } from '../../types/auth.type';
 
 // 로그인 페이지
 function LogIn() {
 	const { mutate } = useLogIn();
 
-	const handleLogIn = (data) => {
+	const handleLogIn = (data: LogInFormValues) => {
 		mutate({ email: data.이메일, password: data.비밀번호 });
 	};
 
@@ -27,7 +28,7 @@ function LogIn() {
 					<Logo />
 				</Link>
 				<AuthTitle title="로그인" />
-				<AuthForm handleLogIn={handleLogIn} />
+				<AuthForm handleSubmitForm={handleLogIn} />
 				<SocialLogIn />
 				<LinkContainer>
 					아직 회원이 아니신가요? <Link to="/signup">회원가입</Link>

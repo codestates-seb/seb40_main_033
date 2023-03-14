@@ -7,7 +7,7 @@ import { login } from '../../redux/slice/userSlice';
 import MainSection from './MainSection';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import axiosInstance from '../../utils/axiosInstance';
-import { IMainPage } from '../../types/main.type';
+import { MainPage } from '../../types/main.type';
 
 const sectionTitle = [
 	['Best', '인기 많은 상품만 모았어요!'],
@@ -22,13 +22,13 @@ function Home() {
 		const accessToken = url.searchParams.get('access_token');
 		const refreshToken = url.searchParams.get('refresh_token');
 		const userId = url.searchParams.get('userId');
-		if (accessToken) {
+		if (accessToken && userId) {
 			dispatch(login({ accessToken, refreshToken, isSocial: true, userId }));
 		}
 	}, []);
 
 	const { pathname } = useLocation();
-	const { isLoading, data, error } = useQuery<IMainPage>([pathname], () =>
+	const { isLoading, data, error } = useQuery<MainPage>([pathname], () =>
 		axiosInstance.get('/main'),
 	);
 

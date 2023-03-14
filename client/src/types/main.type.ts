@@ -16,27 +16,27 @@ export interface CardItem {
 	discountRate: number;
 }
 
-export interface ISection {
+export interface Section {
 	data: CardItem[];
 	pageInfo?: null;
 }
 
-export interface IMainPage {
+export interface MainPage {
 	data: {
 		data: {
-			bestItem: ISection;
-			saleItem: ISection;
-			mdPickItem: ISection;
+			bestItem: Section;
+			saleItem: Section;
+			mdPickItem: Section;
 		};
 	};
 }
 
-export interface ICustomArrowProps extends CustomArrowProps {
+export interface CustomArrow extends CustomArrowProps {
 	left?: boolean;
 	right?: boolean;
 }
 
-export interface IMainCaroucelInfo {
+export interface MainCaroucelInfo {
 	type: string;
 	title: string[];
 	description: string[];

@@ -1,4 +1,4 @@
-export interface ISummaryPrice {
+export interface SummaryPriceProps {
 	nowPrice: number;
 	beforePrice?: number;
 	discountRate?: number;
@@ -6,7 +6,7 @@ export interface ISummaryPrice {
 	fontWeight?: string;
 }
 
-export interface IPrice extends ISummaryPrice {
+export interface PriceProps extends SummaryPriceProps {
 	isTotal?: boolean;
 	quantity?: number;
 	minus?: boolean;

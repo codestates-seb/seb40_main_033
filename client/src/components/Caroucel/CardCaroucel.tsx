@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import './slick.css';
 import './slick-theme.css';
 import { IoIosArrowBack } from 'react-icons/io';
-import { ICustomArrowProps, CardItem } from '../../types/main.type';
-import MainListCard from '../Cards/MainListCard';
+import MainListCard from '../Lists/MainListCard';
+import { CustomArrow, CardItem } from '../../types/main.type';
 
-const ArrowButton = styled.button<ICustomArrowProps>`
+const ArrowButton = styled.button<CustomArrow>`
 	width: 40px;
 	height: 40px;
 	background-color: white;
