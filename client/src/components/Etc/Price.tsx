@@ -10,7 +10,7 @@ import { PriceProps, SummaryPriceProps } from '../../types/price.type';
 function Price({
 	nowPrice,
 	beforePrice,
-	discountRate, // 할인율이 ~%로 문자열로 들어와야 합니다.
+	discountRate,
 	isTotal, // 총액인지
 	quantity, // 수량
 	minus, // 앞에 -가 붙는 지 (결제 정보!)
@@ -49,7 +49,7 @@ function Price({
 export function SummaryPrice({
 	nowPrice,
 	beforePrice,
-	discountRate, // 할인율이 ~%로 문자열로 들어와야 합니다.
+	discountRate,
 	fontSize,
 	fontWeight,
 }: SummaryPriceProps) {
@@ -64,7 +64,7 @@ export function SummaryPrice({
 					<BeforePrice className="beforeDiscounted summary">
 						{`${Number(beforePrice).toLocaleString('ko-KR')}원`}
 					</BeforePrice>
-					<Percent className="summary">{discountRate}</Percent>
+					<Percent className="summary">{`${discountRate}%`}</Percent>
 				</BeforeContainer>
 			)}
 			<div>{`${Number(nowPrice).toLocaleString('ko-KR')}원`}</div>

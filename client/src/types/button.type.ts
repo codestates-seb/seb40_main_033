@@ -35,7 +35,7 @@ export interface PriceButtonProps {
 }
 
 export interface WishlistBtnProps {
-	isChecked: boolean;
+	isChecked: boolean | number;
 	itemId: number;
 	setIsChecked?: (isChecked: number) => void;
 }
