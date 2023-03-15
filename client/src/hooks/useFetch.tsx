@@ -3,14 +3,14 @@ import { useState } from 'react';
 import { AxiosResponse } from 'axios';
 import axiosInstance from '../utils/axiosInstance';
 
-export const useGet = (url: string, keyValue: string) => {
+export function useGet(url: string, keyValue: string) {
 	const { isLoading, isError, isSuccess, data, error, refetch } = useQuery(
 		[keyValue],
 		() => axiosInstance.get(url),
 	);
 
 	return { isLoading, isError, isSuccess, data, error, refetch };
-};
+}
 
 export function usePost<T extends object, K = void>(url: string) {
 	const queryClient = useQueryClient();
@@ -29,7 +29,7 @@ export function usePost<T extends object, K = void>(url: string) {
 	return { mutate, isLoading, isError, error, response };
 }
 
-export const useDelete = (url: string) => {
+export function useDelete(url: string) {
 	const queryClient = useQueryClient();
 	const [response, setResponse] = useState<AxiosResponse | null>(null);
 
@@ -44,7 +44,7 @@ export const useDelete = (url: string) => {
 	);
 
 	return { mutate, isLoading, isError, error, response };
-};
+}
 
 export function usePatch<T extends object, K = void>(url: string) {
 	const queryClient = useQueryClient();

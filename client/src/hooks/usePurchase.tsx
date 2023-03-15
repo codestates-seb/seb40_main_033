@@ -10,7 +10,7 @@ interface UsePurchaseProps {
 	subscription: boolean;
 }
 
-const usePurchase = (url: string, params: string) => {
+export default function usePurchase(url: string, params: string) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
@@ -34,6 +34,4 @@ const usePurchase = (url: string, params: string) => {
 	);
 
 	return { mutate, isLoading, isSuccess, isError };
-};
-
-export default usePurchase;
+}
