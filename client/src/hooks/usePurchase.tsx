@@ -3,14 +3,21 @@ import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from 'react-query';
 import axiosInstance from '../utils/axiosInstance';
 
-function usePurchase(url, params) {
+interface UsePurchaseProps {
+	itemId: number;
+	quantity: number;
+	period: number;
+	subscription: boolean;
+}
+
+const usePurchase = (url: string, params: string) => {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
-		(data) => axiosInstance.post(url, data), // .then((res) => setResponse(res))
+		(data: UsePurchaseProps) => axiosInstance.post(url, data),
 		{
-			onSuccess: (res) => {
+			onSuccess: async (res) => {
 				navigate(`/pay/${params}`, { state: res.data.data }); // 결제 페이지로 응답 전송
 				queryClient.invalidateQueries();
 			},
@@ -27,6 +34,6 @@ function usePurchase(url, params) {
 	);
 
 	return { mutate, isLoading, isSuccess, isError };
-}
+};
 
 export default usePurchase;
