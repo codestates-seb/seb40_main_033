@@ -12,14 +12,14 @@ export function useGet(url: string, keyValue: string) {
 	return { isLoading, isError, isSuccess, data, error, refetch };
 }
 
-export function usePost<T extends object, K = void>(url: string) {
+export function usePost<T extends object, M = void>(url: string) {
 	const queryClient = useQueryClient();
 	const [response, setResponse] = useState<AxiosResponse | null>(null);
 
 	const { mutate, isLoading, isError, error } = useMutation(
-		(data: T | K) => axiosInstance.post(url, data),
+		(data: T | M) => axiosInstance.post(url, data),
 		{
-			onSuccess: async (res) => {
+			onSuccess: (res) => {
 				setResponse(res);
 				queryClient.invalidateQueries();
 			},
@@ -36,7 +36,7 @@ export function useDelete(url: string) {
 	const { mutate, isLoading, isError, error } = useMutation(
 		() => axiosInstance.delete(url),
 		{
-			onSuccess: async (res) => {
+			onSuccess: (res) => {
 				setResponse(res);
 				queryClient.invalidateQueries();
 			},
@@ -46,12 +46,12 @@ export function useDelete(url: string) {
 	return { mutate, isLoading, isError, error, response };
 }
 
-export function usePatch<T extends object, K = void>(url: string) {
+export function usePatch<T extends object, M = void>(url: string) {
 	const queryClient = useQueryClient();
 	const [response, setResponse] = useState<AxiosResponse | null>(null);
 
 	const { mutate, isLoading, isError, error } = useMutation(
-		(data: T | K) => axiosInstance.patch(url, data),
+		(data: T | M) => axiosInstance.patch(url, data),
 		{
 			onSuccess: (res) => {
 				setResponse(res);
