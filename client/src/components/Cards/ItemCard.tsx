@@ -1,3 +1,5 @@
+/* eslint-disable default-case */
+/* eslint-disable consistent-return */
 /* eslint-disable no-nested-ternary */
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -21,20 +23,20 @@ function ItemCard({ item, wishBtn, main, fontSize }: CardItemProps) {
 	};
 
 	return (
-		<EntireContainer>
-			<DefaultContainer>
+		<EntireContainer main={main}>
+			<DefaultContainer main={main}>
 				<ContentBox>
 					{wishBtn && (
-						<ContentContainer wishBtn>
+						<ContentContainer kind="wishBtn" main={main}>
 							<WishlistButton isChecked itemId={item.itemId} />
 						</ContentContainer>
 					)}
-					<ContentContainer middle>
+					<ContentContainer kind="middle" main={main}>
 						<ItemImg src={item.thumbnail} alt="상품 이미지" />
 					</ContentContainer>
-					<ContentContainer bottom onClick={handleItemClick}>
+					<ContentContainer kind="bottom" main={main} onClick={handleItemClick}>
 						<div className="title brandName">{item.brand}</div>
-						<NamePriceBox>
+						<NamePriceBox main={main}>
 							<div className="title itemName">{item.title}</div>
 							<Price
 								nowPrice={item.discountPrice}
@@ -46,22 +48,27 @@ function ItemCard({ item, wishBtn, main, fontSize }: CardItemProps) {
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
-			<DefaultContainer onClick={handleItemClick} className="hover" hover>
+			<DefaultContainer
+				onClick={handleItemClick}
+				className="hover"
+				main={main}
+				hover
+			>
 				<ContentBox>
-					<ContentContainer star>
+					<ContentContainer main={main} kind="star">
 						<ShortTextStar
 							starAvg={item.starAvg}
 							reviewCount={item.reviewSize}
 							{...(main ? { main: 'main' } : {})}
 						/>
-						<Ingredient>
+						<Ingredient main={main}>
 							{String(
 								`${item.nutritionFacts.map((fact) => ` ${fact.ingredient}`)}`,
 							)}
 						</Ingredient>
 					</ContentContainer>
-					<ContentContainer middle>
-						<ItemDescription>{item.content}</ItemDescription>
+					<ContentContainer main={main} kind="middle">
+						<ItemDescription main={main}>{item.content}</ItemDescription>
 					</ContentContainer>
 				</ContentBox>
 			</DefaultContainer>
@@ -69,12 +76,14 @@ function ItemCard({ item, wishBtn, main, fontSize }: CardItemProps) {
 	);
 }
 
-const EntireContainer = styled.div`
+const EntireContainer = styled.div<{ main?: boolean }>`
 	cursor: pointer;
 	display: inline-flex;
 	position: relative;
-	margin-right: 20px; // 밑에 둘은 wishList 에서 카드간 간격
-	margin-bottom: 30px; // wishList 에서 카드간 간격
+	margin-right: ${(props) =>
+		props.main ? '0' : '20px'}; // 밑에 둘은 wishList 에서 카드간 간격
+	margin-bottom: ${(props) =>
+		props.main ? '0' : '30px'}; // wishList 에서 카드간 간격
 	&:hover {
 		.hover {
 			opacity: 1;
@@ -97,11 +106,20 @@ const EntireContainer = styled.div`
 	}
 `;
 
-const DefaultContainer = styled.div<{ hover?: boolean }>`
-	width: 245px;
-	height: 387px;
+const DefaultContainer = styled.div<{ hover?: boolean; main?: boolean }>`
+	${(props) =>
+		props.main
+			? css`
+					width: 297px;
+					height: 469px;
+					box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.07);
+			  `
+			: css`
+					width: 245px;
+					height: 387px;
+					box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
+			  `}
 	border-radius: 10px;
-	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
 	background-color: white;
 	transition: 300ms;
 	${(props) =>
@@ -118,54 +136,52 @@ const DefaultContainer = styled.div<{ hover?: boolean }>`
 		`}
 `;
 const ContentBox = styled.div`
-	width: 245px;
-	height: 387px;
 	display: flex;
 	flex-direction: column;
 	padding: 24px 24px 33px 24px;
 `;
+
 const ContentContainer = styled.div<{
-	middle?: boolean;
-	bottom?: boolean;
-	star?: boolean;
-	wishBtn?: boolean;
+	kind?: string;
+	main?: boolean;
 }>`
 	display: flex;
 	flex-direction: row-reverse;
-	${(props) =>
-		props.middle
-			? css`
-					justify-content: center;
-					padding-bottom: 26px;
-			  `
-			: props.bottom
-			? css`
-					margin-top: 12px;
+	${(props) => {
+		switch (props.kind) {
+			case 'middle':
+				return css`
+					padding-bottom: ${props.main ? '46px' : '26px'};
+				`;
+			case 'bottom':
+				return css`
+					margin-top: :${props.main ? '0' : '12px'};
 					z-index: 1;
 					flex-direction: column;
 					justify-content: none;
-			  `
-			: props.star
-			? css`
+				`;
+			case 'star':
+				return css`
 					flex-direction: column;
-					margin-top: 6.5px;
-			  `
-			: props.wishBtn
-			? css`
+					margin-top: ${props.main ? '5px' : '6.5px'};
+				`;
+			case 'wishBtn':
+				return css`
 					position: absolute;
 					left: 196px;
 					top: 29px;
-			  `
-			: null}
+				`;
+		}
+	}}
 
 	.brandName {
-		font-size: 13px;
+		font-size: ${(props) => (props.main ? '15px' : '13px')};
 		color: var(--gray-400);
 		padding-bottom: 10.5px;
 	}
 	.itemName {
 		font-weight: var(--extraBold);
-		font-size: 16px;
+		font-size: ${(props) => (props.main ? '20px' : '16px')};
 		word-break: keep-all;
 		line-height: 1.1;
 	}
@@ -180,30 +196,38 @@ const ItemImg = styled.img`
 	height: 100%;
 `;
 
-const NamePriceBox = styled.div`
+const NamePriceBox = styled.div<{ main?: boolean }>`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 66px;
+	height: ${(props) => (props.main ? '85px' : '66px')};
 `;
 
-const ItemDescription = styled.p`
+const ItemDescription = styled.p<{ main?: boolean }>`
 	width: 100%;
 	color: white;
-	font-size: 15px;
 	line-height: 1.4;
 	letter-spacing: -0.04em;
-	margin-top: 50px;
 	word-break: keep-all;
+	${(props) =>
+		props.main
+			? css`
+					font-size: 18px;
+					margin-top: 65px;
+			  `
+			: css`
+					font-size: 15px;
+					margin-top: 50px;
+			  `}
 `;
 
-const Ingredient = styled.p`
+const Ingredient = styled.p<{ main?: boolean }>`
 	display: flex;
 	color: var(--gray-200);
 	margin-top: 12px;
 	line-height: 1.3;
 	word-break: keep-all;
-	font-size: 12px;
+	font-size: ${(props) => (props.main ? '14px' : '12px')};
 `;
 
 export default ItemCard;
