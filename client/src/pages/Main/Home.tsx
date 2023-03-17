@@ -8,6 +8,7 @@ import MainSection from './MainSection';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import axiosInstance from '../../utils/axiosInstance';
 import { MainPage } from '../../types/main.type';
+import { AxiosResponse } from 'axios';
 
 const sectionTitle = [
 	['Best', '인기 많은 상품만 모았어요!'],
@@ -28,8 +29,9 @@ function Home() {
 	}, []);
 
 	const { pathname } = useLocation();
-	const { isLoading, data, error } = useQuery<MainPage>([pathname], () =>
-		axiosInstance.get('/main'),
+	const { isLoading, data, error } = useQuery<AxiosResponse<MainPage>>(
+		[pathname],
+		() => axiosInstance.get('/main'),
 	);
 
 	const list = data?.data;
