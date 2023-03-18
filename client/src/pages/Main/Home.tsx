@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import { AxiosResponse } from 'axios';
 import MainCaroucel from '../../components/Caroucel/MainCaroucel';
 import { login } from '../../redux/slice/userSlice';
 import MainSection from './MainSection';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import axiosInstance from '../../utils/axiosInstance';
 import { MainPage } from '../../types/main.type';
-import { AxiosResponse } from 'axios';
 
 const sectionTitle = [
 	['Best', '인기 많은 상품만 모았어요!'],

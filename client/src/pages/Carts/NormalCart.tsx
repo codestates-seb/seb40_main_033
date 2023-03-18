@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import { AxiosResponse } from 'axios';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
@@ -8,7 +9,6 @@ import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import usePurchase from '../../hooks/usePurchase';
 import { CartData } from '../../types/cart.type';
 import axiosInstance from '../../utils/axiosInstance';
-import { AxiosResponse } from 'axios';
 
 // 일반 장바구니
 function NormalCart() {
@@ -69,7 +69,6 @@ function NormalCart() {
 								nowPrice={items.data.data.expectPrice}
 								fontSize="24px"
 								fontWeight="bold"
-								purple
 							/>
 						</Display>
 						<Button>
