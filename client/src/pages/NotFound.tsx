@@ -2,43 +2,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Container = styled.div`
-	display: felx;
-	height: 100%;
-	justify-content: center;
-	align-items: center;
-`;
-
-const TextContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	margin-left: 30px;
-	color: #232629;
-
-	& > h1 {
-		font-size: 27px;
-		margin-bottom: 10px;
-	}
-
-	& > h2 {
-		font-size: 19px;
-		margin-bottom: 30px;
-	}
-
-	& > p {
-		font-size: 15px;
-		margin-bottom: 20px;
-
-		& > a > strong {
-			color: #0074cc;
-		}
-
-		& > a > strong:hover {
-			color: var(--blue-400);
-		}
-	}
-`;
-
 function NotFound() {
 	return (
 		<Container>
@@ -87,5 +50,42 @@ function NotFound() {
 		</Container>
 	);
 }
+
+const Container = styled.div`
+	display: felx;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+`;
+
+const TextContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	margin-left: 30px;
+	color: #232629;
+
+	& > h1 {
+		font-size: 27px;
+		margin-bottom: 10px;
+	}
+
+	& > h2 {
+		font-size: 19px;
+		margin-bottom: 30px;
+	}
+
+	& > p {
+		font-size: 15px;
+		margin-bottom: 20px;
+
+		& > a > strong {
+			color: #0074cc;
+		}
+
+		& > a > strong:hover {
+			color: var(--blue-400);
+		}
+	}
+`;
 
 export default NotFound;
