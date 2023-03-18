@@ -1,22 +1,25 @@
 /* eslint-disable react/style-prop-object */
+import { AxiosResponse } from 'axios';
+import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 // import Pagination from '../../components/Etc/Pagination';
 import MyPageReviewList from '../../components/Lists/MyPageLists/MyPageReviewList';
-import { useGet } from '../../hooks/useFetch';
+import { NoteReviewData } from '../../types/note.type';
+import axiosInstance from '../../utils/axiosInstance';
 
 // 작성글 관리 - 리뷰
 function NoteReview() {
 	const { pathname } = useLocation();
-	const { isLoading, isError, data, error } = useGet(
-		'/reviews/mypage',
-		pathname,
-	);
+	const { isLoading, isError, data, error } = useQuery<
+		AxiosResponse<NoteReviewData>
+	>([pathname], () => axiosInstance.get('/reviews/mypage'));
+
 	const lists = data?.data?.data;
 
-	if (isLoading) return <LoadingSpinner />;
-	if (isError) return <div>{error.message}</div>;
+	if (isLoading || !lists) return <LoadingSpinner />;
+	if (isError && error instanceof Error) return <div>{error.message}</div>;
 
 	return (
 		<>
