@@ -15,7 +15,7 @@ export default function usePurchase(url: string, params: string) {
 	const navigate = useNavigate();
 
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
-		(data: UsePurchaseProps) => axiosInstance.post(url, data),
+		(data: UsePurchaseProps | void) => axiosInstance.post(url, data),
 		{
 			onSuccess: async (res) => {
 				navigate(`/pay/${params}`, { state: res.data.data }); // 결제 페이지로 응답 전송

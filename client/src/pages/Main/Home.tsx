@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import { AxiosResponse } from 'axios';
 import MainCaroucel from '../../components/Caroucel/MainCaroucel';
 import { login } from '../../redux/slice/userSlice';
 import MainSection from './MainSection';
@@ -28,8 +29,9 @@ function Home() {
 	}, []);
 
 	const { pathname } = useLocation();
-	const { isLoading, data, error } = useQuery<MainPage>([pathname], () =>
-		axiosInstance.get('/main'),
+	const { isLoading, data, error } = useQuery<AxiosResponse<MainPage>>(
+		[pathname],
+		() => axiosInstance.get('/main'),
 	);
 
 	const list = data?.data;

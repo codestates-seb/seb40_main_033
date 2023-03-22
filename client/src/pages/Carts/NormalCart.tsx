@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { AxiosResponse } from 'axios';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
-import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import usePurchase from '../../hooks/usePurchase';
+import { CartData } from '../../types/cart.type';
+import axiosInstance from '../../utils/axiosInstance';
 
 // 일반 장바구니
 function NormalCart() {
@@ -16,7 +19,9 @@ function NormalCart() {
 		isError,
 		data: items,
 		error,
-	} = useGet('/carts?subscription=false', pathname);
+	} = useQuery<AxiosResponse<CartData>>([pathname], () =>
+		axiosInstance.get('/carts?subscription=false'),
+	);
 
 	const { mutate: purchaseMutate } = usePurchase(
 		'/orders?subscription=false',
@@ -27,10 +32,10 @@ function NormalCart() {
 		purchaseMutate();
 	};
 
-	if (isLoading) {
+	if (isLoading || !items) {
 		return <LoadingSpinner />;
 	}
-	if (isError) {
+	if (isError && error instanceof Error) {
 		return <List> {error.message} </List>;
 	}
 
@@ -64,7 +69,6 @@ function NormalCart() {
 								nowPrice={items.data.data.expectPrice}
 								fontSize="24px"
 								fontWeight="bold"
-								purple
 							/>
 						</Display>
 						<Button>

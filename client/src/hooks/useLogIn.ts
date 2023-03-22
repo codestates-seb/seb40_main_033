@@ -13,13 +13,13 @@ export default function useLogIn() {
 	const { mutate, isLoading, isSuccess, isError } = useMutation(
 		(form: LogInForm) => fetchLogIn(form),
 		{
-			onSuccess: async ({ accessToken, refreshToken, userId }, { email }) => {
+			onSuccess: ({ accessToken, refreshToken, userId }, { email }) => {
 				dispatch(login({ accessToken, refreshToken, email, userId }));
 				toast.success('로그인 되었습니다 !');
 				// 다른 페이지로 이동 후 뒤로가기 시 로그인 페이지로 이동하지 않도록
 				navigate('/', { replace: true });
 			},
-			onError: async (data: AxiosError<{ message: string }>) => {
+			onError: (data: AxiosError<{ message: string }>) => {
 				const { response } = data;
 				if (!response) return;
 				const { status, data: errorData } = response;

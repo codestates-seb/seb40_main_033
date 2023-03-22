@@ -23,11 +23,9 @@ export interface Section {
 
 export interface MainPage {
 	data: {
-		data: {
-			bestItem: Section;
-			saleItem: Section;
-			mdPickItem: Section;
-		};
+		bestItem: Section;
+		saleItem: Section;
+		mdPickItem: Section;
 	};
 }
 

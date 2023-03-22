@@ -9,8 +9,9 @@ import { PeriodChoiceTab } from '../../Tabs/ToggleTabs';
 import Price from '../../Etc/Price';
 import CancelModal from '../../Modals/CancelModal';
 import { useDelete, usePatch } from '../../../hooks/useFetch';
+import { CartListProps } from '../../../types/cart.type';
 
-function CartList({ data, item, sub }) {
+function CartList({ data, item, sub }: CartListProps) {
 	const [quantity, setQuantity] = useState(data.quantity);
 	const [openCancelModal, setOpenCancelModal] = useState(false);
 	const [isChecked, setChecked] = useState(data.buyNow);
@@ -71,8 +72,8 @@ function CartList({ data, item, sub }) {
 	};
 
 	const handlePeriodClick = useCallback(
-		async (e) => {
-			await setPeriod(e.target.innerText.replace('일', ''));
+		async (e: React.MouseEvent<HTMLLIElement>) => {
+			await setPeriod(Number(e.currentTarget.innerText.replace('일', '')));
 			await patchPeriod();
 		},
 		[period],

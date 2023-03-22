@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { AxiosResponse } from 'axios';
 import CartList from '../../components/Lists/MyPageLists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
-import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import usePurchase from '../../hooks/usePurchase';
+import { CartData } from '../../types/cart.type';
+import axiosInstance from '../../utils/axiosInstance';
 
 // 정기 장바구니
 function SubCart() {
@@ -16,7 +19,9 @@ function SubCart() {
 		isError,
 		data: items,
 		error,
-	} = useGet('/carts?subscription=true', pathname);
+	} = useQuery<AxiosResponse<CartData>>([pathname], () =>
+		axiosInstance.get('/carts?subscription=ture'),
+	);
 
 	const { mutate: purchaseMutate } = usePurchase(
 		'/orders?subscription=true',
@@ -27,10 +32,10 @@ function SubCart() {
 		purchaseMutate();
 	};
 
-	if (isLoading) {
+	if (isLoading || !items) {
 		return <LoadingSpinner />;
 	}
-	if (isError) {
+	if (isError && error instanceof Error) {
 		return <List> {error.message} </List>;
 	}
 
@@ -69,7 +74,6 @@ function SubCart() {
 								nowPrice={items.data.data.expectPrice}
 								fontSize="24px"
 								fontWeight="bold"
-								purple
 							/>
 						</Display>
 						<Button>
