@@ -24,3 +24,17 @@ export interface PageInfo {
 	totalElements: number;
 	totalPages: number;
 }
+
+export type MyPageReviewListProps = Omit<
+	NoteReviewItemWithData,
+	'item' | 'updatedAt'
+> & {
+	itemId: number;
+	brand: string;
+	thumbnail: string;
+	title: string;
+	capacity: number;
+	nowPrice: number;
+	discountRate: number | '';
+	beforePrice: number | null;
+};
