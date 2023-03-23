@@ -1,5 +1,6 @@
 import { CartItem } from './cart.type';
 
+// review
 export interface NoteReviewData {
 	data: NoteReviewItemWithData[];
 	pageInfo: PageInfo;
@@ -38,3 +39,23 @@ export type MyPageReviewListProps = Omit<
 	discountRate: number | '';
 	beforePrice: number | null;
 };
+
+// talk
+export interface NoteTalkData {
+	data: NoteTalkItemWithData[];
+	pageInfo: PageInfo;
+}
+
+export type NoteTalkItemWithData = Omit<
+	NoteReviewItemWithData,
+	'reviewId' | 'userId' | 'star'
+> & {
+	talkId: number;
+	talkCommentId: number;
+	reply: boolean;
+};
+
+export interface MyPageTalkListProps {
+	talk: NoteTalkItemWithData;
+	isReply: boolean;
+}

@@ -5,31 +5,26 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { LetterButtonColor } from '../../../Buttons/LetterButton';
 import { DotDate } from '../../../Etc/ListDate';
-import OrderDetailList from '../OrderDetailList';
 import DeleteNotesModal from '../../../Modals/DeleteNotesModal';
 import TalkModal from '../../../Modals/TalkModal';
 import { useDelete } from '../../../../hooks/useFetch';
+import { MyPageTalkListProps } from '../../../../types/note.type';
 
-function MyPageTalk({ talk, isReply }) {
+function MyPageTalk({ talk, isReply }: MyPageTalkListProps) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const navigate = useNavigate();
 	// 토크 삭제
-	const { mutate: talkDeleteMu, response: talkDeleteRes } = useDelete(
-		`/talks/${talk.talkId}`,
-	);
+	const { mutate: talkDeleteMu } = useDelete(`/talks/${talk.talkId}`);
 
 	// 리토크 삭제
-	const { mutate: reTalkDeleteMu, response: reTalkDeleteRes } = useDelete(
+	const { mutate: reTalkDeleteMu } = useDelete(
 		`/talks/comments/${talk.talkCommentId}`,
 	);
 
-	const handleFormOpen = useCallback(
-		(e) => {
-			setOpenForm(true);
-		},
-		[openForm],
-	);
+	const handleFormOpen = useCallback(() => {
+		setOpenForm(true);
+	}, [openForm]);
 
 	const handleItemClick = () => {
 		navigate(`/detail/${talk.item.itemId}`);
@@ -82,12 +77,7 @@ function MyPageTalk({ talk, isReply }) {
 					<Content>{talk.content}</Content>
 					<DotDate date={talk.createdAt} />
 				</BottomContainer>
-				<TalkModal
-					setIsOpen={setOpenForm}
-					modalIsOpen={openForm}
-					OrderDetailList={OrderDetailList}
-					talk={talk}
-				/>
+				<TalkModal setIsOpen={setOpenForm} modalIsOpen={openForm} talk={talk} />
 				<DeleteNotesModal
 					openDeleteModal={openDeleteModal}
 					setOpenDeleteModal={setOpenDeleteModal}
