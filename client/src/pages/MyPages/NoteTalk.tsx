@@ -1,18 +1,24 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { AxiosResponse } from 'axios';
 import MypageTalk from '../../components/Lists/MyPageLists/Talk/MyPageTalk';
 // import Pagination from '../../components/Etc/Pagination';
-import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
+import axiosInstance from '../../utils/axiosInstance';
+import { NoteTalkData } from '../../types/note.type';
 
 // 작성글 관리 - 토크
 function NoteTalk() {
 	const { pathname } = useLocation();
-	const { isLoading, isError, data, error } = useGet('/talks/mypage', pathname);
+	const { isLoading, isError, data, error } = useQuery<
+		AxiosResponse<NoteTalkData>
+	>([pathname], () => axiosInstance.get('/talks/mypage'));
+
 	const talks = data?.data?.data;
 
-	if (isLoading) return <LoadingSpinner />;
-	if (isError) return <div>{error.message}</div>;
+	if (isLoading || !talks) return <LoadingSpinner />;
+	if (isError && error instanceof Error) return <div>{error.message}</div>;
 	return (
 		<>
 			<ListContainer>

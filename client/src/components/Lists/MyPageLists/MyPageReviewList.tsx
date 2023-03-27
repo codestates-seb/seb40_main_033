@@ -8,6 +8,7 @@ import OrderDetailList from './OrderDetailList';
 import ReviewModal from '../../Modals/ReviewModal';
 import DeleteNotesModal from '../../Modals/DeleteNotesModal';
 import { useDelete } from '../../../hooks/useFetch';
+import { MyPageReviewListProps } from '../../../types/note.type';
 
 function MyPageReviewList({
 	createdAt,
@@ -24,7 +25,7 @@ function MyPageReviewList({
 	discountRate,
 	beforePrice,
 	capacity,
-}) {
+}: MyPageReviewListProps) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const navigate = useNavigate();
@@ -69,11 +70,7 @@ function MyPageReviewList({
 
 	return (
 		<Box>
-			<Image
-				src={review.item.thumbnail}
-				alt="상품 이미지"
-				onClick={handleItemClick}
-			/>
+			<Image src={thumbnail} alt="상품 이미지" onClick={handleItemClick} />
 			<ListContainer>
 				<TopContainer>
 					<NameContainer>
