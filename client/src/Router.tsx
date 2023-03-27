@@ -10,7 +10,7 @@ import NotFound from './pages/NotFound';
 import Payment from './pages/Payment';
 import SearchList from './pages/SearchList';
 import SignUp from './pages/Auth/SignUp';
-import SubPayment from './pages/SubPayment';
+import SubscriptionPayment from './pages/SubscriptionPayment';
 import Layout from './components/Layout/Layout';
 import NoteReview from './pages/MyPages/NoteReview';
 import NoteTalk from './pages/MyPages/NoteTalk';
@@ -50,7 +50,7 @@ function Router() {
 					<Route path="search" element={<SearchList />} />
 					<Route path="signup" element={<SignUp />} />
 					<Route path="pay/normal" element={<Payment />} />
-					<Route path="pay/subscription" element={<SubPayment />} />
+					<Route path="pay/subscription" element={<SubscriptionPayment />} />
 					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>

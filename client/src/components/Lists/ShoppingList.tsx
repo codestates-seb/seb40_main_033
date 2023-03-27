@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
+import { ShoppingListProps } from '../../types/payment.type';
 
-export default function PayLists({
+export default function ShoppingList({
 	isSub,
 	talk,
 	brand,
@@ -16,7 +17,7 @@ export default function PayLists({
 	beforePrice,
 	period,
 	itemId,
-}) {
+}: ShoppingListProps) {
 	const navigate = useNavigate();
 
 	const handlePageMove = useCallback(() => {
@@ -44,7 +45,7 @@ export default function PayLists({
 					/>
 				)}
 				<BottomContainer>
-					<SubInfo className={isSub}>{period}일 마다</SubInfo>
+					<SubInfo isSub={isSub}>{period}일 마다</SubInfo>
 					{!talk && (
 						<Total>
 							<Quantity>{quantity}개 / </Quantity>
@@ -112,15 +113,13 @@ const BottomContainer = styled.div`
 	align-items: flex-end;
 `;
 
-const SubInfo = styled.div`
+const SubInfo = styled.div<{ isSub: boolean }>`
 	font-size: 11px;
 	font-weight: var(--bold);
 	color: var(--purple-300);
 	margin-bottom: 4px;
 	visibility: hidden;
-	&.isSub {
-		visibility: visible;
-	}
+	${({ isSub }) => isSub && `visibility: visible`}
 `;
 
 const Total = styled.div`

@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import OrderDetailList from '../../components/Lists/MyPageLists/OrderDetailList';
-import { PaymentInfo, DestinationInfo } from '../../components/Etc/PayInfo';
+import CustomerInformation from '../../components/Etc/CustomerInformation';
+import PaymentSummary from '../../components/Etc/PaymentSummary';
 import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
@@ -35,9 +36,9 @@ function OrderDetail() {
 	return (
 		<Box>
 			<LeftContainer>
-				<DestinationInfo payData={info} />
+				<CustomerInformation payData={info} />
 				<span />
-				<PaymentInfo options payData={payData} />
+				<PaymentSummary options payData={payData} />
 			</LeftContainer>
 			<RightContainer>
 				<Title className="order">주문 상세 내역</Title>

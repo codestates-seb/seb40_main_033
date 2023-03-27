@@ -1,6 +1,14 @@
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-export default function PayPageContainer({ children, Info }) {
+interface PayPageContainerProps {
+	children: ReactNode;
+	Info?: string;
+}
+export default function PayPageContainer({
+	children,
+	Info,
+}: PayPageContainerProps) {
 	return (
 		<PayItemInfoContainer>
 			{Info && <InfoHeading>{Info}</InfoHeading>}
