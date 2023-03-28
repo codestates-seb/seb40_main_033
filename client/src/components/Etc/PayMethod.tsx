@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { Link } from 'react-router-dom';
 import { LightPurpleButton } from '../Buttons/PurpleButton';
