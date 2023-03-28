@@ -1,4 +1,4 @@
-interface Item {
+interface ShoppingItem {
 	brand: string;
 	capacity: number;
 	disCountPrice: number;
@@ -11,7 +11,7 @@ interface Item {
 
 interface ItemOrder {
 	createdAt: string;
-	item: Item;
+	item: ShoppingItem;
 	itemOrderId: number;
 	period: number;
 	quantity: number;
