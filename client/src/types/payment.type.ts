@@ -1,17 +1,8 @@
-interface ShoppingItem {
-	brand: string;
-	capacity: number;
-	disCountPrice: number;
-	discountRate: number;
-	itemId: number;
-	price: number;
-	thumbnail: string;
-	title: string;
-}
+import { ItemShortcutData } from './item.type';
 
 interface ItemOrder {
 	createdAt: string;
-	item: ShoppingItem;
+	item: ItemShortcutData;
 	itemOrderId: number;
 	period: number;
 	quantity: number;
@@ -35,19 +26,4 @@ export interface PayData {
 	totalPrice: number;
 	totalQuantity: number;
 	updatedAt: string;
-}
-
-export interface ShoppingListProps {
-	isSub: boolean;
-	talk: boolean;
-	brand: string;
-	thumbnail: string;
-	title: string;
-	price: number;
-	capacity: number;
-	quantity: number;
-	discountRate: number;
-	beforePrice: number;
-	period: number;
-	itemId?: number;
 }

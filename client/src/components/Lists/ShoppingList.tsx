@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Price from '../Etc/Price';
-import { ShoppingListProps } from '../../types/payment.type';
+import { ShoppingListProps } from '../../types/item.type';
 
 export default function ShoppingList({
 	isSub,
