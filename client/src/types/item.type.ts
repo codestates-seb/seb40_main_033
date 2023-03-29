@@ -39,3 +39,8 @@ export interface CartItemWithData {
 	createdAt: Date;
 	updatedAt: Date;
 }
+
+export interface NutritionFact {
+	ingredient: string;
+	volume: string;
+}
