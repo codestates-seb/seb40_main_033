@@ -8,16 +8,17 @@ import Kakao from '../../assets/images/social/kakao.png';
 import AddressModal from '../Modals/AddressModal';
 import { PAY_GUIDE } from './Constants';
 import axiosInstance from '../../utils/axiosInstance';
+import { PayData } from '../../types/payment.type';
 
-export default function PayMethod({ payData }) {
+export default function PayMethod({ payData }: { payData: PayData }) {
 	const [url, setUrl] = useState('');
 	const { expectPrice, orderId, itemOrders, subscription } = payData;
 	const clientKey = process.env.REACT_APP_CLIENT_API_KEY;
 	const [isPayModal, setPayModal] = useState(false);
 	const tossPay = () =>
-		loadTossPayments(clientKey).then((tossPayments) => {
+		loadTossPayments(clientKey ?? '').then((tossPayments) => {
 			tossPayments.requestPayment('카드', {
-				amount: `${expectPrice}`,
+				amount: +`${expectPrice}`,
 				orderId: `${orderId}abcdef`,
 				orderName: `${itemOrders.data[0].item.title}, ${itemOrders.data.length} 건`,
 				customerName: `Pillivery`,
@@ -41,7 +42,7 @@ export default function PayMethod({ payData }) {
 	};
 	return (
 		<PayPageContainer Info="결제 수단">
-			<ButtonBox className={subscription ? 'sub' : null}>
+			<ButtonBox subscription={subscription}>
 				{!subscription && (
 					<LightPurpleButton
 						width="220px"
@@ -83,7 +84,7 @@ export default function PayMethod({ payData }) {
 	);
 }
 
-const ButtonBox = styled.div`
+const ButtonBox = styled.div<{ subscription: boolean }>`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -91,9 +92,7 @@ const ButtonBox = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 44px;
-	&.sub {
-		justify-content: center;
-	}
+	${({ subscription }) => subscription && `justify-content: center;`}
 `;
 
 const KakaoPayButton = styled.button`

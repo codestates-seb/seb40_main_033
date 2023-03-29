@@ -1,20 +1,14 @@
+import { ItemShortcutData } from './item.type';
+
 export interface NutritionFact {
 	ingredient: string;
 	volume: string;
 }
 
-export interface Item {
-	itemId: number;
-	thumbnail: string;
-	title: string;
+export interface Item extends ItemShortcutData {
 	content: string;
-	capacity: number;
-	price: number;
-	discountRate: number;
-	discountPrice: number;
 	starAvg: number;
 	reviewSize: number;
-	brand: string;
 	nutritionFacts: NutritionFact[];
 }
 

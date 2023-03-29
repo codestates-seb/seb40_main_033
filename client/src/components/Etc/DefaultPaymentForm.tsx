@@ -1,25 +1,36 @@
 import styled, { css } from 'styled-components';
 import PageTitle from './PageTitle';
 import PayItemInformation from './PayItemInformation';
-import { DestinationInfo, PaymentInfo } from './PayInfo';
+import PaymentSummary from './PaymentSummary';
+import CustomerInformation from './CustomerInformation';
 import PayMethod from './PayMethod';
 import PayPageContainer from './PayPageContainer';
+import { PayData } from '../../types/payment.type';
 
-function DefaultPayment({ payData, titleName, isSub }) {
+interface DefaultPaymentProps {
+	payData: PayData;
+	titleName: string;
+	isSub: boolean;
+}
+function DefaultPaymentForm({
+	payData,
+	titleName,
+	isSub,
+}: DefaultPaymentProps) {
 	return (
 		<>
 			<PageTitle title={titleName} />
 			<PaymentContainer>
 				<PayInfoBox left>
 					<PayPageContainer>
-						<DestinationInfo payData={payData} />
+						<CustomerInformation payData={payData} />
 					</PayPageContainer>
 					<PayMethod payData={payData} />
 				</PayInfoBox>
 				<PayInfoBox right>
 					<PayItemInformation payData={payData} isSub={isSub} />
 					<PayPageContainer>
-						<PaymentInfo payData={payData} />
+						<PaymentSummary payData={payData} />
 					</PayPageContainer>
 				</PayInfoBox>
 			</PaymentContainer>
@@ -31,7 +42,7 @@ const PaymentContainer = styled.main`
 	display: flex;
 	flex-direction: row;
 `;
-const PayInfoBox = styled.article`
+const PayInfoBox = styled.article<{ left?: boolean; right?: boolean }>`
 	width: 50%;
 	display: flex;
 	flex-direction: column;
@@ -45,4 +56,4 @@ const PayInfoBox = styled.article`
 					padding-left: 30px;
 			  `}
 `;
-export default DefaultPayment;
+export default DefaultPaymentForm;

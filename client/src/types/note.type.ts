@@ -1,5 +1,4 @@
-import { CartItem } from './cart.type';
-
+import { ItemShortcutData } from './item.type';
 // review
 export interface NoteReviewData {
 	data: NoteReviewItemWithData[];
@@ -17,7 +16,7 @@ export interface NoteReviewItemWithData {
 	updatedAt: Date;
 }
 
-export type NoteReviewItem = CartItem;
+export type NoteReviewItem = ItemShortcutData;
 
 export interface PageInfo {
 	page: number;

@@ -1,14 +1,24 @@
 import styled from 'styled-components';
-import PayLists from '../Lists/PayLists';
+import ShoppingList from '../Lists/ShoppingList';
 import PayPageContainer from './PayPageContainer';
+import { PayData } from '../../types/payment.type';
 
-export default function PayItemInformation({ payData, isSub }) {
+interface PayItemInformationProps {
+	payData: PayData;
+	isSub: boolean;
+}
+export default function PayItemInformation({
+	payData,
+	isSub,
+}: PayItemInformationProps) {
 	const orderedItems = payData.itemOrders.data;
 	return (
 		<PayPageContainer Info="상품 정보">
 			<ListContainer>
 				{orderedItems.map((orderedItem) => (
-					<PayLists
+					<ShoppingList
+						isSub={isSub}
+						talk={false}
 						key={`${orderedItem.itemOrderId}`}
 						brand={orderedItem.item.brand}
 						thumbnail={orderedItem.item.thumbnail}
@@ -19,7 +29,6 @@ export default function PayItemInformation({ payData, isSub }) {
 						beforePrice={orderedItem.item.price}
 						discountRate={orderedItem.item.discountRate}
 						period={orderedItem.period}
-						{...(isSub && { isSub: 'isSub' })}
 					/>
 				))}
 			</ListContainer>

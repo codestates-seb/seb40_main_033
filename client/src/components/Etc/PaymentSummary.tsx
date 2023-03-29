@@ -1,30 +1,8 @@
 import styled from 'styled-components';
 import Price from './Price';
+import { PayData } from '../../types/payment.type';
 
-export function DestinationInfo({ payData }) {
-	return (
-		<InfoContainer className="top">
-			<Title>배송지 정보</Title>
-			<Contents>
-				<LabelContainer />
-				<Destination>
-					<Label>이름</Label>
-					<div>{payData.name}</div>
-				</Destination>
-				<Destination>
-					<Label>전화번호</Label>
-					<div>{payData.phone}</div>
-				</Destination>
-				<Destination>
-					<Label>주소</Label>
-					<div className="address">{`${payData.address},\n${payData.detailAddress}`}</div>
-				</Destination>
-			</Contents>
-		</InfoContainer>
-	);
-}
-
-export function PaymentInfo({ payData }) {
+export default function PaymentSummary({ payData }: { payData: PayData }) {
 	return (
 		<InfoContainer className="bottom">
 			<Title>최종 결제 정보</Title>
@@ -112,12 +90,8 @@ const Title = styled.h1`
 	margin-bottom: 35px;
 `;
 
-const LabelContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	width: 100px;
-`;
-
 const Label = styled.label`
 	color: var(--gray-400);
 `;
+
+export { InfoContainer, Contents, Title, Destination, Label };

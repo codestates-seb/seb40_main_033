@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import DefalutModal from './DefalutModal';
-import PayLists from '../Lists/PayLists';
+import ShoppingList from '../Lists/ShoppingList';
 import UpdateTalkForm from '../Forms/UpdateTalkForm';
 import { usePatch } from '../../hooks/useFetch';
 
@@ -56,7 +56,7 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 		<DefalutModal
 			title={data.title}
 			list={
-				<PayLists
+				<ShoppingList
 					talk
 					brand={talk?.item.brand}
 					thumbnail={talk?.item.thumbnail}
