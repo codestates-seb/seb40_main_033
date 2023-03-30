@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import WishlistButton from '../Buttons/WishlistButton';
 import Tag from '../Etc/Tag';
@@ -13,7 +13,21 @@ import CartModal from '../Modals/CartModal';
 import { usePost, useGet } from '../../hooks/useFetch';
 import usePurchase from '../../hooks/usePurchase';
 
-function Summary({
+interface ItemSummaryProps {
+	name: string;
+	brand: string;
+	categories: string[];
+	content: string;
+	nowPrice: number;
+	beforePrice: number;
+	discountRate: number | boolean;
+	itemId: number;
+	starAvg: number;
+	reviewCount: number;
+	handleMoveToReview: React.MouseEventHandler<HTMLDivElement>;
+}
+
+function ItemSummary({
 	name,
 	brand,
 	categories,
@@ -25,7 +39,7 @@ function Summary({
 	starAvg,
 	reviewCount,
 	handleMoveToReview,
-}) {
+}: ItemSummaryProps) {
 	const navigate = useNavigate();
 	const [path, setPath] = useState(''); // 바로결제하기 클릭 시, 이동할 페이지
 	const [showOptions, setShowOptions] = useState(false);
@@ -38,7 +52,6 @@ function Summary({
 	});
 
 	const { data: WishData } = useGet('/wishes/item', `detail/wishs`);
-
 	const [isCheckedWish, setIsCheckedWish] = useState(
 		WishData?.data?.data.includes(itemId) ? 1 : 0,
 	);
@@ -51,8 +64,7 @@ function Summary({
 		}
 	}, []);
 
-	const { mutate: cartMu, response: cartRes } = usePost(`/carts/${itemId}`);
-
+	const { mutate: cartMu } = usePost(`/carts/${itemId}`);
 	const { mutate: purMu } = usePurchase('/orders/single', path);
 
 	// * 수량 +
@@ -66,11 +78,12 @@ function Summary({
 	}, [orderList]);
 
 	// * 주기 선택
-	const handlePeriodClick = useCallback(
+	const handlePeriodClick: React.MouseEventHandler<HTMLLIElement> = useCallback(
 		(e) => {
+			const { innerText } = e.target as HTMLLIElement;
 			setOrdertList({
 				...orderList,
-				period: Number(e.target.innerText.replace('일', '')),
+				period: Number(innerText.replace('일', '')),
 				subscription: true,
 			});
 		},
@@ -78,28 +91,31 @@ function Summary({
 	);
 
 	// * 일반/정기 선택
-	const handleTypeClick = useCallback(
-		(e) => {
-			setShowOptions(!showOptions);
-			if (!showOptions && e.target.innerText === '정기구독') {
-				setOrdertList({ ...orderList, period: 30, subscription: true });
-				setPath('subscription');
-			} else if (!showOptions && e.target.innerText === '일반구매') {
-				setOrdertList({ ...orderList, subscription: false });
-				setPath('normal');
-			}
-		},
-		[showOptions, orderList],
-	);
+	const handleTypeClick: React.MouseEventHandler<HTMLButtonElement> =
+		useCallback(
+			(e) => {
+				const { innerText } = e.target as HTMLButtonElement;
+				setShowOptions(!showOptions);
+				if (!showOptions && innerText === '정기구독') {
+					setOrdertList({ ...orderList, period: 30, subscription: true });
+					setPath('subscription');
+				} else if (!showOptions && innerText === '일반구매') {
+					setOrdertList({ ...orderList, subscription: false });
+					setPath('normal');
+				}
+			},
+			[showOptions, orderList],
+		);
 
 	// * 결제 요청 후, 결제 페이지로 가는 함수
-	const handlePayClick = useCallback(() => {
-		if (token) {
-			purMu({ ...orderList, itemId });
-		} else {
-			toast.error('로그인이 필요한 서비스입니다.');
-		}
-	}, [orderList]);
+	const handlePayClick: React.MouseEventHandler<HTMLButtonElement> =
+		useCallback(() => {
+			if (token) {
+				purMu({ ...orderList, itemId });
+			} else {
+				toast.error('로그인이 필요한 서비스입니다.');
+			}
+		}, [orderList]);
 
 	// * 장바구니 요청 후, 모달을 띄우는 함수
 	const handleOpenModalClick = useCallback(() => {
@@ -160,8 +176,7 @@ function Summary({
 							<SummaryPrice
 								nowPrice={nowPrice}
 								beforePrice={beforePrice !== nowPrice && beforePrice}
-								discountRate={discountRate !== 0 && `${discountRate}%`}
-								percent
+								discountRate={discountRate !== 0 && discountRate}
 								fontSize="32px"
 								fontWeight="extraBold"
 							/>
@@ -175,7 +190,10 @@ function Summary({
 				{showOptions && (
 					<HiddenContainer>
 						{orderList.subscription && (
-							<PeriodChoiceTab onClick={handlePeriodClick} fontSize="14px" />
+							<PeriodChoiceTab
+								onClick={handlePeriodClick}
+								currentIdx={orderList.period / 30 - 1}
+							/>
 						)}
 						<CountBox>
 							<QuantityTextBox>수량</QuantityTextBox>
@@ -216,7 +234,7 @@ const Container = styled.div`
 	position: sticky;
 `;
 
-const EntireContainer = styled.div`
+const EntireContainer = styled.div<{ showOptions: boolean }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -332,4 +350,4 @@ const TotalBox = styled.div`
 	margin-bottom: 35px;
 `;
 
-export default Summary;
+export default ItemSummary;
