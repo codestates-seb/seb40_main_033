@@ -1,6 +1,6 @@
 import styled, { keyframes, css } from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
-import { useCallback, useState, useRef } from 'react';
+import { useCallback, useState, useRef, Fragment } from 'react';
 import { toast } from 'react-toastify';
 import { IoIosArrowBack } from 'react-icons/io';
 import Summary from '../components/ItemSummary/Summary';
@@ -70,6 +70,7 @@ function Detail() {
 		[content],
 	);
 	const lists = !isLoading && data.data.data;
+
 	if (isLoading) {
 		return (
 			<DetailContainer className="loading">
@@ -166,7 +167,7 @@ function Detail() {
 						<ListsContainer className="talk">
 							{lists.talks.data.length !== 0 ? (
 								lists.talks.data.map((talk) => (
-									<>
+									<Fragment key={talk.talkId}>
 										<DetailTalkList
 											key={talk.talkId}
 											itemId={talk.itemId}
@@ -178,21 +179,19 @@ function Detail() {
 											displayName={talk.displayName}
 										/>
 										{talk.talkComments &&
-											talk.talkComments.map((retalk) => {
-												return (
-													<DetailTalkList
-														key={`${retalk.talkCommentId.toString()}-retalk`}
-														talkCommentId={retalk.talkCommentId}
-														reTalkContent={retalk.content}
-														createdAt={retalk.createdAt}
-														shopper={retalk.shopper}
-														displayName={retalk.displayName}
-														userId={retalk.userId}
-														isReply
-													/>
-												);
-											})}
-									</>
+											talk.talkComments.map((retalk) => (
+												<DetailTalkList
+													key={retalk.talkCommentId}
+													talkCommentId={retalk.talkCommentId}
+													reTalkContent={retalk.content}
+													createdAt={retalk.createdAt}
+													shopper={retalk.shopper}
+													displayName={retalk.displayName}
+													userId={retalk.userId}
+													isReply
+												/>
+											))}
+									</Fragment>
 								))
 							) : (
 								<NoNote>작성된 토크가 없습니다.</NoNote>
@@ -201,7 +200,7 @@ function Detail() {
 					</Notes>
 				</Contents>
 				<SummaryContainer>
-					<Summary
+					<ItemSummary
 						itemId={lists.itemId}
 						name={lists.title}
 						brand={lists.brand}
