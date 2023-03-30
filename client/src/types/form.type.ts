@@ -12,5 +12,5 @@ export interface DefaultFormProps extends BasicFormProps {
 }
 
 export interface TalkFormProps extends BasicFormProps {
-	placeholder: string;
+	placeholder?: string;
 }
