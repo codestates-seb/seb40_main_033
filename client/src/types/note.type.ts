@@ -58,3 +58,41 @@ export interface MyPageTalkListProps {
 	talk: NoteTalkItemWithData;
 	isReply: boolean;
 }
+
+// 상세페이지 리뷰
+export interface DetailReviewsData {
+	data: Reviews[];
+	pageInfo: PageInfo;
+}
+
+interface Reviews extends NoteCommonEl {
+	itemId: number;
+	reviewId: number;
+	star: number;
+}
+
+export interface DetailTalksData {
+	data: Talks[];
+	pageInfo: PageInfo;
+}
+
+interface Talks extends NoteCommonEl {
+	itemId: number;
+	shopper: boolean;
+	talkComments: TalkComments[];
+	talkId: number;
+}
+
+interface TalkComments extends NoteCommonEl {
+	shopper: boolean;
+	talkCommentId: number;
+}
+
+// 상세페이지 리뷰, 토크, 토크코멘트 공통 요소
+interface NoteCommonEl {
+	content: string;
+	createAt: string;
+	displayName: string;
+	updateAt: string;
+	userId: number;
+}
