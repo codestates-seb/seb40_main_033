@@ -41,11 +41,11 @@ function NoteReview() {
 							thumbnail={list.item.thumbnail}
 							title={list.item.title}
 							capacity={list.item.capacity}
-							nowPrice={list.item.disCountPrice || list.item.price}
+							nowPrice={list.item.discountPrice || list.item.price}
 							discountRate={
 								list.item.discountRate === 0 ? '' : list.item.discountRate
 							}
-							beforePrice={list.item.disCountPrice ? list.item.price : null}
+							beforePrice={list.item.discountPrice ? list.item.price : null}
 						/>
 					))
 				)}

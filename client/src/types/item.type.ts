@@ -1,7 +1,7 @@
 export interface ItemShortcutData {
 	brand: string;
 	capacity: number;
-	disCountPrice: number;
+	discountPrice: number;
 	discountRate: number;
 	itemId: number;
 	price: number;

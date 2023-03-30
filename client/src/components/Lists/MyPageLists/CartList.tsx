@@ -113,7 +113,7 @@ function CartList({ data, item, sub }: CartListProps) {
 							{item.title}
 						</Info>
 						<Price
-							nowPrice={item.disCountPrice}
+							nowPrice={item.discountPrice}
 							beforePrice={item.price}
 							discountRate={item.discountRate}
 						/>
@@ -128,7 +128,7 @@ function CartList({ data, item, sub }: CartListProps) {
 							/>
 						</QuantityContainer>
 						<Price // 가격 * 수량
-							nowPrice={item.disCountPrice}
+							nowPrice={item.discountPrice}
 							quantity={data.quantity}
 							fontSize="20px"
 							fontWeight="extraBold"
