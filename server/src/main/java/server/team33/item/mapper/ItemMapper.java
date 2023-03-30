@@ -201,7 +201,7 @@ public interface ItemMapper {
         itemSimpleResponseDto.setCapacity(item.getCapacity());
         itemSimpleResponseDto.setPrice(item.getPrice());
         itemSimpleResponseDto.setDiscountRate(item.getDiscountRate());
-        itemSimpleResponseDto.setDisCountPrice(item.getDiscountPrice());
+        itemSimpleResponseDto.setDiscountPrice(item.getDiscountPrice());
 
         return itemSimpleResponseDto;
     }
