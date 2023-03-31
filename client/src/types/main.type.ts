@@ -1,5 +1,5 @@
 import { CustomArrowProps } from 'react-slick';
-import { NutritionFact } from './itemList.type';
+import { NutritionFact } from './item.type';
 
 export interface CardItem {
 	itemId: number;

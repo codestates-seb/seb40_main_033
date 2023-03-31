@@ -20,7 +20,7 @@ function SubCart() {
 		data: items,
 		error,
 	} = useQuery<AxiosResponse<CartData>>([pathname], () =>
-		axiosInstance.get('/carts?subscription=ture'),
+		axiosInstance.get('/carts?subscription=true'),
 	);
 
 	const { mutate: purchaseMutate } = usePurchase(

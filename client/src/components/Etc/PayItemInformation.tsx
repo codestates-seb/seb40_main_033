@@ -23,7 +23,7 @@ export default function PayItemInformation({
 						brand={orderedItem.item.brand}
 						thumbnail={orderedItem.item.thumbnail}
 						title={orderedItem.item.title}
-						price={orderedItem.item.disCountPrice}
+						price={orderedItem.item.discountPrice}
 						capacity={orderedItem.item.capacity}
 						quantity={orderedItem.quantity}
 						beforePrice={orderedItem.item.price}

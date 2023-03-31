@@ -90,7 +90,7 @@ function SubManagementList({ subManageData }) {
 							{subManageData.item.title}
 						</Info>
 						<Price
-							nowPrice={subManageData.item.disCountPrice}
+							nowPrice={subManageData.item.discountPrice}
 							quantity={1}
 							discountRate={subManageData.item.discountRate}
 							beforePrice={subManageData.item.price}
@@ -109,7 +109,7 @@ function SubManagementList({ subManageData }) {
 							/>
 						</QuantityContainer>
 						<Price // 가격 * 수량
-							nowPrice={subManageData.item.disCountPrice}
+							nowPrice={subManageData.item.discountPrice}
 							quantity={subManageData.quantity} // 수량!
 							fontSize="20px"
 							fontWeight="extraBold"

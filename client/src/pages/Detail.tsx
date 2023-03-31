@@ -1,24 +1,46 @@
 import styled, { keyframes, css } from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
-import { useCallback, useState, useRef } from 'react';
+import { useCallback, useState, useRef, Fragment } from 'react';
+import { useQuery } from 'react-query';
+import { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { IoIosArrowBack } from 'react-icons/io';
-import Summary from '../components/ItemSummary/Summary';
+import ItemSummary from '../components/ItemSummary/ItemSummary';
 import DetailReviewList from '../components/Lists/DetailReviewList';
 import DetailTalkList from '../components/Lists/DetailTalkList';
 import TalkForm from '../components/Forms/TalkForm';
-import { useGet, usePost } from '../hooks/useFetch';
+import { usePost } from '../hooks/useFetch';
 import {
 	DeliveryInfo,
 	ReturnInfo,
 	ProductInfo,
 } from '../components/Etc/Constants';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
+import axiosInstance from '../utils/axiosInstance';
+import { DetailReviewsData, DetailTalksData } from '../types/note.type';
+import { NutritionFact, ItemShortcutData } from '../types/item.type';
+
+interface DetailItemData extends ItemShortcutData {
+	descriptionImage: string;
+	content: string;
+	expiration: string;
+	sales: number;
+	servingSize: number;
+	categories: string[];
+	nutritionFacts: NutritionFact[];
+	starAvg: number;
+	reviews: DetailReviewsData;
+	talks: DetailTalksData;
+}
+
+interface DetailItem {
+	data: DetailItemData;
+}
 
 function Detail() {
 	const { pathname } = useLocation();
 	const { id } = useParams();
-	const reviewRef = useRef(null);
+	const reviewRef = useRef<null | HTMLDivElement>(null);
 	const token = localStorage.getItem('accessToken');
 	const [content, setContent] = useState(''); // 토크 컨텐츠!
 	const [isTalkOpen, setIsTalkOpen] = useState(false);
@@ -44,7 +66,10 @@ function Detail() {
 	};
 
 	// 상품 상세 조회
-	const { isLoading, isError, data, error } = useGet(`/items/${id}`, pathname);
+	const { isLoading, isError, data, error } = useQuery<
+		AxiosResponse<DetailItem>
+	>([pathname], () => axiosInstance.get(`/items/${id}`));
+	// const { isLoading, isError, data, error } = useGet(`/items/${id}`, pathname);
 
 	// 토크 작성
 	const { mutate: talkMu } = usePost(`/talks/${id}`);
@@ -63,14 +88,17 @@ function Detail() {
 	}, [content]);
 
 	// 토크 컨텐츠 상태
-	const handleContent = useCallback(
-		(e) => {
-			setContent(e.target.value);
-		},
-		[content],
-	);
-	const lists = !isLoading && data.data.data;
-	if (isLoading) {
+	const handleContent: React.ChangeEventHandler<HTMLTextAreaElement> =
+		useCallback(
+			(e) => {
+				setContent(e.currentTarget.value);
+			},
+			[content],
+		);
+
+	const lists = data?.data.data;
+
+	if (isLoading || !lists) {
 		return (
 			<DetailContainer className="loading">
 				<LoadingSpinner />
@@ -78,8 +106,12 @@ function Detail() {
 		);
 	}
 
-	if (isError) {
-		return <div>Error: {error.message}</div>;
+	if (isError && error instanceof Error) {
+		return (
+			<DetailContainer className="loading">
+				<div>Error: {error.message}</div>
+			</DetailContainer>
+		);
 	}
 
 	return (
@@ -151,7 +183,7 @@ function Detail() {
 						{token && (
 							<TalkFormContainer isDelay={isDelay}>
 								<TalkFormOpenBtn isDelay={isDelay} onClick={handleOpenTalkForm}>
-									<IoIosArrowBack className={isDelay && 'delay'} />
+									<IoIosArrowBack />
 									토크 작성하기
 								</TalkFormOpenBtn>
 								{isTalkOpen && (
@@ -166,7 +198,7 @@ function Detail() {
 						<ListsContainer className="talk">
 							{lists.talks.data.length !== 0 ? (
 								lists.talks.data.map((talk) => (
-									<>
+									<Fragment key={talk.talkId}>
 										<DetailTalkList
 											key={talk.talkId}
 											itemId={talk.itemId}
@@ -178,21 +210,20 @@ function Detail() {
 											displayName={talk.displayName}
 										/>
 										{talk.talkComments &&
-											talk.talkComments.map((retalk) => {
-												return (
-													<DetailTalkList
-														key={`${retalk.talkCommentId.toString()}-retalk`}
-														talkCommentId={retalk.talkCommentId}
-														reTalkContent={retalk.content}
-														createdAt={retalk.createdAt}
-														shopper={retalk.shopper}
-														displayName={retalk.displayName}
-														userId={retalk.userId}
-														isReply
-													/>
-												);
-											})}
-									</>
+											talk.talkComments.map((retalk) => (
+												<DetailTalkList
+													key={retalk.talkCommentId}
+													talkId={retalk.talkCommentId}
+													content={retalk.content}
+													createdAt={retalk.createdAt}
+													shopper={retalk.shopper}
+													displayName={retalk.displayName}
+													userId={retalk.userId}
+													itemId={talk.itemId}
+													isReply
+												/>
+											))}
+									</Fragment>
 								))
 							) : (
 								<NoNote>작성된 토크가 없습니다.</NoNote>
@@ -201,15 +232,15 @@ function Detail() {
 					</Notes>
 				</Contents>
 				<SummaryContainer>
-					<Summary
+					<ItemSummary
 						itemId={lists.itemId}
 						name={lists.title}
 						brand={lists.brand}
 						categories={lists.categories}
 						content={lists.content}
 						nowPrice={lists.discountPrice || lists.price}
-						discountRate={lists.discountRate === 0 ? '' : lists.discountRate}
-						beforePrice={lists.discountPrice ? lists.price : null}
+						discountRate={lists.discountRate}
+						beforePrice={lists.discountPrice && lists.price}
 						starAvg={lists.starAvg}
 						reviewCount={lists.reviews.data.length}
 						handleMoveToReview={handleMoveToReview}
@@ -333,7 +364,7 @@ const slideOut = keyframes`
 	}
 `;
 
-const TalkFormContainer = styled.div`
+const TalkFormContainer = styled.div<{ isDelay: boolean }>`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -353,7 +384,7 @@ const TalkFormContainer = styled.div`
 	}
 `;
 
-const TalkFormOpenBtn = styled.div`
+const TalkFormOpenBtn = styled.div<{ isDelay: boolean }>`
 	display: flex;
 	align-items: center;
 	color: var(--purple-200);

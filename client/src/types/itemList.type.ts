@@ -1,9 +1,4 @@
-import { ItemShortcutData } from './item.type';
-
-export interface NutritionFact {
-	ingredient: string;
-	volume: string;
-}
+import { ItemShortcutData, NutritionFact } from './item.type';
 
 export interface Item extends ItemShortcutData {
 	content: string;

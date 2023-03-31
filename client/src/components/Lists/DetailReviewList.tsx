@@ -7,6 +7,7 @@ import OrderDetailList from './MyPageLists/OrderDetailList';
 import ReviewModal from '../Modals/ReviewModal';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
 import { useDelete } from '../../hooks/useFetch';
+import { DetailReviewListProps } from '../../types/note.type';
 
 function DetailReviewList({
 	star,
@@ -15,7 +16,7 @@ function DetailReviewList({
 	content,
 	review,
 	userId,
-}) {
+}: DetailReviewListProps) {
 	const [openForm, setOpenForm] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const user = localStorage.getItem('userId');

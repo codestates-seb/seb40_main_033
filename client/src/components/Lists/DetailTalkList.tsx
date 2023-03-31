@@ -9,25 +9,25 @@ import { DotDate } from '../Etc/ListDate';
 import TalkForm from '../Forms/TalkForm';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
 import { usePost, usePatch, useDelete } from '../../hooks/useFetch';
+import { DetailTalkListProps } from '../../types/note.type';
+import { RootState } from '../../redux/store/store';
 
 function DetailTalkList({
 	isReply,
 	itemId,
 	createdAt,
-	reTalkContent,
 	content,
 	talkId,
 	userId,
-	talkCommentId,
 	displayName,
 	shopper,
-}) {
+}: DetailTalkListProps) {
 	const [writable, setWritable] = useState(false);
 	const [writeReply, setWriteReply] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
-	const [newContent, setNewContent] = useState(content || reTalkContent); // 업데이트할 토크 컨텐츠
+	const [newContent, setNewContent] = useState(content); // 업데이트할 토크 컨텐츠
 	const [reContent, setReContent] = useState(''); // 새로 작성한 리토크
-	const { loginStatus } = useSelector((store) => store.user);
+	const { loginStatus } = useSelector((store: RootState) => store.user);
 	const user = localStorage.getItem('userId');
 	const [isAuthor] = useState(Number(user) === userId);
 
@@ -38,9 +38,7 @@ function DetailTalkList({
 	const { mutate: talkDeleteMu } = useDelete(`/talks/${talkId}`);
 
 	// 리토크 삭제
-	const { mutate: reTalkDeleteMu } = useDelete(
-		`/talks/comments/${talkCommentId}`,
-	);
+	const { mutate: reTalkDeleteMu } = useDelete(`/talks/comments/${talkId}`);
 
 	// 리토크 작성
 	const { mutate: reTalkCreateMu } = usePost(
@@ -48,25 +46,25 @@ function DetailTalkList({
 	);
 
 	// 리토크 수정
-	const { mutate: reTalkUpdateMu } = usePatch(
-		`/talks/comments/${talkCommentId}`,
-	);
+	const { mutate: reTalkUpdateMu } = usePatch(`/talks/comments/${talkId}`);
 
 	// 토크 수정 컨텐츠 상태
-	const handleNewContent = useCallback(
-		(e) => {
-			setNewContent(e.target.value);
-		},
-		[newContent],
-	);
+	const handleNewContent: React.ChangeEventHandler<HTMLTextAreaElement> =
+		useCallback(
+			(e) => {
+				setNewContent(e.target.value);
+			},
+			[newContent],
+		);
 
 	// 리톡 작성 컨텐츠 상태
-	const handleReContent = useCallback(
-		(e) => {
-			setReContent(e.target.value);
-		},
-		[reContent],
-	);
+	const handleReContent: React.ChangeEventHandler<HTMLTextAreaElement> =
+		useCallback(
+			(e) => {
+				setReContent(e.target.value);
+			},
+			[reContent],
+		);
 
 	// 리토크 작성! (답글)
 	const handleReTalkCreate = useCallback(() => {
@@ -95,20 +93,21 @@ function DetailTalkList({
 		setWritable(false);
 	}, [newContent]);
 
-	const handleFormOpen = useCallback(
-		(e) => {
-			if (!loginStatus) {
-				toast.error('로그인이 필요한 서비스입니다.');
-				return;
-			}
-			if (e.target.innerText === '수정') {
-				setWritable(!writable); // 수정을 눌렀을 때
-			} else {
-				setWriteReply(!writeReply); // 답변작성을 눌렀을 때
-			}
-		},
-		[writable, writeReply],
-	);
+	const handleFormOpen: React.MouseEventHandler<HTMLButtonElement> =
+		useCallback(
+			(e) => {
+				if (!loginStatus) {
+					toast.error('로그인이 필요한 서비스입니다.');
+					return;
+				}
+				if (e.currentTarget.innerText === '수정') {
+					setWritable(!writable); // 수정을 눌렀을 때
+				} else {
+					setWriteReply(!writeReply); // 답변작성을 눌렀을 때
+				}
+			},
+			[writable, writeReply],
+		);
 
 	const handleDeleteClick = useCallback(() => {
 		setOpenDeleteModal(true);
@@ -159,7 +158,7 @@ function DetailTalkList({
 				) : (
 					<Talk>{newContent}</Talk>
 				)}
-				<InfoContainer className={isReply && 'reply'}>
+				<InfoContainer className={isReply ? 'reply' : ''}>
 					{!isReply && !writable && (
 						<LetterButton onClick={handleFormOpen}>답변 작성</LetterButton>
 					)}
