@@ -5,6 +5,7 @@ import {
 	fetchOrderLists,
 } from '../apis/itemApis';
 import { UseGetList, UseGetSearchList } from '../types/itemList.type';
+import { UseGetOrderListProps } from '../types/order.type';
 
 export const useGetList = ({ pathname, category, path, query }: UseGetList) => {
 	return useInfiniteQuery(
@@ -36,10 +37,10 @@ export const useGetSearchList = ({
 };
 
 // 상세페이지 주문내역조회
-export const useGetOrderList = (pathname: string) => {
+export const useGetOrderList = ({ pathname, isSub }: UseGetOrderListProps) => {
 	return useInfiniteQuery(
 		pathname,
-		({ pageParam = 1 }) => fetchOrderLists(pageParam),
+		({ pageParam = 1 }) => fetchOrderLists({ pageParam, isSub }),
 		{
 			getNextPageParam: ({ isLast, nextPage }) =>
 				!isLast ? nextPage : undefined,

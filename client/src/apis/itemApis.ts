@@ -4,6 +4,7 @@ import {
 	InfiniteQueryPromise,
 } from '../types/itemList.type';
 import axiosInstance from '../utils/axiosInstance';
+import { FetchOrderListsProps } from '../types/order.type';
 
 export const fetchCathgoryItems = async ({
 	category,
@@ -44,9 +45,12 @@ export const fetchSearchItems = async ({
 };
 
 // 상세페이지 주문내역 조회
-export const fetchOrderLists = async (pageParam: string) => {
+export const fetchOrderLists = async ({
+	pageParam,
+	isSub,
+}: FetchOrderListsProps): Promise<InfiniteQueryPromise> => {
 	const res = await axiosInstance.get(
-		`/orders?subscription=false&page=${pageParam}&size=7`,
+		`/orders?subscription=${isSub}&page=${pageParam}&size=7`,
 	);
 	const { data } = await res.data;
 	const { pageInfo } = await res.data;

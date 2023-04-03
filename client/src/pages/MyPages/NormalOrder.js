@@ -13,8 +13,10 @@ import { useGetOrderList } from '../../hooks/useGetList';
 function NormalOrder() {
 	const { pathname } = useLocation();
 	const { ref, inView } = useInView();
-	const { data, status, fetchNextPage, isFetchingNextPage } =
-		useGetOrderList(pathname);
+	const { data, status, fetchNextPage, isFetchingNextPage } = useGetOrderList({
+		pathname,
+		isSub: false,
+	});
 
 	// 최하단 div가 보이면 다음 페이지를 불러옴
 	useEffect(() => {
@@ -71,7 +73,7 @@ const ListContainer = styled.main`
 	border-radius: 10px;
 	background-color: white;
 	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
-	width: 864px;
+	width: 872px;
 	min-height: 200px;
 	position: relative;
 
