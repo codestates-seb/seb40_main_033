@@ -116,3 +116,8 @@ export const MYPAGE_TAB = {
 	],
 	PATH: ['user-info', 'order/normal', 'sub-manage', 'wish', 'note/review'],
 };
+
+export const ERROR_INFORMATION = `현재 정보를 불러올 수 없습니다.
+잠시 후 다시 시도해주세요.`;
+
+export const NO_ORDER_HISTORY = '주문 내역이 없습니다.';
