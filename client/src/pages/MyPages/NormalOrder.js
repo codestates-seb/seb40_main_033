@@ -1,20 +1,27 @@
 import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
 import OrderList from '../../components/Lists/MyPageLists/OrderList';
-import Pagination from '../../components/Etc/Pagination';
-import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
+import {
+	ERROR_INFORMATION,
+	NO_ORDER_HISTORY,
+} from '../../components/Etc/Constants';
+import { useGetOrderList } from '../../hooks/useGetList';
 
 function NormalOrder() {
 	const { pathname } = useLocation();
+	const { ref, inView } = useInView();
+	const { data, status, fetchNextPage, isFetchingNextPage } =
+		useGetOrderList(pathname);
 
-	const { isLoading, isError, data, error } = useGet(
-		'/orders?subscription=false',
-		pathname,
-	);
+	// 최하단 div가 보이면 다음 페이지를 불러옴
+	useEffect(() => {
+		if (inView) fetchNextPage();
+	}, [inView]);
 
-	if (isLoading) {
+	if (status === 'loading') {
 		return (
 			<ListContainer>
 				<LoadingSpinner />
@@ -22,22 +29,34 @@ function NormalOrder() {
 		);
 	}
 
-	if (isError) {
-		return <div>Error: {error.message}</div>;
+	if (status === 'error') {
+		return (
+			<ListContainer>
+				<Message>{ERROR_INFORMATION}</Message>
+			</ListContainer>
+		);
 	}
-
-	const lists = !isLoading && data.data.data;
 
 	return (
 		<>
 			<ListContainer>
-				{data && lists.length === 0 ? (
-					<Nolists>주문 내역이 없습니다.</Nolists>
+				{data.pages[0].data.length === 0 ? (
+					<Message>{NO_ORDER_HISTORY}</Message>
 				) : (
-					lists.map((list) => <OrderList key={list.orderId} list={list} />)
+					data?.pages.map((page, i) => (
+						<Fragment key={`page-${i.toString()}`}>
+							{page.data.map((list) => (
+								<OrderList key={list.orderId} list={list} />
+							))}
+						</Fragment>
+					))
 				)}
 			</ListContainer>
-			{/* <Pagination total="10" limit="8" /> */}
+			{isFetchingNextPage ? (
+				<LoadingSpinner />
+			) : (
+				<div className="lastDiv" ref={ref} />
+			)}
 		</>
 	);
 }
@@ -46,6 +65,7 @@ const ListContainer = styled.main`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	padding: 4px;
 	margin: 25px 0 75px 0;
 	border-radius: 10px;
@@ -62,12 +82,15 @@ const ListContainer = styled.main`
 	}
 `;
 
-const Nolists = styled.div`
+const Message = styled.div`
 	height: 200px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 16px;
+	font-size: 15px;
+	white-space: pre-line;
+	line-height: 1.5;
+	text-align: center;
 `;
 
 export default React.memo(NormalOrder);

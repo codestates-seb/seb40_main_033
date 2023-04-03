@@ -42,3 +42,18 @@ export const fetchSearchItems = async ({
 		isLast: pageInfo.totalPages <= pageInfo.page,
 	};
 };
+
+// 상세페이지 주문내역 조회
+export const fetchOrderLists = async (pageParam: string) => {
+	const res = await axiosInstance.get(
+		`/orders?subscription=false&page=${pageParam}&size=7`,
+	);
+	const { data } = await res.data;
+	const { pageInfo } = await res.data;
+
+	return {
+		data,
+		nextPage: pageParam + 1,
+		isLast: pageInfo.totalPages <= pageInfo.page,
+	};
+};
