@@ -2,16 +2,17 @@ import {
 	FetchCathgoryItems,
 	FetchSearchItems,
 	InfiniteQueryPromise,
+	Item,
 } from '../types/itemList.type';
 import axiosInstance from '../utils/axiosInstance';
-import { FetchOrderListsProps } from '../types/order.type';
+import { FetchOrderListsProps, OrderListData } from '../types/order.type';
 
 export const fetchCathgoryItems = async ({
 	category,
 	path,
 	query,
 	pageParam,
-}: FetchCathgoryItems): Promise<InfiniteQueryPromise> => {
+}: FetchCathgoryItems): Promise<InfiniteQueryPromise<Item[]>> => {
 	const res = await axiosInstance.get(
 		`/category${path}?categoryName=${category}${query}&page=${pageParam}&size=12`,
 	);
@@ -30,7 +31,7 @@ export const fetchSearchItems = async ({
 	path,
 	query,
 	pageParam,
-}: FetchSearchItems): Promise<InfiniteQueryPromise> => {
+}: FetchSearchItems): Promise<InfiniteQueryPromise<Item[]>> => {
 	const res = await axiosInstance.get(
 		`/search${path}?keyword=${keyword}${query}&page=${pageParam}&size=12`,
 	);
@@ -48,7 +49,7 @@ export const fetchSearchItems = async ({
 export const fetchOrderLists = async ({
 	pageParam,
 	isSub,
-}: FetchOrderListsProps): Promise<InfiniteQueryPromise> => {
+}: FetchOrderListsProps): Promise<InfiniteQueryPromise<OrderListData[]>> => {
 	const res = await axiosInstance.get(
 		`/orders?subscription=${isSub}&page=${pageParam}&size=7`,
 	);
