@@ -1,13 +1,26 @@
+import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useState } from 'react';
-import { AxiosResponse } from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 import axiosInstance from '../utils/axiosInstance';
+import { TOKEN_EXPIRED_INFOMATION } from '../components/Etc/Constants';
 
-export function useGet(url: string, keyValue: string) {
-	const { isLoading, isError, isSuccess, data, error, refetch } = useQuery(
-		[keyValue],
-		() => axiosInstance.get(url),
-	);
+export function useGet<T>(url: string, keyValue: string) {
+	const navigate = useNavigate();
+	const { isLoading, isError, isSuccess, data, error, refetch } = useQuery<
+		AxiosResponse<T>
+	>([keyValue], () => axiosInstance.get(url), {
+		onError: (errRes) => {
+			const { response } = errRes as AxiosError;
+
+			if (response?.status === 403) {
+				localStorage.clear();
+				navigate('/login');
+				toast.error(TOKEN_EXPIRED_INFOMATION);
+			}
+		},
+	});
 
 	return { isLoading, isError, isSuccess, data, error, refetch };
 }
