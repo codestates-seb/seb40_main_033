@@ -4,7 +4,7 @@ import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import SubManagementList from '../../components/Lists/MyPageLists/SubManagementList';
 import { useGet } from '../../hooks/useFetch';
 
-function SubManage() {
+export default function SubscriptionManagement() {
 	const { pathname } = useLocation();
 	const { data, isError, isLoading, error } = useGet('/orders/subs', pathname);
 	const subManageDatas = data?.data?.data;
@@ -25,8 +25,6 @@ function SubManage() {
 		</SubManageContainer>
 	);
 }
-
-export default SubManage;
 
 const SubManageContainer = styled.main`
 	display: flex;
