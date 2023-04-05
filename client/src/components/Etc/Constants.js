@@ -121,3 +121,6 @@ export const ERROR_INFORMATION = `현재 정보를 불러올 수 없습니다.
 잠시 후 다시 시도해주세요.`;
 
 export const NO_ORDER_HISTORY = '주문 내역이 없습니다.';
+
+export const TOKEN_EXPIRED_INFOMATION =
+	'로그인이 만료되었습니다. 다시 로그인해주세요.';
