@@ -43,13 +43,13 @@ function SubscriptionOrder() {
 	return (
 		<>
 			<ListContainer>
-				{data.pages[0].data.length === 0 ? (
+				{data?.pages[0].data.length === 0 ? (
 					<Message>{NO_ORDER_HISTORY}</Message>
 				) : (
 					data?.pages.map((page, i) => (
 						<Fragment key={`page-${i.toString()}`}>
 							{page.data.map((list) => (
-								<OrderList key={list.orderId} list={list} totalPrice />
+								<OrderList key={list.orderId} list={list} />
 							))}
 						</Fragment>
 					))
