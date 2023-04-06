@@ -1,18 +1,22 @@
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa';
 import { useCallback, useState } from 'react';
-import { toast } from 'react-toastify';
 import { usePost } from '../../hooks/useFetch';
 import { WishlistBtnProps } from '../../types/button.type';
 
-function WishlistButton({ isChecked, itemId, setIsChecked }: WishlistBtnProps) {
+function WishlistButton({
+	isChecked,
+	itemId,
+	setIsChecked,
+	setOpenLoginModal,
+}: WishlistBtnProps) {
 	const [request, setRequest] = useState(isChecked ? 0 : 1);
 	const token = localStorage.getItem('accessToken');
 	const { mutate } = usePost(`/wishes/${itemId}?wish=${request}`);
 
 	const handleHeartClick = useCallback(() => {
-		if (!token) {
-			toast.error('로그인이 필요한 서비스입니다.');
+		if (!token && setOpenLoginModal) {
+			setOpenLoginModal(true);
 			return;
 		}
 		mutate();

@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import WishlistButton from '../Buttons/WishlistButton';
 import Tag from '../Etc/Tag';
 import { BlackButton, WhiteButton } from '../Buttons/BlackButton';
@@ -13,6 +12,7 @@ import CartModal from '../Modals/CartModal';
 import useGetWishes from '../../hooks/useGetWishes';
 import { usePost } from '../../hooks/useFetch';
 import usePurchase from '../../hooks/usePurchase';
+import LoginModal from '../Modals/LoginModal';
 
 interface ItemSummaryProps {
 	name: string;
@@ -45,6 +45,7 @@ function ItemSummary({
 	const [path, setPath] = useState(''); // 바로결제하기 클릭 시, 이동할 페이지
 	const [showOptions, setShowOptions] = useState(false);
 	const [openCartModal, setOpenCartModal] = useState(false);
+	const [openLoginModal, setOpenLoginModal] = useState(false);
 	const token = localStorage.getItem('accessToken');
 	const [orderList, setOrdertList] = useState({
 		quantity: 1,
@@ -117,7 +118,7 @@ function ItemSummary({
 			if (token) {
 				purMu({ ...orderList, itemId });
 			} else {
-				toast.error('로그인이 필요한 서비스입니다.');
+				setOpenLoginModal(true);
 			}
 		}, [orderList]);
 
@@ -127,7 +128,7 @@ function ItemSummary({
 			cartMu({ ...orderList });
 			setOpenCartModal(true);
 		} else {
-			toast.error('로그인이 필요한 서비스입니다.');
+			setOpenLoginModal(true);
 		}
 	}, [orderList]);
 
@@ -140,17 +141,10 @@ function ItemSummary({
 		}
 	}, [orderList]);
 
-	// // 로그인 모달을 띄우는 함수
-	// const handleOpenLoginModal = () => {
-	// 	if (!token) {
-	// 		setOpenLoginModal(true);
-	// 	}
-	// };
-
 	// 로그인 모달 속, 로그인 페이지로 가는 함수
-	// const handleLoginMove = useCallback(() => {
-	// 	navigate('/login');
-	// }, []);
+	const handleLoginMove = useCallback(() => {
+		navigate('/login');
+	}, []);
 
 	return (
 		<Container>
@@ -159,6 +153,7 @@ function ItemSummary({
 					<HeadBox>
 						<p>{brand}</p>
 						<WishlistButton
+							setOpenLoginModal={setOpenLoginModal}
 							setIsChecked={setIsCheckedWish}
 							isChecked={isCheckedWish}
 							itemId={itemId}
@@ -230,6 +225,11 @@ function ItemSummary({
 				openModal={openCartModal}
 				contents="장바구니에 상품이 담겼습니다."
 				onClickPbtn={handleCartClick}
+			/>
+			<LoginModal
+				setIsOpen={setOpenLoginModal}
+				modalIsOpen={openLoginModal}
+				onClickPbtn={handleLoginMove}
 			/>
 		</Container>
 	);
