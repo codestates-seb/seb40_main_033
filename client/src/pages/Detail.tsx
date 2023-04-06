@@ -1,22 +1,19 @@
 import styled, { keyframes, css } from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
 import { useCallback, useState, useRef, Fragment } from 'react';
-import { useQuery } from 'react-query';
-import { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { IoIosArrowBack } from 'react-icons/io';
 import ItemSummary from '../components/ItemSummary/ItemSummary';
 import DetailReviewList from '../components/Lists/DetailReviewList';
 import DetailTalkList from '../components/Lists/DetailTalkList';
 import TalkForm from '../components/Forms/TalkForm';
-import { usePost } from '../hooks/useFetch';
+import { useGet, usePost } from '../hooks/useFetch';
 import {
 	DeliveryInfo,
 	ReturnInfo,
 	ProductInfo,
 } from '../components/Etc/Constants';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
-import axiosInstance from '../utils/axiosInstance';
 import { DetailReviewsData, DetailTalksData } from '../types/note.type';
 import { NutritionFact, ItemShortcutData } from '../types/item.type';
 
@@ -66,10 +63,10 @@ function Detail() {
 	};
 
 	// 상품 상세 조회
-	const { isLoading, isError, data, error } = useQuery<
-		AxiosResponse<DetailItem>
-	>([pathname], () => axiosInstance.get(`/items/${id}`));
-	// const { isLoading, isError, data, error } = useGet(`/items/${id}`, pathname);
+	const { isLoading, isError, data, error } = useGet<DetailItem>(
+		`/items/${id}`,
+		pathname,
+	);
 
 	// 토크 작성
 	const { mutate: talkMu } = usePost(`/talks/${id}`);
@@ -84,7 +81,6 @@ function Detail() {
 		setContent('');
 		setIsTalkOpen(false);
 		setIsDelay(true);
-		// setTimeout(() => setIsTalkOpen(false), 300);
 	}, [content]);
 
 	// 토크 컨텐츠 상태
