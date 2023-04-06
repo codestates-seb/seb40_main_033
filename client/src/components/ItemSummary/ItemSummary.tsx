@@ -10,7 +10,8 @@ import { PeriodChoiceTab } from '../Tabs/ToggleTabs';
 import { LongTextStar } from '../Stars/TextStar';
 import Price, { SummaryPrice } from '../Etc/Price';
 import CartModal from '../Modals/CartModal';
-import { usePost, useGet } from '../../hooks/useFetch';
+import useGetWishes from '../../hooks/useGetWishes';
+import { usePost } from '../../hooks/useFetch';
 import usePurchase from '../../hooks/usePurchase';
 
 interface ItemSummaryProps {
@@ -51,7 +52,10 @@ function ItemSummary({
 		subscription: false,
 	});
 
-	const { data: WishData } = useGet('/wishes/item', `detail/wishs`);
+	const { data: WishData } = useGetWishes<{ data: number[] }>(
+		'/wishes/item',
+		`detail/wishs`,
+	);
 	const [isCheckedWish, setIsCheckedWish] = useState(
 		WishData?.data?.data.includes(itemId) ? 1 : 0,
 	);
