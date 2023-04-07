@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WishlistButton from '../Buttons/WishlistButton';
 import Tag from '../Etc/Tag';
@@ -57,17 +57,14 @@ function ItemSummary({
 		'/wishes/item',
 		`detail/wishs`,
 	);
+
 	const [isCheckedWish, setIsCheckedWish] = useState(
-		WishData?.data?.data.includes(itemId) ? 1 : 0,
+		!!WishData?.data?.data.includes(itemId),
 	);
 
 	useEffect(() => {
-		if (WishData?.data?.data.includes(itemId)) {
-			setIsCheckedWish(1);
-		} else {
-			setIsCheckedWish(0);
-		}
-	}, []);
+		setIsCheckedWish(!!WishData?.data?.data.includes(itemId));
+	}, [WishData]);
 
 	const { mutate: cartMu } = usePost(`/carts/${itemId}`);
 	const { mutate: purMu } = usePurchase('/orders/single', path);
@@ -301,7 +298,6 @@ const TagsBox = styled.div`
 const RateBox = styled.div`
 	display: flex;
 	justify-content: space-between;
-	/* align-items: center; */
 	width: 100%;
 	margin-bottom: 10px;
 `;
@@ -309,7 +305,6 @@ const RateBox = styled.div`
 const ButtonBox = styled.div`
 	display: flex;
 	justify-content: space-between;
-	/* width: 100%; */
 `;
 
 const slide = keyframes`
