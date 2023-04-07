@@ -96,6 +96,7 @@ const RightContainer = styled(LeftContainer)`
 `;
 
 const ListContainer = styled.div`
+	height: 100%;
 	align-items: center;
 	display: flex;
 	flex-direction: column;
