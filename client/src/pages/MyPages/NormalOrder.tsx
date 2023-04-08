@@ -42,7 +42,7 @@ function NormalOrder() {
 	return (
 		<>
 			<ListContainer>
-				{data.pages[0].data.length === 0 ? (
+				{data?.pages[0].data.length === 0 ? (
 					<Message>{NO_ORDER_HISTORY}</Message>
 				) : (
 					data?.pages.map((page, i) => (

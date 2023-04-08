@@ -35,7 +35,8 @@ export interface PriceButtonProps {
 }
 
 export interface WishlistBtnProps {
-	isChecked: boolean | number;
+	isChecked: boolean;
 	itemId: number;
-	setIsChecked?: (isChecked: number) => void;
+	setIsChecked?: React.Dispatch<React.SetStateAction<boolean>>;
+	setOpenLoginModal?: React.Dispatch<React.SetStateAction<boolean>>;
 }

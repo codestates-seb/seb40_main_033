@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { LetterButtonColor } from '../../Buttons/LetterButton';
 import Price from '../../Etc/Price';
 import ReviewModal from '../../Modals/ReviewModal';
+import { OrderDetailListProps } from '../../../types/order.type';
 
 function OrderDetailList({
 	inModal,
@@ -16,14 +17,14 @@ function OrderDetailList({
 	nowPrice,
 	beforePrice,
 	discountRate,
-	itemOrderId, // 주문내역 속 개별아이템 주문id!
+	itemOrderId, // 주문내역 속 개별아이템 주문id
 	capacity,
 	quantity,
 	period,
 	subscription,
 	orderStatus,
 	itemId,
-}) {
+}: OrderDetailListProps) {
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const navigate = useNavigate();
 
@@ -51,12 +52,12 @@ function OrderDetailList({
 	};
 
 	return (
-		<Box className={inModal && 'in-modal'}>
+		<Box inModal={inModal}>
 			<ImageContainer onClick={handlePageMove}>
 				<Image src={thumbnail} alt="상품 이미지" />
 			</ImageContainer>
 			<Wrap>
-				<InformationForm className={subscription && 'subscription'}>
+				<InformationForm subscription={subscription}>
 					<Brand>{brand}</Brand>
 					<Name onClick={handlePageMove}>{`${title}${
 						capacity && `, ${capacity}정`
@@ -69,8 +70,8 @@ function OrderDetailList({
 						{quantity && <Quantity>{quantity}개 / </Quantity>}
 						<Price // 가격 * 수량
 							nowPrice={nowPrice}
-							beforePrice={nowPrice === beforePrice ? null : beforePrice}
-							discountRate={nowPrice === beforePrice ? null : discountRate}
+							beforePrice={nowPrice !== beforePrice && beforePrice}
+							discountRate={nowPrice !== beforePrice && discountRate}
 							fontSize="14px"
 							fontWeight="Bold"
 							quantity={quantity}
@@ -82,7 +83,7 @@ function OrderDetailList({
 						<LetterButtonColor
 							onClick={openModal}
 							color="gray"
-							colorcode="500"
+							colorCode="500"
 							fontSize="13px"
 						>
 							리뷰 쓰기
@@ -101,17 +102,15 @@ function OrderDetailList({
 	);
 }
 
-const Box = styled.div`
+const Box = styled.div<{ inModal?: boolean }>`
 	border-bottom: 1px solid rgb(235, 235, 235);
 	background-color: white;
 	width: 450px;
 	height: 180px;
 	display: flex;
 	align-items: center;
-	padding: 19px;
-	&.in-modal {
-		width: 100%;
-	}
+	padding: 18px 10px 18px 18px;
+	width: ${({ inModal }) => (inModal ? '100%' : '450px')};
 `;
 
 const Wrap = styled.div`
@@ -119,7 +118,7 @@ const Wrap = styled.div`
 	flex-direction: column;
 	margin-left: 20px;
 	width: 100%;
-	position: relative;
+	margin-top: 2px;
 `;
 
 const ImageContainer = styled.div`
@@ -135,11 +134,8 @@ const Image = styled.img`
 	align-items: center;
 `;
 
-const InformationForm = styled.div`
-	margin-bottom: 23px;
-	&.subscription {
-		margin-bottom: 12px;
-	}
+const InformationForm = styled.div<{ subscription: boolean }>`
+	margin-bottom: ${({ subscription }) => (subscription ? '14px' : '23px')};
 `;
 
 const Brand = styled.div`
@@ -164,14 +160,12 @@ const BottomContainer = styled.div`
 const Total = styled.div`
 	display: flex;
 	font-weight: var(--bold);
+	align-items: center;
 `;
 
 const Period = styled.div`
 	color: var(--purple-200);
-	/* position: relative; */
-	margin-bottom: 4px;
-	/* top: -15px; */
-	/* right: 0; */
+	margin-bottom: 5px;
 	font-size: 12px;
 `;
 
@@ -184,9 +178,7 @@ const ReviewContainer = styled.div`
 	align-items: center;
 	cursor: pointer;
 	align-self: end;
-	position: absolute;
-	bottom: -25px;
-	right: -12px;
+	margin-top: 4px;
 	* {
 		color: var(--gray-500);
 	}
