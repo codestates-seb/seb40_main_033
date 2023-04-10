@@ -64,13 +64,13 @@ function DetailReviewList({
 			<ReviewModal
 				setIsOpen={setOpenForm}
 				modalIsOpen={openForm}
-				OrderDetailList={OrderDetailList}
+				List={OrderDetailList}
 				review={review}
 			/>
 			<DeleteNotesModal
-				openDeleteModal={openDeleteModal}
-				setOpenDeleteModal={setOpenDeleteModal}
-				handleDelete={handleDeleteReview}
+				setIsOpen={setOpenDeleteModal}
+				modalIsOpen={openDeleteModal}
+				onClickLpbtn={handleDeleteReview}
 			/>
 		</Box>
 	);

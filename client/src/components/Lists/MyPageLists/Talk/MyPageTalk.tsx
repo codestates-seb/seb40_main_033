@@ -79,9 +79,9 @@ function MyPageTalk({ talk, isReply }: MyPageTalkListProps) {
 				</BottomContainer>
 				<TalkModal setIsOpen={setOpenForm} modalIsOpen={openForm} talk={talk} />
 				<DeleteNotesModal
-					openDeleteModal={openDeleteModal}
-					setOpenDeleteModal={setOpenDeleteModal}
-					handleDelete={handleDeleteTalk}
+					modalIsOpen={openDeleteModal}
+					setIsOpen={setOpenDeleteModal}
+					onClickLpbtn={handleDeleteTalk}
 				/>
 			</ListContainer>
 		</Box>

@@ -6,7 +6,7 @@ import ReviewForm from '../Forms/ReviewForm';
 import BtnStar from '../Stars/BtnStar';
 import { usePatch, usePost } from '../../hooks/useFetch';
 
-function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
+function ReviewModal({ setIsOpen, modalIsOpen, List, review }) {
 	const data = {
 		title: 'Review',
 	};
@@ -57,7 +57,7 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 		<DefalutModal
 			title={data.title}
 			list={
-				<OrderDetailList
+				<List
 					inModal
 					brand={review?.item.brand}
 					thumbnail={review?.item.thumbnail}

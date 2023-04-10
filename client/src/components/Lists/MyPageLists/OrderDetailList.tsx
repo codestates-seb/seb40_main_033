@@ -94,7 +94,7 @@ function OrderDetailList({
 				<ReviewModal
 					modalIsOpen={modalIsOpen}
 					setIsOpen={setIsOpen}
-					OrderDetailList={OrderDetailList}
+					List={OrderDetailList}
 					review={review}
 				/>
 			</Wrap>

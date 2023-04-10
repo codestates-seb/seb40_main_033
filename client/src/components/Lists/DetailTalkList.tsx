@@ -174,9 +174,9 @@ function DetailTalkList({
 				)}
 			</Box>
 			<DeleteNotesModal
-				openDeleteModal={openDeleteModal}
-				setOpenDeleteModal={setOpenDeleteModal}
-				handleDelete={handleDeleteTalk}
+				setIsOpen={setOpenDeleteModal}
+				modalIsOpen={openDeleteModal}
+				onClickLpbtn={handleDeleteTalk}
 			/>
 		</TalkContainer>
 	);

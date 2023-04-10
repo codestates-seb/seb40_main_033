@@ -97,13 +97,13 @@ function MyPageReviewList({
 				<ReviewModal
 					setIsOpen={setOpenForm}
 					modalIsOpen={openForm}
-					OrderDetailList={OrderDetailList}
+					List={OrderDetailList}
 					review={review}
 				/>
 				<DeleteNotesModal
-					openDeleteModal={openDeleteModal}
-					setOpenDeleteModal={setOpenDeleteModal}
-					handleDelete={handleDelete}
+					modalIsOpen={openDeleteModal}
+					setIsOpen={setOpenDeleteModal}
+					onClickLpbtn={handleDelete}
 				/>
 			</ListContainer>
 		</Box>

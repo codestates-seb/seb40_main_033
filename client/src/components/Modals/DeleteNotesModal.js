@@ -13,11 +13,7 @@ import DefalutModal from './DefalutModal';
 	ex)) <LetterButton onClick={openModal}>버튼</LetterButton>
 */
 
-function DeleteNotesModal({
-	openDeleteModal,
-	setOpenDeleteModal,
-	handleDelete,
-}) {
+function DeleteNotesModal({ setIsOpen, modalIsOpen, onClickLpbtn }) {
 	const data = {
 		title: '작성글 삭제',
 		contents: '정말 삭제하시겠습니까?',
@@ -32,9 +28,9 @@ function DeleteNotesModal({
 			subContents={data.subContents}
 			lpbtnTexts={data.lpbtnTexts}
 			pbtnTexts={data.pbtnTexts}
-			setIsOpen={setOpenDeleteModal}
-			modalIsOpen={openDeleteModal}
-			onClickLpbtn={handleDelete}
+			setIsOpen={setIsOpen}
+			modalIsOpen={modalIsOpen}
+			onClickLpbtn={onClickLpbtn}
 		/>
 	);
 }
