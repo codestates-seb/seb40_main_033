@@ -39,6 +39,7 @@
 	"scripts": {
 		"start": "craco start",
 		"build": "craco build",
+		"build:measure": "time npm run build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"lint": "eslint ./src/**/*.{ts,tsx}",
