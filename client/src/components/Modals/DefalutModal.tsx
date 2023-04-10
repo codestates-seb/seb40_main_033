@@ -4,8 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { TempLogo } from '../../assets/Icons';
 import { PurpleButton, LightPurpleButton } from '../Buttons/PurpleButton';
+import {
+	ReactModalAdapterProps,
+	DefaultModalProps,
+} from '../../types/modal.type';
 
-const StyledModal = styled(ReactModalAdapter)`
+const StyledModal = styled(ReactModalAdapter)<{ isDelay: boolean }>`
 	@keyframes modalFadeIn {
 		from {
 			transform: translate(-50%, -60%);
@@ -66,14 +70,25 @@ const StyledModal = styled(ReactModalAdapter)`
 	}
 `;
 
-function ReactModalAdapter({ className, ...props }) {
+function ReactModalAdapter({
+	className,
+	modalIsOpen,
+	isDelay,
+	afterOpenModal,
+	closeModal,
+	...props
+}: ReactModalAdapterProps) {
 	const contentClassName = `${className}__content`;
 	const overlayClassName = `${className}__overlay`;
+
 	return (
 		<Modal
 			portalClassName="modal"
 			className={contentClassName}
 			overlayClassName={overlayClassName}
+			isOpen={modalIsOpen}
+			onAfterOpen={afterOpenModal}
+			onRequestClose={closeModal}
 			{...props}
 		/>
 	);
@@ -98,7 +113,7 @@ function DefalutModal({
 	onClickLpbtn,
 	autoClose,
 	children,
-}) {
+}: DefaultModalProps) {
 	const navigate = useNavigate();
 	const [isDelay, setIsDelay] = useState(false);
 
@@ -116,7 +131,7 @@ function DefalutModal({
 	};
 
 	// 모달 열었을 때 작동하는 함수 (필요 시 사용)
-	const afterOpenModal = () => {
+	const afterOpenModal: Modal.OnAfterOpenCallback = () => {
 		if (autoClose) {
 			setTimeout(() => {
 				closeModal();
@@ -126,10 +141,10 @@ function DefalutModal({
 
 	return (
 		<StyledModal
-			isOpen={modalIsOpen}
+			modalIsOpen={modalIsOpen}
 			isDelay={isDelay}
-			onAfterOpen={afterOpenModal}
-			onRequestClose={closeModal}
+			afterOpenModal={afterOpenModal}
+			closeModal={closeModal}
 		>
 			{children || (
 				<>
