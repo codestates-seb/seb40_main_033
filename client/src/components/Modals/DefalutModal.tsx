@@ -104,13 +104,13 @@ function DefalutModal({
 	star,
 	contents,
 	subContents,
-	lpbtnTexts,
-	pbtnTexts,
+	lightPurpleButtonTexts,
+	purpleButtonTexts,
 	IsModalOpen,
 	setIsModalOpen,
 	path, // 모달 닫았을 때 이동할 경로
-	onClickPbtn, // 버튼에 넣고 싶은 onClick 함수
-	onClickLpbtn,
+	onClickPurpleButton, // 버튼에 넣고 싶은 onClick 함수
+	onClickLightPurpleButton,
 	autoClose,
 	children,
 }: DefaultModalProps) {
@@ -159,22 +159,22 @@ function DefalutModal({
 					</FormContainer>
 					{contents ? <Contents>{contents}</Contents> : null}
 					{subContents ? <SubContents>{subContents}</SubContents> : null}
-					{lpbtnTexts || pbtnTexts ? (
+					{lightPurpleButtonTexts || purpleButtonTexts ? (
 						<BtnContainer>
-							{lpbtnTexts ? (
+							{lightPurpleButtonTexts ? (
 								<LightPurpleButton
 									fontSize="13px"
-									onClick={onClickLpbtn || closeModal}
+									onClick={onClickLightPurpleButton || closeModal}
 								>
-									{lpbtnTexts}
+									{lightPurpleButtonTexts}
 								</LightPurpleButton>
 							) : null}
-							{pbtnTexts ? (
+							{purpleButtonTexts ? (
 								<PurpleButton
 									fontSize="13px"
-									onClick={onClickPbtn || closeModal}
+									onClick={onClickPurpleButton || closeModal}
 								>
-									{pbtnTexts}
+									{purpleButtonTexts}
 								</PurpleButton>
 							) : null}
 						</BtnContainer>

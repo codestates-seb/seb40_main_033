@@ -84,7 +84,7 @@ function CartList({ data, item, sub }: CartListProps) {
 			<CancelModal
 				setIsModalOpen={setOpenCancelModal}
 				IsModalOpen={openCancelModal}
-				onClickLpbtn={handleCancel}
+				onClickLightPurpleButton={handleCancel}
 				target="장바구니"
 			/>
 			<SubContainer>

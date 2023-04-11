@@ -1,27 +1,27 @@
 import DefalutModal from './DefalutModal';
-import { ModalWithLpbtnProps } from '../../types/modal.type';
+import { ModalWithLightPurpleButtonProps } from '../../types/modal.type';
 
 function DeleteNotesModal({
 	setIsModalOpen,
 	IsModalOpen,
-	onClickLpbtn,
-}: ModalWithLpbtnProps) {
+	onClickLightPurpleButton,
+}: ModalWithLightPurpleButtonProps) {
 	const data = {
 		title: '작성글 삭제',
 		contents: '정말 삭제하시겠습니까?',
-		lpbtnTexts: '예',
-		pbtnTexts: '아니오',
+		lightPurpleButtonTexts: '예',
+		purpleButtonTexts: '아니오',
 	};
 
 	return (
 		<DefalutModal
 			title={data.title}
 			contents={data.contents}
-			lpbtnTexts={data.lpbtnTexts}
-			pbtnTexts={data.pbtnTexts}
+			lightPurpleButtonTexts={data.lightPurpleButtonTexts}
+			purpleButtonTexts={data.purpleButtonTexts}
 			setIsModalOpen={setIsModalOpen}
 			IsModalOpen={IsModalOpen}
-			onClickLpbtn={onClickLpbtn}
+			onClickLightPurpleButton={onClickLightPurpleButton}
 		/>
 	);
 }

@@ -16,11 +16,11 @@ export interface DefaultModalProps extends ModalCommonProps {
 	star?: JSX.Element;
 	contents?: string;
 	subContents?: string;
-	lpbtnTexts?: string;
-	pbtnTexts?: string;
+	lightPurpleButtonTexts?: string;
+	purpleButtonTexts?: string;
 	path?: string; // 모달 닫았을 때 이동할 경로
-	onClickPbtn?: React.MouseEventHandler<HTMLButtonElement>; // 버튼에 넣고 싶은 onClick 함수
-	onClickLpbtn?: React.MouseEventHandler<HTMLButtonElement>;
+	onClickPurpleButton?: React.MouseEventHandler<HTMLButtonElement>; // 버튼에 넣고 싶은 onClick 함수
+	onClickLightPurpleButton?: React.MouseEventHandler<HTMLButtonElement>;
 	autoClose?: boolean;
 	children?: ReactNode;
 }
@@ -38,19 +38,20 @@ export interface AddressModalProps extends ModalCommonProps {
 	children: ReactNode;
 }
 
-export interface ModalWithPbtnProps extends ModalCommonProps {
-	onClickPbtn: React.MouseEventHandler<HTMLButtonElement>;
+export interface ModalWithPurpleButtonProps extends ModalCommonProps {
+	onClickPurpleButton: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export interface ModalWithLpbtnProps extends ModalCommonProps {
-	onClickLpbtn: React.MouseEventHandler<HTMLButtonElement>;
+export interface ModalWithLightPurpleButtonProps extends ModalCommonProps {
+	onClickLightPurpleButton: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export interface CancelModalProps extends ModalWithLpbtnProps {
+export interface CancelModalProps extends ModalWithLightPurpleButtonProps {
 	target: string;
 }
 
-export type OrderCompleteModalProps = ModalWithPbtnProps & ModalWithLpbtnProps;
+export type OrderCompleteModalProps = ModalWithPurpleButtonProps &
+	ModalWithLightPurpleButtonProps;
 
 export interface ReviewModalProps extends ModalCommonProps {
 	List: ({

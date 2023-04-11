@@ -182,7 +182,7 @@ function DetailTalkList({
 			<DeleteNotesModal
 				setIsModalOpen={setOpenDeleteModal}
 				IsModalOpen={openDeleteModal}
-				onClickLpbtn={handleDeleteTalk}
+				onClickLightPurpleButton={handleDeleteTalk}
 			/>
 			<LoginModal
 				setIsModalOpen={setOpenLoginModal}

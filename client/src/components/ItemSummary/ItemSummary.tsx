@@ -215,7 +215,7 @@ function ItemSummary({
 			<CartModal
 				setIsModalOpen={setOpenCartModal}
 				IsModalOpen={openCartModal}
-				onClickPbtn={handleCartClick}
+				onClickPurpleButton={handleCartClick}
 			/>
 			<LoginModal
 				setIsModalOpen={setOpenLoginModal}

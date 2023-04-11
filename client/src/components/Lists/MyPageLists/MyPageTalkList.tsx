@@ -85,7 +85,7 @@ function MyPageTalk({ talk, isReply }: MyPageTalkListProps) {
 				<DeleteNotesModal
 					IsModalOpen={openDeleteModal}
 					setIsModalOpen={setOpenDeleteModal}
-					onClickLpbtn={handleDeleteTalk}
+					onClickLightPurpleButton={handleDeleteTalk}
 				/>
 			</ListContainer>
 		</Box>

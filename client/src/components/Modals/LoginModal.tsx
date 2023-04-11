@@ -8,7 +8,7 @@ function LoginModal({ setIsModalOpen, IsModalOpen }: ModalCommonProps) {
 	const data = {
 		title: 'Please Login',
 		contents: '로그인이 필요한 서비스입니다.',
-		pbtnTexts: '로그인 하러가기',
+		purpleButtonTexts: '로그인 하러가기',
 	};
 
 	const handleLoginMove = useCallback(() => {
@@ -19,10 +19,10 @@ function LoginModal({ setIsModalOpen, IsModalOpen }: ModalCommonProps) {
 		<DefalutModal
 			title={data.title}
 			contents={data.contents}
-			pbtnTexts={data.pbtnTexts}
+			purpleButtonTexts={data.purpleButtonTexts}
 			setIsModalOpen={setIsModalOpen}
 			IsModalOpen={IsModalOpen}
-			onClickPbtn={handleLoginMove}
+			onClickPurpleButton={handleLoginMove}
 			autoClose
 		/>
 	);

@@ -103,7 +103,7 @@ function MyPageReviewList({
 				<DeleteNotesModal
 					IsModalOpen={openDeleteModal}
 					setIsModalOpen={setOpenDeleteModal}
-					onClickLpbtn={handleDelete}
+					onClickLightPurpleButton={handleDelete}
 				/>
 			</ListContainer>
 		</Box>

@@ -92,7 +92,7 @@ function OrderList({ list }: { list: OrderListData }) {
 			<CancelModal
 				IsModalOpen={openCancel}
 				setIsModalOpen={setOpenCancel}
-				onClickLpbtn={handleCancel}
+				onClickLightPurpleButton={handleCancel}
 				target="주문"
 			/>
 		</Box>

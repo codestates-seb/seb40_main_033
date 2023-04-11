@@ -70,7 +70,7 @@ function DetailReviewList({
 			<DeleteNotesModal
 				setIsModalOpen={setOpenDeleteModal}
 				IsModalOpen={openDeleteModal}
-				onClickLpbtn={handleDeleteReview}
+				onClickLightPurpleButton={handleDeleteReview}
 			/>
 		</Box>
 	);
