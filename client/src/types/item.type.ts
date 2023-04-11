@@ -43,3 +43,10 @@ export interface NutritionFact {
 	ingredient: string;
 	volume: string;
 }
+
+export interface DetailProductInfoProps {
+	expiration: string;
+	capacity: number;
+	servingSize: number;
+	nutritionFacts: NutritionFact[];
+}
