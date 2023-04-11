@@ -10,7 +10,7 @@ import {
 	WRITE_MORE_THAN_20_CHARACTERS,
 	WRITE_COMPLETE,
 	UPDATE_COMPLETE,
-} from '../Etc/Constants';
+} from '../../assets/constants/Constants';
 
 function ReviewModal({
 	setIsModalOpen,

@@ -8,7 +8,7 @@ import CustomerInformation from '../../components/Etc/CustomerInformation';
 import PaymentSummary from '../../components/Etc/PaymentSummary';
 import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
-import { ERROR_INFORMATION } from '../../components/Etc/Constants';
+import { ERROR_INFORMATION } from '../../assets/constants/Constants';
 import { OrderDetailData } from '../../types/order.type';
 
 // 주문내역 상세조회

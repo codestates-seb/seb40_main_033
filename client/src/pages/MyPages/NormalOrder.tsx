@@ -7,7 +7,7 @@ import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import {
 	ERROR_INFORMATION,
 	NO_ORDER_HISTORY,
-} from '../../components/Etc/Constants';
+} from '../../assets/constants/Constants';
 import { useGetOrderList } from '../../hooks/useGetList';
 
 function NormalOrder() {

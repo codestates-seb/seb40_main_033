@@ -8,7 +8,7 @@ import { useGetOrderList } from '../../hooks/useGetList';
 import {
 	ERROR_INFORMATION,
 	NO_ORDER_HISTORY,
-} from '../../components/Etc/Constants';
+} from '../../assets/constants/Constants';
 
 // 주문내역
 function SubscriptionOrder() {
