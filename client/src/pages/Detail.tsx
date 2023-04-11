@@ -12,7 +12,7 @@ import {
 	DELIVERY_INFORMATION,
 	RETURN_INFORMATION,
 	WRITE_MORE_THAN_20_CHARACTERS,
-} from '../assets/constants/Constants';
+} from '../assets/Constants';
 import DetailProductInfo from '../components/Etc/DetailProductInfo';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
 import { DetailReviewsData, DetailTalksData } from '../types/note.type';

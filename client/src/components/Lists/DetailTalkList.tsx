@@ -10,7 +10,7 @@ import DeleteNotesModal from '../Modals/DeleteNotesModal';
 import { usePost, usePatch, useDelete } from '../../hooks/useFetch';
 import { DetailTalkListProps } from '../../types/note.type';
 import LoginModal from '../Modals/LoginModal';
-import { WRITE_MORE_THAN_20_CHARACTERS } from '../../assets/constants/Constants';
+import { WRITE_MORE_THAN_20_CHARACTERS } from '../../assets/Constants';
 
 interface InfoContainerProps {
 	token: string | null;

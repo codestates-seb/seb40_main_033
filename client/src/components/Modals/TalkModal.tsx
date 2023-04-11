@@ -7,7 +7,7 @@ import { usePatch } from '../../hooks/useFetch';
 import {
 	WRITE_MORE_THAN_20_CHARACTERS,
 	UPDATE_COMPLETE,
-} from '../../assets/constants/Constants';
+} from '../../assets/Constants';
 import { TalkModalProps } from '../../types/modal.type';
 
 // 토크 수정 모달

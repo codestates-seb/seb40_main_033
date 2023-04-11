@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { AxiosResponse, AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import axiosInstance from '../utils/axiosInstance';
-import { TOKEN_EXPIRED_INFORMATION } from '../assets/constants/Constants';
+import { TOKEN_EXPIRED_INFORMATION } from '../assets/Constants';
 
 export function useGet<T>(url: string, keyValue: string) {
 	const navigate = useNavigate();

@@ -7,7 +7,7 @@ import { RiHeartAddLine } from 'react-icons/ri';
 import { AiOutlinePlusCircle, AiOutlineThunderbolt } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { Skin, Brain, Intestine, Liver, Logo } from '../../assets/Icons';
-import { CATEGORIES } from '../../assets/constants/Constants';
+import { CATEGORIES } from '../../assets/Constants';
 
 function LeftNav() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);

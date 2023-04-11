@@ -5,10 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import OrderList from '../../components/Lists/MyPageLists/OrderList';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import { useGetOrderList } from '../../hooks/useGetList';
-import {
-	ERROR_INFORMATION,
-	NO_ORDER_HISTORY,
-} from '../../assets/constants/Constants';
+import { ERROR_INFORMATION, NO_ORDER_HISTORY } from '../../assets/Constants';
 
 // 주문내역
 function SubscriptionOrder() {
