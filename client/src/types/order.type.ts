@@ -1,4 +1,4 @@
-import { ItemShortcutData } from './item.type';
+import { ItemShortcutData, ItemDefaultData } from './item.type';
 import { PayData } from './payment.type';
 
 export interface UseGetOrderListProps {
@@ -22,21 +22,17 @@ export interface OrderListData {
 	updatedAt: Date;
 }
 
-export interface OrderDetailListProps {
+export interface OrderDetailListProps extends ItemDefaultData {
 	inModal?: boolean;
 	itemOrderId: number;
-	itemId: number;
-	brand: string;
-	thumbnail: string;
-	title: string;
-	quantity: number;
+	quantity?: number;
 	nowPrice: number;
-	discountRate: number;
-	beforePrice: number;
-	period: number;
-	subscription: boolean;
-	capacity: number;
-	orderStatus: string;
+	discountRate: number | boolean;
+	beforePrice: number | boolean;
+	period?: number;
+	subscription?: boolean;
+	capacity?: number;
+	orderStatus?: string;
 }
 
 export interface OrderDetailData {

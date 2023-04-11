@@ -1,27 +1,26 @@
-export interface ItemShortcutData {
-	brand: string;
-	capacity: number;
-	discountPrice: number;
-	discountRate: number;
+export interface ItemDefaultData {
 	itemId: number;
-	price: number;
+	brand: string;
 	thumbnail: string;
 	title: string;
 }
 
-export interface ShoppingListProps {
-	isSub: boolean;
+export interface ItemShortcutData extends ItemDefaultData {
+	capacity: number;
+	discountPrice: number;
+	discountRate: number;
+	price: number;
+}
+
+export interface ShoppingListProps extends ItemDefaultData {
+	isSub?: boolean;
 	talk: boolean;
-	brand: string;
-	thumbnail: string;
-	title: string;
 	price: number;
 	capacity: number;
-	quantity: number;
+	quantity?: number;
 	discountRate: number;
-	beforePrice: number;
-	period: number;
-	itemId?: number;
+	beforePrice: number | boolean;
+	period?: number;
 }
 
 export interface CartItems {

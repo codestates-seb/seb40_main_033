@@ -1,4 +1,4 @@
-import { ItemShortcutData } from './item.type';
+import { ItemDefaultData, ItemShortcutData } from './item.type';
 // review
 export interface NoteReviewData {
 	data: NoteReviewItemWithData[];
@@ -35,8 +35,8 @@ export type MyPageReviewListProps = Omit<
 	title: string;
 	capacity: number;
 	nowPrice: number;
-	discountRate: number | '';
-	beforePrice: number | null;
+	discountRate: number | boolean;
+	beforePrice: number | boolean;
 };
 
 // talk
@@ -101,23 +101,17 @@ interface NoteCommonEl {
 export interface DetailReviewListProps extends Omit<NoteCommonEl, 'updatedAt'> {
 	star: number;
 	itemId: number;
-	review: {
-		item: ReviewItem;
-	};
+	review: { item: ReviewItem };
 }
 
-interface ReviewItem {
+export interface ReviewItem extends ItemDefaultData {
 	reviewId: number;
 	userId: number;
-	itemId: number;
 	content: string;
-	brand: string;
-	thumbnail: string;
-	title: string;
 	capacity: number;
 	nowPrice: number;
-	discountRate: number | '';
-	beforePrice: number | null;
+	discountRate: number | boolean;
+	beforePrice: number | boolean;
 	star: number;
 }
 
