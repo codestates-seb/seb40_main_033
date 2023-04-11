@@ -42,10 +42,10 @@ function NoteReview() {
 							title={list.item.title}
 							capacity={list.item.capacity}
 							nowPrice={list.item.discountPrice || list.item.price}
-							discountRate={
-								list.item.discountRate === 0 ? '' : list.item.discountRate
+							discountRate={list.item.discountRate && list.item.discountRate}
+							beforePrice={
+								list.item.discountPrice !== list.item.price && list.item.price
 							}
-							beforePrice={list.item.discountPrice ? list.item.price : null}
 						/>
 					))
 				)}

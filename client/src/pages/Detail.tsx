@@ -161,9 +161,10 @@ function Detail() {
 												title: lists.title,
 												capacity: lists.capacity,
 												nowPrice: lists.discountPrice || lists.price,
-												discountRate:
-													lists.discountRate === 0 ? '' : lists.discountRate,
-												beforePrice: lists.discountPrice ? lists.price : null,
+												discountRate: lists.discountRate && lists.discountRate,
+												beforePrice:
+													lists.discountPrice !== lists.price &&
+													lists.discountPrice,
 												star: review.star,
 											},
 										}}
