@@ -155,7 +155,7 @@ function ItemSummary({
 						<NameBox>{name}</NameBox>
 						<DescBox>{content}</DescBox>
 						<TagsBox>
-							<Tag funcArr={categories} />
+							<Tag categories={categories} />
 						</TagsBox>
 						<RateBox>
 							<LongTextStar

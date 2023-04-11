@@ -1,18 +1,22 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-function Tag({ funcArr }) {
+interface TagProps {
+	categories: string[];
+}
+
+function Tag({ categories }: TagProps) {
 	return (
 		<TagContainer>
-			{funcArr.map((func, index) => (
+			{categories.map((category, index) => (
 				<Link
-					to={`/list?categoryName=${func}`}
-					key={`${index.toString()}-${func}`}
+					to={`/list?categoryName=${category}`}
+					key={`${index.toString()}-${category}`}
 				>
 					<TagName>
-						{func === '관절_뼈_건강'
-							? func.replaceAll('_', ' ').replace('절 뼈', '절/뼈')
-							: func.replaceAll('_', ' ')}
+						{category === '관절_뼈_건강'
+							? category.replaceAll('_', ' ').replace('절 뼈', '절/뼈')
+							: category.replaceAll('_', ' ')}
 					</TagName>
 				</Link>
 			))}
