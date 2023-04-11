@@ -136,3 +136,7 @@ export const WRITE_MORE_THAN_20_CHARACTERS = '20자 이상 작성해주세요.';
 export const WRITE_COMPLETE = '작성이 완료되었습니다!';
 
 export const UPDATE_COMPLETE = '수정이 완료되었습니다!';
+
+export const FAILED_TO_LOAD_USER_INFO = '회원정보를 불러오는데 실패했습니다.';
+
+export const LOGOUT_COMPLETE = '로그아웃 되었습니다.';
