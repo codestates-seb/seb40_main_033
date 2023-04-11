@@ -1,19 +1,6 @@
 import DefalutModal from './DefalutModal';
 
-/*
-	<modal 여는 버튼이 있는 컴포넌트에 필요한 상태 및 함수>
-
-	const [modalIsOpen, setIsOpen] = useState(false);
-
-	const openModal = () => {
-		setIsOpen(true);
-	};
-
-	버튼에 openModal 함수를 달아주셔야 합니다.
-	ex)) <LetterButton onClick={openModal}>버튼</LetterButton>
-*/
-
-function DeleteAccountModal({ setIsOpen, modalIsOpen, handleOpenGoodbye }) {
+function DeleteAccountModal({ setIsModalOpen, IsModalOpen, onClickLpbtn }) {
 	const data = {
 		title: '회원탈퇴',
 		contents:
@@ -30,9 +17,9 @@ function DeleteAccountModal({ setIsOpen, modalIsOpen, handleOpenGoodbye }) {
 			subContents={data.subContents}
 			lpbtnTexts={data.lpbtnTexts}
 			pbtnTexts={data.pbtnTexts}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
-			onClickLpbtn={handleOpenGoodbye}
+			setIsModalOpen={setIsModalOpen}
+			IsModalOpen={IsModalOpen}
+			onClickLpbtn={onClickLpbtn}
 		/>
 	);
 }

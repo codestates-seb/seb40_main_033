@@ -25,11 +25,11 @@ function OrderDetailList({
 	orderStatus,
 	itemId,
 }: OrderDetailListProps) {
-	const [modalIsOpen, setIsOpen] = useState(false);
+	const [IsModalOpen, setIsModalOpen] = useState(false);
 	const navigate = useNavigate();
 
 	const openModal = useCallback(() => {
-		setIsOpen(true);
+		setIsModalOpen(true);
 	}, []);
 
 	const handlePageMove = useCallback(() => {
@@ -92,9 +92,9 @@ function OrderDetailList({
 					</ReviewContainer>
 				)}
 				<ReviewModal
-					modalIsOpen={modalIsOpen}
-					setIsOpen={setIsOpen}
-					OrderDetailList={OrderDetailList}
+					IsModalOpen={IsModalOpen}
+					setIsModalOpen={setIsModalOpen}
+					List={OrderDetailList}
 					review={review}
 				/>
 			</Wrap>

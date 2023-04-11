@@ -218,14 +218,13 @@ function ItemSummary({
 				)}
 			</EntireContainer>
 			<CartModal
-				setOpenModal={setOpenCartModal}
-				openModal={openCartModal}
-				contents="장바구니에 상품이 담겼습니다."
+				setIsModalOpen={setOpenCartModal}
+				IsModalOpen={openCartModal}
 				onClickPbtn={handleCartClick}
 			/>
 			<LoginModal
-				setIsOpen={setOpenLoginModal}
-				modalIsOpen={openLoginModal}
+				setIsModalOpen={setOpenLoginModal}
+				IsModalOpen={openLoginModal}
 				onClickPbtn={handleLoginMove}
 			/>
 		</Container>

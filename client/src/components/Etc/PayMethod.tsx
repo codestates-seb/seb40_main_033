@@ -62,7 +62,7 @@ export default function PayMethod({ payData }: { payData: PayData }) {
 			</ButtonBox>
 			<Clauses>{PAY_GUIDE}</Clauses>
 			{isPayModal && (
-				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
+				<AddressModal setIsModalOpen={setPayModal} IsModalOpen={isPayModal}>
 					<PayFrame src={url} title="결제창" />
 					<GobackButton onClick={() => window.history.back()}>
 						전 페이지로 돌아가기

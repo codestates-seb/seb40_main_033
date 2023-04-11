@@ -6,7 +6,7 @@ import UpdateTalkForm from '../Forms/UpdateTalkForm';
 import { usePatch } from '../../hooks/useFetch';
 
 // 토크 수정 모달
-function TalkModal({ setIsOpen, modalIsOpen, talk }) {
+function TalkModal({ setIsModalOpen, IsModalOpen, talk }) {
 	const data = {
 		title: 'Talk',
 	};
@@ -49,7 +49,7 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 		toast.success('수정이 완료되었습니다!');
 
 		// 모달 닫기
-		setIsOpen(false);
+		setIsModalOpen(false);
 	}, [talkContent]);
 
 	return (
@@ -77,8 +77,8 @@ function TalkModal({ setIsOpen, modalIsOpen, talk }) {
 					handleSubmit={handleTalkUpdate}
 				/>
 			}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
+			setIsModalOpen={setIsModalOpen}
+			IsModalOpen={IsModalOpen}
 		/>
 	);
 }

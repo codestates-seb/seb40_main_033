@@ -82,10 +82,10 @@ function CartList({ data, item, sub }: CartListProps) {
 	return (
 		<Box>
 			<CancelModal
-				openCancelModal={openCancelModal}
-				setOpenCancelModal={setOpenCancelModal}
+				setIsModalOpen={setOpenCancelModal}
+				IsModalOpen={openCancelModal}
+				onClickLpbtn={handleCancel}
 				target="장바구니"
-				handleCancel={handleCancel}
 			/>
 			<SubContainer>
 				{sub && (

@@ -90,9 +90,9 @@ function OrderList({ list }: { list: OrderListData }) {
 				</BtnContainer>
 			</MainContainer>
 			<CancelModal
-				openCancelModal={openCancel}
-				setOpenCancelModal={setOpenCancel}
-				handleCancel={handleCancel}
+				IsModalOpen={openCancel}
+				setIsModalOpen={setOpenCancel}
+				onClickLpbtn={handleCancel}
 				target="주문"
 			/>
 		</Box>

@@ -294,7 +294,7 @@ export function AuthForm({ signUp, handleSubmitForm, email }: AuthFormProps) {
 				{signUp ? '계정 만들기' : '로그인'}
 			</PurpleButton>
 			{isModalOpen && (
-				<AddressModal modalIsOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+				<AddressModal IsModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
 					<Postcode
 						style={{ width: 600, height: 500 }}
 						jsOptions={{ animation: true, hideMapBtn: true }}

@@ -77,11 +77,15 @@ function MyPageTalk({ talk, isReply }: MyPageTalkListProps) {
 					<Content>{talk.content}</Content>
 					<DotDate date={talk.createdAt} />
 				</BottomContainer>
-				<TalkModal setIsOpen={setOpenForm} modalIsOpen={openForm} talk={talk} />
+				<TalkModal
+					setIsModalOpen={setOpenForm}
+					IsModalOpen={openForm}
+					talk={talk}
+				/>
 				<DeleteNotesModal
-					openDeleteModal={openDeleteModal}
-					setOpenDeleteModal={setOpenDeleteModal}
-					handleDelete={handleDeleteTalk}
+					IsModalOpen={openDeleteModal}
+					setIsModalOpen={setOpenDeleteModal}
+					onClickLpbtn={handleDeleteTalk}
 				/>
 			</ListContainer>
 		</Box>
