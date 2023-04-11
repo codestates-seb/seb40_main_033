@@ -3,12 +3,12 @@ import { useState, useCallback } from 'react';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { LetterButtonColor } from '../../../Buttons/LetterButton';
-import { DotDate } from '../../../Etc/ListDate';
-import DeleteNotesModal from '../../../Modals/DeleteNotesModal';
-import TalkModal from '../../../Modals/TalkModal';
-import { useDelete } from '../../../../hooks/useFetch';
-import { MyPageTalkListProps } from '../../../../types/note.type';
+import { LetterButtonColor } from '../../Buttons/LetterButton';
+import { DotDate } from '../../Etc/ListDate';
+import DeleteNotesModal from '../../Modals/DeleteNotesModal';
+import TalkModal from '../../Modals/TalkModal';
+import { useDelete } from '../../../hooks/useFetch';
+import { MyPageTalkListProps } from '../../../types/note.type';
 
 function MyPageTalk({ talk, isReply }: MyPageTalkListProps) {
 	const [openForm, setOpenForm] = useState(false);

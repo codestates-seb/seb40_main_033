@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { AxiosResponse } from 'axios';
-import MypageTalk from '../../components/Lists/MyPageLists/Talk/MyPageTalk';
+import MypageTalk from '../../components/Lists/MyPageLists/MyPageTalkList';
 // import Pagination from '../../components/Etc/Pagination';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import axiosInstance from '../../utils/axiosInstance';
