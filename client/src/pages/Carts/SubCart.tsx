@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { AxiosResponse } from 'axios';
-import CartList from '../../components/Lists/MyPageLists/CartList';
+import CartList from '../../components/Lists/CartList';
 import { PurpleButton } from '../../components/Buttons/PurpleButton';
 import Price from '../../components/Etc/Price';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
