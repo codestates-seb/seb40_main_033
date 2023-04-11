@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { TempLogo } from '../../assets/Icons';
 import { PurpleButton, LightPurpleButton } from '../Buttons/PurpleButton';
+import {
+	ReactModalAdapterProps,
+	DefaultModalProps,
+} from '../../types/modal.type';
 
-const StyledModal =
-	styled(ReactModalAdapter) <
-	{ isDelay: boolean } >
-	`
+const StyledModal = styled(ReactModalAdapter)<{ isDelay: boolean }>`
 	@keyframes modalFadeIn {
 		from {
 			transform: translate(-50%, -60%);
@@ -76,7 +77,7 @@ function ReactModalAdapter({
 	afterOpenModal,
 	closeModal,
 	...props
-}) {
+}: ReactModalAdapterProps) {
 	const contentClassName = `${className}__content`;
 	const overlayClassName = `${className}__overlay`;
 
@@ -103,16 +104,16 @@ function DefalutModal({
 	star,
 	contents,
 	subContents,
-	lpbtnTexts,
-	pbtnTexts,
+	lightPurpleButtonTexts,
+	purpleButtonTexts,
 	IsModalOpen,
 	setIsModalOpen,
 	path, // 모달 닫았을 때 이동할 경로
-	onClickPbtn, // 버튼에 넣고 싶은 onClick 함수
-	onClickLpbtn,
+	onClickPurpleButton, // 버튼에 넣고 싶은 onClick 함수
+	onClickLightPurpleButton,
 	autoClose,
 	children,
-}) {
+}: DefaultModalProps) {
 	const navigate = useNavigate();
 	const [isDelay, setIsDelay] = useState(false);
 
@@ -130,7 +131,7 @@ function DefalutModal({
 	};
 
 	// 모달 열었을 때 작동하는 함수 (필요 시 사용)
-	const afterOpenModal = () => {
+	const afterOpenModal: Modal.OnAfterOpenCallback = () => {
 		if (autoClose) {
 			setTimeout(() => {
 				closeModal();
@@ -158,22 +159,22 @@ function DefalutModal({
 					</FormContainer>
 					{contents ? <Contents>{contents}</Contents> : null}
 					{subContents ? <SubContents>{subContents}</SubContents> : null}
-					{lpbtnTexts || pbtnTexts ? (
+					{lightPurpleButtonTexts || purpleButtonTexts ? (
 						<BtnContainer>
-							{lpbtnTexts ? (
+							{lightPurpleButtonTexts ? (
 								<LightPurpleButton
 									fontSize="13px"
-									onClick={onClickLpbtn || closeModal}
+									onClick={onClickLightPurpleButton || closeModal}
 								>
-									{lpbtnTexts}
+									{lightPurpleButtonTexts}
 								</LightPurpleButton>
 							) : null}
-							{pbtnTexts ? (
+							{purpleButtonTexts ? (
 								<PurpleButton
 									fontSize="13px"
-									onClick={onClickPbtn || closeModal}
+									onClick={onClickPurpleButton || closeModal}
 								>
-									{pbtnTexts}
+									{purpleButtonTexts}
 								</PurpleButton>
 							) : null}
 						</BtnContainer>

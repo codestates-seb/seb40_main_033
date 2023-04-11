@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { MdPlayArrow, MdPause } from 'react-icons/md';
 import { IoIosArrowBack } from 'react-icons/io';
 import CaroucelInfo from './Caroucel-Info';
-import MAINCAROUCELINFO from '../../assets/constants/MainCaroucel-Info';
+import { MAIN_CAROUCEL_INFO } from '../../assets/Constants';
 import { CustomArrow } from '../../types/main.type';
 
 const ArrowButton = styled.button<CustomArrow>`
@@ -72,7 +72,7 @@ function MainCaroucel() {
 	return (
 		<SlideContainer>
 			<Slider {...settings} ref={setSliderRef}>
-				{MAINCAROUCELINFO.map((el, i) => (
+				{MAIN_CAROUCEL_INFO.map((el, i) => (
 					<SlidePage key={`${i.toString()}-${el}`}>
 						<MultiItem>
 							<SInfo>

@@ -17,9 +17,10 @@ export default function PayItemInformation({
 			<ListContainer>
 				{orderedItems.map((orderedItem) => (
 					<ShoppingList
+						key={`${orderedItem.itemOrderId}`}
 						isSub={isSub}
 						talk={false}
-						key={`${orderedItem.itemOrderId}`}
+						itemId={orderedItem.item.itemId}
 						brand={orderedItem.item.brand}
 						thumbnail={orderedItem.item.thumbnail}
 						title={orderedItem.item.title}

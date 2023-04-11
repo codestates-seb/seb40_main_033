@@ -4,12 +4,12 @@ import { useCallback, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import CounterBtn from '../../Buttons/CounterButton';
-import { PeriodChoiceTab } from '../../Tabs/ToggleTabs';
-import Price from '../../Etc/Price';
-import CancelModal from '../../Modals/CancelModal';
-import { useDelete, usePatch } from '../../../hooks/useFetch';
-import { CartListProps } from '../../../types/cart.type';
+import CounterBtn from '../Buttons/CounterButton';
+import { PeriodChoiceTab } from '../Tabs/ToggleTabs';
+import Price from '../Etc/Price';
+import CancelModal from '../Modals/CancelModal';
+import { useDelete, usePatch } from '../../hooks/useFetch';
+import { CartListProps } from '../../types/cart.type';
 
 function CartList({ data, item, sub }: CartListProps) {
 	const [quantity, setQuantity] = useState(data.quantity);
@@ -84,7 +84,7 @@ function CartList({ data, item, sub }: CartListProps) {
 			<CancelModal
 				setIsModalOpen={setOpenCancelModal}
 				IsModalOpen={openCancelModal}
-				onClickLpbtn={handleCancel}
+				onClickLightPurpleButton={handleCancel}
 				target="장바구니"
 			/>
 			<SubContainer>

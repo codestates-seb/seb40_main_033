@@ -6,7 +6,7 @@ import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
 import AddressModal from '../Modals/AddressModal';
-import { PAY_GUIDE } from './Constants';
+import { PAY_GUIDE } from '../../assets/Constants';
 import axiosInstance from '../../utils/axiosInstance';
 import { PayData } from '../../types/payment.type';
 

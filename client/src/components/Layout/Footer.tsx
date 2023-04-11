@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Logo } from '../../assets/Icons';
-import { FOOTER_INFO } from '../Etc/Constants';
+import { FOOTER_INFO } from '../../assets/Constants';
 
 function Footer() {
 	return (

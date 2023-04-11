@@ -138,11 +138,6 @@ function ItemSummary({
 		}
 	}, [orderList]);
 
-	// 로그인 모달 속, 로그인 페이지로 가는 함수
-	const handleLoginMove = useCallback(() => {
-		navigate('/login');
-	}, []);
-
 	return (
 		<Container>
 			<EntireContainer showOptions={showOptions}>
@@ -160,7 +155,7 @@ function ItemSummary({
 						<NameBox>{name}</NameBox>
 						<DescBox>{content}</DescBox>
 						<TagsBox>
-							<Tag funcArr={categories} />
+							<Tag categories={categories} />
 						</TagsBox>
 						<RateBox>
 							<LongTextStar
@@ -220,12 +215,11 @@ function ItemSummary({
 			<CartModal
 				setIsModalOpen={setOpenCartModal}
 				IsModalOpen={openCartModal}
-				onClickPbtn={handleCartClick}
+				onClickPurpleButton={handleCartClick}
 			/>
 			<LoginModal
 				setIsModalOpen={setOpenLoginModal}
 				IsModalOpen={openLoginModal}
-				onClickPbtn={handleLoginMove}
 			/>
 		</Container>
 	);
