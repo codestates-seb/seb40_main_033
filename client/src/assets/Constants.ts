@@ -140,3 +140,17 @@ export const UPDATE_COMPLETE = '수정이 완료되었습니다!';
 export const FAILED_TO_LOAD_USER_INFO = '회원정보를 불러오는데 실패했습니다.';
 
 export const LOGOUT_COMPLETE = '로그아웃 되었습니다.';
+
+export const EMPTY_CART = '장바구니에 담은 상품이 없습니다.';
+
+export const NO_REVIEWS = '작성된 리뷰가 없습니다.';
+
+export const NO_TALKS = '작성된 토크가 없습니다.';
+
+export const NO_REVIEWS_WRITTEN = '작성하신 리뷰가 없습니다.';
+
+export const NO_TALKS_WRITTEN = '작성하신 토크가 없습니다.';
+
+export const NO_WISH_LIST = '찜한 상품이 없습니다.';
+
+export const NO_SUBSCRIPTION_HISTORY = '정기구독 신청 내역이 없습니다.';

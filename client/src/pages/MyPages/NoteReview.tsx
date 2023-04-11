@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { NO_REVIEWS_WRITTEN } from '../../assets/Constants';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 // import Pagination from '../../components/Etc/Pagination';
 import MyPageReviewList from '../../components/Lists/MyPageLists/MyPageReviewList';
@@ -25,7 +26,7 @@ function NoteReview() {
 		<>
 			<ListContainer>
 				{lists.length === 0 ? (
-					<div className="blank">작성하신 리뷰가 없습니다.</div>
+					<div className="blank">{NO_REVIEWS_WRITTEN}</div>
 				) : (
 					lists?.map((list) => (
 						<MyPageReviewList

@@ -7,6 +7,7 @@ import MypageTalk from '../../components/Lists/MyPageLists/MyPageTalkList';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import axiosInstance from '../../utils/axiosInstance';
 import { NoteTalkData } from '../../types/note.type';
+import { NO_TALKS_WRITTEN } from '../../assets/Constants';
 
 // 작성글 관리 - 토크
 function NoteTalk() {
@@ -23,7 +24,7 @@ function NoteTalk() {
 		<>
 			<ListContainer>
 				{talks.length === 0 ? (
-					<div className="blank">작성하신 토크가 없습니다.</div>
+					<div className="blank">{NO_TALKS_WRITTEN}</div>
 				) : (
 					talks.map((talk) => (
 						<MypageTalk

@@ -12,6 +12,8 @@ import {
 	DELIVERY_INFORMATION,
 	RETURN_INFORMATION,
 	WRITE_MORE_THAN_20_CHARACTERS,
+	NO_REVIEWS,
+	NO_TALKS,
 } from '../assets/Constants';
 import DetailProductInfo from '../components/Etc/DetailProductInfo';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
@@ -169,7 +171,7 @@ function Detail() {
 									/>
 								))
 							) : (
-								<NoNote>작성된 리뷰가 없습니다.</NoNote>
+								<NoNote>{NO_REVIEWS}</NoNote>
 							)}
 						</ListsContainer>
 					</Notes>
@@ -221,7 +223,7 @@ function Detail() {
 									</Fragment>
 								))
 							) : (
-								<NoNote>작성된 토크가 없습니다.</NoNote>
+								<NoNote>{NO_TALKS}</NoNote>
 							)}
 						</ListsContainer>
 					</Notes>

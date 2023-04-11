@@ -9,6 +9,7 @@ import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import usePurchase from '../../hooks/usePurchase';
 import { CartData } from '../../types/cart.type';
 import axiosInstance from '../../utils/axiosInstance';
+import { EMPTY_CART } from '../../assets/Constants';
 
 // 정기 장바구니
 function SubCart() {
@@ -42,7 +43,7 @@ function SubCart() {
 	return (
 		<Box>
 			{items.data.data.itemCarts.data.length === 0 ? (
-				<List className="blank">장바구니에 담은 상품이 없습니다.</List>
+				<List className="blank">{EMPTY_CART}</List>
 			) : (
 				<>
 					<List>
