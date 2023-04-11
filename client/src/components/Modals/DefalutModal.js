@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { TempLogo } from '../../assets/Icons';
 import { PurpleButton, LightPurpleButton } from '../Buttons/PurpleButton';
-import {
-	ReactModalAdapterProps,
-	DefaultModalProps,
-} from '../../types/modal.type';
 
-const StyledModal = styled(ReactModalAdapter)<{ isDelay: boolean }>`
+const StyledModal =
+	styled(ReactModalAdapter) <
+	{ isDelay: boolean } >
+	`
 	@keyframes modalFadeIn {
 		from {
 			transform: translate(-50%, -60%);
@@ -77,7 +76,7 @@ function ReactModalAdapter({
 	afterOpenModal,
 	closeModal,
 	...props
-}: ReactModalAdapterProps) {
+}) {
 	const contentClassName = `${className}__content`;
 	const overlayClassName = `${className}__overlay`;
 
@@ -113,7 +112,7 @@ function DefalutModal({
 	onClickLpbtn,
 	autoClose,
 	children,
-}: DefaultModalProps) {
+}) {
 	const navigate = useNavigate();
 	const [isDelay, setIsDelay] = useState(false);
 
@@ -131,7 +130,7 @@ function DefalutModal({
 	};
 
 	// 모달 열었을 때 작동하는 함수 (필요 시 사용)
-	const afterOpenModal: Modal.OnAfterOpenCallback = () => {
+	const afterOpenModal = () => {
 		if (autoClose) {
 			setTimeout(() => {
 				closeModal();
