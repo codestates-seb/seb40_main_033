@@ -1,6 +1,11 @@
 import DefalutModal from './DefalutModal';
+import { ModalWithLpbtnProps } from '../../types/modal.type';
 
-function DeleteAccountModal({ setIsModalOpen, IsModalOpen, onClickLpbtn }) {
+function DeleteAccountModal({
+	setIsModalOpen,
+	IsModalOpen,
+	onClickLpbtn,
+}: ModalWithLpbtnProps) {
 	const data = {
 		title: '회원탈퇴',
 		contents:

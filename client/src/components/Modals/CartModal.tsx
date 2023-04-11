@@ -1,6 +1,11 @@
 import DefalutModal from './DefalutModal';
+import { ModalWithPbtnProps } from '../../types/modal.type';
 
-function CartModal({ setIsModalOpen, IsModalOpen, onClickPbtn }) {
+function CartModal({
+	setIsModalOpen,
+	IsModalOpen,
+	onClickPbtn,
+}: ModalWithPbtnProps) {
 	const data = {
 		title: 'Complete',
 		contents: '장바구니에 상품이 담겼습니다.',

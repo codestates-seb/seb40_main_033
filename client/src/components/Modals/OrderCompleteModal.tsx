@@ -1,11 +1,12 @@
 import DefalutModal from './DefalutModal';
+import { OrderCompleteModalProps } from '../../types/modal.type';
 
 function OrderCompleteModal({
 	setIsModalOpen,
 	IsModalOpen,
 	onClickPbtn,
 	onClickLpbtn,
-}) {
+}: OrderCompleteModalProps) {
 	const data = {
 		title: 'Order Complete',
 		contents: '주문이 완료되었습니다!',

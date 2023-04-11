@@ -1,6 +1,11 @@
 import DefalutModal from './DefalutModal';
+import { ModalWithLpbtnProps } from '../../types/modal.type';
 
-function DeleteNotesModal({ setIsModalOpen, IsModalOpen, onClickLpbtn }) {
+function DeleteNotesModal({
+	setIsModalOpen,
+	IsModalOpen,
+	onClickLpbtn,
+}: ModalWithLpbtnProps) {
 	const data = {
 		title: '작성글 삭제',
 		contents: '정말 삭제하시겠습니까?',
@@ -12,7 +17,6 @@ function DeleteNotesModal({ setIsModalOpen, IsModalOpen, onClickLpbtn }) {
 		<DefalutModal
 			title={data.title}
 			contents={data.contents}
-			subContents={data.subContents}
 			lpbtnTexts={data.lpbtnTexts}
 			pbtnTexts={data.pbtnTexts}
 			setIsModalOpen={setIsModalOpen}
