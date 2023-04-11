@@ -1,6 +1,6 @@
 import DefalutModal from './DefalutModal';
 
-function DeleteNotesModal({ setIsOpen, modalIsOpen, onClickLpbtn }) {
+function DeleteNotesModal({ setIsModalOpen, IsModalOpen, onClickLpbtn }) {
 	const data = {
 		title: '작성글 삭제',
 		contents: '정말 삭제하시겠습니까?',
@@ -15,8 +15,8 @@ function DeleteNotesModal({ setIsOpen, modalIsOpen, onClickLpbtn }) {
 			subContents={data.subContents}
 			lpbtnTexts={data.lpbtnTexts}
 			pbtnTexts={data.pbtnTexts}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
+			setIsModalOpen={setIsModalOpen}
+			IsModalOpen={IsModalOpen}
 			onClickLpbtn={onClickLpbtn}
 		/>
 	);

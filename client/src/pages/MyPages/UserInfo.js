@@ -40,9 +40,9 @@ export function UserInfo() {
 		mode: 'onBlur',
 	});
 	const dispatch = useDispatch();
-	const [isModal, setModal] = useState(false);
-	const [modalIsOpen, setIsOpen] = useState(false);
-	const [openGoodbye, setOpenGoodbye] = useState(false);
+	const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+	const [isGoodbyeModalOpen, setIsGoodbyeModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (userData) {
@@ -62,14 +62,14 @@ export function UserInfo() {
 
 	const onAddressChange = useCallback((data) => {
 		setValue('주소', `(${data.zonecode})${data.address}`);
-		setModal(false);
+		setIsAddressModalOpen(false);
 	});
 	const handleDeleteButton = useCallback(() => {
 		accountDelete();
 		if (!deleteError) {
 			dispatch(logout());
-			setIsOpen(false);
-			setOpenGoodbye(true);
+			setIsDeleteModalOpen(false);
+			setIsGoodbyeModalOpen(true);
 		}
 	});
 	const nicknameReg = register('닉네임', {
@@ -126,11 +126,11 @@ export function UserInfo() {
 	});
 
 	const handleOpenDelete = () => {
-		setIsOpen(true);
+		setIsDeleteModalOpen(true);
 	};
 
 	const handleOpenAddress = () => {
-		setModal(true);
+		setIsAddressModalOpen(true);
 	};
 
 	const onValid = (data) => {
@@ -215,13 +215,19 @@ export function UserInfo() {
 				회원탈퇴
 			</LetterButtonColor>
 			<DeleteAccountModal
-				setIsOpen={setIsOpen}
-				modalIsOpen={modalIsOpen}
+				setIsModalOpen={setIsDeleteModalOpen}
+				IsModalOpen={isDeleteModalOpen}
 				handleOpenGoodbye={handleDeleteButton}
 			/>
-			<GoodbyeModal setIsOpen={setOpenGoodbye} modalIsOpen={openGoodbye} />
-			{isModal && (
-				<AddressModal setIsOpen={setModal} modalIsOpen={isModal}>
+			<GoodbyeModal
+				setIsModalOpen={setIsGoodbyeModalOpen}
+				IsModalOpen={isGoodbyeModalOpen}
+			/>
+			{isAddressModalOpen && (
+				<AddressModal
+					setIsModalOpen={setIsAddressModalOpen}
+					IsModalOpen={isAddressModalOpen}
+				>
 					<Postcode
 						style={{ width: 600, height: 500 }}
 						jsOptions={{ animation: true, hideMapBtn: true }}

@@ -10,8 +10,8 @@ export interface DefaultModalProps {
 	subContents: string;
 	lpbtnTexts: string;
 	pbtnTexts: string;
-	modalIsOpen: boolean;
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	IsModalOpen: boolean;
+	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	path: string; // 모달 닫았을 때 이동할 경로
 	onClickPbtn: React.MouseEventHandler<HTMLButtonElement>; // 버튼에 넣고 싶은 onClick 함수
 	onClickLpbtn: React.MouseEventHandler<HTMLButtonElement>;
@@ -21,7 +21,7 @@ export interface DefaultModalProps {
 
 export interface ReactModalAdapterProps {
 	className?: string;
-	modalIsOpen: boolean;
+	IsModalOpen: boolean;
 	children: ReactNode;
 	isDelay: boolean;
 	afterOpenModal: Modal.OnAfterOpenCallback;

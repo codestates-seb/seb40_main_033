@@ -1,6 +1,6 @@
 import DefalutModal from './DefalutModal';
 
-function DeleteAccountModal({ setIsOpen, modalIsOpen, onClickLpbtn }) {
+function DeleteAccountModal({ setIsModalOpen, IsModalOpen, onClickLpbtn }) {
 	const data = {
 		title: '회원탈퇴',
 		contents:
@@ -17,8 +17,8 @@ function DeleteAccountModal({ setIsOpen, modalIsOpen, onClickLpbtn }) {
 			subContents={data.subContents}
 			lpbtnTexts={data.lpbtnTexts}
 			pbtnTexts={data.pbtnTexts}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
+			setIsModalOpen={setIsModalOpen}
+			IsModalOpen={IsModalOpen}
 			onClickLpbtn={onClickLpbtn}
 		/>
 	);

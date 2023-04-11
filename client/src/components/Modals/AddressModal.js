@@ -1,8 +1,8 @@
 import DefalutModal from './DefalutModal';
 
-function AddressModal({ modalIsOpen, setIsOpen, children }) {
+function AddressModal({ IsModalOpen, setIsModalOpen, children }) {
 	return (
-		<DefalutModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}>
+		<DefalutModal setIsModalOpen={setIsModalOpen} IsModalOpen={IsModalOpen}>
 			{children}
 		</DefalutModal>
 	);

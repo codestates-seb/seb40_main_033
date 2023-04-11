@@ -6,7 +6,7 @@ import ReviewForm from '../Forms/ReviewForm';
 import BtnStar from '../Stars/BtnStar';
 import { usePatch, usePost } from '../../hooks/useFetch';
 
-function ReviewModal({ setIsOpen, modalIsOpen, List, review }) {
+function ReviewModal({ setIsModalOpen, IsModalOpen, List, review }) {
 	const data = {
 		title: 'Review',
 	};
@@ -48,7 +48,7 @@ function ReviewModal({ setIsOpen, modalIsOpen, List, review }) {
 				patchMu({ star, content });
 				toast.success('리뷰 수정이 완료되었습니다!');
 			}
-			setIsOpen(false);
+			setIsModalOpen(false);
 		},
 		[star, content],
 	);
@@ -79,8 +79,8 @@ function ReviewModal({ setIsOpen, modalIsOpen, List, review }) {
 				/>
 			}
 			star={<BtnStar star={star} handleStar={handleStar} />}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
+			setIsModalOpen={setIsModalOpen}
+			IsModalOpen={IsModalOpen}
 		/>
 	);
 }

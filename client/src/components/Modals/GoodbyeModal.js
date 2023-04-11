@@ -1,6 +1,6 @@
 import DefalutModal from './DefalutModal';
 
-function GoodbyeModal({ setIsOpen, modalIsOpen }) {
+function GoodbyeModal({ setIsModalOpen, IsModalOpen }) {
 	const data = {
 		title: 'Good bye',
 		contents: '그동안 감사했습니다.\n 더 나은 서비스로 찾아뵙겠습니다.',
@@ -10,8 +10,8 @@ function GoodbyeModal({ setIsOpen, modalIsOpen }) {
 		<DefalutModal
 			title={data.title}
 			contents={data.contents}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
+			setIsModalOpen={setIsModalOpen}
+			IsModalOpen={IsModalOpen}
 			autoClose
 			path="/"
 		/>

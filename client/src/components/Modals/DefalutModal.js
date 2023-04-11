@@ -71,7 +71,7 @@ const StyledModal =
 
 function ReactModalAdapter({
 	className,
-	modalIsOpen,
+	IsModalOpen,
 	isDelay,
 	afterOpenModal,
 	closeModal,
@@ -85,7 +85,7 @@ function ReactModalAdapter({
 			portalClassName="modal"
 			className={contentClassName}
 			overlayClassName={overlayClassName}
-			isOpen={modalIsOpen}
+			isOpen={IsModalOpen}
 			onAfterOpen={afterOpenModal}
 			onRequestClose={closeModal}
 			{...props}
@@ -105,8 +105,8 @@ function DefalutModal({
 	subContents,
 	lpbtnTexts,
 	pbtnTexts,
-	modalIsOpen,
-	setIsOpen,
+	IsModalOpen,
+	setIsModalOpen,
 	path, // 모달 닫았을 때 이동할 경로
 	onClickPbtn, // 버튼에 넣고 싶은 onClick 함수
 	onClickLpbtn,
@@ -120,7 +120,7 @@ function DefalutModal({
 		setIsDelay(true);
 
 		setTimeout(() => {
-			setIsOpen(false);
+			setIsModalOpen(false);
 			setIsDelay(false);
 		}, 300);
 
@@ -140,7 +140,7 @@ function DefalutModal({
 
 	return (
 		<StyledModal
-			modalIsOpen={modalIsOpen}
+			IsModalOpen={IsModalOpen}
 			isDelay={isDelay}
 			afterOpenModal={afterOpenModal}
 			closeModal={closeModal}

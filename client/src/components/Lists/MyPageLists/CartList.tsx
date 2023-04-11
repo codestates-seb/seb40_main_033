@@ -82,8 +82,8 @@ function CartList({ data, item, sub }: CartListProps) {
 	return (
 		<Box>
 			<CancelModal
-				setIsOpen={setOpenCancelModal}
-				modalIsOpen={openCancelModal}
+				setIsModalOpen={setOpenCancelModal}
+				IsModalOpen={openCancelModal}
 				onClickLpbtn={handleCancel}
 				target="장바구니"
 			/>

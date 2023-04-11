@@ -1,6 +1,6 @@
 import DefalutModal from './DefalutModal';
 
-function LoginModal({ setIsOpen, modalIsOpen, onClickPbtn }) {
+function LoginModal({ setIsModalOpen, IsModalOpen, onClickPbtn }) {
 	const data = {
 		title: 'Please Login',
 		contents: '로그인이 필요한 서비스입니다.',
@@ -12,8 +12,8 @@ function LoginModal({ setIsOpen, modalIsOpen, onClickPbtn }) {
 			title={data.title}
 			contents={data.contents}
 			pbtnTexts={data.pbtnTexts}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
+			setIsModalOpen={setIsModalOpen}
+			IsModalOpen={IsModalOpen}
 			onClickPbtn={onClickPbtn}
 			autoClose
 		/>

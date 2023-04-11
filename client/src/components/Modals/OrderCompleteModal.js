@@ -1,8 +1,8 @@
 import DefalutModal from './DefalutModal';
 
 function OrderCompleteModal({
-	setIsOpen,
-	modalIsOpen,
+	setIsModalOpen,
+	IsModalOpen,
 	onClickPbtn,
 	onClickLpbtn,
 }) {
@@ -19,8 +19,8 @@ function OrderCompleteModal({
 			contents={data.contents}
 			pbtnTexts={data.pbtnTexts}
 			lpbtnTexts={data.lpbtnTexts}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
+			setIsModalOpen={setIsModalOpen}
+			IsModalOpen={IsModalOpen}
 			onClickPbtn={onClickPbtn}
 			onClickLpbtn={onClickLpbtn}
 		/>
