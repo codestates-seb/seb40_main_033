@@ -1,7 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import { useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { HiBadgeCheck } from 'react-icons/hi';
 import { LetterButtonColor, LetterButton } from '../Buttons/LetterButton';
@@ -10,7 +9,13 @@ import TalkForm from '../Forms/TalkForm';
 import DeleteNotesModal from '../Modals/DeleteNotesModal';
 import { usePost, usePatch, useDelete } from '../../hooks/useFetch';
 import { DetailTalkListProps } from '../../types/note.type';
-import { RootState } from '../../redux/store/store';
+import LoginModal from '../Modals/LoginModal';
+import { WRITE_MORE_THAN_20_CHARACTERS } from '../../assets/Constants';
+
+interface InfoContainerProps {
+	token: string | null;
+	isReply: boolean | undefined;
+}
 
 function DetailTalkList({
 	isReply,
@@ -25,9 +30,10 @@ function DetailTalkList({
 	const [writable, setWritable] = useState(false);
 	const [writeReply, setWriteReply] = useState(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [openLoginModal, setOpenLoginModal] = useState(false);
 	const [newContent, setNewContent] = useState(content); // 업데이트할 토크 컨텐츠
 	const [reContent, setReContent] = useState(''); // 새로 작성한 리토크
-	const { loginStatus } = useSelector((store: RootState) => store.user);
+	const token = localStorage.getItem('accessToken');
 	const user = localStorage.getItem('userId');
 	const [isAuthor] = useState(Number(user) === userId);
 
@@ -69,7 +75,7 @@ function DetailTalkList({
 	// 리토크 작성! (답글)
 	const handleReTalkCreate = useCallback(() => {
 		if (reContent.length < 20) {
-			toast.error('20자 이상 작성해주세요.');
+			toast.error(WRITE_MORE_THAN_20_CHARACTERS);
 			return;
 		}
 		reTalkCreateMu({ content: reContent });
@@ -80,7 +86,7 @@ function DetailTalkList({
 	// 토크 수정!
 	const handleTalkUpdate = useCallback(() => {
 		if (newContent.length < 20) {
-			toast.error('20자 이상 작성해주세요.');
+			toast.error(WRITE_MORE_THAN_20_CHARACTERS);
 			return;
 		}
 
@@ -96,8 +102,8 @@ function DetailTalkList({
 	const handleFormOpen: React.MouseEventHandler<HTMLButtonElement> =
 		useCallback(
 			(e) => {
-				if (!loginStatus) {
-					toast.error('로그인이 필요한 서비스입니다.');
+				if (!token) {
+					setOpenLoginModal(true);
 					return;
 				}
 				if (e.currentTarget.innerText === '수정') {
@@ -158,8 +164,8 @@ function DetailTalkList({
 				) : (
 					<Talk>{newContent}</Talk>
 				)}
-				<InfoContainer className={isReply ? 'reply' : ''}>
-					{!isReply && !writable && (
+				<InfoContainer token={token} isReply={isReply}>
+					{!isReply && !writable && token && (
 						<LetterButton onClick={handleFormOpen}>답변 작성</LetterButton>
 					)}
 					<DotDate date={createdAt} />
@@ -174,9 +180,13 @@ function DetailTalkList({
 				)}
 			</Box>
 			<DeleteNotesModal
-				openDeleteModal={openDeleteModal}
-				setOpenDeleteModal={setOpenDeleteModal}
-				handleDelete={handleDeleteTalk}
+				setIsModalOpen={setOpenDeleteModal}
+				IsModalOpen={openDeleteModal}
+				onClickLightPurpleButton={handleDeleteTalk}
+			/>
+			<LoginModal
+				setIsModalOpen={setOpenLoginModal}
+				IsModalOpen={openLoginModal}
 			/>
 		</TalkContainer>
 	);
@@ -235,10 +245,10 @@ const Name = styled.div`
 	margin-top: 1px;
 `;
 
-const InfoContainer = styled.div`
+const InfoContainer = styled.div<InfoContainerProps>`
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: ${({ token }) => (token ? 'space-between' : 'flex-end')};
 	width: 100%;
 	margin-top: 30px;
 
@@ -246,10 +256,12 @@ const InfoContainer = styled.div`
 		padding: 0;
 	}
 
-	&.reply {
-		justify-content: flex-end;
-		margin-top: 20px;
-	}
+	${({ isReply }) =>
+		isReply &&
+		css`
+			justify-content: flex-end;
+			margin-top: 20px;
+		`}
 `;
 
 const Talk = styled.div`

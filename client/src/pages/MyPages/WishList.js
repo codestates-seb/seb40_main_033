@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import WishListCards from '../../components/Cards/WishListCard';
 import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
+import { NO_WISH_LIST } from '../../assets/Constants';
 
 function WishList() {
 	const { pathname } = useLocation();
@@ -23,7 +24,7 @@ function WishList() {
 		</EntireContainer>
 	) : (
 		<ListContainer>
-			<div className="blank">찜한 상품이 없습니다.</div>
+			<div className="blank">{NO_WISH_LIST}</div>
 		</ListContainer>
 	);
 }

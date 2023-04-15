@@ -113,7 +113,7 @@ const BottomContainer = styled.div`
 	align-items: flex-end;
 `;
 
-const SubInfo = styled.div<{ isSub: boolean }>`
+const SubInfo = styled.div<{ isSub: boolean | undefined }>`
 	font-size: 11px;
 	font-weight: var(--bold);
 	color: var(--purple-300);

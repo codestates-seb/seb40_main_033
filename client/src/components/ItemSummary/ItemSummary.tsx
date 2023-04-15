@@ -138,11 +138,6 @@ function ItemSummary({
 		}
 	}, [orderList]);
 
-	// 로그인 모달 속, 로그인 페이지로 가는 함수
-	const handleLoginMove = useCallback(() => {
-		navigate('/login');
-	}, []);
-
 	return (
 		<Container>
 			<EntireContainer showOptions={showOptions}>
@@ -160,7 +155,7 @@ function ItemSummary({
 						<NameBox>{name}</NameBox>
 						<DescBox>{content}</DescBox>
 						<TagsBox>
-							<Tag funcArr={categories} />
+							<Tag categories={categories} />
 						</TagsBox>
 						<RateBox>
 							<LongTextStar
@@ -218,15 +213,13 @@ function ItemSummary({
 				)}
 			</EntireContainer>
 			<CartModal
-				setOpenModal={setOpenCartModal}
-				openModal={openCartModal}
-				contents="장바구니에 상품이 담겼습니다."
-				onClickPbtn={handleCartClick}
+				setIsModalOpen={setOpenCartModal}
+				IsModalOpen={openCartModal}
+				onClickPurpleButton={handleCartClick}
 			/>
 			<LoginModal
-				setIsOpen={setOpenLoginModal}
-				modalIsOpen={openLoginModal}
-				onClickPbtn={handleLoginMove}
+				setIsModalOpen={setOpenLoginModal}
+				IsModalOpen={openLoginModal}
 			/>
 		</Container>
 	);
