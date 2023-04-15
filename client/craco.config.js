@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const CracoEsbuildPlugin = require('craco-esbuild');
 const webpack = require('webpack');
 
