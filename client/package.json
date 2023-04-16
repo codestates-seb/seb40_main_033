@@ -37,8 +37,9 @@
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"start": "craco start",
+		"build": "craco build",
+		"build:measure": "time npm run build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"lint": "eslint ./src/**/*.{ts,tsx}",
@@ -63,8 +64,10 @@
 		]
 	},
 	"devDependencies": {
+		"@craco/craco": "^7.1.0",
 		"@typescript-eslint/eslint-plugin": "^5.49.0",
 		"@typescript-eslint/parser": "^5.49.0",
+		"craco-esbuild": "^0.5.2",
 		"eslint": "^8.28.0",
 		"eslint-config-airbnb": "^19.0.4",
 		"eslint-config-airbnb-typescript": "^17.0.0",
