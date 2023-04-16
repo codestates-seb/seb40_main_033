@@ -23,9 +23,9 @@ export default function PayMethod({ payData }: { payData: PayData }) {
 				orderName: `${itemOrders.data[0].item.title}, ${itemOrders.data.length} 건`,
 				customerName: `Pillivery`,
 				successUrl:
-					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/general/success',
+					'http://ec2-13-209-138-42.ap-northeast-2.compute.amazonaws.com:8080/payments/general/success',
 				failUrl:
-					'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/payments/fail',
+					'http://ec2-13-209-138-42.ap-northeast-2.compute.amazonaws.com:8080/payments/fail',
 				validHours: 24,
 				cashReceipt: {
 					type: '소득공제',

@@ -65,7 +65,7 @@ const SocialButton = styled.button<{ socialType: 'kakao' | 'google' }>`
 
 export default function SocialLogIn() {
 	const URI =
-		'http://ec2-43-201-37-71.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization';
+		'http://ec2-13-209-138-42.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization';
 	const loginRequestHandler = (socialType: 'google' | 'kakao') => {
 		window.location.assign((window.location.href = `${URI}/${socialType}`));
 	};
