@@ -1,42 +1,31 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable @typescript-eslint/no-var-requires */
-const CracoEsbuildPlugin = require('craco-esbuild');
-const webpack = require('webpack');
+/* eslint @typescript-eslint/no-var-requires: 0 */
+const { EsbuildPlugin } = require('esbuild-loader');
 
 module.exports = {
-	plugins: [
-		{
-			plugin: CracoEsbuildPlugin,
-			options: {
-				esbuildMinimizerOptions: {
-					target: 'es2015',
-					css: true, //  OptimizeCssAssetsWebpackPlugin being replaced by esbuild.
-				},
-			},
-		},
-	],
 	webpack: {
-		plugins: {
-			add: [
-				new webpack.DefinePlugin({
-					process: { env: {}, browser: {} },
-				}),
-			],
-		},
 		configure: {
-			resolve: {
-				fallback: {
-					fs: false,
-					tls: false,
-					net: false,
-					path: false,
-					zlib: false,
-					http: false,
-					https: false,
-					stream: false,
-					crypto: false,
-					buffer: false,
-				},
+			optimization: {
+				minimize: true,
+				minimizer: [
+					new EsbuildPlugin({
+						minify: true,
+						target: 'es2015',
+						css: true,
+					}),
+				],
+			},
+			// 기존의 babel-loader 대신 esbuild-loader를 사용하도록 설정
+			module: {
+				rules: [
+					{
+						test: /\.[jt]sx?$/,
+						loader: require.resolve('esbuild-loader'),
+						options: {
+							loader: 'tsx',
+							target: 'es2015',
+						},
+					},
+				],
 			},
 		},
 	},
