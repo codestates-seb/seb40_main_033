@@ -4,7 +4,15 @@ import { useState } from 'react';
 import { AxiosResponse, AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import axiosInstance from '../utils/axiosInstance';
-import { TOKEN_EXPIRED_INFORMATION } from '../assets/Constants';
+import {
+	TOKEN_EXPIRED_INFORMATION,
+	EXPIRED_TOKEN_RESPONSE_MESSAGE,
+} from '../assets/Constants';
+
+interface ResponseData {
+	message: string;
+	status: number;
+}
 
 export function useGet<T>(url: string, keyValue: string) {
 	const navigate = useNavigate();
@@ -13,8 +21,12 @@ export function useGet<T>(url: string, keyValue: string) {
 	>([keyValue], () => axiosInstance.get(url), {
 		onError: (errRes) => {
 			const { response } = errRes as AxiosError;
+			const { message } = response?.data as ResponseData;
 
-			if (response?.status === 403) {
+			if (
+				response?.status === 403 ||
+				message === EXPIRED_TOKEN_RESPONSE_MESSAGE
+			) {
 				localStorage.clear();
 				navigate('/login');
 				toast.error(TOKEN_EXPIRED_INFORMATION);
