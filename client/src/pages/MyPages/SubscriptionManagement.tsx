@@ -4,16 +4,23 @@ import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import SubManagementList from '../../components/Lists/MyPageLists/SubManagementList';
 import { useGet } from '../../hooks/useFetch';
 import { NO_SUBSCRIPTION_HISTORY } from '../../assets/Constants';
+import { SubscriptedItemOrder } from '../../types/order.type';
 
+interface SubscriptedOrder {
+	data: SubscriptedItemOrder[];
+}
 export default function SubscriptionManagement() {
 	const { pathname } = useLocation();
-	const { data, isError, isLoading, error } = useGet('/orders/subs', pathname);
-	const subManageDatas = data?.data?.data;
+	const { data, isError, isLoading, error } = useGet<SubscriptedOrder>(
+		'/orders/subs',
+		pathname,
+	);
+	const subManageDatas = data?.data.data;
 	if (isLoading) return <LoadingSpinner />;
-	if (isError) return <div>{error.message}</div>;
+	if (isError && error instanceof Error) return <div>{error.message}</div>;
 	return (
 		<SubManageContainer>
-			{subManageDatas.length === 0 ? (
+			{subManageDatas === undefined ? (
 				<div className="blank">{NO_SUBSCRIPTION_HISTORY}</div>
 			) : (
 				subManageDatas.map((subManageData, idx) => (
