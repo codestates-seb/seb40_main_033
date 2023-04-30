@@ -129,7 +129,7 @@ export const ERROR_INFORMATION = `현재 정보를 불러올 수 없습니다.
 export const NO_ORDER_HISTORY = '주문 내역이 없습니다.';
 
 export const TOKEN_EXPIRED_INFORMATION =
-	'로그인이 만료되었습니다. 다시 로그인해주세요.';
+	'로그인 세션이 만료되었습니다. 다시 로그인해주세요.';
 
 export const WRITE_MORE_THAN_20_CHARACTERS = '20자 이상 작성해주세요.';
 
@@ -154,3 +154,6 @@ export const NO_TALKS_WRITTEN = '작성하신 토크가 없습니다.';
 export const NO_WISH_LIST = '찜한 상품이 없습니다.';
 
 export const NO_SUBSCRIPTION_HISTORY = '정기구독 신청 내역이 없습니다.';
+
+export const EXPIRED_TOKEN_RESPONSE_MESSAGE =
+	'Full authentication is required to access this resource';
