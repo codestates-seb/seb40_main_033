@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-param-reassign */
-import { useCallback, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Postcode from '@actbase/react-daum-postcode';
-import { useForm } from 'react-hook-form';
+import { FieldValues, UseFormRegisterReturn, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -14,12 +14,34 @@ import {
 import DeleteAccountModal from '../../components/Modals/DeleteAccountModal';
 import AddressModal from '../../components/Modals/AddressModal';
 import GoodbyeModal from '../../components/Modals/GoodbyeModal';
-import { useGet, useDelete, usePatch } from '../../hooks/useFetch';
+import { useDelete, usePatch, useGet } from '../../hooks/useFetch';
 import { change } from '../../redux/slice/nickNameSlice';
 import { logout } from '../../redux/slice/userSlice';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 
-export function UserInfo() {
+interface UserData {
+	address: string;
+	detailAddress: string;
+	displayName: string;
+	email: string;
+	password: string;
+	phone: string;
+	realName: string;
+	social: boolean;
+	updatedAt: string;
+}
+interface FormValues {
+	닉네임: string;
+	이메일: string;
+	비밀번호: string;
+	비밀번호재확인: string;
+	이름: string;
+	전화번호: string;
+	주소: string;
+	상세주소: string;
+}
+
+export function UserProfile() {
 	const { mutate: accountDelete, isError: deleteError } = useDelete('/users');
 	const { pathname } = useLocation();
 	const {
@@ -27,8 +49,7 @@ export function UserInfo() {
 		isError,
 		data: userData,
 		error,
-	} = useGet('/users', pathname);
-
+	} = useGet<UserData>('/users', pathname);
 	const { mutate: userPatch } = usePatch('/users');
 	const {
 		register,
@@ -36,7 +57,7 @@ export function UserInfo() {
 		setValue,
 		watch,
 		formState: { errors },
-	} = useForm({
+	} = useForm<FormValues>({
 		mode: 'onBlur',
 	});
 	const dispatch = useDispatch();
@@ -46,32 +67,35 @@ export function UserInfo() {
 
 	useEffect(() => {
 		if (userData) {
-			setValue('이메일', userData.data.email);
-			setValue('닉네임', userData.data.displayName);
-			setValue('이름', userData.data.realName);
-			setValue('전화번호', userData.data.phone);
-			setValue('주소', userData.data.address);
-			setValue('상세주소', userData.data.detailAddress);
-			if (userData.data.social) {
+			setValue('이메일', userData?.data?.email);
+			setValue('닉네임', userData?.data?.displayName);
+			setValue('이름', userData?.data?.realName);
+			setValue('전화번호', userData?.data?.phone);
+			setValue('주소', userData?.data?.address);
+			setValue('상세주소', userData?.data?.detailAddress);
+			if (userData?.data?.social) {
 				setValue('비밀번호', 'asdf4321!');
 				setValue('비밀번호재확인', 'asdf4321!');
 			}
-			dispatch(change(userData.data.displayName));
+			if (userData?.data?.displayName !== undefined)
+				dispatch(change(userData?.data?.displayName));
 		}
 	}, [userData]);
 
-	const onAddressChange = useCallback((data) => {
+	const onAddressChange = (data: { zonecode: number; address: string }) => {
 		setValue('주소', `(${data.zonecode})${data.address}`);
 		setIsAddressModalOpen(false);
-	});
-	const handleDeleteButton = useCallback(() => {
+	};
+
+	const handleDeleteButton = () => {
 		accountDelete();
 		if (!deleteError) {
 			dispatch(logout());
 			setIsDeleteModalOpen(false);
 			setIsGoodbyeModalOpen(true);
 		}
-	});
+	};
+
 	const nicknameReg = register('닉네임', {
 		required: '닉네임을 입력해주세요.',
 		pattern: {
@@ -133,7 +157,7 @@ export function UserInfo() {
 		setIsAddressModalOpen(true);
 	};
 
-	const onValid = (data) => {
+	const onValid = (data: FieldValues) => {
 		const value = {
 			displayName: data.닉네임,
 			email: data.이메일,
@@ -146,62 +170,72 @@ export function UserInfo() {
 		userPatch(value);
 		toast.success('회원정보가 수정되었습니다!');
 	};
+	const USER_ADDRESS_INFORMATION = [
+		{
+			label: '이름',
+			register: nameReg,
+			errors: errors?.이름?.message,
+		},
+		{
+			label: '전화번호',
+			register: telReg,
+			errors: errors?.전화번호?.message,
+		},
+		{
+			label: '주소',
+			handleOpenAddress,
+			register: adressReg,
+			errors: errors?.주소?.message,
+		},
+		{
+			label: '상세주소',
+			register: detailAddressReg,
+			errors: errors?.상세주소?.message,
+		},
+	];
+	const USER_BASIC_INFORMATION = [
+		{
+			label: '닉네임',
+			register: nicknameReg,
+			errors: errors?.닉네임?.message,
+		},
+		{
+			label: '이메일',
+			register: mailReg,
+			errors: errors?.이메일?.message,
+		},
+		{
+			label: '비밀번호',
+			register: pwReg,
+			errors: errors?.비밀번호?.message,
+			social: userData?.data?.social,
+		},
+		{
+			label: '비밀번호재확인',
+			register: rePwReg,
+			errors: errors?.비밀번호재확인?.message,
+			social: userData?.data?.social,
+		},
+	];
 	if (isLoading) return <LoadingSpinner />;
-	if (isError) return <div>{error.message}</div>;
+	if (isError && error instanceof Error) return <div>{error.message}</div>;
 	return (
 		<MainContainer>
 			<Box>
 				<InfoBox>
 					<InfoHeading>기본 정보</InfoHeading>
 					<InputBox>
-						<Information
-							label="닉네임"
-							register={nicknameReg}
-							errors={errors?.닉네임?.message}
-						/>
-						<Information
-							label="이메일"
-							register={mailReg}
-							errors={errors?.이메일?.message}
-						/>
-						<Information
-							label="비밀번호"
-							register={pwReg}
-							errors={errors?.비밀번호?.message}
-							social={userData.data.social}
-						/>
-						<Information
-							label="비밀번호재확인"
-							register={rePwReg}
-							errors={errors?.비밀번호재확인?.message}
-							social={userData.data.social}
-						/>
+						{USER_BASIC_INFORMATION.map((inputProps) => (
+							<Information key={inputProps.label} {...inputProps} />
+						))}
 					</InputBox>
 				</InfoBox>
 				<InfoBox>
 					<InfoHeading>배송지 정보</InfoHeading>
 					<InputBox>
-						<Information
-							label="이름"
-							register={nameReg}
-							errors={errors?.이름?.message}
-						/>
-						<Information
-							label="전화번호"
-							register={telReg}
-							errors={errors?.전화번호?.message}
-						/>
-						<Information
-							label="주소"
-							handleOpenAddress={handleOpenAddress}
-							register={adressReg}
-							errors={errors?.주소?.message}
-						/>
-						<Information
-							label="상세주소"
-							register={detailAddressReg}
-							errors={errors?.상세주소?.message}
-						/>
+						{USER_ADDRESS_INFORMATION.map((inputProps) => (
+							<Information key={inputProps.label} {...inputProps} />
+						))}
 					</InputBox>
 				</InfoBox>
 				<LetterButton onClick={handleSubmit(onValid)}>정보 수정</LetterButton>
@@ -217,7 +251,7 @@ export function UserInfo() {
 			<DeleteAccountModal
 				setIsModalOpen={setIsDeleteModalOpen}
 				IsModalOpen={isDeleteModalOpen}
-				handleOpenGoodbye={handleDeleteButton}
+				onClickLightPurpleButton={handleDeleteButton}
 			/>
 			<GoodbyeModal
 				setIsModalOpen={setIsGoodbyeModalOpen}
@@ -232,6 +266,7 @@ export function UserInfo() {
 						style={{ width: 600, height: 500 }}
 						jsOptions={{ animation: true, hideMapBtn: true }}
 						onSelected={onAddressChange}
+						onError={() => {}}
 					/>
 				</AddressModal>
 			)}
@@ -245,6 +280,12 @@ export function Information({
 	register,
 	errors,
 	social,
+}: {
+	label: string;
+	handleOpenAddress?: () => void;
+	register: UseFormRegisterReturn<string>;
+	errors?: string;
+	social?: boolean;
 }) {
 	return (
 		<UserInfoBox>
@@ -270,7 +311,9 @@ export function Information({
 					name={label}
 					className={errors && 'error'}
 				/>
-				<ErrorDiv className={errors && 'error'}>{errors}</ErrorDiv>
+				<ErrorDiv className={errors && 'error'}>
+					{typeof errors === 'string' && errors}
+				</ErrorDiv>
 			</InputDiv>
 		</UserInfoBox>
 	);
