@@ -4,14 +4,21 @@ import WishListCards from '../../components/Cards/WishListCard';
 import { useGet } from '../../hooks/useFetch';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import { NO_WISH_LIST } from '../../assets/Constants';
+import { Item } from '../../types/itemList.type';
 
+interface WishListData {
+	data: Item[];
+}
 function WishList() {
 	const { pathname } = useLocation();
-	const { isLoading, isError, data, error } = useGet('/wishes', pathname);
+	const { isLoading, isError, data, error } = useGet<WishListData>(
+		'/wishes',
+		pathname,
+	);
 	const wishListItems = data?.data?.data;
 	if (isLoading) return <LoadingSpinner />;
-	if (isError) return <div>{error.message}</div>;
-	return wishListItems.length !== 0 ? (
+	if (isError && error instanceof Error) return <div>{error.message}</div>;
+	return wishListItems !== undefined ? (
 		<EntireContainer>
 			<WishBox>
 				{wishListItems.map((wishItem, idx) => (

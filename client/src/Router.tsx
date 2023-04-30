@@ -19,9 +19,9 @@ import NormalOrder from './pages/MyPages/NormalOrder';
 import SubscriptionOrder from './pages/MyPages/SubscriptionOrder';
 import { UserInfo } from './pages/MyPages/UserInfo';
 import WishList from './pages/MyPages/WishList';
-import SubManage from './pages/MyPages/SubManage';
 import Cart from './pages/Cart';
 import ScrollToTop from './utils/ScrollToTop';
+import SubscriptionManagement from './pages/MyPages/SubscriptionManagement';
 
 function Router() {
 	return (
@@ -42,7 +42,7 @@ function Router() {
 						<Route path="order/subscription" element={<SubscriptionOrder />} />
 						<Route path="order/normal" element={<NormalOrder />} />
 						<Route path="order/:id" element={<OrderDetail />} />
-						<Route path="sub-manage" element={<SubManage />} />
+						<Route path="sub-manage" element={<SubscriptionManagement />} />
 						<Route path="wish" element={<WishList />} />
 						<Route path="note/review" element={<NoteReview />} />
 						<Route path="note/talk" element={<NoteTalk />} />

@@ -9,8 +9,17 @@ import Price from '../../Etc/Price';
 import { KrDate } from '../../Etc/ListDate';
 import CancelModal from '../../Modals/CancelModal';
 import { useDelete, usePatch } from '../../../hooks/useFetch';
+import { SubscriptedItemOrder } from '../../../types/order.type';
+import {
+	QUANTITY_CHANGE_SUCCESS,
+	TERM_CHANGE_SUCCESS,
+} from '../../../assets/Constants';
 
-function SubManagementList({ subManageData }) {
+function SubManagementList({
+	subManageData,
+}: {
+	subManageData: SubscriptedItemOrder;
+}) {
 	const navigate = useNavigate();
 	const handleItemClick = () => {
 		navigate(`/detail/${subManageData.item.itemId}`);
@@ -33,20 +42,20 @@ function SubManagementList({ subManageData }) {
 	const onPlusClick = useCallback(async () => {
 		await plusMutate();
 		setQuantity(quantity + 1);
-		toast.success('수량이 변경되었습니다.'); // 실제 요청에 붙이셔야 할 것 같아요~ 아마도
+		toast.success(QUANTITY_CHANGE_SUCCESS); // 실제 요청에 붙이셔야 할 것 같아요~ 아마도
 	}, [quantity]);
 
 	const onMinusClick = useCallback(async () => {
 		await minusMutate();
 		setQuantity(quantity - 1);
-		toast.success('수량이 변경되었습니다.'); // 실제 요청에 붙이셔야 할 것 같아요~ 아마도
+		toast.success(QUANTITY_CHANGE_SUCCESS); // 실제 요청에 붙이셔야 할 것 같아요~ 아마도
 	}, [quantity]);
 
 	const handleModifyPeriod = useCallback(
-		async (e) => {
-			await setSubPeriod(e.target.innerText.replace('일', ''));
+		async (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+			await setSubPeriod(Number(e.currentTarget.innerText.replace('일', '')));
 			await modifyPeriod();
-			toast.success('주기를 변경했습니다!');
+			toast.success(TERM_CHANGE_SUCCESS);
 		},
 		[subPeriod],
 	);
@@ -62,9 +71,9 @@ function SubManagementList({ subManageData }) {
 	return (
 		<Box>
 			<CancelModal
-				handleCancel={handleCancel}
-				openCancelModal={openCancelModal}
-				setOpenCancelModal={setOpenCancelModal}
+				onClickLightPurpleButton={handleCancel}
+				IsModalOpen={openCancelModal}
+				setIsModalOpen={setOpenCancelModal}
 				target="정기 구독"
 			/>
 			<SubContainer>
@@ -98,7 +107,8 @@ function SubManagementList({ subManageData }) {
 					</InfoContainer>
 					<BottomContainer>
 						<Info className="notice">
-							다음 배송일은 <KrDate date={subManageData.nextDelivery} /> 입니다.
+							다음 배송일은
+							<KrDate date={new Date(subManageData.nextDelivery)} /> 입니다.
 						</Info>
 						<QuantityContainer>
 							<Label>수량</Label>

@@ -38,3 +38,13 @@ export interface OrderDetailListProps extends ItemDefaultData {
 export interface OrderDetailData {
 	data: PayData;
 }
+
+export interface SubscriptedItemOrder {
+	item: ItemShortcutData;
+	itemOrderId: number;
+	nextDelivery: string;
+	orderId: number;
+	period: number;
+	quantity: number;
+	totalPrice: number;
+}
