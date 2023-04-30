@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
 import SubManagementList from '../../components/Lists/MyPageLists/SubManagementList';
 import { useGet } from '../../hooks/useFetch';
+import { NO_SUBSCRIPTION_HISTORY } from '../../assets/Constants';
 
 export default function SubscriptionManagement() {
 	const { pathname } = useLocation();
@@ -13,7 +14,7 @@ export default function SubscriptionManagement() {
 	return (
 		<SubManageContainer>
 			{subManageDatas.length === 0 ? (
-				<div className="blank">정기구독 신청 내역이 없습니다.</div>
+				<div className="blank">{NO_SUBSCRIPTION_HISTORY}</div>
 			) : (
 				subManageDatas.map((subManageData, idx) => (
 					<SubManagementList

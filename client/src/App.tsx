@@ -30,6 +30,7 @@ function App() {
 					position="top-center"
 					autoClose={3000}
 					theme="colored"
+					pauseOnFocusLoss={false}
 				/>
 				<ReactQueryDevtools />
 			</QueryClientProvider>

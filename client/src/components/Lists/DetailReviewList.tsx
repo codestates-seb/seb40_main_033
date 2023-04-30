@@ -62,15 +62,15 @@ function DetailReviewList({
 			</InfoContainer>
 			<Review>{content}</Review>
 			<ReviewModal
-				setIsOpen={setOpenForm}
-				modalIsOpen={openForm}
-				OrderDetailList={OrderDetailList}
+				setIsModalOpen={setOpenForm}
+				IsModalOpen={openForm}
+				List={OrderDetailList}
 				review={review}
 			/>
 			<DeleteNotesModal
-				openDeleteModal={openDeleteModal}
-				setOpenDeleteModal={setOpenDeleteModal}
-				handleDelete={handleDeleteReview}
+				setIsModalOpen={setOpenDeleteModal}
+				IsModalOpen={openDeleteModal}
+				onClickLightPurpleButton={handleDeleteReview}
 			/>
 		</Box>
 	);

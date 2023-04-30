@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import WishlistButton from '../Buttons/WishlistButton';
 import Tag from '../Etc/Tag';
 import { BlackButton, WhiteButton } from '../Buttons/BlackButton';
@@ -10,8 +9,10 @@ import { PeriodChoiceTab } from '../Tabs/ToggleTabs';
 import { LongTextStar } from '../Stars/TextStar';
 import Price, { SummaryPrice } from '../Etc/Price';
 import CartModal from '../Modals/CartModal';
-import { usePost, useGet } from '../../hooks/useFetch';
+import useGetWishes from '../../hooks/useGetWishes';
+import { usePost } from '../../hooks/useFetch';
 import usePurchase from '../../hooks/usePurchase';
+import LoginModal from '../Modals/LoginModal';
 
 interface ItemSummaryProps {
 	name: string;
@@ -44,6 +45,7 @@ function ItemSummary({
 	const [path, setPath] = useState(''); // 바로결제하기 클릭 시, 이동할 페이지
 	const [showOptions, setShowOptions] = useState(false);
 	const [openCartModal, setOpenCartModal] = useState(false);
+	const [openLoginModal, setOpenLoginModal] = useState(false);
 	const token = localStorage.getItem('accessToken');
 	const [orderList, setOrdertList] = useState({
 		quantity: 1,
@@ -51,18 +53,18 @@ function ItemSummary({
 		subscription: false,
 	});
 
-	const { data: WishData } = useGet('/wishes/item', `detail/wishs`);
+	const { data: WishData } = useGetWishes<{ data: number[] }>(
+		'/wishes/item',
+		`detail/wishs`,
+	);
+
 	const [isCheckedWish, setIsCheckedWish] = useState(
-		WishData?.data?.data.includes(itemId) ? 1 : 0,
+		!!WishData?.data?.data.includes(itemId),
 	);
 
 	useEffect(() => {
-		if (WishData?.data?.data.includes(itemId)) {
-			setIsCheckedWish(1);
-		} else {
-			setIsCheckedWish(0);
-		}
-	}, []);
+		setIsCheckedWish(!!WishData?.data?.data.includes(itemId));
+	}, [WishData]);
 
 	const { mutate: cartMu } = usePost(`/carts/${itemId}`);
 	const { mutate: purMu } = usePurchase('/orders/single', path);
@@ -113,7 +115,7 @@ function ItemSummary({
 			if (token) {
 				purMu({ ...orderList, itemId });
 			} else {
-				toast.error('로그인이 필요한 서비스입니다.');
+				setOpenLoginModal(true);
 			}
 		}, [orderList]);
 
@@ -123,7 +125,7 @@ function ItemSummary({
 			cartMu({ ...orderList });
 			setOpenCartModal(true);
 		} else {
-			toast.error('로그인이 필요한 서비스입니다.');
+			setOpenLoginModal(true);
 		}
 	}, [orderList]);
 
@@ -136,18 +138,6 @@ function ItemSummary({
 		}
 	}, [orderList]);
 
-	// // 로그인 모달을 띄우는 함수
-	// const handleOpenLoginModal = () => {
-	// 	if (!token) {
-	// 		setOpenLoginModal(true);
-	// 	}
-	// };
-
-	// 로그인 모달 속, 로그인 페이지로 가는 함수
-	// const handleLoginMove = useCallback(() => {
-	// 	navigate('/login');
-	// }, []);
-
 	return (
 		<Container>
 			<EntireContainer showOptions={showOptions}>
@@ -155,6 +145,7 @@ function ItemSummary({
 					<HeadBox>
 						<p>{brand}</p>
 						<WishlistButton
+							setOpenLoginModal={setOpenLoginModal}
 							setIsChecked={setIsCheckedWish}
 							isChecked={isCheckedWish}
 							itemId={itemId}
@@ -164,7 +155,7 @@ function ItemSummary({
 						<NameBox>{name}</NameBox>
 						<DescBox>{content}</DescBox>
 						<TagsBox>
-							<Tag funcArr={categories} />
+							<Tag categories={categories} />
 						</TagsBox>
 						<RateBox>
 							<LongTextStar
@@ -222,10 +213,13 @@ function ItemSummary({
 				)}
 			</EntireContainer>
 			<CartModal
-				setOpenModal={setOpenCartModal}
-				openModal={openCartModal}
-				contents="장바구니에 상품이 담겼습니다."
-				onClickPbtn={handleCartClick}
+				setIsModalOpen={setOpenCartModal}
+				IsModalOpen={openCartModal}
+				onClickPurpleButton={handleCartClick}
+			/>
+			<LoginModal
+				setIsModalOpen={setOpenLoginModal}
+				IsModalOpen={openLoginModal}
 			/>
 		</Container>
 	);
@@ -297,7 +291,6 @@ const TagsBox = styled.div`
 const RateBox = styled.div`
 	display: flex;
 	justify-content: space-between;
-	/* align-items: center; */
 	width: 100%;
 	margin-bottom: 10px;
 `;
@@ -305,7 +298,6 @@ const RateBox = styled.div`
 const ButtonBox = styled.div`
 	display: flex;
 	justify-content: space-between;
-	/* width: 100%; */
 `;
 
 const slide = keyframes`

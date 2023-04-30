@@ -5,8 +5,19 @@ import DefalutModal from './DefalutModal';
 import ReviewForm from '../Forms/ReviewForm';
 import BtnStar from '../Stars/BtnStar';
 import { usePatch, usePost } from '../../hooks/useFetch';
+import { ReviewModalProps } from '../../types/modal.type';
+import {
+	WRITE_MORE_THAN_20_CHARACTERS,
+	WRITE_COMPLETE,
+	UPDATE_COMPLETE,
+} from '../../assets/Constants';
 
-function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
+function ReviewModal({
+	setIsModalOpen,
+	IsModalOpen,
+	List,
+	review,
+}: ReviewModalProps) {
 	const data = {
 		title: 'Review',
 	};
@@ -21,34 +32,35 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 	// 주문내역 상세페이지 - 리뷰 작성
 	const { mutate: postMu } = usePost(`/reviews/${review.item.itemOrderId}`);
 
-	const handleStar = useCallback((e) => {
-		setStar(e.target.id); // 누른 별만큼 별점 설정
+	const handleStar: React.MouseEventHandler<SVGElement> = useCallback((e) => {
+		setStar(e.currentTarget.id); // 누른 별만큼 별점 설정
 	}, []);
 
-	const handleContent = useCallback(
-		(e) => {
-			setContent(e.target.value);
-		},
-		[content],
-	);
+	const handleContent: React.ChangeEventHandler<HTMLTextAreaElement> =
+		useCallback(
+			(e) => {
+				setContent(e.target.value);
+			},
+			[content],
+		);
 
-	const handleSubmit = useCallback(
+	const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
 		(e) => {
 			e.preventDefault();
 			if (content.length < 20) {
-				toast.error('20자 이상 작성해주세요.');
+				toast.error(WRITE_MORE_THAN_20_CHARACTERS);
 				return;
 			}
 
 			// 리뷰 작성 요청
 			if (pathname.includes('order')) {
 				postMu({ star, content });
-				toast.success('리뷰 작성이 완료되었습니다!');
+				toast.success(WRITE_COMPLETE);
 			} else {
 				patchMu({ star, content });
-				toast.success('리뷰 수정이 완료되었습니다!');
+				toast.success(UPDATE_COMPLETE);
 			}
-			setIsOpen(false);
+			setIsModalOpen(false);
 		},
 		[star, content],
 	);
@@ -57,7 +69,7 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 		<DefalutModal
 			title={data.title}
 			list={
-				<OrderDetailList
+				<List
 					inModal
 					brand={review?.item.brand}
 					thumbnail={review?.item.thumbnail}
@@ -65,7 +77,7 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 					nowPrice={review?.item.nowPrice}
 					beforePrice={review?.item.beforePrice}
 					discountRate={review?.item.discountRate}
-					itemOrderId={review?.item.itemOrderId}
+					itemOrderId={review?.item.itemOrderId ?? 0}
 					capacity={review?.item?.capacity}
 					quantity={review?.item?.quantity}
 					itemId={review?.item?.itemId}
@@ -78,9 +90,9 @@ function ReviewModal({ setIsOpen, modalIsOpen, OrderDetailList, review }) {
 					handleSubmit={handleSubmit}
 				/>
 			}
-			star={<BtnStar star={star} handleStar={handleStar} />}
-			setIsOpen={setIsOpen}
-			modalIsOpen={modalIsOpen}
+			star={<BtnStar star={String(star)} handleStar={handleStar} />}
+			setIsModalOpen={setIsModalOpen}
+			IsModalOpen={IsModalOpen}
 		/>
 	);
 }

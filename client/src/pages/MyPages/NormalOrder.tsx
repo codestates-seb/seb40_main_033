@@ -4,10 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import OrderList from '../../components/Lists/MyPageLists/OrderList';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
-import {
-	ERROR_INFORMATION,
-	NO_ORDER_HISTORY,
-} from '../../components/Etc/Constants';
+import { ERROR_INFORMATION, NO_ORDER_HISTORY } from '../../assets/Constants';
 import { useGetOrderList } from '../../hooks/useGetList';
 
 function NormalOrder() {
@@ -42,7 +39,7 @@ function NormalOrder() {
 	return (
 		<>
 			<ListContainer>
-				{data.pages[0].data.length === 0 ? (
+				{data?.pages[0].data.length === 0 ? (
 					<Message>{NO_ORDER_HISTORY}</Message>
 				) : (
 					data?.pages.map((page, i) => (

@@ -1,33 +1,30 @@
 import styled, { keyframes, css } from 'styled-components';
 import { useLocation, useParams } from 'react-router-dom';
 import { useCallback, useState, useRef, Fragment } from 'react';
-import { useQuery } from 'react-query';
-import { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { IoIosArrowBack } from 'react-icons/io';
 import ItemSummary from '../components/ItemSummary/ItemSummary';
 import DetailReviewList from '../components/Lists/DetailReviewList';
 import DetailTalkList from '../components/Lists/DetailTalkList';
 import TalkForm from '../components/Forms/TalkForm';
-import { usePost } from '../hooks/useFetch';
+import { useGet, usePost } from '../hooks/useFetch';
 import {
-	DeliveryInfo,
-	ReturnInfo,
-	ProductInfo,
-} from '../components/Etc/Constants';
+	DELIVERY_INFORMATION,
+	RETURN_INFORMATION,
+	WRITE_MORE_THAN_20_CHARACTERS,
+	NO_REVIEWS,
+	NO_TALKS,
+} from '../assets/Constants';
+import DetailProductInfo from '../components/Etc/DetailProductInfo';
 import { LoadingSpinner } from '../components/Etc/LoadingSpinner';
-import axiosInstance from '../utils/axiosInstance';
 import { DetailReviewsData, DetailTalksData } from '../types/note.type';
-import { NutritionFact, ItemShortcutData } from '../types/item.type';
+import { ItemShortcutData, DetailProductInfoProps } from '../types/item.type';
 
-interface DetailItemData extends ItemShortcutData {
+interface DetailItemData extends ItemShortcutData, DetailProductInfoProps {
 	descriptionImage: string;
 	content: string;
-	expiration: string;
 	sales: number;
-	servingSize: number;
 	categories: string[];
-	nutritionFacts: NutritionFact[];
 	starAvg: number;
 	reviews: DetailReviewsData;
 	talks: DetailTalksData;
@@ -66,10 +63,10 @@ function Detail() {
 	};
 
 	// 상품 상세 조회
-	const { isLoading, isError, data, error } = useQuery<
-		AxiosResponse<DetailItem>
-	>([pathname], () => axiosInstance.get(`/items/${id}`));
-	// const { isLoading, isError, data, error } = useGet(`/items/${id}`, pathname);
+	const { isLoading, isError, data, error } = useGet<DetailItem>(
+		`/items/${id}`,
+		pathname,
+	);
 
 	// 토크 작성
 	const { mutate: talkMu } = usePost(`/talks/${id}`);
@@ -77,14 +74,13 @@ function Detail() {
 	// 토크 작성 요청
 	const handleSubmit = useCallback(() => {
 		if (content.length < 20) {
-			toast.error('20자 이상 작성해주세요.');
+			toast.error(WRITE_MORE_THAN_20_CHARACTERS);
 			return;
 		}
 		talkMu({ content });
 		setContent('');
 		setIsTalkOpen(false);
 		setIsDelay(true);
-		// setTimeout(() => setIsTalkOpen(false), 300);
 	}, [content]);
 
 	// 토크 컨텐츠 상태
@@ -126,7 +122,7 @@ function Detail() {
 					<Image src={lists.descriptionImage} alt="상품 상세사진" />
 					<InfoContainer>
 						<InfoTitle>상품정보</InfoTitle>
-						<ProductInfo
+						<DetailProductInfo
 							expiration={lists.expiration}
 							capacity={lists.capacity}
 							servingSize={lists.servingSize}
@@ -135,11 +131,11 @@ function Detail() {
 					</InfoContainer>
 					<InfoContainer>
 						<InfoTitle>배송정보</InfoTitle>
-						<DeliveryInfo />
+						<InfoContent>{DELIVERY_INFORMATION}</InfoContent>
 					</InfoContainer>
 					<InfoContainer>
 						<InfoTitle>교환 및 반품정보</InfoTitle>
-						<ReturnInfo />
+						<InfoContent>{RETURN_INFORMATION}</InfoContent>
 					</InfoContainer>
 					<Notes ref={reviewRef}>
 						<InfoTitle>Review</InfoTitle>
@@ -165,16 +161,17 @@ function Detail() {
 												title: lists.title,
 												capacity: lists.capacity,
 												nowPrice: lists.discountPrice || lists.price,
-												discountRate:
-													lists.discountRate === 0 ? '' : lists.discountRate,
-												beforePrice: lists.discountPrice ? lists.price : null,
+												discountRate: lists.discountRate && lists.discountRate,
+												beforePrice:
+													lists.discountPrice !== lists.price &&
+													lists.discountPrice,
 												star: review.star,
 											},
 										}}
 									/>
 								))
 							) : (
-								<NoNote>작성된 리뷰가 없습니다.</NoNote>
+								<NoNote>{NO_REVIEWS}</NoNote>
 							)}
 						</ListsContainer>
 					</Notes>
@@ -226,7 +223,7 @@ function Detail() {
 									</Fragment>
 								))
 							) : (
-								<NoNote>작성된 토크가 없습니다.</NoNote>
+								<NoNote>{NO_TALKS}</NoNote>
 							)}
 						</ListsContainer>
 					</Notes>
@@ -301,6 +298,13 @@ const InfoTitle = styled.h2`
 	border-bottom: 1px solid #f1f1f1;
 	width: 100%;
 	align-self: start;
+`;
+
+const InfoContent = styled.pre`
+	white-space: pre-line;
+	font-size: 15px;
+	line-height: 1.5;
+	color: var(--gray-400);
 `;
 
 const Notes = styled.div`

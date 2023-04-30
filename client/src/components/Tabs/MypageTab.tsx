@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import { MYPAGE_TAB } from '../Etc/Constants';
+import { MYPAGE_TAB } from '../../assets/Constants';
 
 export default function MypageTab() {
 	const { pathname } = useLocation();

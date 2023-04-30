@@ -3,12 +3,12 @@ import { useState, useCallback } from 'react';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { LetterButtonColor } from '../../../Buttons/LetterButton';
-import { DotDate } from '../../../Etc/ListDate';
-import DeleteNotesModal from '../../../Modals/DeleteNotesModal';
-import TalkModal from '../../../Modals/TalkModal';
-import { useDelete } from '../../../../hooks/useFetch';
-import { MyPageTalkListProps } from '../../../../types/note.type';
+import { LetterButtonColor } from '../../Buttons/LetterButton';
+import { DotDate } from '../../Etc/ListDate';
+import DeleteNotesModal from '../../Modals/DeleteNotesModal';
+import TalkModal from '../../Modals/TalkModal';
+import { useDelete } from '../../../hooks/useFetch';
+import { MyPageTalkListProps } from '../../../types/note.type';
 
 function MyPageTalk({ talk, isReply }: MyPageTalkListProps) {
 	const [openForm, setOpenForm] = useState(false);
@@ -77,11 +77,15 @@ function MyPageTalk({ talk, isReply }: MyPageTalkListProps) {
 					<Content>{talk.content}</Content>
 					<DotDate date={talk.createdAt} />
 				</BottomContainer>
-				<TalkModal setIsOpen={setOpenForm} modalIsOpen={openForm} talk={talk} />
+				<TalkModal
+					setIsModalOpen={setOpenForm}
+					IsModalOpen={openForm}
+					talk={talk}
+				/>
 				<DeleteNotesModal
-					openDeleteModal={openDeleteModal}
-					setOpenDeleteModal={setOpenDeleteModal}
-					handleDelete={handleDeleteTalk}
+					IsModalOpen={openDeleteModal}
+					setIsModalOpen={setOpenDeleteModal}
+					onClickLightPurpleButton={handleDeleteTalk}
 				/>
 			</ListContainer>
 		</Box>

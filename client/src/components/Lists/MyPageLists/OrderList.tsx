@@ -8,13 +8,12 @@ import { DotDate } from '../../Etc/ListDate';
 import Price from '../../Etc/Price';
 import CancelModal from '../../Modals/CancelModal';
 import { useDelete } from '../../../hooks/useFetch';
+import { OrderListData } from '../../../types/order.type';
 
-function OrderList({ list }) {
+function OrderList({ list }: { list: OrderListData }) {
 	const navigate = useNavigate();
 	const [openCancel, setOpenCancel] = useState(false);
-	const { mutate, isLoading, isError, error, response } = useDelete(
-		`/orders/${list.orderId}`,
-	);
+	const { mutate } = useDelete(`/orders/${list.orderId}`);
 
 	const handlePageMove = useCallback(() => {
 		navigate(`/detail/${list.item.itemId}`);
@@ -91,9 +90,9 @@ function OrderList({ list }) {
 				</BtnContainer>
 			</MainContainer>
 			<CancelModal
-				openCancelModal={openCancel}
-				setOpenCancelModal={setOpenCancel}
-				handleCancel={handleCancel}
+				IsModalOpen={openCancel}
+				setIsModalOpen={setOpenCancel}
+				onClickLightPurpleButton={handleCancel}
 				target="주문"
 			/>
 		</Box>

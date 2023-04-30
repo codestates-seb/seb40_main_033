@@ -6,7 +6,7 @@ import { LightPurpleButton } from '../Buttons/PurpleButton';
 import PayPageContainer from './PayPageContainer';
 import Kakao from '../../assets/images/social/kakao.png';
 import AddressModal from '../Modals/AddressModal';
-import { PAY_GUIDE } from './Constants';
+import { PAY_GUIDE } from '../../assets/Constants';
 import axiosInstance from '../../utils/axiosInstance';
 import { PayData } from '../../types/payment.type';
 
@@ -62,7 +62,7 @@ export default function PayMethod({ payData }: { payData: PayData }) {
 			</ButtonBox>
 			<Clauses>{PAY_GUIDE}</Clauses>
 			{isPayModal && (
-				<AddressModal setIsOpen={setPayModal} modalIsOpen={isPayModal}>
+				<AddressModal setIsModalOpen={setPayModal} IsModalOpen={isPayModal}>
 					<PayFrame src={url} title="결제창" />
 					<GobackButton onClick={() => window.history.back()}>
 						전 페이지로 돌아가기

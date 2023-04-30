@@ -33,8 +33,8 @@ export interface FetchSearchItems extends GetList {
 	keyword: string;
 }
 
-export interface InfiniteQueryPromise {
-	data: Item[];
+export interface InfiniteQueryPromise<T> {
+	data: T;
 	nextPage: number;
 	isLast: boolean;
 }
