@@ -157,3 +157,7 @@ export const NO_SUBSCRIPTION_HISTORY = '정기구독 신청 내역이 없습니�
 
 export const EXPIRED_TOKEN_RESPONSE_MESSAGE =
 	'Full authentication is required to access this resource';
+
+export const QUANTITY_CHANGE_SUCCESS = '수량이 변경되었습니다.';
+
+export const TERM_CHANGE_SUCCESS = '주기를 변경했습니다!';
