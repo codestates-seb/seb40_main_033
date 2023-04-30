@@ -14,11 +14,7 @@ import {
 import DeleteAccountModal from '../../components/Modals/DeleteAccountModal';
 import AddressModal from '../../components/Modals/AddressModal';
 import GoodbyeModal from '../../components/Modals/GoodbyeModal';
-import {
-	useGetUserInformation,
-	useDelete,
-	usePatch,
-} from '../../hooks/useFetch';
+import { useDelete, usePatch, useGet } from '../../hooks/useFetch';
 import { change } from '../../redux/slice/nickNameSlice';
 import { logout } from '../../redux/slice/userSlice';
 import { LoadingSpinner } from '../../components/Etc/LoadingSpinner';
@@ -44,6 +40,7 @@ interface FormValues {
 	주소: string;
 	상세주소: string;
 }
+
 export function UserProfile() {
 	const { mutate: accountDelete, isError: deleteError } = useDelete('/users');
 	const { pathname } = useLocation();
@@ -52,8 +49,7 @@ export function UserProfile() {
 		isError,
 		data: userData,
 		error,
-	} = useGetUserInformation<UserData>('/users', pathname);
-
+	} = useGet<UserData>('/users', pathname);
 	const { mutate: userPatch } = usePatch('/users');
 	const {
 		register,
@@ -71,25 +67,25 @@ export function UserProfile() {
 
 	useEffect(() => {
 		if (userData) {
-			setValue('이메일', userData?.email);
-			setValue('닉네임', userData?.displayName);
-			setValue('이름', userData?.realName);
-			setValue('전화번호', userData?.phone);
-			setValue('주소', userData?.address);
-			setValue('상세주소', userData?.detailAddress);
-			if (userData?.social) {
+			setValue('이메일', userData?.data?.email);
+			setValue('닉네임', userData?.data?.displayName);
+			setValue('이름', userData?.data?.realName);
+			setValue('전화번호', userData?.data?.phone);
+			setValue('주소', userData?.data?.address);
+			setValue('상세주소', userData?.data?.detailAddress);
+			if (userData?.data?.social) {
 				setValue('비밀번호', 'asdf4321!');
 				setValue('비밀번호재확인', 'asdf4321!');
 			}
-			if (userData?.displayName !== undefined)
-				dispatch(change(userData?.displayName));
+			if (userData?.data?.displayName !== undefined)
+				dispatch(change(userData?.data?.displayName));
 		}
 	}, [userData]);
 
-	function onAddressChange(data: { zonecode: number; address: string }) {
+	const onAddressChange = (data: { zonecode: number; address: string }) => {
 		setValue('주소', `(${data.zonecode})${data.address}`);
 		setIsAddressModalOpen(false);
-	}
+	};
 
 	const handleDeleteButton = () => {
 		accountDelete();
@@ -212,13 +208,13 @@ export function UserProfile() {
 			label: '비밀번호',
 			register: pwReg,
 			errors: errors?.비밀번호?.message,
-			social: userData?.social,
+			social: userData?.data?.social,
 		},
 		{
 			label: '비밀번호재확인',
 			register: rePwReg,
 			errors: errors?.비밀번호재확인?.message,
-			social: userData?.social,
+			social: userData?.data?.social,
 		},
 	];
 	if (isLoading) return <LoadingSpinner />;
@@ -269,7 +265,7 @@ export function UserProfile() {
 					<Postcode
 						style={{ width: 600, height: 500 }}
 						jsOptions={{ animation: true, hideMapBtn: true }}
-						onSelected={() => onAddressChange}
+						onSelected={onAddressChange}
 						onError={() => {}}
 					/>
 				</AddressModal>
