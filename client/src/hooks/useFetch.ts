@@ -37,6 +37,36 @@ export function useGet<T>(url: string, keyValue: string) {
 	return { isLoading, isError, isSuccess, data, error, refetch };
 }
 
+export function useGetUserInformation<T>(url: string, keyValue: string) {
+	const navigate = useNavigate();
+	const { isLoading, isError, isSuccess, data, error, refetch } = useQuery<
+		AxiosResponse<T>
+	>([keyValue], () => axiosInstance.get(url), {
+		onError: (errRes) => {
+			const { response } = errRes as AxiosError;
+			const { message } = response?.data as ResponseData;
+
+			if (
+				response?.status === 403 ||
+				message === EXPIRED_TOKEN_RESPONSE_MESSAGE
+			) {
+				localStorage.clear();
+				navigate('/login');
+				toast.error(TOKEN_EXPIRED_INFORMATION);
+			}
+		},
+	});
+
+	return {
+		isLoading,
+		isError,
+		isSuccess,
+		data: data ? data.data : null,
+		error,
+		refetch,
+	};
+}
+
 export function usePost<T extends object, M = void>(url: string) {
 	const queryClient = useQueryClient();
 	const [response, setResponse] = useState<AxiosResponse | null>(null);

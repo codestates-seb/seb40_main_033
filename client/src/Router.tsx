@@ -17,7 +17,7 @@ import NoteTalk from './pages/MyPages/NoteTalk';
 import OrderDetail from './pages/MyPages/OrderDetail';
 import NormalOrder from './pages/MyPages/NormalOrder';
 import SubscriptionOrder from './pages/MyPages/SubscriptionOrder';
-import { UserInfo } from './pages/MyPages/UserInfo';
+import { UserProfile } from './pages/MyPages/UserProfile';
 import WishList from './pages/MyPages/WishList';
 import Cart from './pages/Cart';
 import ScrollToTop from './utils/ScrollToTop';
@@ -38,7 +38,7 @@ function Router() {
 					<Route path="list" element={<ItemList />} />
 					<Route path="login" element={<LogIn />} />
 					<Route path="mypage" element={<MyPage />}>
-						<Route path="user-info" element={<UserInfo />} />
+						<Route path="user-info" element={<UserProfile />} />
 						<Route path="order/subscription" element={<SubscriptionOrder />} />
 						<Route path="order/normal" element={<NormalOrder />} />
 						<Route path="order/:id" element={<OrderDetail />} />
