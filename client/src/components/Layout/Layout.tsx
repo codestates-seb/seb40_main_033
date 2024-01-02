@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useLayoutEffect, useState } from 'react';
-import LeftNav from './LeftNav';
+import LeftNav from './LeftNav/LeftNav';
 import RightNav from './RightNav';
 import Footer from './Footer';
 
