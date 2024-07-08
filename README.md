@@ -33,7 +33,7 @@ Pillivery
 
 ||test account|
 |:-:|:-:|
-|ID|test@gmail.com|
+|ID|test4321@gmail.com|
 |PW|test4321!|
 
 </div>
